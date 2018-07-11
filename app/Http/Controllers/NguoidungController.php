@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Validator;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Hash;
+use Auth;
+class NguoidungController extends Controller
+{
+	public $messages = array(
+		'email.required' => 'Email không được để trống',
+        'email.unique' => 'Email này đã tồn tại trong hệ thống',
+        'username.unique' => 'Tên đăng nhập này đã tồn tại trong hệ thống',
+        'username.required' => 'Tên đăng nhập không được để trống',
+        'password.required' => 'Mật khẩu không được để trống',
+        're_password.required' => 'Xác nhận mật khẩu không được để trống',
+        'password.min' => 'Password phải nhiều hơn 6 ký tự',
+        'password.max' => 'Password phải ít hơn 20 ký tự',
+	);
+
+
+    public function getLogin()
+    {
+        if(Auth::check())
+        {
+            return redirect()->route('nhan-khau.index');
+        }
+    	return view('users.login');
+    }
+
+    public function postLogin(Request $request)
+    {
+    	Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
+        ], $this->messages)->validate();
+
+        $data_user = array(
+            'username' => $request->username,
+            'password' => $request->password
+        );
+
+        if(Auth::attempt( $data_user ))
+        {
+            return redirect()->route('nhan-khau.index');
+        }
+        return redirect()->route('getLogin');
+        
+    }
+
+    public function getRegister()
+    {
+    	return view('users.register');
+    }
+
+    public function postRegister(Request $request)
+    {
+    	Validator::make($request->all(), [
+            'email' => 'required|unique:users,email',
+            'username' => 'required|unique:users,username',
+			'password' => 'required|min:6|max:20',
+			're_password' => 'required|same:password',
+
+        ], $this->messages)->validate();
+
+        $data_user = array(
+            'email' => $request->email,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'active' => 1,
+            'idnhomquyen' => 2
+        );
+
+        DB::table('users')->insert( $data_user );
+
+        return redirect()->route('login');
+
+    }
+
+    public function getLogout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
+}

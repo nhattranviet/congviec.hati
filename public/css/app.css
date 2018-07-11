@@ -1,0 +1,43 @@
+.nav-tabs li {
+  position: relative;
+}
+
+.nav-tabs li .nav-link {
+  border-color: #eceeef #eceeef #ddd !important;
+}
+
+.nav-tabs li .active {
+  border-bottom-color: transparent !important;
+  background-color: #fff !important;
+}
+
+.nav-tabs li .mt-close-tab {
+  position: absolute;
+  font-size: 10px;
+  top: 2px;
+  right: 5px;
+  color: #94A6B0;
+  cursor: pointer;
+}
+
+.gender-radio {
+  display: inline-block;
+  margin: 0.45em;
+}
+
+.header-title {
+  line-height: 35px;
+  margin-bottom: 0;
+}
+
+#addressPickerGroup {
+  position: relative;
+}
+
+#addressPickerGroup #clearAddress {
+  position: absolute;
+  right: 10px;
+  top: 35px;
+  cursor: pointer;
+}
+
