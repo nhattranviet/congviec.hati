@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTblNghenghiepTable extends Migration
+class CreateTblDonviDoiTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateTblNghenghiepTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('tbl_nghenghiep', function (Blueprint $table) {
+        Schema::connection('sqlsrv2')->create('tbl_donvi_doi', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->integer('iddonvi');
+            $table->integer('iddoi');
+            $table->foreign('iddonvi')->references('id')->on('tbl_donvi');
+            $table->foreign('iddoi')->references('id')->on('tbl_doicongtac');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +31,6 @@ class CreateTblNghenghiepTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('tbl_nghenghiep');
+        Schema::connection('sqlsrv2')->dropIfExists('tbl_donvi_doi');
     }
 }

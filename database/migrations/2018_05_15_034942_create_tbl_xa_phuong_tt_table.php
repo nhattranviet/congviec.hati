@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTblNghenghiepTable extends Migration
+class CreateTblXaPhuongTtTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateTblNghenghiepTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('tbl_nghenghiep', function (Blueprint $table) {
+        Schema::connection('sqlsrv2')->create('tbl_xa_phuong_tt', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('idhuyentx');
             $table->string('name');
             $table->timestamps();
+            $table->index('idhuyentx');
+            $table->foreign('idhuyentx')->references('id')->on('tbl_huyen_tx');
             $table->softDeletes();
         });
     }
@@ -28,6 +31,6 @@ class CreateTblNghenghiepTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('tbl_nghenghiep');
+        Schema::connection('sqlsrv2')->dropIfExists('tbl_xa_phuong_tt');
     }
 }

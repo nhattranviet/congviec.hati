@@ -73,7 +73,7 @@
                                                 </div>
                                             </fieldset>
                                             <fieldset class="form-group">
-                                                <label for="datepicker">Nơi soạn thảo<span class="text-danger">*</span></label>
+                                                <label for="datepicker">Nơi soạn thảo</label>
                                                 <div>
                                                     <div class="input-group">
                                                         <input type="text" name="noisoanthao" placeholder="Nơi soạn thảo văn bản, đề ra công việc" value="" class="form-control pull-right">
@@ -84,8 +84,8 @@
                                             
                                             
                                             <fieldset class="form-group">
-                                                <label for="exampleTextarea">Trích yếu</label>
-                                                <textarea class="form-control" name="descriptionFamily" rows="1"></textarea>
+                                                <label for="exampleTextarea">Trích yếu<span class="text-danger">*</span></label>
+                                                <textarea class="form-control" name="trichyeu" placeholder="Nhập trích yếu của văn bản, công việc" rows="1"></textarea>
                                             </fieldset>
                                             
                                         </div>
@@ -112,7 +112,7 @@
                                                 <label for="datepicker">Ghi chú<span class="text-danger">*</span></label>
                                                 <div>
                                                     <div class="input-group">
-                                                        <input type="text" name="ghichu" placeholder="Nhập người nhập văn bản" value="" class="form-control pull-right">
+                                                        <input type="text" name="ghichu" placeholder="Nhập cán bộ nhập văn bản" value="" class="form-control pull-right">
                                                         <span class="input-group-addon bg-custom b-0"><i class="fa fa-user"></i></span>
                                                     </div><!-- input-group -->
                                                 </div>
@@ -122,7 +122,7 @@
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                             <fieldset class="form-group">
                                                 <label for="exampleTextarea">Chi tiết công việc</label>
-                                                <textarea class="form-control ckeditor" name="descriptionFamily"></textarea>
+                                                <textarea class="form-control ckeditor" name="chitiet"></textarea>
                                             </fieldset>
                                         </div>
                                         

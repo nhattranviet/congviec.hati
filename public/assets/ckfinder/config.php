@@ -25,15 +25,20 @@ $config = array();
 /*============================ Enable PHP Connector HERE ==============================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_authentication
 
+
 $config['authentication'] = function () {
+    // require _DIR_.'/../../../bootstrap/autoload.php';
+    // $app = require_once _DIR_.'/../../../bootstrap/app.php';
+    // $app->make('Illuminate\Contracts\Http\Kernel')->handle(Illuminate\Http\Request::capture());
+    // // return Auth::check();
     return true;
 };
 
 /*============================ License Key ============================================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_licenseKey
 
-$config['licenseName'] = '';
-$config['licenseKey']  = '';
+$config['licenseName'] = 'congviec.hati';
+$config['licenseKey']  = 'Y7J7XLRBSGNGBT7VCV3FF5TVFKGFU';
 
 /*============================ CKFinder Internal Directory ============================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_privateDir
@@ -61,12 +66,14 @@ $config['images'] = array(
 );
 
 /*=================================== Backends ========================================*/
+session_start();
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_backends
-
+$root_folder = '/uploads/';
+// if(! is_dir($root_folder)) mkdir($root_folder);
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',
-    'baseUrl'      => '/uploads/',
+    'baseUrl'      => $root_folder,
 //  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,
@@ -81,8 +88,8 @@ $config['defaultResourceTypes'] = '';
 $config['resourceTypes'][] = array(
     'name'              => 'Files', // Single quotes not allowed.
     'directory'         => 'files',
-    'maxSize'           => 0,
-    'allowedExtensions' => '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip',
+    'maxSize'           => "20M",
+    'allowedExtensions' => '7z,csv,doc,docx,gzip,pdf,png,ppt,pptx,pxd,jpg,rar,zip',
     'deniedExtensions'  => '',
     'backend'           => 'default'
 );
@@ -90,7 +97,7 @@ $config['resourceTypes'][] = array(
 $config['resourceTypes'][] = array(
     'name'              => 'Images',
     'directory'         => 'images',
-    'maxSize'           => 0,
+    'maxSize'           => "20M",
     'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
     'deniedExtensions'  => '',
     'backend'           => 'default'
