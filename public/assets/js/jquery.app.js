@@ -400,6 +400,14 @@
                     }
                 });
             });
+            
+            $("#donvi").on('change', function () {
+                var donvi = $('#donvi').val();
+                if (donvi) {
+                    var url = bare_url + '/ajax-get-doi/' + donvi;
+                    ajax_get_data_to_html_json(url, '.doicongtac');
+                }
+            });
         };
 
         //initilizing
@@ -617,4 +625,38 @@ function toggle_slimscroll(item) {
             .siblings(".slimScrollBar")
             .css("visibility", "visible");
     }
+}
+
+function ajax_get_data_to_html_json(url, attr_result)
+{
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            if ($.isEmptyObject(data.error)) {
+                if (attr_result) {
+                    $(attr_result).html(data.html);
+                }
+
+                if (data.url) {
+                    window.location.href = data.url;
+                }
+            } else {
+                printMsg("#error-msg", data.error[0]);
+            }
+        },
+        error: function (data) {
+            var errors = $.parseJSON(data.responseText);
+            $.each(errors, function (key, value) {
+                console.log(data.responseText);
+            });
+        }
+    });
 }

@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TbldantocSeeder::class);
         $this->call(TblnhomquyenSeeder::class);
         $this->call(TbldonviSeeder::class);
-        $this->call(TbldoicongtacSeeder::class);
+		$this->call(TbldoicongtacSeeder::class);
+		$this->call(TblDonviDoicongtacSeeder::class);
         //End Core seed
 
 		/* //Nhan khau seed
@@ -407,7 +408,7 @@ class TbldoicongtacSeeder extends Seeder
 		$data = [
 			["name" => "Lãnh đạo Công an tỉnh", "loaidoi" => "doi_phongban"],
 		    ["name" => "Lãnh đạo đơn vị", "loaidoi" => "doi_phongban"],
-			["name" => "Đội Tham mưu tổng hợp", "loaidoi" => "doi_phongban"],
+			["name" => "Đội Tổng hợp", "loaidoi" => "doi_phongban"],
 			["name" => "Đội An ninh", "loaidoi" => "doi_phongban"],
 			["name" => "Đội CSQLHC về TTXH", "loaidoi" => "doi_phongban"],
 			["name" => "Điều tra Tổng hợp", "loaidoi" => "doi_phongban"],
@@ -434,6 +435,44 @@ class TbldoicongtacSeeder extends Seeder
 			["name" => "Trực ban PC44", "loaidoi" => "doi_phongban"],
 		];
 			DB::connection('coredb')->table('tbl_doicongtac')->insert( $data );
+	}
+}
+
+class TblDonviDoicongtacSeeder extends Seeder
+{
+	
+	public function run()
+	{
+		$data = [
+			['iddonvi' => 2, 'iddoi' => 2],
+			['iddonvi' => 2, 'iddoi' => 3],
+			['iddonvi' => 2, 'iddoi' => 14],
+			['iddonvi' => 2, 'iddoi' => 15],
+			['iddonvi' => 2, 'iddoi' => 16],
+			['iddonvi' => 2, 'iddoi' => 17],
+			['iddonvi' => 2, 'iddoi' => 18],
+			['iddonvi' => 2, 'iddoi' => 19],
+			['iddonvi' => 2, 'iddoi' => 20],
+			['iddonvi' => 2, 'iddoi' => 21],
+			['iddonvi' => 19, 'iddoi' => 2],
+			['iddonvi' => 19, 'iddoi' => 22],
+			['iddonvi' => 19, 'iddoi' => 25],
+			['iddonvi' => 19, 'iddoi' => 26],
+			['iddonvi' => 19, 'iddoi' => 27],
+			['iddonvi' => 33, 'iddoi' => 2],
+			['iddonvi' => 33, 'iddoi' => 3],
+			['iddonvi' => 33, 'iddoi' => 4],
+			['iddonvi' => 33, 'iddoi' => 5],
+			['iddonvi' => 33, 'iddoi' => 6],
+			['iddonvi' => 33, 'iddoi' => 7],
+			['iddonvi' => 33, 'iddoi' => 8],
+			['iddonvi' => 33, 'iddoi' => 9],
+			['iddonvi' => 33, 'iddoi' => 10],
+			['iddonvi' => 33, 'iddoi' => 11],
+			['iddonvi' => 33, 'iddoi' => 12],
+			['iddonvi' => 33, 'iddoi' => 13],
+		];
+			DB::connection('coredb')->table('tbl_donvi_doi')->insert( $data );
 	}
 }
 

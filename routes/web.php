@@ -113,7 +113,7 @@ Route::post('/cong-viec/create', 'CongviecController@store')->name('post-create-
 Route::get('/don-vi', 'DonviController@index')->name('don-vi.index');
 Route::get('/don-vi/{iddonvi}/set-doi', 'DonviController@setdoi')->name('don-vi-get-set-doi');
 Route::post('/don-vi/{iddonvi}/set-doi', 'DonviController@store_set_doi')->name('don-vi-post-set-doi');
-Route::get('/don-vi/{iddonvi}/ajax-get-doi', 'DonviController@setdoi')->name('don-vi-get-set-doi');
+Route::get('/ajax-get-doi/{iddonvi}', 'DonviController@getDoi')->name('ajax-get-doi');
 //-------------------ĐƠN VỊ - ĐỘI-----------------------
 
 //-------------------CÔNG VIỆC-----------------------

@@ -81,6 +81,7 @@ class CreateTblConnguoiTable extends Migration
             $table->foreign('iddantoc')->references('id')->on('tbl_dantoc');
             $table->foreign('idtongiao')->references('id')->on('tbl_tongiao');
             $table->foreign('idtrinhdohocvan')->references('id')->on('tbl_trinhdohocvan');
+            $table->timestamps();
             $table->softDeletes();
         });
     }

@@ -11,14 +11,17 @@ use Carbon\Carbon;
 
 class CanboController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public $messages = [
+        'hoten.required' => 'Họ tên không được để trống',
+        'id_iddonvi_iddoi.required' => 'Đội công tác không được để trống',
+        'idchucvu.required' => 'Chức vụ không được để trống',
+        'idnhomquyen.required' => 'Nhóm quyền không được để trống',
+    ];
+
+    public function index(Request $request)
     {
-        $list_canbo = DB::connection('coredb')->table('tbl_canbo')
+
+        $data['list_canbo'] = DB::connection('coredb')->table('tbl_canbo')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
         ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
@@ -28,8 +31,15 @@ class CanboController extends Controller
         ->join('tbl_donvi', 'tbl_donvi_doi.iddonvi', '=', 'tbl_donvi.id')
         ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu', 'email', 'tbl_donvi.name as tendonvi', 'tbl_doicongtac.name as tendoi', 'tbl_nhomquyen.name as tennhomquyen', 'users.active')
         ->orderBy('tbl_canbo.id', 'desc')
-        ->paginate(10);
-        return view('cahtcore.canbo.index', compact('list_canbo'));
+        ->paginate(2);
+
+        if( $request->ajax() )
+        {
+            return response()->json(['html' => view('cahtcore.canbo.canbo_table', $data)->render()]);
+        }
+
+        $data['list_donvi'] = DB::connection('coredb')->table('tbl_donvi')->orderBy('id', 'ASC')->get();
+        return view('cahtcore.canbo.index', $data );
     }
 
     /**
@@ -39,7 +49,7 @@ class CanboController extends Controller
      */
     public function create()
     {
-        $data['page_title'] = 'Thêm cán bộ';
+        $data['page_title'] = 'Thêm cán bộ và tài khoản';
         $data['list_donvi'] = DB::connection('coredb')->table('tbl_donvi')->get();
         $data['list_capbac'] = DB::connection('coredb')->table('tbl_capbac')->get();
         $data['list_chucvu'] = DB::connection('coredb')->table('tbl_chucvu')->get();
@@ -55,20 +65,16 @@ class CanboController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),
-            [
-                'hoten' => 'required',
-                'id_iddonvi_iddoi' => 'required',
-                'idchucvu' => 'required',
-                'idnhomquyen' => 'required',
-            ],
-            [
-                'hoten.required' => 'Họ tên không được trống',
-                'id_iddonvi_iddoi.required' => 'Đội công tác không được trống',
-                'idchucvu.required' => 'Chức vụ không được trống',
-                'idnhomquyen.required' => 'Nhóm quyền không được trống',
-            ]
-        )->validate();
+        $validator = Validator::make($request->all(), [
+            'hoten' => 'required',
+            'id_iddonvi_iddoi' => 'required',
+            'idchucvu' => 'required',
+            'idnhomquyen' => 'required',
+        ], $this->messages);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
 
         $idconnguoi = DB::connection('coredb')->table('tbl_connguoi')->insertGetId(
             [
@@ -89,9 +95,24 @@ class CanboController extends Controller
             ]
         );
 
+        if($request->quanlydoi != NULL)
+        {
+            $data_lanhdao_doi = array();
+            foreach ($request->quanlydoi as $doi)
+            {
+                $data_lanhdao_doi[] = array(
+                    'idcanbo' => $idcanbo,
+                    'id_iddonvi_iddoi' => $doi,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                );
+            }
+            DB::connection('coredb')->table('tbl_lanhdaodonvi_quanlydoi')->insert( $data_lanhdao_doi );
+        }
+
         $username = $this->vn_str_filter($request->hoten);
-        $check = DB::connection('coredb')->table('users')->where('username', $username)->get()->toArray();
-        $username = ( empty($check) ) ? $username : $username.'_'.$idcanbo ;
+        $check = DB::connection('coredb')->table('users')->where('username', $username)->count();
+        $username = ( $check == 0 ) ? $username : $username.'_'.$idcanbo ;
 
         $iduser = DB::connection('coredb')->table('users')->insertGetId(
             [
@@ -106,8 +127,7 @@ class CanboController extends Controller
             ]
         );
 
-        
-        return redirect()->route('can-bo.index');
+        return response()->json(['success' => 'Thêm cán bộ thành công ', 'url' => route('can-bo.index')]);
     }
 
     /**

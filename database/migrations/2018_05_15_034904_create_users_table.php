@@ -15,13 +15,14 @@ class CreateUsersTable extends Migration
     {
         Schema::connection('coredb')->create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('password');
-            $table->string('email');
-            $table->string('salt');
+            $table->string('email')->unique();
             $table->integer('idcanbo');
             $table->integer('idnhomquyen');
             $table->tinyInteger('active');
+            $table->rememberToken();
+            $table->string('name')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

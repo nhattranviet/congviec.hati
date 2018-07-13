@@ -39,6 +39,9 @@
     <script src="{{asset('/assets/js/modernizr.min.js')}}"></script>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>
+     var bare_url = "{{ URL::to('/') }}";
+    </script>
   </head>
   <body>
     <!-- Begin page -->

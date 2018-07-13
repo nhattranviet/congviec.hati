@@ -238,15 +238,15 @@ class DonviController extends Controller
         
     }
 
-    public function getDoi($id)
+    public function getDoi($iddonvi)
     {
-        $list_doi = DB::connection('coredb')->table('tbl_donvi_doi')
+        $data['list_doi'] = DB::connection('coredb')->table('tbl_donvi_doi')
                 ->join('tbl_donvi', 'tbl_donvi.id', '=', 'tbl_donvi_doi.iddonvi')
                 ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
-                ->where('tbl_donvi.id', $id)
+                ->where('tbl_donvi.id', $iddonvi)
                 ->select('tbl_doicongtac.name', 'tbl_donvi_doi.id')
                 ->get()->toArray();
-        return view('cahtcore.doicongtac.option_select_doi', compact('list_doi'));
+        return response()->json(['html' => view('cahtcore.doicongtac.option_select_doi', $data)->render()]);
 
     }
 }
