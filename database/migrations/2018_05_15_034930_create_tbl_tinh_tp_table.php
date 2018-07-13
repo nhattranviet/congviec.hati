@@ -13,7 +13,7 @@ class CreateTblTinhTpTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('tbl_tinh_tp', function (Blueprint $table) {
+        Schema::connection('coredb')->create('tbl_tinh_tp', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('idquocgia');
             $table->string('name');
@@ -33,6 +33,6 @@ class CreateTblTinhTpTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('tbl_tinh_tp');
+        Schema::connection('coredb')->dropIfExists('tbl_tinh_tp');
     }
 }

@@ -11,7 +11,7 @@ class QuocGia extends Model
    *
    * @var string
    */
-  //protected $connection = 'sqlsrv2';
+  //protected $connection = 'coredb';
 
   /**
    * The table associated with the model.

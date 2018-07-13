@@ -13,7 +13,7 @@ class CreateTblChucvuTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('tbl_chucvu', function (Blueprint $table) {
+        Schema::connection('coredb')->create('tbl_chucvu', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateTblChucvuTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('tbl_chucvu');
+        Schema::connection('coredb')->dropIfExists('tbl_chucvu');
     }
 }

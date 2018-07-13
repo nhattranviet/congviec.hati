@@ -13,7 +13,7 @@ class CreateTblLanhdaodonviQuanlydoiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('tbl_lanhdaodonvi_quanlydoi', function (Blueprint $table) {
+        Schema::connection('coredb')->create('tbl_lanhdaodonvi_quanlydoi', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('idcanbo');
             $table->integer('id_iddonvi_iddoi');
@@ -32,6 +32,6 @@ class CreateTblLanhdaodonviQuanlydoiTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('tbl_lanhdaodonvi_quanlydoi');
+        Schema::connection('coredb')->dropIfExists('tbl_lanhdaodonvi_quanlydoi');
     }
 }

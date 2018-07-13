@@ -109,6 +109,19 @@ Route::get('/cong-viec/create', 'CongviecController@create')->name('get-create-c
 Route::post('/cong-viec/create', 'CongviecController@store')->name('post-create-cong-viec');
 //-------------------END CÔNG VIỆC-----------------------
 
+//-------------------ĐƠN VỊ - ĐỘI-----------------------
+Route::get('/don-vi', 'DonviController@index')->name('don-vi.index');
+Route::get('/don-vi/{iddonvi}/set-doi', 'DonviController@setdoi')->name('don-vi-get-set-doi');
+Route::post('/don-vi/{iddonvi}/set-doi', 'DonviController@store_set_doi')->name('don-vi-post-set-doi');
+Route::get('/don-vi/{iddonvi}/ajax-get-doi', 'DonviController@setdoi')->name('don-vi-get-set-doi');
+//-------------------ĐƠN VỊ - ĐỘI-----------------------
+
+//-------------------CÔNG VIỆC-----------------------
+Route::get('/can-bo', 'CanboController@index')->name('can-bo.index');
+Route::get('/can-bo/create', 'CanboController@create')->name('get-create-can-bo');
+Route::post('/can-bo/create', 'CanboController@store')->name('can-bo.store');
+//-------------------END CÔNG VIỆC-----------------------
+
 Route::get('test', function () {
     $date1 = '2014-06-08';
     $date2 = '2012-05-09';

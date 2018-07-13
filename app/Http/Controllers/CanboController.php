@@ -18,7 +18,7 @@ class CanboController extends Controller
      */
     public function index()
     {
-        $list_canbo = DB::table('tbl_canbo')
+        $list_canbo = DB::connection('coredb')->table('tbl_canbo')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
         ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
@@ -39,11 +39,12 @@ class CanboController extends Controller
      */
     public function create()
     {
-        $list_donvi = DB::table('tbl_donvi')->get();
-        $list_capbac = DB::table('tbl_capbac')->get();
-        $list_chucvu = DB::table('tbl_chucvu')->get();
-        $list_nhomquyen = DB::table('tbl_nhomquyen')->get();
-        return view('cahtcore.canbo.create', compact('religions', 'countries', 'list_donvi', 'list_capbac', 'list_chucvu', 'list_nhomquyen'));
+        $data['page_title'] = 'Thêm cán bộ';
+        $data['list_donvi'] = DB::connection('coredb')->table('tbl_donvi')->get();
+        $data['list_capbac'] = DB::connection('coredb')->table('tbl_capbac')->get();
+        $data['list_chucvu'] = DB::connection('coredb')->table('tbl_chucvu')->get();
+        $data['list_nhomquyen'] = DB::connection('coredb')->table('tbl_nhomquyen')->get();
+        return view('cahtcore.canbo.create', $data );
     }
 
     /**
@@ -69,7 +70,7 @@ class CanboController extends Controller
             ]
         )->validate();
 
-        $idconnguoi = DB::table('tbl_connguoi')->insertGetId(
+        $idconnguoi = DB::connection('coredb')->table('tbl_connguoi')->insertGetId(
             [
                 'hoten' => $request->hoten,
                 'created_at' => Carbon::now(),
@@ -77,7 +78,7 @@ class CanboController extends Controller
             ]
         );
 
-        $idcanbo = DB::table('tbl_canbo')->insertGetId(
+        $idcanbo = DB::connection('coredb')->table('tbl_canbo')->insertGetId(
             [
                 'idconnguoi' => $idconnguoi,
                 'idcapbac' => $request->idcapbac,
@@ -89,10 +90,10 @@ class CanboController extends Controller
         );
 
         $username = $this->vn_str_filter($request->hoten);
-        $check = DB::table('users')->where('username', $username)->get()->toArray();
+        $check = DB::connection('coredb')->table('users')->where('username', $username)->get()->toArray();
         $username = ( empty($check) ) ? $username : $username.'_'.$idcanbo ;
 
-        $iduser = DB::table('users')->insertGetId(
+        $iduser = DB::connection('coredb')->table('users')->insertGetId(
             [
                 'idcanbo' => $idcanbo,
                 'username' => $username,
@@ -128,19 +129,19 @@ class CanboController extends Controller
      */
     public function edit($id)
     {
-        $canbo_info = DB::table('tbl_canbo')
+        $canbo_info = DB::connection('coredb')->table('tbl_canbo')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
         ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
         ->select('tbl_canbo.id', 'hoten', 'idcapbac', 'idchucvu', 'email', 'id_iddonvi_iddoi', 'idnhomquyen', 'iddonvi', 'iddoi', 'tbl_donvi_doi.id as id_iddonvi_iddoi', 'active', 'users.id as userid', 'tbl_connguoi.id as idconnguoi') 
         ->where('tbl_canbo.id', $id)->first();
 
-        $list_donvi = DB::table('tbl_donvi')->get();
-        $list_capbac = DB::table('tbl_capbac')->get();
-        $list_chucvu = DB::table('tbl_chucvu')->get();
-        $list_nhomquyen = DB::table('tbl_nhomquyen')->get();
+        $list_donvi = DB::connection('coredb')->table('tbl_donvi')->get();
+        $list_capbac = DB::connection('coredb')->table('tbl_capbac')->get();
+        $list_chucvu = DB::connection('coredb')->table('tbl_chucvu')->get();
+        $list_nhomquyen = DB::connection('coredb')->table('tbl_nhomquyen')->get();
 
-        $list_doi = DB::table('tbl_doicongtac')
+        $list_doi = DB::connection('coredb')->table('tbl_doicongtac')
         ->join('tbl_donvi_doi', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id')
         ->select('name', 'tbl_donvi_doi.id')
         ->where('iddonvi', $canbo_info->iddonvi)->get();
@@ -175,14 +176,14 @@ class CanboController extends Controller
             ]
         )->validate();
 
-        $idconnguoi = DB::table('tbl_connguoi')->where('id', $request->idconnguoi)->update(
+        $idconnguoi = DB::connection('coredb')->table('tbl_connguoi')->where('id', $request->idconnguoi)->update(
             [
                 'hoten' => $request->hoten,
                 'updated_at' => Carbon::now()
             ]
         );
 
-        $idcanbo = DB::table('tbl_canbo')->where('id', $id)->update(
+        $idcanbo = DB::connection('coredb')->table('tbl_canbo')->where('id', $id)->update(
             [
                 'idcapbac' => $request->idcapbac,
                 'idchucvu' => $request->idchucvu,
@@ -191,7 +192,7 @@ class CanboController extends Controller
             ]
         );
 
-        $iduser = DB::table('users')->where('id', $request->userid)->update(
+        $iduser = DB::connection('coredb')->table('users')->where('id', $request->userid)->update(
             [
                 'email' => $request->email,
                 'idnhomquyen' => $request->idnhomquyen,

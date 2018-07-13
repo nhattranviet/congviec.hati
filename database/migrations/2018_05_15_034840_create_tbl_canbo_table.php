@@ -13,7 +13,7 @@ class CreateTblCanboTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('tbl_canbo', function (Blueprint $table) {
+        Schema::connection('coredb')->create('tbl_canbo', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('idconnguoi');
             $table->integer('idcapbac');
@@ -35,6 +35,6 @@ class CreateTblCanboTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('tbl_canbo');
+        Schema::connection('coredb')->dropIfExists('tbl_canbo');
     }
 }

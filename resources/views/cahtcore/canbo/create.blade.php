@@ -11,11 +11,6 @@
 @section('js_code')
     <script type="text/javascript">
         $(document).ready(function(){
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            })
             $( "#donvi" ).on( 'change', function() {
                 var donvi = $('#donvi').val();
                 if(donvi)
@@ -44,36 +39,18 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Thêm hồ sơ</h4>
-                        <ol class="breadcrumb p-0">
-                            <li>
-                                <a href="#">Uplon</a>
-                            </li>
-                            <li>
-                                <a href="#">Pages</a>
-                            </li>
-                            <li class="active">
-                                Thêm hồ sơ
-                            </li>
-                        </ol>
+                        <h4 class="page-title"> {{ $page_title }} </h4>
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
             <!-- end row -->
-            <div class="row">
+            <div class="row" style="height: 100%">
                 <div class="col-xs-12">
                     <div class="card-box">
 
                         <form action="{{ route('can-bo.store') }}" method="POST" role="form">
                             @csrf
-                            <meta name="_token" content="{!! csrf_token() !!}" />
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h4 class="header-title m-t-0 pull-left">Thêm đội công tác</h4>
-                                </div>
-                            </div>
-
                             <div class="row m-t-20">
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                 </div>
@@ -108,40 +85,12 @@
                                         </select>
                                     </fieldset>
                                     
-                                    @if(old('iddonvi'))
-                                        <?php
-                                            $list_doi = $list_doi = DB::table('tbl_donvi_doi')
-                                            ->join('tbl_donvi', 'tbl_donvi.id', '=', 'tbl_donvi_doi.iddonvi')
-                                            ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
-                                            ->where('tbl_donvi.id', old('iddonvi'))
-                                            ->select('tbl_doicongtac.name', 'tbl_donvi_doi.id')
-                                            ->get()->toArray();
-
-                                        ?>
-
-                                        <fieldset class="form-group" >
-                                            <label>Đội<span class="text-danger">*</span></label>
-                                            <select id="doicongtac" name="id_iddonvi_iddoi" class="form-control select2  {{ ($errors->has('id_iddonvi_iddoi')) ? 'has-danger' : '' }}">
-                                                @if($list_doi)
-                                                    @foreach($list_doi as $doi)
-                                                        <option {{ ($doi->id == old('id_iddonvi_iddoi')) ? 'selected' : NULL }} value="{{ $doi->id }}"> {{ $doi->name }} </option>
-                                                    @endforeach
-                                                @else
-                                                    <option value=""> Chọn đội công tác </option>
-                                                @endif
-                                            </select>
-                                        </fieldset>
-
-                                    
-
-                                    @else
-                                        <fieldset class="form-group" >
-                                            <label>Đội<span class="text-danger">*</span></label>
-                                            <select id="doicongtac" name="id_iddonvi_iddoi" class="form-control select2  {{ ($errors->has('id_iddonvi_iddoi')) ? 'has-danger' : '' }}">
-                                                <option value="">Chọn đội công tác</option>
-                                            </select>
-                                        </fieldset>
-                                    @endif
+                                    <fieldset class="form-group" >
+                                        <label>Đội<span class="text-danger">*</span></label>
+                                        <select id="doicongtac" name="id_iddonvi_iddoi" class="form-control select2  {{ ($errors->has('id_iddonvi_iddoi')) ? 'has-danger' : '' }}">
+                                            <option value="">Chọn đội công tác</option>
+                                        </select>
+                                    </fieldset>
                                     
 
                                     <fieldset class="form-group" >

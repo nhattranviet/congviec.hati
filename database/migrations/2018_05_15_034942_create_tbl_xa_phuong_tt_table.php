@@ -13,7 +13,7 @@ class CreateTblXaPhuongTtTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('tbl_xa_phuong_tt', function (Blueprint $table) {
+        Schema::connection('coredb')->create('tbl_xa_phuong_tt', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('idhuyentx');
             $table->string('name');
@@ -31,6 +31,6 @@ class CreateTblXaPhuongTtTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('tbl_xa_phuong_tt');
+        Schema::connection('coredb')->dropIfExists('tbl_xa_phuong_tt');
     }
 }

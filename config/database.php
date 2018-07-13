@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'sqlsrv'),
 
     /*
     |--------------------------------------------------------------------------
@@ -79,7 +79,7 @@ return [
             'prefix' => '',
         ],
 
-        'sqlsrv2' => [
+        'coredb' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_HOST'),
             'port' => env('DB_PORT', '1433'),

@@ -13,7 +13,7 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::connection('sqlsrv2')->create('users', function (Blueprint $table) {
+        Schema::connection('coredb')->create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('username');
             $table->string('password');
@@ -37,6 +37,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::connection('sqlsrv2')->dropIfExists('users');
+        Schema::connection('coredb')->dropIfExists('users');
     }
 }

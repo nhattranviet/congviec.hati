@@ -142,7 +142,7 @@ class TblChucVuSeeder extends Seeder
 			["name" => "Cán bộ"],
 			["name" => "Lao động có thời hạn"],
 		];
-		DB::connection('sqlsrv2')->table('tbl_chucvu')->insert( $data );
+		DB::connection('coredb')->table('tbl_chucvu')->insert( $data );
 	}
 }
 
@@ -169,7 +169,7 @@ class TblcapbacSeeder extends Seeder
 			["name" => "Đại tướng"],
 			["name" => "Khác"],
 		];
-		DB::connection('sqlsrv2')->table('tbl_capbac')->insert( $data );
+		DB::connection('coredb')->table('tbl_capbac')->insert( $data );
 	}
 }
 
@@ -214,7 +214,7 @@ class TbltrinhdohocvanSeeder extends Seeder
 			["name" => "10/10"],
 			["name" => "Khác"],
 		];
-		DB::connection('sqlsrv2')->table('tbl_trinhdohocvan')->insert( $data );
+		DB::connection('coredb')->table('tbl_trinhdohocvan')->insert( $data );
 	}
 }
 
@@ -233,7 +233,7 @@ class TbltongiaoSeeder extends Seeder
 			["name" => "Hoà Hảo"],
 			["name" => "Tôn giáo khác"],
 		];
-			DB::connection('sqlsrv2')->table('tbl_tongiao')->insert( $data );
+			DB::connection('coredb')->table('tbl_tongiao')->insert( $data );
 	}
 }
 
@@ -255,7 +255,7 @@ class TblnghenghiepSeeder extends Seeder
 			["name" => "Lâm nghiệp"],
 			["name" => "Ngư nghiệp"],
 		];
-			DB::connection('sqlsrv2')->table('tbl_nghenghiep')->insert( $data );
+			DB::connection('coredb')->table('tbl_nghenghiep')->insert( $data );
 	}
 }
 
@@ -321,7 +321,7 @@ class TbldantocSeeder extends Seeder
 			["name" => "Rơ-măm"],
 			["name" => "Dân tộc khác"],
 		];
-			DB::connection('sqlsrv2')->table('tbl_dantoc')->insert( $data );
+			DB::connection('coredb')->table('tbl_dantoc')->insert( $data );
 	}
 }
 
@@ -339,7 +339,7 @@ class TblnhomquyenSeeder extends Seeder
 			["name" => "Khách"],
 			["name" => "Administrator"],
 		];
-			DB::connection('sqlsrv2')->table('tbl_nhomquyen')->insert( $data );
+			DB::connection('coredb')->table('tbl_nhomquyen')->insert( $data );
 	}
 }
 
@@ -395,7 +395,7 @@ class TbldonviSeeder extends Seeder
 			["kyhieu" => "CA Huyện Vũ Quang", "name" => "CA Huyện Vũ Quang", "loaidonvi" => "huyentptx"],
 			["kyhieu" => "CA Huyện Nghi Xuân", "name" => "CA Huyện Nghi Xuân", "loaidonvi" => "huyentptx"],
 		];
-			DB::connection('sqlsrv2')->table('tbl_donvi')->insert( $data );
+			DB::connection('coredb')->table('tbl_donvi')->insert( $data );
 	}
 }
 
@@ -429,8 +429,11 @@ class TbldoicongtacSeeder extends Seeder
 			["name" => "Văn thư - Tổng hợp", "loaidoi" => "doi_phongban"],
 			["name" => "Công an xã Thạch Trung", "loaidoi" => "conganxaphuong"],
 			["name" => "Công an phường Trần Phú", "loaidoi" => "doi_phongban"],
+			["name" => "Đội Thanh Tra", "loaidoi" => "doi_phongban"],
+			["name" => "Đội điều tra và Thẩm định tố tụng", "loaidoi" => "doi_phongban"],
+			["name" => "Trực ban PC44", "loaidoi" => "doi_phongban"],
 		];
-			DB::connection('sqlsrv2')->table('tbl_doicongtac')->insert( $data );
+			DB::connection('coredb')->table('tbl_doicongtac')->insert( $data );
 	}
 }
 
