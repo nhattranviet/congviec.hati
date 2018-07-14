@@ -20,7 +20,23 @@ class CanboController extends Controller
 
     public function index(Request $request)
     {
+        $arrWhere = array();
+        if ($request->hoten) {
+            $arrWhere[] = array('hoten', 'LIKE', '%'.$request->hoten.'%');
+        }
 
+        if ($request->email) {
+            $arrWhere[] = array('email', 'LIKE', '%'.$request->email.'%');
+        }
+
+        if ($request->iddonvi && $request->iddonvi != 'all') {
+            $arrWhere[] = array('tbl_donvi.id', '=', $request->iddonvi);
+        }
+
+        if ($request->iddoicongtac && $request->iddoicongtac != 'all') {
+            $arrWhere[] = array('tbl_donvi_doi.id', '=', $request->iddoicongtac);
+        }
+        // print_r( $arrWhere ); die;
         $data['list_canbo'] = DB::connection('coredb')->table('tbl_canbo')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
@@ -29,6 +45,7 @@ class CanboController extends Controller
         ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
         ->join('tbl_doicongtac', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id')
         ->join('tbl_donvi', 'tbl_donvi_doi.iddonvi', '=', 'tbl_donvi.id')
+        ->where( $arrWhere )
         ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu', 'email', 'tbl_donvi.name as tendonvi', 'tbl_doicongtac.name as tendoi', 'tbl_nhomquyen.name as tennhomquyen', 'users.active')
         ->orderBy('tbl_canbo.id', 'desc')
         ->paginate(2);
@@ -147,26 +164,31 @@ class CanboController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($idcanbo)
     {
-        $canbo_info = DB::connection('coredb')->table('tbl_canbo')
+        $data['page_title'] = "Sửa thông tin cán bộ";
+        $data['canbo_info'] = DB::connection('coredb')->table('tbl_canbo')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
         ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
-        ->select('tbl_canbo.id', 'hoten', 'idcapbac', 'idchucvu', 'email', 'id_iddonvi_iddoi', 'idnhomquyen', 'iddonvi', 'iddoi', 'tbl_donvi_doi.id as id_iddonvi_iddoi', 'active', 'users.id as userid', 'tbl_connguoi.id as idconnguoi') 
-        ->where('tbl_canbo.id', $id)->first();
+        ->select('tbl_canbo.id as idcanbo', 'hoten', 'idcapbac', 'idchucvu', 'email', 'id_iddonvi_iddoi', 'idnhomquyen', 'iddonvi', 'iddoi', 'tbl_donvi_doi.id as id_iddonvi_iddoi', 'active', 'users.id as userid', 'tbl_connguoi.id as idconnguoi') 
+        ->where('tbl_canbo.id', $idcanbo)->first();
 
-        $list_donvi = DB::connection('coredb')->table('tbl_donvi')->get();
-        $list_capbac = DB::connection('coredb')->table('tbl_capbac')->get();
-        $list_chucvu = DB::connection('coredb')->table('tbl_chucvu')->get();
-        $list_nhomquyen = DB::connection('coredb')->table('tbl_nhomquyen')->get();
+        $data['list_donvi'] = DB::connection('coredb')->table('tbl_donvi')->get();
+        $data['list_capbac'] = DB::connection('coredb')->table('tbl_capbac')->get();
+        $data['list_chucvu'] = DB::connection('coredb')->table('tbl_chucvu')->get();
+        $data['list_nhomquyen'] = DB::connection('coredb')->table('tbl_nhomquyen')->get();
 
-        $list_doi = DB::connection('coredb')->table('tbl_doicongtac')
+        $data['list_doicongtac'] = DB::connection('coredb')->table('tbl_doicongtac')
         ->join('tbl_donvi_doi', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id')
         ->select('name', 'tbl_donvi_doi.id')
-        ->where('iddonvi', $canbo_info->iddonvi)->get();
-        // print_r($canbo_info); die;
-        return view( 'cahtcore.canbo.edit', compact( 'canbo_info', 'list_donvi', 'list_capbac', 'list_chucvu', 'list_nhomquyen', 'list_doi' ) );
+        ->where('iddonvi', $data['canbo_info']->iddonvi)
+        ->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')
+        ->get();
+
+        $data['list_doiquanly'] = DB::connection('coredb')->table('tbl_lanhdaodonvi_quanlydoi')->where('idcanbo', $idcanbo)->pluck('id_iddonvi_iddoi')->toArray();
+        // print_r( $data['list_doiquanly'] ); die;
+        return view( 'cahtcore.canbo.edit', $data );
     }
 
     /**

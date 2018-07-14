@@ -71,8 +71,8 @@
                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                             <fieldset class="form-group">
                                 <label>Đơn vị</label>
-                                <select id="donvi" name="iddonvi" class="form-control select2">
-                                    <option value="all">Tất cả</option>
+                                <select id="donvi" name="iddonvi" class="form-control app_select2">
+                                    <option value="">Tất cả</option>
                                     @foreach($list_donvi as $donvi)
                                     <option value="{{ $donvi->id }}">{{ $donvi->name }} ({{ $donvi->kyhieu }})</option>
                                     @endforeach
@@ -83,8 +83,8 @@
                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                             <fieldset class="form-group">
                                 <label>Đội công tác</label>
-                                <select name="iddonvi" class="form-control select2 doicongtac">
-                                    <option value="all">Tất cả</option>
+                                <select name="iddoicongtac" class="form-control app_select2 doicongtac">
+                                    <option value="">Tất cả</option>
                                 </select>
                             </fieldset>
                         </div>

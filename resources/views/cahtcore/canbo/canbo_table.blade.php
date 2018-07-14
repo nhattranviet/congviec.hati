@@ -28,7 +28,8 @@
             <td class="center"> {!! ($canbo->active == 1) ? '<i style="color:darkgreen" class="zmdi zmdi-badge-check"></i>' : '<i style="color:crimson" class="zmdi zmdi-block-alt"></i>' !!}  </td>
             <td class="center">
                 <div class="button-list" style="max-width: 200px; margin: auto;">
-                    <a href="{{ route('don-vi-get-set-doi', $canbo->id) }}" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Thiết lập đội trong đơn vị"> <i style="color: #D85C0C;" class="zmdi zmdi-tv-list"></i> </a>
+                    <a href="{{ route('can-bo.edit', $canbo->id) }}" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa thông tin cán bộ"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
+                    {{-- <a href="{{ route('don-vi-get-set-doi', $canbo->id) }}" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Thiết lập đội trong đơn vị"> <i style="color: #D85C0C;" class="zmdi zmdi-tv-list"></i> </a> --}}
                 </div>
             </td>
         </tr>

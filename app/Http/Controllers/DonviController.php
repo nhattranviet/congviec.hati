@@ -238,7 +238,7 @@ class DonviController extends Controller
         
     }
 
-    public function getDoi($iddonvi)
+    public function getDoi($iddonvi = NULL)
     {
         $data['list_doi'] = DB::connection('coredb')->table('tbl_donvi_doi')
                 ->join('tbl_donvi', 'tbl_donvi.id', '=', 'tbl_donvi_doi.iddonvi')

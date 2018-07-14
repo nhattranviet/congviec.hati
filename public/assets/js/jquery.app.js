@@ -403,10 +403,8 @@
             
             $("#donvi").on('change', function () {
                 var donvi = $('#donvi').val();
-                if (donvi) {
-                    var url = bare_url + '/ajax-get-doi/' + donvi;
-                    ajax_get_data_to_html_json(url, '.doicongtac');
-                }
+                var url = bare_url + '/ajax-get-doi/' + donvi;
+                ajax_get_data_to_html_json(url, '.doicongtac');
             });
         };
 
@@ -642,6 +640,8 @@ function ajax_get_data_to_html_json(url, attr_result)
         success: function (data) {
             if ($.isEmptyObject(data.error)) {
                 if (attr_result) {
+                    $(attr_result).empty();
+                    $(attr_result).val(null).trigger("change");
                     $(attr_result).html(data.html);
                 }
 
