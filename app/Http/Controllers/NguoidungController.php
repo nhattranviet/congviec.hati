@@ -21,7 +21,6 @@ class NguoidungController extends Controller
         'password.max' => 'Password phải ít hơn 20 ký tự',
 	);
 
-
     public function getLogin()
     {
         if(Auth::check())

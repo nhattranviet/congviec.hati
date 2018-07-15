@@ -4,6 +4,7 @@ use App\Http\Controllers\TaiKhoanController;
 use App\NhanKhau;
 use App\Hokhau;
 use App\Brief;
+use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -122,15 +123,84 @@ Route::get('/can-bo/create', 'CanboController@create')->name('get-create-can-bo'
 Route::post('/can-bo/create', 'CanboController@store')->name('can-bo.store');
 Route::get('/can-bo/{idcanbo}/edit', 'CanboController@edit')->name('can-bo.edit');
 Route::post('/can-bo/{idcanbo}/update', 'CanboController@update')->name('can-bo.update');
+Route::get('/can-bo/add_old_data', 'CanboController@add_old_data');
 //-------------------END CÁN BỘ-----------------------
 
 Route::get('test', function () {
-    $date1 = '2014-06-08';
-    $date2 = '2012-05-09';
-    if ($date1 > $date2)
-    echo "$date1 gần đây hơn so vơi $date2";
-    else
-    echo "$date2 gần đây hơn so vơi $date1";
+    die;
+    $data = [
+        "Trần Hải Trung, 10, 4, 11",
+        "Phạm Viết Hùng, 10, 3, 11",
+        "Nguyễn Thị Kim Chung, 9, 3, 11",
+        "Nguyễn Hữu Chí, 8, 3, 11",
+        "Phan Thị Huyền Trang, 7, 2, 12",
+        "Nguyễn Văn Khánh, 7, 13, 13",
+        "Ngô Đức Thìn, 6, 13, 12",
+        "Nguyễn Thị Hải Yến, 4, 13, 12",
+        "Lê Thái Hà, 9, 2, 13",
+        "Lê Ngọc Hưng, 6, 1, 14",
+        "Thái Văn Trung, 5, 13, 13",
+        "Trần Danh Thiết, 7, 13, 14",
+        "Phan Mạnh, 7, 13, 13",
+        "Trần Văn Huân, 7, 13, 13",
+        "Nguyễn Ngọc Mai, 5, 13, 13",
+        "Đậu Duy Hưng, 8, 2, 14",
+        "Nguyễn Xuân Thanh, 6, 1, 13",
+        "Nguyễn Văn Vũ, 5, 13, 14",
+        "Nguyễn Bảo Trung, 4, 13, 14",
+        "Lê Thanh Bình, 6, 13, 14",
+        "Nguyễn Văn Nam, 6, 13, 14",
+        "Nguyễn Quốc Tiến, 5, 13, 12",
+        "Đặng Văn Kỷ, 5, 13, 14",
+        "Bùi Thị Trâm, 4, 13, 14",
+        "Lưu Thị Hoài Phương, 6, 13, 14",
+        "Hà Huy Phong, 4, 13, 13",
+        "Trực Ban, 4, 2, 15",
+    ];
+
+    //Họ ten, cap bac, chuc vu, id_iddonvi_iddoi
+    foreach ($data as $value)
+    {
+        $a = explode( ',', $value );
+        
+        $idconnguoi = DB::connection('coredb')->table('tbl_connguoi')->insertGetId(
+            [
+                'hoten' => $a[0],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
+        );
+
+        $idcanbo = DB::connection('coredb')->table('tbl_canbo')->insertGetId(
+            [
+                'idconnguoi' => $idconnguoi,
+                'idcapbac' => $a[1],
+                'idchucvu' => $a[2],
+                'id_iddonvi_iddoi' => $a[3],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
+        );
+
+        $username = $this->vn_str_filter($a[0]);
+        $check = DB::connection('coredb')->table('users')->where('username', $username)->count();
+        $username = ( $check == 0 ) ? $username : $username.'_'.$idcanbo ;
+
+        $iduser = DB::connection('coredb')->table('users')->insertGetId(
+            [
+                'idcanbo' => $idcanbo,
+                'username' => $username,
+                'email' => $username.'@hati.bca',
+                'password' => Hash::make('123456'),
+                'idnhomquyen' => 3,
+                'active' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
+        );
+    }
+    
+    // print_r($a);
 });
 
 

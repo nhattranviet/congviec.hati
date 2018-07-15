@@ -30,6 +30,9 @@
         margin: 0px 0px;
         padding: 0;
     }
+    .form-group{
+        display:block;
+    }
 </style>
 @endsection
 
@@ -52,19 +55,20 @@
             <div class="col-xs-12">
             <div class="card-box table-responsive">
                 <form id="tim-kiem-hoso" action="{{ route('can-bo.index') }}" method="GET" role="form" idresult="ajax_table">
+                   
                     <div class="row">
                         @csrf
-                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                        <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 col-xl-2">
                             <fieldset class="form-group">
                                 <label for="hoten">Họ tên</label>
-                                <input type="text" name="hoten" parsley-trigger="change" placeholder="Nhập họ tên để tìm kiếm" class="form-control" id="hoten" value="">
+                                <input type="text" name="hoten" parsley-trigger="change" placeholder="Nhập họ tên để lọc" class="form-control" id="hoten" value="">
                             </fieldset>
                         </div>
 
                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                             <fieldset class="form-group">
                                 <label for="hoten">Email</label>
-                                <input type="text" name="email" parsley-trigger="change" placeholder="Nhập email để tìm kiếm" class="form-control" id="email" value="">
+                                <input type="text" name="email" parsley-trigger="change" placeholder="Nhập email để lọc" class="form-control" id="email" value="">
                             </fieldset>
                         </div>
 
@@ -92,7 +96,9 @@
                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1">
                             <button style="margin-top: 2em;" id="submitBtn" class="btn btn-default" type="submit"> <i class="fa fa-search"></i></button>
                         </div>
+                    </div>
 
+                    <div class="row">
                         <div class="col-xs-12 col-sm-12 loading" id="ajax_table" style="position: relative;">
                             @include('cahtcore.canbo.canbo_table')
                         </div>

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Validation\Rule;
+// use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Validation\Rule;
 use Hash;
 use Validator;
 use Carbon\Carbon;
@@ -16,6 +17,10 @@ class CanboController extends Controller
         'id_iddonvi_iddoi.required' => 'Đội công tác không được để trống',
         'idchucvu.required' => 'Chức vụ không được để trống',
         'idnhomquyen.required' => 'Nhóm quyền không được để trống',
+        'email.required' => 'Email không được để trống',
+        'email.unique' => 'Email này đã tồn tại trong hệ thống',
+        'username.required' => 'Username không được để trống',
+        'username.unique' => 'Username này đã tồn tại trong hệ thống',
     ];
 
     public function index(Request $request)
@@ -171,7 +176,7 @@ class CanboController extends Controller
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
         ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
-        ->select('tbl_canbo.id as idcanbo', 'hoten', 'idcapbac', 'idchucvu', 'email', 'id_iddonvi_iddoi', 'idnhomquyen', 'iddonvi', 'iddoi', 'tbl_donvi_doi.id as id_iddonvi_iddoi', 'active', 'users.id as userid', 'tbl_connguoi.id as idconnguoi') 
+        ->select('username', 'tbl_canbo.id as idcanbo', 'hoten', 'idcapbac', 'idchucvu', 'email', 'id_iddonvi_iddoi', 'idnhomquyen', 'iddonvi', 'iddoi', 'tbl_donvi_doi.id as id_iddonvi_iddoi', 'active', 'users.id as userid', 'tbl_connguoi.id as idconnguoi') 
         ->where('tbl_canbo.id', $idcanbo)->first();
 
         $data['list_donvi'] = DB::connection('coredb')->table('tbl_donvi')->get();
@@ -200,24 +205,19 @@ class CanboController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),
-            [
-                'hoten' => 'required',
-                'id_iddonvi_iddoi' => 'required',
-                'email' => 'unique:users,email,'.$request->userid,
-                'idchucvu' => 'required',
-                'idnhomquyen' => 'required',
-            ],
-            [
-                'hoten.required' => 'Họ tên không được trống',
-                'email.required' => 'Email không được trống',
-                'email.email' => 'Email không đúng định dạng',
-                'id_iddonvi_iddoi.required' => 'Đội công tác không được trống',
-                'idchucvu.required' => 'Chức vụ không được trống',
-                'idnhomquyen.required' => 'Nhóm quyền không được trống',
-            ]
-        )->validate();
+        $validator = Validator::make($request->all(), [
+            'hoten' => 'required',
+            'id_iddonvi_iddoi' => 'required',
+            'idchucvu' => 'required',
+            'idnhomquyen' => 'required',
+            'email' => 'required|unique:coredb.users,email,' . $request->userid,
+            'username' => 'required|unique:coredb.users,username,'.$request->userid,
+        ], $this->messages);
 
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
+        
         $idconnguoi = DB::connection('coredb')->table('tbl_connguoi')->where('id', $request->idconnguoi)->update(
             [
                 'hoten' => $request->hoten,
@@ -237,13 +237,51 @@ class CanboController extends Controller
         $iduser = DB::connection('coredb')->table('users')->where('id', $request->userid)->update(
             [
                 'email' => $request->email,
+                'username' => $request->username,
                 'idnhomquyen' => $request->idnhomquyen,
                 'active' => ($request->active) ? 1 : 0,
                 'updated_at' => Carbon::now()
             ]
         );
 
-        return redirect()->route('can-bo.index');
+        $listdoi_post = ($request->quanlydoi) ? $request->quanlydoi : array();
+        $listdoi_db = DB::connection('coredb')->table('tbl_lanhdaodonvi_quanlydoi')->where('idcanbo', $id)->pluck('id_iddonvi_iddoi')->toArray();
+        
+        $list_doi_add = array_diff($listdoi_post, $listdoi_db);
+        $list_doi_xoa = array_diff($listdoi_db, $listdoi_post);
+
+        
+        if( ! empty($list_doi_add ) )
+        {
+            $data_lanhdao_doi = array();
+            foreach ($list_doi_add as $doi)
+            {
+                $data_lanhdao_doi[] = array(
+                    'idcanbo' => $id,
+                    'id_iddonvi_iddoi' => $doi,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                );
+            }
+            DB::connection('coredb')->table('tbl_lanhdaodonvi_quanlydoi')->insert( $data_lanhdao_doi );
+
+        }
+
+        if( ! empty( $list_doi_xoa ) )
+        {
+            foreach ($list_doi_xoa as $doi)
+            {
+                DB::connection('coredb')
+                ->table('tbl_lanhdaodonvi_quanlydoi')
+                ->where(array(
+                    ['idcanbo', '=', $id],
+                    ['id_iddonvi_iddoi', '=', $doi]
+                ))
+                ->delete();
+            }
+        }
+
+        return response()->json(['success' => 'Cập nhật cán bộ thành công ', 'url' => route('can-bo.index')]);
     }
 
     /**
@@ -255,6 +293,81 @@ class CanboController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function add_old_data()
+    {
+        $data = [
+            "Trần Hải Trung, 10, 4, 11",
+            "Phạm Viết Hùng, 10, 3, 11",
+            "Nguyễn Thị Kim Chung, 9, 3, 11",
+            "Nguyễn Hữu Chí, 8, 3, 11",
+            "Phan Thị Huyền Trang, 7, 2, 12",
+            "Nguyễn Văn Khánh, 7, 13, 13",
+            "Ngô Đức Thìn, 6, 13, 12",
+            "Nguyễn Thị Hải Yến, 4, 13, 12",
+            "Lê Thái Hà, 9, 2, 13",
+            "Lê Ngọc Hưng, 6, 1, 14",
+            "Thái Văn Trung, 5, 13, 13",
+            "Trần Danh Thiết, 7, 13, 14",
+            "Phan Mạnh, 7, 13, 13",
+            "Trần Văn Huân, 7, 13, 13",
+            "Nguyễn Ngọc Mai, 5, 13, 13",
+            "Đậu Duy Hưng, 8, 2, 14",
+            "Nguyễn Xuân Thanh, 6, 1, 13",
+            "Nguyễn Văn Vũ, 5, 13, 14",
+            "Nguyễn Bảo Trung, 4, 13, 14",
+            "Lê Thanh Bình, 6, 13, 14",
+            "Nguyễn Văn Nam, 6, 13, 14",
+            "Nguyễn Quốc Tiến, 5, 13, 12",
+            "Đặng Văn Kỷ, 5, 13, 14",
+            "Bùi Thị Trâm, 4, 13, 14",
+            "Lưu Thị Hoài Phương, 6, 13, 14",
+            "Hà Huy Phong, 4, 13, 13",
+            "Trực Ban, 4, 2, 15",
+        ];
+
+        //Họ ten, cap bac, chuc vu, id_iddonvi_iddoi
+        foreach ($data as $value)
+        {
+            $a = explode( ',', $value );
+            
+            $idconnguoi = DB::connection('coredb')->table('tbl_connguoi')->insertGetId(
+                [
+                    'hoten' => $a[0],
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]
+            );
+
+            $idcanbo = DB::connection('coredb')->table('tbl_canbo')->insertGetId(
+                [
+                    'idconnguoi' => $idconnguoi,
+                    'idcapbac' => $a[1],
+                    'idchucvu' => $a[2],
+                    'id_iddonvi_iddoi' => $a[3],
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]
+            );
+
+            $username = $this->vn_str_filter($a[0]);
+            $check = DB::connection('coredb')->table('users')->where('username', $username)->count();
+            $username = ( $check == 0 ) ? $username : $username.'_'.$idcanbo ;
+
+            $iduser = DB::connection('coredb')->table('users')->insertGetId(
+                [
+                    'idcanbo' => $idcanbo,
+                    'username' => $username,
+                    'email' => $username.'@hati.bca',
+                    'password' => Hash::make('123456'),
+                    'idnhomquyen' => 3,
+                    'active' => 1,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]
+            );
+        }
     }
 
     public function vn_str_filter ($str = 'Đây là dòng để test'){
