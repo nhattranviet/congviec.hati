@@ -90,15 +90,7 @@
                                             
                                         </div>
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
-                                            <fieldset class="form-group">
-                                                <label class="control-label">Lãnh đạo xử lý</label>
-                                                <select name="canbonhan" class="form-control select2">
-                                                    <option  value="">Chọn lãnh đạo xử lý</option>
-                                                    @foreach($list_lanhdao as $lanhdao)
-                                                    <option value="{{ $lanhdao->idcanbo }}">{{ $lanhdao->hoten }} ({{ $lanhdao->tenchucvu }})</option>
-                                                    @endforeach
-                                                </select>
-                                            </fieldset>
+                                            
                                             <fieldset class="form-group">
                                                 <label for="datepicker">Hạn xử lý công việc <span class="text-danger">*</span></label>
                                                 <div>
@@ -116,6 +108,16 @@
                                                         <span class="input-group-addon bg-custom b-0"><i class="fa fa-user"></i></span>
                                                     </div><!-- input-group -->
                                                 </div>
+                                            </fieldset>
+
+                                            <fieldset class="form-group" >
+                                                <label>Lãnh đạo duyệt<span class="text-danger">*</span></label>
+                                                <select name="canbonhan" class="form-control select2">
+                                                    <option value="">Chọn lãnh đạo duyệt ban đầu</option>
+                                                    @foreach($list_lanhdao as $lanhdao)
+                                                    <option value="{{ $lanhdao->id }}">{{ $lanhdao->hoten }} - {{ $lanhdao->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </fieldset>
                                         </div>
 

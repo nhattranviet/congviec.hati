@@ -13,7 +13,7 @@ class CreateTblLogTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_log', function (Blueprint $table) {
+        Schema::create('tbl_log', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('thoigian');
             $table->integer('idtaikhoan');
@@ -33,6 +33,6 @@ class CreateTblLogTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_log');
+        Schema::dropIfExists('tbl_log');
     }
 }

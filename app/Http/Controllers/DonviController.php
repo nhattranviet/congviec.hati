@@ -16,7 +16,7 @@ class DonviController extends Controller
     {
         if($request->keyword)
         {
-            $data['list_donvi'] = DB::connection('coredb')->table('tbl_donvi')
+            $data['list_donvi'] = DB::table('tbl_donvi')
             ->where('name', 'LIKE', '%'.$request->keyword.'%')
             ->orWhere('kyhieu', 'LIKE', '%'.$request->keyword.'%')
             ->orderBy('id', 'ASC')
@@ -24,7 +24,7 @@ class DonviController extends Controller
         }
         else
         {
-            $data['list_donvi'] = DB::connection('coredb')->table('tbl_donvi')->orderBy('id', 'ASC')->paginate(12);
+            $data['list_donvi'] = DB::table('tbl_donvi')->orderBy('id', 'ASC')->paginate(12);
         }
 
         if( $request->ajax() )
@@ -66,7 +66,7 @@ class DonviController extends Controller
                 'loaidonvi.required' => 'Loại đơn vị không được trống',
             ]
         );
-        $id = DB::connection('coredb')->table('tbl_donvi')->insertGetId(
+        $id = DB::table('tbl_donvi')->insertGetId(
             [
                 'name' => $request->name,
                 'kyhieu' => $request->kyhieu,
@@ -110,7 +110,7 @@ class DonviController extends Controller
      */
     public function edit($id)
     {
-        $data['donvi'] = DB::connection('coredb')->table('tbl_donvi')->where('id', $id)->first();
+        $data['donvi'] = DB::table('tbl_donvi')->where('id', $id)->first();
         return view('cahtcore.donvi.edit', compact('donvi'));
     }
 
@@ -133,7 +133,7 @@ class DonviController extends Controller
                 'loaidonvi.required' => 'Loại đơn vị không được trống',
             ]
         );
-        $id = DB::connection('coredb')->table('tbl_donvi')->where('id', $id)->update(
+        $id = DB::table('tbl_donvi')->where('id', $id)->update(
             [
                 'name' => $request->name,
                 'kyhieu' => $request->kyhieu,
@@ -165,7 +165,7 @@ class DonviController extends Controller
      */
     public function destroy($id)
     {
-        $check = DB::connection('coredb')->table('tbl_donvi')->where('id', $id)->delete();
+        $check = DB::table('tbl_donvi')->where('id', $id)->delete();
         if($check)
         {
             $notification = array(
@@ -184,10 +184,10 @@ class DonviController extends Controller
 
     public function setdoi( $iddonvi )
     {
-        $data['donvi'] = DB::connection('coredb')->table('tbl_donvi')->where('id', $iddonvi)->first();
+        $data['donvi'] = DB::table('tbl_donvi')->where('id', $iddonvi)->first();
         $data['page_name'] = 'Thiết lập đội cho đơn vị';
-        $data['list_doi'] = DB::connection('coredb')->table('tbl_doicongtac')->get()->toArray();
-        $data['list_doi_currents'] = DB::connection('coredb')->table('tbl_donvi_doi')->where('iddonvi', $iddonvi)->pluck('iddoi')->toArray();
+        $data['list_doi'] = DB::table('tbl_doicongtac')->get()->toArray();
+        $data['list_doi_currents'] = DB::table('tbl_donvi_doi')->where('iddonvi', $iddonvi)->pluck('iddoi')->toArray();
         // print_r( $data['donvi'] ); die;
         return view('cahtcore.donvi.set_doi', $data);
     }
@@ -204,7 +204,7 @@ class DonviController extends Controller
         );
         
         $listdoi_post = $request->list_doi_donvi;
-        $listdoi_db = DB::connection('coredb')->table('tbl_donvi_doi')->where('iddonvi', $iddonvi)->pluck('iddoi')->toArray();
+        $listdoi_db = DB::table('tbl_donvi_doi')->where('iddonvi', $iddonvi)->pluck('iddoi')->toArray();
 
         $list_doi_add = array_diff($listdoi_post, $listdoi_db);
         $list_doi_xoa = array_diff($listdoi_db, $listdoi_post);
@@ -222,7 +222,7 @@ class DonviController extends Controller
                 );
             }
 
-            $id_insert = DB::connection('coredb')->table('tbl_donvi_doi')->insert($data_add);
+            $id_insert = DB::table('tbl_donvi_doi')->insert($data_add);
             $str = ($id_insert) ? 'Thêm đội thành công' : 'Thêm đội không thành công';
         }
 
@@ -230,7 +230,7 @@ class DonviController extends Controller
         {
             foreach ($list_doi_xoa as $doi)
             {
-                DB::connection('coredb')->table('tbl_donvi_doi')->where(['iddoi' => $doi, 'iddonvi' => $iddonvi])->delete();
+                DB::table('tbl_donvi_doi')->where(['iddoi' => $doi, 'iddonvi' => $iddonvi])->delete();
             }
         }
         
@@ -240,7 +240,7 @@ class DonviController extends Controller
 
     public function getDoi($iddonvi = NULL)
     {
-        $data['list_doi'] = DB::connection('coredb')->table('tbl_donvi_doi')
+        $data['list_doi'] = DB::table('tbl_donvi_doi')
                 ->join('tbl_donvi', 'tbl_donvi.id', '=', 'tbl_donvi_doi.iddonvi')
                 ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
                 ->where('tbl_donvi.id', $iddonvi)

@@ -13,7 +13,7 @@ class CreateTblDonviDoiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_donvi_doi', function (Blueprint $table) {
+        Schema::create('tbl_donvi_doi', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('iddonvi');
             $table->integer('iddoi');
@@ -31,6 +31,6 @@ class CreateTblDonviDoiTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_donvi_doi');
+        Schema::dropIfExists('tbl_donvi_doi');
     }
 }

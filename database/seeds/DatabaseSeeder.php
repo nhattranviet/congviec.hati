@@ -143,7 +143,7 @@ class TblChucVuSeeder extends Seeder
 			["name" => "Cán bộ"],
 			["name" => "Lao động có thời hạn"],
 		];
-		DB::connection('coredb')->table('tbl_chucvu')->insert( $data );
+		DB::table('tbl_chucvu')->insert( $data );
 	}
 }
 
@@ -170,7 +170,7 @@ class TblcapbacSeeder extends Seeder
 			["name" => "Đại tướng"],
 			["name" => "Khác"],
 		];
-		DB::connection('coredb')->table('tbl_capbac')->insert( $data );
+		DB::table('tbl_capbac')->insert( $data );
 	}
 }
 
@@ -215,7 +215,7 @@ class TbltrinhdohocvanSeeder extends Seeder
 			["name" => "10/10"],
 			["name" => "Khác"],
 		];
-		DB::connection('coredb')->table('tbl_trinhdohocvan')->insert( $data );
+		DB::table('tbl_trinhdohocvan')->insert( $data );
 	}
 }
 
@@ -234,7 +234,7 @@ class TbltongiaoSeeder extends Seeder
 			["name" => "Hoà Hảo"],
 			["name" => "Tôn giáo khác"],
 		];
-			DB::connection('coredb')->table('tbl_tongiao')->insert( $data );
+			DB::table('tbl_tongiao')->insert( $data );
 	}
 }
 
@@ -256,7 +256,7 @@ class TblnghenghiepSeeder extends Seeder
 			["name" => "Lâm nghiệp"],
 			["name" => "Ngư nghiệp"],
 		];
-			DB::connection('coredb')->table('tbl_nghenghiep')->insert( $data );
+			DB::table('tbl_nghenghiep')->insert( $data );
 	}
 }
 
@@ -322,7 +322,7 @@ class TbldantocSeeder extends Seeder
 			["name" => "Rơ-măm"],
 			["name" => "Dân tộc khác"],
 		];
-			DB::connection('coredb')->table('tbl_dantoc')->insert( $data );
+			DB::table('tbl_dantoc')->insert( $data );
 	}
 }
 
@@ -340,7 +340,7 @@ class TblnhomquyenSeeder extends Seeder
 			["name" => "Khách"],
 			["name" => "Administrator"],
 		];
-			DB::connection('coredb')->table('tbl_nhomquyen')->insert( $data );
+			DB::table('tbl_nhomquyen')->insert( $data );
 	}
 }
 
@@ -396,7 +396,7 @@ class TbldonviSeeder extends Seeder
 			["kyhieu" => "CA Huyện Vũ Quang", "name" => "CA Huyện Vũ Quang", "loaidonvi" => "huyentptx"],
 			["kyhieu" => "CA Huyện Nghi Xuân", "name" => "CA Huyện Nghi Xuân", "loaidonvi" => "huyentptx"],
 		];
-			DB::connection('coredb')->table('tbl_donvi')->insert( $data );
+			DB::table('tbl_donvi')->insert( $data );
 	}
 }
 
@@ -434,7 +434,7 @@ class TbldoicongtacSeeder extends Seeder
 			["name" => "Đội điều tra và Thẩm định tố tụng", "loaidoi" => "doi_phongban"],
 			["name" => "Trực ban PC44", "loaidoi" => "doi_phongban"],
 		];
-			DB::connection('coredb')->table('tbl_doicongtac')->insert( $data );
+			DB::table('tbl_doicongtac')->insert( $data );
 	}
 }
 
@@ -472,7 +472,7 @@ class TblDonviDoicongtacSeeder extends Seeder
 			['iddonvi' => 33, 'iddoi' => 12],
 			['iddonvi' => 33, 'iddoi' => 13],
 		];
-			DB::connection('coredb')->table('tbl_donvi_doi')->insert( $data );
+			DB::table('tbl_donvi_doi')->insert( $data );
 	}
 }
 

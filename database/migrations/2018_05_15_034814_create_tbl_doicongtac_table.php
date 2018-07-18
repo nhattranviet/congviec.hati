@@ -13,7 +13,7 @@ class CreateTblDoicongtacTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_doicongtac', function (Blueprint $table) {
+        Schema::create('tbl_doicongtac', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('loaidoi')->nullable();
@@ -29,6 +29,6 @@ class CreateTblDoicongtacTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_doicongtac');
+        Schema::dropIfExists('tbl_doicongtac');
     }
 }

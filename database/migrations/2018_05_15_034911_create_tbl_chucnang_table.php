@@ -13,7 +13,7 @@ class CreateTblChucnangTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_chucnang', function (Blueprint $table) {
+        Schema::create('tbl_chucnang', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('url');
@@ -33,6 +33,6 @@ class CreateTblChucnangTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_chucnang');
+        Schema::dropIfExists('tbl_chucnang');
     }
 }

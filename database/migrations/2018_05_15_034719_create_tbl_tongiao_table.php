@@ -13,7 +13,7 @@ class CreateTblTongiaoTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_tongiao', function (Blueprint $table) {
+        Schema::create('tbl_tongiao', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateTblTongiaoTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_tongiao');
+        Schema::dropIfExists('tbl_tongiao');
     }
 }

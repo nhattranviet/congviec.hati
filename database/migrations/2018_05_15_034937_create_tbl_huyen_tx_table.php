@@ -13,7 +13,7 @@ class CreateTblHuyenTxTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_huyen_tx', function (Blueprint $table) {
+        Schema::create('tbl_huyen_tx', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('idtinhtp');
             $table->string('name');
@@ -32,6 +32,6 @@ class CreateTblHuyenTxTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_huyen_tx');
+        Schema::dropIfExists('tbl_huyen_tx');
     }
 }

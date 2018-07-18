@@ -13,7 +13,7 @@ class CreateTblTrangthaiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_trangthai', function (Blueprint $table) {
+        Schema::create('tbl_trangthai', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateTblTrangthaiTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_trangthai');
+        Schema::dropIfExists('tbl_trangthai');
     }
 }

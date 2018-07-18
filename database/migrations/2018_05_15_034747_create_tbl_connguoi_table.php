@@ -13,7 +13,7 @@ class CreateTblConnguoiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_connguoi', function (Blueprint $table) {
+        Schema::create('tbl_connguoi', function (Blueprint $table) {
             $table->increments('id');
             $table->string('hoten');
             $table->string('tenkhac')->nullable();
@@ -93,6 +93,6 @@ class CreateTblConnguoiTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_connguoi');
+        Schema::dropIfExists('tbl_connguoi');
     }
 }

@@ -17,9 +17,10 @@ class CongviecController extends Controller
         'hancongviec.required' => 'Hạn công việc không được để trống',
         'ghichu.required' => 'Ghi chú, cán bộ nhập công việc không được để trống',
     ];
-    public $curr_donvi = 11;
-    public $curr_idcanbo = 305;
-    public $curr_iddoicongtac = 1;
+    public $curr_donvi = 19;
+    public $curr_idcanbo = 27;
+    public $curr_id_iddonvi_iddoi = 15;
+    public $id_iddonvi_iddoi_lanhdao = 11;
 
     public function __construct()
     {
@@ -68,13 +69,12 @@ class CongviecController extends Controller
     {   //echo $_SESSION['curr_donvi']; die;
         $data['page_name'] = "Thêm mới công việc";
         $data['list_lanhdao'] = DB::table('tbl_canbo')
-        ->join('tbl_nguoi', 'tbl_nguoi.idnguoi', '=', 'tbl_canbo.idnguoi')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
-        ->select('idcanbo', 'hoten', 'tenchucvu')
+        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
         ->where(array(
-            ['iddonvi', '=', $this->curr_donvi]
+            ['id_iddonvi_iddoi', '=', $this->id_iddonvi_iddoi_lanhdao]
         ))
-        ->whereNotIn('idchucvu', [1, 2, 13])
         ->get();
         return view('congviec.create', $data);
     }
@@ -96,15 +96,15 @@ class CongviecController extends Controller
 
         $dataCongViec = array(
             'idcanbo_creater' => $this->curr_idcanbo,
+            'id_iddonvi_iddoi_creater' => $this->curr_iddoicongtac,
             'sotailieu' => $request->sotailieu,
             'trichyeu' => $request->trichyeu,
             'noisoanthao' => $request->noisoanthao,
             'chitiet' => $request->chitiet,
-            'hancongviec' => strtotime($request->hancongviec),
+            'hancongviec' => date('Y-m-d', strtotime($request->hancongviec)),
             'idstatus' => 1,
-            'created' => time(),
-            'iddoi_creater' => $this->curr_iddoicongtac,
-            'iddonvi_creater' => $this->curr_donvi
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         );
         
         $idcongviec = DB::table('tbl_congviec')->insertGetId( $dataCongViec );

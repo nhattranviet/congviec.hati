@@ -155,7 +155,7 @@ Route::get('test', function () {
         "Bùi Thị Trâm, 4, 13, 14",
         "Lưu Thị Hoài Phương, 6, 13, 14",
         "Hà Huy Phong, 4, 13, 13",
-        "Trực Ban, 4, 2, 15",
+        "Trực Ban PC44, 4, 2, 15",
     ];
 
     //Họ ten, cap bac, chuc vu, id_iddonvi_iddoi
@@ -163,7 +163,7 @@ Route::get('test', function () {
     {
         $a = explode( ',', $value );
         
-        $idconnguoi = DB::connection('coredb')->table('tbl_connguoi')->insertGetId(
+        $idconnguoi = DB::table('tbl_connguoi')->insertGetId(
             [
                 'hoten' => $a[0],
                 'created_at' => Carbon::now(),
@@ -171,7 +171,7 @@ Route::get('test', function () {
             ]
         );
 
-        $idcanbo = DB::connection('coredb')->table('tbl_canbo')->insertGetId(
+        $idcanbo = DB::table('tbl_canbo')->insertGetId(
             [
                 'idconnguoi' => $idconnguoi,
                 'idcapbac' => $a[1],
@@ -183,10 +183,10 @@ Route::get('test', function () {
         );
 
         $username = $this->vn_str_filter($a[0]);
-        $check = DB::connection('coredb')->table('users')->where('username', $username)->count();
+        $check = DB::table('users')->where('username', $username)->count();
         $username = ( $check == 0 ) ? $username : $username.'_'.$idcanbo ;
 
-        $iduser = DB::connection('coredb')->table('users')->insertGetId(
+        $iduser = DB::table('users')->insertGetId(
             [
                 'idcanbo' => $idcanbo,
                 'username' => $username,

@@ -1,5 +1,6 @@
 <?php
-
+session_start();
+$_SESSION['name'] = 'nhat';
 /*
  * CKFinder Configuration File
  *
@@ -27,12 +28,10 @@ $config = array();
 
 
 $config['authentication'] = function () {
-    // require _DIR_.'/../../../bootstrap/autoload.php';
-    // $app = require_once _DIR_.'/../../../bootstrap/app.php';
-    // $app->make('Illuminate\Contracts\Http\Kernel')->handle(Illuminate\Http\Request::capture());
-    // // return Auth::check();
+    
     return true;
 };
+
 
 /*============================ License Key ============================================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_licenseKey
@@ -66,9 +65,9 @@ $config['images'] = array(
 );
 
 /*=================================== Backends ========================================*/
-session_start();
+
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_backends
-$root_folder = '/uploads/';
+$root_folder = '/uploads/'.$_SESSION['name'];
 // if(! is_dir($root_folder)) mkdir($root_folder);
 $config['backends'][] = array(
     'name'         => 'default',

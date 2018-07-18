@@ -13,7 +13,7 @@ class CreateTblQuocgiaTable extends Migration
      */
     public function up()
     {
-        Schema::connection('coredb')->create('tbl_quocgia', function (Blueprint $table) {
+        Schema::create('tbl_quocgia', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateTblQuocgiaTable extends Migration
      */
     public function down()
     {
-        Schema::connection('coredb')->dropIfExists('tbl_quocgia');
+        Schema::dropIfExists('tbl_quocgia');
     }
 }
