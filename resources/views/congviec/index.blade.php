@@ -51,21 +51,63 @@
          <div class="row">
             <div class="col-xs-12">
                <div class="card-box table-responsive">
-                  <form id="tim-kiem-hoso" action="{{ route('tam-tru.index') }}" method="GET" role="form" idresult="nhankhautable">
-                     @csrf
-                     <div class="col-xs-12 col-sm-12">
-                        <div class="input-group m-b-30">
-                           <input name="keyword" type="text" class="form-control" placeholder="Nhập mã hồ sơ số, hộ khẩu số hoặc họ tên chủ hộ">
-                           <div class="input-group-append">
-                             <button id="submitBtn" class="btn btn-default" type="submit"> <i class="fa fa-search"></i> Tìm kiếm</button>
-                           </div>
-                         </div>
-                      </div>
-                     <div class="col-xs-12 col-sm-12 loading" id="nhankhautable" style="position: relative;">
-                        @include('nhankhau-layouts.ajax_component.tamtru_nhankhautable')
-                        
-                     </div>
-                  </form>
+                   <form id="tim-kiem-hoso" action="{{ route('cong-viec.index') }}" method="GET" role="form" idresult="ajax_table">
+                   
+                        <div class="row">
+                            @csrf
+                            <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 col-xl-2">
+                                <fieldset class="form-group">
+                                    <label for="sotailieu">Số/Ký hiệu</label>
+                                    <input type="text" name="sotailieu" parsley-trigger="change" placeholder="Nhập Số/Ký hiệu để lọc" class="form-control" id="sotailieu" value="">
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                <fieldset class="form-group">
+                                    <label for="Trích yếu">Trích yếu</label>
+                                    <input type="text" name="trichyeu" parsley-trigger="change" placeholder="Nhập trích yếu để lọc" class="form-control" id="Trích yếu" value="">
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <fieldset class="form-group">
+                                    <label for="Trích yếu">Ngày tạo: Từ ngày</label>
+                                    <input type="text" name="ngaytao_tungay" parsley-trigger="change" placeholder="Nhập từ ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <fieldset class="form-group">
+                                    <label for="Trích yếu">Ngày tạo: Đến ngày</label>
+                                    <input type="text" name="ngaytao_denngay" parsley-trigger="change" placeholder="Nhập đến ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <fieldset class="form-group">
+                                    <label>Trạng thái</label>
+                                    <select id="idstatus" name="idstatus" class="form-control app_select2">
+                                        <option value="">Tất cả</option>
+                                        <option value="1">Đang xử lý</option>
+                                        <option value="2">Hoàn thành</option>
+                                        {{-- @foreach($list_donvi as $donvi)
+                                        <option value="{{ $donvi->id }}">{{ $donvi->name }} ({{ $donvi->kyhieu }})</option>
+                                        @endforeach --}}
+                                    </select>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1">
+                                <button style="margin-top: 2em;" id="submitBtn" class="btn btn-danger" type="submit"> <i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 loading" id="ajax_table" style="position: relative;">
+                                @include('congviec.congviec_table')
+                            </div>
+                        </div>
+                    </form>
                </div>
             </div>
          </div>

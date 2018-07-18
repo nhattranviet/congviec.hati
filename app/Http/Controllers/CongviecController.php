@@ -29,37 +29,40 @@ class CongviecController extends Controller
 
     public function index( Request $request )
     {
-        if($request->keyword)
-        {
-            $data['briefs'] = DB::table('tbl_tamtru')
-            ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_tamtru.idnhankhau')
-            ->join('tbl_sotamtru', 'tbl_sotamtru.id' , '=', 'tbl_tamtru.idsotamtru')
-            ->where(array(
-                ['sotamtru_so', 'like', '%'.$request->keyword.'%'],
-                ['idquanhechuho', '=', 1]
-            ))
-            ->orWhere(array(
-                ['hoten', 'like', '%'.$request->keyword.'%'],
-                ['idquanhechuho', '=', 1]
-            ))
-            ->select('tbl_sotamtru.type', 'tbl_nhankhau.hoten', 'sotamtru_so', 'tbl_sotamtru.id as idsotamtru', 'tbl_sotamtru.idquocgia_tamtru', 'tbl_sotamtru.idtinh_tamtru', 'tbl_sotamtru.idhuyen_tamtru', 'tbl_sotamtru.idxa_tamtru', 'tbl_sotamtru.chitiet_tamtru' )
-            ->orderBy('idsotamtru', 'DESC')
-            ->paginate(9);
-        }
-        else
-        {
-            $data['congviec'] = DB::table( 'tbl_congviec' )
-            ->join('tbl_canbo', 'tbl_canbo.idcanbo', '=', 'tbl_congviec.idcanbo_creater')
-            ->select( 'tbl_congviec.idcongviec', 'hancongviec', 'thoigianhoanthanh', 'thoigiangiao', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'hanxuly', 'urlfile', 'idstatus', 'tbl_congviec.created' )
-            ->orderBy('created', 'DESC')
-            ->paginate(10);
+        $arrWhere = array();
+        if ($request->sotailieu) {
+            $arrWhere[] = array('sotailieu', 'LIKE', '%'.$request->sotailieu.'%');
         }
 
-        print_r( $data['congviec'] ); die;
+        if ($request->trichyeu) {
+            $arrWhere[] = array('trichyeu', 'LIKE', '%'.$request->trichyeu.'%');
+        }
+
+        if($request->ngaytao_tungay != NULL)
+        {
+            $arrWhere[] = array('tbl_congviec.created_at', '>=', date('Y-m-d', strtotime($request->ngaytao_tungay)));
+        }
+
+        if($request->ngaytao_denngay != NULL)
+        {
+            $arrWhere[] = array('tbl_congviec.created_at', '<=', date('Y-m-d', strtotime($request->ngaytao_denngay)));
+        }
+
+        if($request->idstatus != NULL)
+        {
+            $arrWhere[] = array('idstatus', '=', $request->idstatus );
+        }
+        $data['list_congviec'] = DB::table( 'tbl_congviec' )
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+        ->where($arrWhere)
+        ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
+        ->orderBy('tbl_congviec.id', 'DESC')
+        ->paginate(10);
 
         if( $request->ajax() )
         {
-            return response()->json(['html' => view('nhankhau-layouts.ajax_component.tamtru_nhankhautable', $data)->render()]);
+            
+            return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
         }
         return view('congviec.index', $data);
     }
@@ -96,11 +99,12 @@ class CongviecController extends Controller
 
         $dataCongViec = array(
             'idcanbo_creater' => $this->curr_idcanbo,
-            'id_iddonvi_iddoi_creater' => $this->curr_iddoicongtac,
+            'id_iddonvi_iddoi_creater' => $this->curr_id_iddonvi_iddoi,
             'sotailieu' => $request->sotailieu,
             'trichyeu' => $request->trichyeu,
             'noisoanthao' => $request->noisoanthao,
             'chitiet' => $request->chitiet,
+            'ghichu' => $request->ghichu,
             'hancongviec' => date('Y-m-d', strtotime($request->hancongviec)),
             'idstatus' => 1,
             'created_at' => Carbon::now(),
@@ -111,15 +115,41 @@ class CongviecController extends Controller
 
         $dataCongViecChuyentiep = array(
             'idcongviec' => $idcongviec,
-            'iddonvinhan' => $this->curr_donvi,
-            'idnguoinhan' => $request->canbonhan,
-            'ghichu' => $request->ghichu,
-            'timechuyentiep' => time(),
+            'idcanbonhan' => $request->canbonhan,
+            'timechuyentiep' => Carbon::now(),
+            'id_iddonvi_iddoi_nhan' => $this->id_iddonvi_iddoi_lanhdao,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
             'order' => 0,
-            'iddoinhan' => 1
+            'ghichu' => $request->ghichu,
         );
         DB::table('tbl_congviec_chuyentiep')->insert( $dataCongViecChuyentiep );
 
         return response()->json(['success' => 'Thêm công việc thành công ', 'url' => route('cong-viec.index')]);
+    }
+
+    public function edit($idcongviec)
+    {
+        $data['page_name'] = "Sửa công việc";
+        $data['list_lanhdao'] = DB::table('tbl_canbo')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
+        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
+        ->where(array(
+            ['id_iddonvi_iddoi', '=', $this->id_iddonvi_iddoi_lanhdao]
+        ))
+        ->get();
+        $data['congviec_info'] = DB::table('tbl_congviec')->where('id',$idcongviec)->first();
+        $data['idcanboxulybandau'] = DB::table('tbl_congviec_chuyentiep')->where( array(
+            ['idcongviec', '=', $idcongviec],
+            ['order', '=', 0],
+        ) )->value('idcanbonhan');
+        // print_r($data['idcanboxulybandau']); die;
+        return view('congviec.edit', $data);
+    }
+
+    public function update(Request $request, $idcongviec)
+    {
+        
     }
 }

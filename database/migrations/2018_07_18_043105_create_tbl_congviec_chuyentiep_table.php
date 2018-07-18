@@ -17,10 +17,10 @@ class CreateTblCongviecChuyentiepTable extends Migration
             $table->increments('id');
             $table->integer('idcongviec');
             $table->integer('idcanbonhan');
-            $table->text('butphe');
-            $table->datetime('timechuyentiep');
-            $table->smallInteger('order');
-            $table->integer('id_iddonvi_iddoi_nhan');
+            $table->text('ghichu')->nullable();
+            $table->datetime('timechuyentiep')->nullable();
+            $table->smallInteger('order')->nullable();
+            $table->integer('id_iddonvi_iddoi_nhan')->nullable();
             $table->softDeletes();
             $table->foreign('idcongviec')->references('id')->on('tbl_congviec');
             $table->foreign('idcanbonhan')->references('id')->on('tbl_canbo');

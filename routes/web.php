@@ -108,6 +108,8 @@ Auth::routes();
 Route::get('/cong-viec', 'CongviecController@index')->name('cong-viec.index');
 Route::get('/cong-viec/create', 'CongviecController@create')->name('get-create-cong-viec');
 Route::post('/cong-viec/create', 'CongviecController@store')->name('post-create-cong-viec');
+Route::get('/cong-viec/{idcongviec}/edit', 'CongviecController@edit')->name('get-edit-cong-viec');
+Route::post('/cong-viec/{idcongviec}/edit', 'CongviecController@update')->name('post-edit-cong-viec');
 //-------------------END CÔNG VIỆC-----------------------
 
 //-------------------ĐƠN VỊ - ĐỘI-----------------------
