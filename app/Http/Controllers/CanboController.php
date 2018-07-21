@@ -294,6 +294,19 @@ class CanboController extends Controller
         //
     }
 
+    public function getCanbo($id_iddonvi_iddoi = NULL)
+    {
+        $data['list_canbo'] = DB::table('tbl_canbo')
+                ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+                ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+                ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
+                ->where('id_iddonvi_iddoi', $id_iddonvi_iddoi)
+                ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu')
+                ->get()->toArray();
+        return response()->json(['html' => view('cahtcore.canbo.option_select_canbo', $data)->render()]);
+
+    }
+
     public function add_old_data()
     {
         $data = [

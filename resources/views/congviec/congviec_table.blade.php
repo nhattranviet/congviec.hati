@@ -9,7 +9,7 @@
             <th>Hạn công việc</th>
             <th>Người đang xử lý</th>
             <th>Trạng thái</th>
-            <th style="width: 180px;">Tác vụ</th>
+            <th style="width: 200px;">Tác vụ</th>
         </tr>
     </thead>
 
@@ -29,6 +29,7 @@
                 ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
                 ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
                 ->select( 'hoten', 'tbl_doicongtac.name' )
+                ->orderBy('timechuyentiep', 'DESC')
                 ->where('idcongviec', $congviec->idcongviec)
                 ->first();
             @endphp
@@ -37,11 +38,12 @@
             <td style="text-align:center;">
                 
                 <div class="button-list" style="max-width: 200px; margin: auto;">
-                    <a href="{{ route('get-show-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết công việc"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
+                    <a href="{{ route('get-show-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xem chi tiết công việc"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
                     <a href="{{ route('get-edit-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Sửa công việc"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
                     <a href="{{ route('get-delete-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xóa công việc"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
                     <a href="#" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Đánh dấu hoàn thành công việc"> <i style="color:forestgreen;" class="fa fa-check-square-o"></i> </a>
                     <a href="#" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Đánh dấu đang xử lý công việc"> <i style="color:orange;" class="fa fa-check-square-o"></i> </a>
+                    <a href="{{ route('get-chuyentiep-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chuyển tiếp công việc"> <i style="color:cornflowerblue;" class="zmdi zmdi-caret-right-circle"></i> </a>
                 </div>
             </td>
         </tr>

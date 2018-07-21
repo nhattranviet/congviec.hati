@@ -30,15 +30,6 @@
    <!-- Start content -->
    <div class="content">
       <div class="container">
-         <!-- end row -->
-
-         <div class="row m-b-10">
-            <div class="col-xs-12" style="max-width: 800px; margin: auto;">
-                <a href="{{ route('tam-tru.create') }}" style="margin: 0 5px 0 5px;" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-accounts-add m-r-5"></i> <span>Thêm sổ (Hộ) </span> </a>
-                <a href="{{ route('get-add-so-tam-tru-ca-nhan') }}" style="margin: 0 5px 0 5px;" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-account-add m-r-5"></i> <span>Thêm sổ (Cá nhân)</span> </a>
-                <a href="{{ route('thong-ke') }}" style="margin: 0 5px 0 5px;" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-window-restore m-r-5"></i> <span>Báo cáo nhân khẩu</span> </a>
-            </div>
-        </div>
 
          <div class="row">
             <div class="col-xs-12">
@@ -62,7 +53,7 @@
                                 </fieldset>
                             </div>
 
-                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                 <fieldset class="form-group">
                                     <label for="Trích yếu">Trích yếu</label>
                                     <input type="text" name="trichyeu" parsley-trigger="change" placeholder="Nhập trích yếu để lọc" class="form-control" id="Trích yếu" value="">
@@ -94,8 +85,9 @@
                                 </fieldset>
                             </div>
 
-                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1">
-                                <button style="margin-top: 2em;" id="submitBtn" class="btn btn-danger" type="submit"> <i class="fa fa-search"></i></button>
+                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <button style="margin-top: 2em;" id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Tìm kiếm công việc"> <i class="fa fa-search"></i></button>
+                                <a href="{{ route('get-create-cong-viec') }}" style="margin-top: 2em;" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"></i></a>
                             </div>
                         </div>
 

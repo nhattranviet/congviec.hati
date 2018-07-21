@@ -46,7 +46,7 @@
                    <div class="row">
                         <div class="col-xs-12 col-sm-12" id="ajax_table" style="position: relative;">
                             @include('congviec.chitiet_congviec_table')
-                            <a onclick="return confirm('Đồng chí có muốn xóa công việc này không ?');" href="{{ route('get-delete-cong-viec', $congviec_info->id) }}" class="btn btn-danger pull-left">Xóa</a>
+                            <a onclick="return confirm('Đồng chí có muốn xóa công việc này không ?');" href="{{ route('get-delete-cong-viec_confirm', $congviec_info->id) }}" class="btn btn-danger pull-left">Xóa</a>
                             <a href="{{ route('cong-viec.index') }}" class="btn btn-primary pull-right">Quay lại</a>
                         </div>
                         

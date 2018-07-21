@@ -46,7 +46,10 @@
                    <div class="row">
                         <div class="col-xs-12 col-sm-12" id="ajax_table" style="position: relative;">
                             @include('congviec.chitiet_congviec_table')
-                            <a href="{{ route('cong-viec.index') }}" class="btn btn-primary pull-right">Quay lại</a>
+                            <a href="{{ route('cong-viec.index') }}" class="btn btn-warning pull-right">Quay lại</a>
+                            <a style="margin-left: 5px" href="{{ route('get-edit-cong-viec', $congviec_info->id) }}" class="btn btn-danger"> <i class="zmdi zmdi-edit"></i> Sửa công việc</a>
+                            <a style="margin-left: 5px" href="{{ route('get-delete-cong-viec', $congviec_info->id) }}" class="btn btn-danger"> <i class="zmdi zmdi-delete"></i> Xóa công việc</a>
+                            <a style="margin-left: 5px" href="{{ route('get-chuyentiep-cong-viec', $congviec_info->id) }}" class="btn btn-danger"> <i class="zmdi zmdi-caret-right-circle"></i> Chuyển tiếp</a>
                         </div>
                         
                     </div>
@@ -73,11 +76,14 @@
                             <div class="timeline-desk">
                                 <div class="panel">
                                     <div class="timeline-box">
-                                        <span class="arrow"></span>
+                                        <span class="{{ ($i % 2 == 1) ? 'arrow-alt' : 'arrow' }}"></span>
                                         <span class="timeline-icon bg-warning"><i class="zmdi zmdi-circle"></i></span>
-                                        <h4 class="text-warning"> {{ $item->hoten }} </h4>
-                                        <p class="timeline-date text-muted"><small> {{ date('H:i d-m-Y', strtotime( $item->timechuyentiep )) }} </small></p>
+                                        <h4 class="{{ ($i % 2 == 1) ? 'text-warning' : 'text-purple' }}"> {{ $item->hoten }} </h4>
+                                        <p class="timeline-date text-muted"> <i class="zmdi zmdi-alarm-check"></i> <small>  {{ date('H:i d-m-Y', strtotime( $item->timechuyentiep )) }} </small></p>
                                         <p class="text-danger"> {{ $item->ghichu }} </p>
+                                        <p>
+                                            <a onclick="return confirm('Đồng chí có muốn xóa chuyển tiếp công việc này không ?');" href="{{ route('get-delte-node-chuyen-tiep', $item->id) }}" class="btn btn-danger waves-effect waves-light btn-sm">Xóa</a>
+                                        </p>
 
                                     </div>
                                 </div>

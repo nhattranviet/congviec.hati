@@ -27,75 +27,114 @@
 
 @section('content')
 <div class="content-page">
-   <!-- Start content -->
-   <div class="content">
-      <div class="container">
-         <!-- end row -->
+<!-- Start content -->
+<div class="content">
+    <div class="container">
+        <!-- end row -->
 
-         <div class="row">
+        <div class="row">
             <div class="col-xs-12">
-               <div class="alert alert-danger" id="error-msg" style="display: none">
-               </div>
-               <div class="alert alert-success" id="success-msg" style="display: none">
-               </div>
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-xs-12">
-               <div class="card-box table-responsive">
-                   <div class="row">
-                        <div class="col-xs-12 col-sm-12" id="ajax_table" style="position: relative;">
-                            @include('congviec.chitiet_congviec_table')
-                            <a href="{{ route('cong-viec.index') }}" class="btn btn-primary pull-right">Quay lại</a>
-                        </div>
-                        
-                    </div>
-               </div>
-            </div>
-         </div>
-         
-         <div class="row">
-             <div class="col-md-12">
-                 <div class="timeline">
-                    <article class="timeline-item alt">
-                        <div class="text-xs-right">
-                            <div class="time-show first">
-                                <a href="#" class="btn btn-custom w-lg">Lịch sử công việc</a>
-                            </div>
-                        </div>
-                    </article>
-                    @php
-                        $i = 1;
-                    @endphp
-
-                    @foreach ($congviec_chuyentiep_info as $item)
-                        <article class="timeline-item {{ ($i % 2 == 1) ? 'alt' : NULL }}">
-                            <div class="timeline-desk">
-                                <div class="panel">
-                                    <div class="timeline-box">
-                                        <span class="arrow"></span>
-                                        <span class="timeline-icon bg-warning"><i class="zmdi zmdi-circle"></i></span>
-                                        <h4 class="text-warning"> {{ $item->hoten }} </h4>
-                                        <p class="timeline-date text-muted"><small> {{ date('H:i d-m-Y', strtotime( $item->timechuyentiep )) }} </small></p>
-                                        <p class="text-danger"> {{ $item->ghichu }} </p>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                        @php
-                            $i++;
-                        @endphp
-                    @endforeach
-                    
-
+                <div class="alert alert-danger" id="error-msg" style="display: none">
                 </div>
-             </div>
-         </div>
-      </div>
-      <!-- container -->
-   </div>
-   <!-- content -->
+                <div class="alert alert-success" id="success-msg" style="display: none">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card-box table-responsive">
+                    <div class="row">
+                            <div class="col-xs-12 col-sm-12" id="ajax_table" style="position: relative;">
+                                @include('congviec.chitiet_congviec_table')
+                                <a href="{{ route('cong-viec.index') }}" class="btn btn-primary pull-right">Quay lại</a>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <form id="form-nhankhau" action="{{ route('post-chuyentiep-cong-viec', $congviec_info->id) }}" method="POST" role="form">
+                    @csrf
+                    <div class="card-box table-responsive">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <fieldset class="form-group" >
+                                    <label>Đội nhận việc<span class="text-danger">*</span></label>
+                                    <select name="id_iddonvi_iddoi" id="iddoicongtac" class="form-control select2">
+                                        <option value="">Chọn đội công tác</option>
+                                        @foreach($list_doicongtac as $doicongtac)
+                                        <option value="{{ $doicongtac->id }}">{{ $doicongtac->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-md-3">
+                                <fieldset class="form-group" >
+                                    <label>Cán bộ nhận việc<span class="text-danger">*</span></label>
+                                    <select name="idcanbonhan" id="idcanbo" class="form-control select2 canbo">
+                                        <option value="">Chọn cán bộ nhận việc</option>
+                                    </select>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-md-3">
+                                <fieldset class="form-group" >
+                                    <label>Thời gian lãnh đạo giao hoàn thành<span class="text-danger">*</span></label>
+                                    <div>
+                                        <div class="input-group">
+                                            <input type="text" name="hanxuly" value="{{ ($congviec_info->hancongviec != NULL) ? date('d-m-Y', strtotime($congviec_info->hancongviec)) : NULL }}" class="form-control pull-right" id="datepicker">
+                                            <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-md-3">
+                                <fieldset class="form-group" >
+                                    <label>Thời gian bắt đầu tính giao việc<span class="text-danger">*</span></label>
+                                    <div>
+                                        <div class="input-group">
+                                            <input type="text" name="thoigiangiao" value="" class="form-control pull-right datepicker_get_current_date">
+                                            <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                    <label for="datepicker">Bút phê/Ghi chú chuyển</label>
+                                    <div>
+                                        <div class="input-group">
+                                            <input type="text" name="ghichu" class="form-control" value="">
+                                            <span class="input-group-addon bg-custom b-0"><i class="zmdi zmdi-calendar-note"></i></span>
+                                        </div><!-- input-group -->
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-1">
+                                <fieldset class="form-group">
+                                    <label for="datepicker">&nbsp;</label>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary"> <i class="zmdi zmdi-forward"></i> Chuyển</button>
+                                    </div>
+                                </fieldset>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+
+    </div>
+    <!-- container -->
+</div>
+<!-- content -->
 </div>
 @endsection
 

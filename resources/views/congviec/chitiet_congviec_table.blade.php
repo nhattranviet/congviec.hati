@@ -30,6 +30,21 @@
                     <td>Hạn xử lý</td>
                     <td>{{ ($congviec_info->hanxuly) ? date('d-m-Y', strtotime($congviec_info->hanxuly)) : NULL }}</td>
                 </tr>
+                <tr>
+                    <td>Lãnh đạo xử lý đầu</td>
+                    <td>
+                        @php
+                            foreach ($congviec_chuyentiep_info as $info)
+                            {
+                                if( $info->order == 0 )
+                                {
+                                    echo 'Đ/c '.$info->hoten;
+                                    break;
+                                }
+                            }
+                        @endphp
+                    </td>
+                </tr>
                 
                 
             </tbody>
@@ -64,6 +79,16 @@
                 <tr>
                     <td>Ngày tạo</td>
                     <td>{{ ($congviec_info->created_at) ? date('H:i:s d-m-Y', strtotime($congviec_info->created_at)) : NULL }}</td>
+                </tr>
+                
+                <tr>
+                    <td>Người đang xử lý</td>
+                    <td>
+                        @php
+                            $count_luotchuyen_cuoi  = count( $congviec_chuyentiep_info ) - 1;
+                            echo 'Đ/c '. $congviec_chuyentiep_info[$count_luotchuyen_cuoi]->hoten;
+                        @endphp
+                    </td>
                 </tr>
                 
             </tbody>

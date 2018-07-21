@@ -249,4 +249,6 @@ class DonviController extends Controller
         return response()->json(['html' => view('cahtcore.doicongtac.option_select_doi', $data)->render()]);
 
     }
+
+    
 }

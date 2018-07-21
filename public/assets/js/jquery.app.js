@@ -406,6 +406,32 @@
                 var url = bare_url + '/ajax-get-doi/' + donvi;
                 ajax_get_data_to_html_json(url, '.doicongtac');
             });
+
+            $("#iddoicongtac").on('change', function () {
+                var doicongtac_id = $('#iddoicongtac').val();
+                var url = bare_url + '/ajax-get-can-bo/' + doicongtac_id;
+                ajax_get_data_to_html_json(url, '.canbo');
+            });
+
+            if ($(".datepicker_get_date_after_a_week").length > 0) {
+                var current_date = new Date();
+                current_date.setDate(current_date.getDate() + 7);
+                $('.datepicker_get_date_after_a_week').datepicker({
+                    autoclose: true,
+                    format: 'dd-mm-yyyy',
+                    language: 'vi',
+                    todayHighlight: true
+                }).datepicker('update', current_date);
+            }
+
+            if ($(".datepicker_get_current_date").length > 0) {
+                $('.datepicker_get_current_date').datepicker({
+                    autoclose: true,
+                    format: 'dd-mm-yyyy',
+                    language: 'vi',
+                    todayHighlight: true
+                }).datepicker('update', new Date());
+            }
         };
 
         //initilizing

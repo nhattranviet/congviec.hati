@@ -17,6 +17,7 @@ class CongviecController extends Controller
         'hancongviec.required' => 'Hạn công việc không được để trống',
         'ghichu.required' => 'Ghi chú, cán bộ nhập công việc không được để trống',
         'idstatus.required' => 'Trạng thái không được để trống',
+        
     ];
     public $curr_donvi = 19;
     public $curr_idcanbo = 27;
@@ -209,33 +210,78 @@ class CongviecController extends Controller
         $data['congviec_info'] = DB::table('tbl_congviec')
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->where('tbl_congviec.id',$idcongviec)->select('tbl_congviec.*', 'hoten')->first();
+        ->where('tbl_congviec.id',$idcongviec)
+        ->select('tbl_congviec.*', 'hoten')->first();
 
         $data['congviec_chuyentiep_info'] = DB::table('tbl_congviec_chuyentiep')
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec_chuyentiep.idcanbonhan')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->where('idcongviec', $idcongviec)
+        ->orderBy('timechuyentiep', 'ASC')
         ->select('tbl_congviec_chuyentiep.*', 'hoten')
-        ->get();
+        ->get()->toArray();
+        // echo ( $data['congviec_chuyentiep_info'][0]->hoten ); die;
         return view('congviec.show', $data);
     }
 
     public function chuyentiep($idcongviec)
     {
-        // echo 5 % 2; die;
         $data['page_name'] = "Chuyển công việc";
         $data['congviec_info'] = DB::table('tbl_congviec')
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->where('tbl_congviec.id',$idcongviec)->select('tbl_congviec.*', 'hoten')->first();
 
+        $data['list_doicongtac'] = DB::table('tbl_donvi_doi')
+        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+        ->where('iddonvi', $this->curr_donvi)
+        ->select('name', 'tbl_donvi_doi.id')
+        ->get();
         $data['congviec_chuyentiep_info'] = DB::table('tbl_congviec_chuyentiep')
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec_chuyentiep.idcanbonhan')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->where('idcongviec', $idcongviec)
+        ->orderBy('timechuyentiep', 'ASC')
         ->select('tbl_congviec_chuyentiep.*', 'hoten')
-        ->get();
+        ->get()->toArray();
+        // print_r($data['list_doicongtac']); die;
         return view('congviec.chuyentiep', $data);
+    }
+
+    public function postChuyentiep(Request $request, $idcongviec)
+    {
+        $validator = Validator::make($request->all(), [
+                'id_iddonvi_iddoi' => 'required',
+                'idcanbonhan' => 'required',
+                'hanxuly' => 'required|date_format:d-m-Y',
+                'thoigiangiao' => 'required|date_format:d-m-Y|before_or_equal:hanxuly'
+
+            ],
+            [
+                'id_iddonvi_iddoi.required' => 'Đội nhận việc không được để trống',
+                'idcanbonhan.required' => 'Cán bộ nhận việc không được để trống',
+                'hanxuly.required' => 'Hạn xử lý không được để trống',
+                'thoigiangiao.before_or_equal' => 'Thời gian bắt đầu tính giao việc phải trước Thời gian lãnh đạo giao hoàn thành',
+            ]
+        );
+            
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
+
+        $dataCongViecChuyentiep = array(
+            'idcongviec' => $idcongviec,
+            'idcanbonhan' => $request->idcanbonhan,
+            'timechuyentiep' => Carbon::now(),
+            'id_iddonvi_iddoi_nhan' => $request->id_iddonvi_iddoi,
+            'ghichu' => $request->ghichu,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        );
+        DB::table('tbl_congviec_chuyentiep')->insert( $dataCongViecChuyentiep );
+
+        return response()->json(['success' => 'Chuyển tiếp công việc thành công ', 'url' => route('get-show-cong-viec', $idcongviec)]);        
+    
     }
 
     public function delete($idcongviec)
@@ -245,6 +291,13 @@ class CongviecController extends Controller
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
         ->where('tbl_congviec.id',$idcongviec)->select('tbl_congviec.*', 'hoten')->first();
+        $data['congviec_chuyentiep_info'] = DB::table('tbl_congviec_chuyentiep')
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec_chuyentiep.idcanbonhan')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->where('idcongviec', $idcongviec)
+        ->orderBy('timechuyentiep', 'ASC')
+        ->select('tbl_congviec_chuyentiep.*', 'hoten')
+        ->get()->toArray();
         // print_r($data['congviec_info']); die;
         return view('congviec.delete', $data);
     }
@@ -254,6 +307,22 @@ class CongviecController extends Controller
         DB::table('tbl_congviec_chuyentiep')->where('idcongviec', $idcongviec)->delete();
         DB::table('tbl_congviec')->where('id', $idcongviec)->delete();
         return redirect()->route('cong-viec.index');
-        // return response()->json(['success' => 'Xóa công việc thành công ', 'url' => route('cong-viec.index')]);
+    }
+
+    public function deleteNodeChuyentiep( $idnode )
+    {
+        $congviec_node_info = DB::table('tbl_congviec_chuyentiep')->where('id',$idnode)->first();
+        DB::table('tbl_congviec_chuyentiep')->where('id', $idnode)->delete();
+        if( $congviec_node_info->order === 0 )
+        {
+            DB::table('tbl_congviec')->where('id', $congviec_node_info->idcongviec)->delete();
+            return redirect()->route('cong-viec.index');
+        }
+        else
+        {
+            return redirect()->route('get-show-cong-viec', $congviec_node_info->idcongviec);
+        }
+        
+        
     }
 }

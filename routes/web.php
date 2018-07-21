@@ -112,9 +112,10 @@ Route::get('/cong-viec/{idcongviec}/edit', 'CongviecController@edit')->name('get
 Route::post('/cong-viec/{idcongviec}/edit', 'CongviecController@update')->name('post-edit-cong-viec');
 Route::get('/cong-viec/{idcongviec}', 'CongviecController@show')->name('get-show-cong-viec');
 Route::get('/cong-viec/{idcongviec}/delete', 'CongviecController@delete')->name('get-delete-cong-viec');
-Route::get('/cong-viec/{idcongviec}/delete_confirm', 'CongviecController@destroy')->name('get-delete-cong-viec');
+Route::get('/cong-viec/{idcongviec}/delete_confirm', 'CongviecController@destroy')->name('get-delete-cong-viec_confirm');
 Route::get('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@chuyentiep')->name('get-chuyentiep-cong-viec');
 Route::post('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@postChuyentiep')->name('post-chuyentiep-cong-viec');
+Route::get('/cong-viec/{idnodecongviec}/deleteNode', 'CongviecController@deleteNodeChuyentiep')->name('get-delte-node-chuyen-tiep');
 //-------------------END CÔNG VIỆC-----------------------
 
 //-------------------ĐƠN VỊ - ĐỘI-----------------------
@@ -131,6 +132,7 @@ Route::post('/can-bo/create', 'CanboController@store')->name('can-bo.store');
 Route::get('/can-bo/{idcanbo}/edit', 'CanboController@edit')->name('can-bo.edit');
 Route::post('/can-bo/{idcanbo}/update', 'CanboController@update')->name('can-bo.update');
 Route::get('/can-bo/add_old_data', 'CanboController@add_old_data');
+Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->name('ajax-get-can-bo');
 //-------------------END CÁN BỘ-----------------------
 
 Route::get('test', function () {
