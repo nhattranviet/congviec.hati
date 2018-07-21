@@ -110,6 +110,11 @@ Route::get('/cong-viec/create', 'CongviecController@create')->name('get-create-c
 Route::post('/cong-viec/create', 'CongviecController@store')->name('post-create-cong-viec');
 Route::get('/cong-viec/{idcongviec}/edit', 'CongviecController@edit')->name('get-edit-cong-viec');
 Route::post('/cong-viec/{idcongviec}/edit', 'CongviecController@update')->name('post-edit-cong-viec');
+Route::get('/cong-viec/{idcongviec}', 'CongviecController@show')->name('get-show-cong-viec');
+Route::get('/cong-viec/{idcongviec}/delete', 'CongviecController@delete')->name('get-delete-cong-viec');
+Route::get('/cong-viec/{idcongviec}/delete_confirm', 'CongviecController@destroy')->name('get-delete-cong-viec');
+Route::get('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@chuyentiep')->name('get-chuyentiep-cong-viec');
+Route::post('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@postChuyentiep')->name('post-chuyentiep-cong-viec');
 //-------------------END CÔNG VIỆC-----------------------
 
 //-------------------ĐƠN VỊ - ĐỘI-----------------------

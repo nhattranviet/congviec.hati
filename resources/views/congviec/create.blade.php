@@ -92,7 +92,7 @@
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
                                             
                                             <fieldset class="form-group">
-                                                <label for="datepicker">Hạn xử lý công việc <span class="text-danger">*</span></label>
+                                                <label for="datepicker">Hạn công việc <span class="text-danger">*</span></label>
                                                 <div>
                                                     <div class="input-group">
                                                         <input type="text" name="hancongviec" class="form-control datepicker_get_date_after_a_week" placeholder="dd-mm-yyyy" id="datepicker" value="">
@@ -112,7 +112,7 @@
 
                                             <fieldset class="form-group" >
                                                 <label>Lãnh đạo duyệt<span class="text-danger">*</span></label>
-                                                <select name="canbonhan" class="form-control select2">
+                                                <select name="idcanbonhan" class="form-control select2">
                                                     <option value="">Chọn lãnh đạo duyệt ban đầu</option>
                                                     @foreach($list_lanhdao as $lanhdao)
                                                     <option value="{{ $lanhdao->id }}">{{ $lanhdao->hoten }} - {{ $lanhdao->name }}</option>

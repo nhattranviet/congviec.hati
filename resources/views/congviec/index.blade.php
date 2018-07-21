@@ -90,9 +90,6 @@
                                         <option value="">Tất cả</option>
                                         <option value="1">Đang xử lý</option>
                                         <option value="2">Hoàn thành</option>
-                                        {{-- @foreach($list_donvi as $donvi)
-                                        <option value="{{ $donvi->id }}">{{ $donvi->name }} ({{ $donvi->kyhieu }})</option>
-                                        @endforeach --}}
                                     </select>
                                 </fieldset>
                             </div>

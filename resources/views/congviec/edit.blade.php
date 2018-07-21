@@ -55,7 +55,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhau" action="{{ route('post-create-cong-viec') }}" method="POST" role="form">
+                        <form id="form-nhankhau" action="{{ route('post-edit-cong-viec', $congviec_info->id) }}" method="POST" role="form">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
                                     <h4 class="header-title m-t-0 pull-left">{{ $page_name }}</h4>
@@ -82,20 +82,38 @@
                                                 </div>
                                             </fieldset>
                                             
-                                            
                                             <fieldset class="form-group">
                                                 <label for="exampleTextarea">Trích yếu<span class="text-danger">*</span></label>
                                                 <textarea class="form-control" name="trichyeu" placeholder="Nhập trích yếu của văn bản, công việc" rows="1">{{ $congviec_info->trichyeu }}</textarea>
+                                            </fieldset>
+
+                                            <fieldset class="form-group" >
+                                                <label>Lãnh đạo duyệt<span class="text-danger">*</span></label>
+                                                <select name="idcanbonhan" class="form-control select2">
+                                                    <option value="">Chọn lãnh đạo duyệt ban đầu</option>
+                                                    @foreach($list_lanhdao as $lanhdao)
+                                                    <option {{ ($idcanboxulybandau == $lanhdao->id) ? 'selected' : NULL }} value="{{ $lanhdao->id }}">{{ $lanhdao->hoten }} - {{ $lanhdao->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </fieldset>
                                             
                                         </div>
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
                                             
                                             <fieldset class="form-group">
-                                                <label for="datepicker">Hạn xử lý công việc <span class="text-danger">*</span></label>
+                                                <label for="datepicker">Hạn công việc <span class="text-danger">*</span></label>
                                                 <div>
                                                     <div class="input-group">
-                                                        <input type="text" name="hancongviec" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="{{ ($congviec_info->hanxuly) ? date('d-m-Y', strtotime($congviec_info->hanxuly)) : NULL }}">
+                                                        <input type="text" name="hancongviec" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="{{ ($congviec_info->hancongviec) ? date('d-m-Y', strtotime($congviec_info->hancongviec)) : NULL }}">
+                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                                    </div><!-- input-group -->
+                                                </div>
+                                            </fieldset>
+                                            <fieldset class="form-group">
+                                                <label for="datepicker">Hạn xử lý xong <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <div class="input-group">
+                                                        <input type="text" name="hanxuly" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="{{ ($congviec_info->hanxuly) ? date('d-m-Y', strtotime($congviec_info->hanxuly)) : NULL }}">
                                                         <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                                     </div><!-- input-group -->
                                                 </div>
@@ -111,12 +129,11 @@
                                             </fieldset>
 
                                             <fieldset class="form-group" >
-                                                <label>Lãnh đạo duyệt<span class="text-danger">*</span></label>
-                                                <select name="canbonhan" class="form-control select2">
-                                                    <option value="">Chọn lãnh đạo duyệt ban đầu</option>
-                                                    @foreach($list_lanhdao as $lanhdao)
-                                                    <option {{ ($idcanboxulybandau == $lanhdao->id) ? 'selected' : NULL }} value="{{ $lanhdao->id }}">{{ $lanhdao->hoten }} - {{ $lanhdao->name }}</option>
-                                                    @endforeach
+                                                <label>Trạng thái<span class="text-danger">*</span></label>
+                                                <select name="idstatus" class="form-control select2">
+                                                    <option value="">Chọn trạng thái</option>
+                                                    <option {{ ($congviec_info->idstatus == 1) ? 'selected' : NULL }} value="1">Đang xử lý</option>
+                                                    <option {{ ($congviec_info->idstatus == 2) ? 'selected' : NULL }} value="2">Hoàn thành</option>
                                                 </select>
                                             </fieldset>
                                         </div>
@@ -135,7 +152,7 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
-                                    <button type="submit" class="btn btn-primary">Thêm công việc</button>
+                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
                                     <a href="{{ route('cong-viec.index') }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
                                 </div>
                             </div>

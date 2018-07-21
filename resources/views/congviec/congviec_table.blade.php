@@ -20,8 +20,8 @@
             <td>{{ $congviec->idcongviec }}</td>
             <td>{{ $congviec->sotailieu }}</td>
             <td>{{ $congviec->trichyeu }}</td>
-            <td>{{ $congviec->hanxuly }}</td>
-            <td>{{ date('d-m-Y', strtotime($congviec->hancongviec)) }}</td>
+            <td>{{ ($congviec->hanxuly) ? date('d-m-Y', strtotime($congviec->hanxuly)) : NULL }}</td>
+            <td>{{ ($congviec->hancongviec) ? date('d-m-Y', strtotime($congviec->hancongviec)) : NULL }}</td>
             @php
                 $nguoidangxuly = DB::table( 'tbl_canbo' )
                 ->join('tbl_congviec_chuyentiep', 'tbl_canbo.id', '=', 'tbl_congviec_chuyentiep.idcanbonhan')
@@ -37,9 +37,9 @@
             <td style="text-align:center;">
                 
                 <div class="button-list" style="max-width: 200px; margin: auto;">
-                    <a href="#" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết công việc"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
-                    <a href="#" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Sửa công việc"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
-                    <a href="#" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xóa công việc"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
+                    <a href="{{ route('get-show-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết công việc"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
+                    <a href="{{ route('get-edit-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Sửa công việc"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
+                    <a href="{{ route('get-delete-cong-viec', $congviec->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xóa công việc"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
                     <a href="#" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Đánh dấu hoàn thành công việc"> <i style="color:forestgreen;" class="fa fa-check-square-o"></i> </a>
                     <a href="#" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Đánh dấu đang xử lý công việc"> <i style="color:orange;" class="fa fa-check-square-o"></i> </a>
                 </div>
