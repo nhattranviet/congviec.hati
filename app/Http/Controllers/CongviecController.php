@@ -35,12 +35,11 @@ class CongviecController extends Controller
     public function index( Request $request )
     {
         $arrWhere = array();
-        if ($request->sotailieu) {
-            $arrWhere[] = array('sotailieu', 'LIKE', '%'.$request->sotailieu.'%');
-        }
+        
 
-        if ($request->trichyeu) {
-            $arrWhere[] = array('trichyeu', 'LIKE', '%'.$request->trichyeu.'%');
+        if($request->id_iddonvi_iddoi != NULL)
+        {
+            $arrWhere[] = array('tbl_congviec_chuyentiep.id_iddonvi_iddoi_nhan', '=', $request->id_iddonvi_iddoi );
         }
 
         if($request->ngaytao_tungay != NULL)
@@ -57,12 +56,30 @@ class CongviecController extends Controller
         {
             $arrWhere[] = array('idstatus', '=', $request->idstatus );
         }
-        $data['list_congviec'] = DB::table( 'tbl_congviec' )
+
+        $dt = DB::table( 'tbl_congviec' )
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-        ->where($arrWhere)
-        ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
+        ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
+        ->where($arrWhere);
+        // ->where('tbl_congviec_chuyentiep.id', DB::raw("(SELECT MAX(`id`) FROM tbl_congviec_chuyentiep WHERE idcongviec =".));
+        if ($request->keyword)
+        {
+            $dt = $dt->where(function ($query) use ($request)
+            {
+                $query->where('sotailieu', 'LIKE', '%'.$request->keyword.'%')
+                ->orWhere('trichyeu', 'LIKE', '%'.$request->keyword.'%');
+            });
+        }
+        $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
         ->orderBy('tbl_congviec.id', 'DESC')
+        ->distinct()
         ->paginate(10);
+
+        $data['list_doicongtac'] = DB::table('tbl_donvi_doi')
+        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+        ->where('iddonvi', $this->curr_donvi)
+        ->select('name', 'tbl_donvi_doi.id')
+        ->get();
 
         if( $request->ajax() )
         {

@@ -31,6 +31,68 @@
    <div class="content">
       <div class="container">
 
+        <div class="row">
+            <div class="col-xs-12">
+                <a style="margin-bottom: 5px;" href="#demo" class="btn btn-info" data-toggle="collapse"><i class="fa fa-filter"></i> Lọc</a>
+                <a href="{{ route('get-create-cong-viec') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
+                <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
+                        <form id="tim-kiem-hoso" action="{{ route('cong-viec.index') }}" method="GET" role="form" idresult="ajax_table">
+                            <div class="row">
+                                @csrf
+                                <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 col-xl-3">
+                                    <fieldset class="form-group">
+                                        <label for="sotailieu">Nội dung tìm kiếm</label>
+                                        <input type="text" name="keyword" parsley-trigger="change" placeholder="Nhập Số/Ký hiệu hoặc trích yếu để lọc" class="form-control" id="sotailieu" value="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                    <fieldset class="form-group">
+                                        <label for="Trích yếu">Ngày tạo: Từ ngày</label>
+                                        <input type="text" name="ngaytao_tungay" parsley-trigger="change" placeholder="Nhập từ ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                    <fieldset class="form-group">
+                                        <label for="Trích yếu">Ngày tạo: Đến ngày</label>
+                                        <input type="text" name="ngaytao_denngay" parsley-trigger="change" placeholder="Nhập đến ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                    <fieldset class="form-group">
+                                        <label>Lọc theo trạng thái</label>
+                                        <select id="idstatus" name="idstatus" class="form-control app_select2">
+                                            <option value="">Tất cả</option>
+                                            <option value="1">Đang xử lý</option>
+                                            <option value="2">Hoàn thành</option>
+                                        </select>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                    <fieldset class="form-group" >
+                                        <label>Lọc công việc theo đội<span class="text-danger">*</span></label>
+                                        <select name="id_iddonvi_iddoi" id="iddoicongtac" class="form-control select2">
+                                            <option value="">Chọn đội công tác</option>
+                                            @foreach($list_doicongtac as $doicongtac)
+                                            <option value="{{ $doicongtac->id }}">{{ $doicongtac->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1">
+                                    <button style="margin-top: 2em;" id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Tìm kiếm công việc"> <i class="fa fa-search"></i> Tìm</button>
+                                    
+                                </div>
+                            </div>
+                        </form>
+                </div>
+            </div>
+        </div>
+
          <div class="row">
             <div class="col-xs-12">
                <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -42,61 +104,11 @@
          <div class="row">
             <div class="col-xs-12">
                <div class="card-box table-responsive">
-                   <form id="tim-kiem-hoso" action="{{ route('cong-viec.index') }}" method="GET" role="form" idresult="ajax_table">
-                   
-                        <div class="row">
-                            @csrf
-                            <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 col-xl-2">
-                                <fieldset class="form-group">
-                                    <label for="sotailieu">Số/Ký hiệu</label>
-                                    <input type="text" name="sotailieu" parsley-trigger="change" placeholder="Nhập Số/Ký hiệu để lọc" class="form-control" id="sotailieu" value="">
-                                </fieldset>
-                            </div>
-
-                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                <fieldset class="form-group">
-                                    <label for="Trích yếu">Trích yếu</label>
-                                    <input type="text" name="trichyeu" parsley-trigger="change" placeholder="Nhập trích yếu để lọc" class="form-control" id="Trích yếu" value="">
-                                </fieldset>
-                            </div>
-
-                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                <fieldset class="form-group">
-                                    <label for="Trích yếu">Ngày tạo: Từ ngày</label>
-                                    <input type="text" name="ngaytao_tungay" parsley-trigger="change" placeholder="Nhập từ ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
-                                </fieldset>
-                            </div>
-
-                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                <fieldset class="form-group">
-                                    <label for="Trích yếu">Ngày tạo: Đến ngày</label>
-                                    <input type="text" name="ngaytao_denngay" parsley-trigger="change" placeholder="Nhập đến ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
-                                </fieldset>
-                            </div>
-
-                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                <fieldset class="form-group">
-                                    <label>Trạng thái</label>
-                                    <select id="idstatus" name="idstatus" class="form-control app_select2">
-                                        <option value="">Tất cả</option>
-                                        <option value="1">Đang xử lý</option>
-                                        <option value="2">Hoàn thành</option>
-                                    </select>
-                                </fieldset>
-                            </div>
-
-                            <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                <button style="margin-top: 2em;" id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Tìm kiếm công việc"> <i class="fa fa-search"></i></button>
-                                <a href="{{ route('get-create-cong-viec') }}" style="margin-top: 2em;" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"></i></a>
-                            </div>
+                   <div class="row">
+                        <div class="col-xs-12 col-sm-12 loading" id="ajax_table" style="position: relative;">
+                            @include('congviec.congviec_table')
                         </div>
-
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 loading" id="ajax_table" style="position: relative;">
-                                @include('congviec.congviec_table')
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                </div>
             </div>
          </div>

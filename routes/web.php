@@ -15,7 +15,7 @@ use Carbon\Carbon;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'HomeController@index');
+Route::get('/', 'CongviecController@index');
 //--------------------NGƯỜI DÙNG---------------------------
 // Route::get('/nguoi-dung/getLogin', 'NguoidungController@getLogin')->name('getLogin');
 // Route::post('/nguoi-dung/postLogin', 'NguoidungController@postLogin')->name('postLogin');
