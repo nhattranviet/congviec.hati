@@ -104,12 +104,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::group(['middleware' => 'web'], function () {
-    Route::get('/cong-viec', 'CongviecController@index')->name('cong-viec.index');
-    Route::get('/don-vi', 'DonviController@index')->name('don-vi.index');
-});
 //-------------------CÔNG VIỆC-----------------------
-// Route::get('/cong-viec', 'CongviecController@index')->name('cong-viec.index');
+Route::get('/cong-viec', 'CongviecController@index')->name('cong-viec.index');
 Route::get('/cong-viec/create', 'CongviecController@create')->name('get-create-cong-viec');
 Route::post('/cong-viec/create', 'CongviecController@store')->name('post-create-cong-viec');
 Route::get('/cong-viec/{idcongviec}/edit', 'CongviecController@edit')->name('get-edit-cong-viec');
@@ -123,7 +119,7 @@ Route::get('/cong-viec/{idnodecongviec}/deleteNode', 'CongviecController@deleteN
 //-------------------END CÔNG VIỆC-----------------------
 
 //-------------------ĐƠN VỊ - ĐỘI-----------------------
-// Route::get('/don-vi', 'DonviController@index')->name('don-vi.index');
+Route::get('/don-vi', 'DonviController@index')->name('don-vi.index');
 Route::get('/don-vi/{iddonvi}/set-doi', 'DonviController@setdoi')->name('don-vi-get-set-doi');
 Route::post('/don-vi/{iddonvi}/set-doi', 'DonviController@store_set_doi')->name('don-vi-post-set-doi');
 Route::get('/ajax-get-doi/{iddonvi?}', 'DonviController@getDoi')->name('ajax-get-doi');

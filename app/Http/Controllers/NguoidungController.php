@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Hash;
 use Auth;
+use Session;
 class NguoidungController extends Controller
 {
 	public $messages = array(
@@ -45,6 +46,14 @@ class NguoidungController extends Controller
 
         if(Auth::attempt( $data_user ))
         {
+            $data_user_session = DB::table('tbl_canbo')
+            ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
+            ->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', 'tbl_donvi_doi.id')
+            ->select('idcanbo', 'idnhomquyen', 'email', 'username', 'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddonvi_iddoi', 'iddonvi')
+            ->where('username', $data_user['username'])
+            ->first();
+            Session::put('userinfo', $data_user_session);
+            
             return redirect('/');
         }
         return redirect()->route('login');

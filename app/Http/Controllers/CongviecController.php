@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
 use Session;
+use App\User;
+use App\Canbo;
 
 class CongviecController extends Controller
 {
@@ -20,10 +22,8 @@ class CongviecController extends Controller
         'idstatus.required' => 'Trạng thái không được để trống',
         
     ];
-    public $curr_donvi = 19;
-    public $curr_idcanbo = 27;
-    public $curr_id_iddonvi_iddoi = 15;
-    public $id_iddonvi_iddoi_lanhdao = 11;
+    
+    // public $id_iddonvi_iddoi_lanhdao = 11;
 
     public $hanxuly;
     public $hancongviec;
@@ -33,25 +33,21 @@ class CongviecController extends Controller
         $this->middleware('auth');
     }
 
+    public function get_curr_id_iddonvi_iddoi_lanhdao()
+    {
+        return DB::table('tbl_donvi_doi')->where( array(
+            ['iddonvi', Session::get('userinfo')->iddonvi],
+            ['iddoi', '=', 2]
+        ) )->value('id');
+    }
+
+    
+
     public function index( Request $request )
     {
+        // echo Auth::user()->id; die;
+        print_r(Session::get('userinfo')->email); die;
         $arrWhere = array();
-        // session('name', 'Trần Viết Nhật');
-        // echo session('name'); die;
-        // Session::put('id',12 );
-        // echo Session::get('id' );
-        // // if($request->session()->has('name'))
-        // // {
-        // //     echo 'have';
-        // // }else{
-        // //     echo 'No';
-        // // }
-        // // die;
-        // echo $request->session()->get('name', 'Không có giá trị');
-        // $a = session(['key' => 'value']);
-        // print_r($a['key']);
-        // die;
-
         if($request->id_iddonvi_iddoi != NULL)
         {
             $arrWhere[] = array('tbl_congviec_chuyentiep.id_iddonvi_iddoi_nhan', '=', $request->id_iddonvi_iddoi );
@@ -92,7 +88,7 @@ class CongviecController extends Controller
 
         $data['list_doicongtac'] = DB::table('tbl_donvi_doi')
         ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
-        ->where('iddonvi', $this->curr_donvi)
+        ->where( 'iddonvi', Session::get('userinfo')->iddonvi )
         ->select('name', 'tbl_donvi_doi.id')
         ->get();
 
@@ -113,7 +109,7 @@ class CongviecController extends Controller
         ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
         ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
         ->where(array(
-            ['id_iddonvi_iddoi', '=', $this->id_iddonvi_iddoi_lanhdao]
+            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao()]
         ))
         ->get();
         return view('congviec.create', $data);
@@ -135,8 +131,8 @@ class CongviecController extends Controller
         }
 
         $dataCongViec = array(
-            'idcanbo_creater' => $this->curr_idcanbo,
-            'id_iddonvi_iddoi_creater' => $this->curr_id_iddonvi_iddoi,
+            'idcanbo_creater' => $this->Session::get('userinfo')->idcanbo,
+            'id_iddonvi_iddoi_creater' => Session::get('userinfo')->id_iddonvi_iddoi,
             'sotailieu' => $request->sotailieu,
             'trichyeu' => $request->trichyeu,
             'noisoanthao' => $request->noisoanthao,
@@ -154,7 +150,7 @@ class CongviecController extends Controller
             'idcongviec' => $idcongviec,
             'idcanbonhan' => $request->idcanbonhan,
             'timechuyentiep' => Carbon::now(),
-            'id_iddonvi_iddoi_nhan' => $this->id_iddonvi_iddoi_lanhdao,
+            'id_iddonvi_iddoi_nhan' => $this->get_curr_id_iddonvi_iddoi_lanhdao(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'order' => 0,
@@ -173,7 +169,7 @@ class CongviecController extends Controller
         ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
         ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
         ->where(array(
-            ['id_iddonvi_iddoi', '=', $this->id_iddonvi_iddoi_lanhdao]
+            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao()]
         ))
         ->get();
         $data['congviec_info'] = DB::table('tbl_congviec')->where('id',$idcongviec)->first();
@@ -266,7 +262,7 @@ class CongviecController extends Controller
 
         $data['list_doicongtac'] = DB::table('tbl_donvi_doi')
         ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
-        ->where('iddonvi', $this->curr_donvi)
+        ->where('iddonvi', Session::get('userinfo')->iddonvi )
         ->select('name', 'tbl_donvi_doi.id')
         ->get();
         $data['congviec_chuyentiep_info'] = DB::table('tbl_congviec_chuyentiep')

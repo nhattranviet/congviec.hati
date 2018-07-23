@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\User;
 
 class Canbo extends Authenticatable
 {
@@ -14,6 +15,7 @@ class Canbo extends Authenticatable
      *
      * @var array
      */
+    protected $table = "tbl_canbo";
     protected $fillable = [
         'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddoi_iddonvi'
     ];
@@ -26,4 +28,9 @@ class Canbo extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function users()
+    {
+        return $this->hasMany('App\User', 'idcanbo');
+    }
 }

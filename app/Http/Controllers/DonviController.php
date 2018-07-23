@@ -15,7 +15,7 @@ class DonviController extends Controller
      */
     public function index( Request $request )
     {
-        echo Session::get('id' ); die;
+        
         if($request->keyword)
         {
             $data['list_donvi'] = DB::table('tbl_donvi')
