@@ -34,7 +34,7 @@
             <!-- item-->
             <div class="dropdown-item noti-title">
                 <h5 class="text-overflow">
-                {{-- <small>Xin chào! {{ Auth::user()->name }}</small> --}}
+                <small>Xin chào! {{ (Auth::check()) ? Auth::user()->username : NULL }}</small>
                 </h5>
             </div>
             <!-- item-->

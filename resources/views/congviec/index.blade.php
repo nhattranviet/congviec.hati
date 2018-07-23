@@ -33,7 +33,7 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <a style="margin-bottom: 5px;" href="#demo" class="btn btn-info" data-toggle="collapse"><i class="fa fa-filter"></i> Lọc</a>
+                <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
                 <a href="{{ route('get-create-cong-viec') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
                 <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
                         <form id="tim-kiem-hoso" action="{{ route('cong-viec.index') }}" method="GET" role="form" idresult="ajax_table">
@@ -75,7 +75,7 @@
                                     <fieldset class="form-group" >
                                         <label>Lọc công việc theo đội<span class="text-danger">*</span></label>
                                         <select name="id_iddonvi_iddoi" id="iddoicongtac" class="form-control select2">
-                                            <option value="">Chọn đội công tác</option>
+                                            <option value="">Tất cả các đội</option>
                                             @foreach($list_doicongtac as $doicongtac)
                                             <option value="{{ $doicongtac->id }}">{{ $doicongtac->name }}</option>
                                             @endforeach

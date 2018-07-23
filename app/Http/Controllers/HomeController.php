@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Session;
 
 class HomeController extends Controller
 {
@@ -25,8 +26,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        echo $_SESSION['curr_donvi']; die;
+        echo Session::get('id' );die;
         $current_date = date('Y-m-d', time());
         $ago_14_year = date('Y-m-d', strtotime($current_date. ' - 14 years'));
 

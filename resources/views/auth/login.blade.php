@@ -61,7 +61,8 @@
                             @endif
                             <div class="alert alert-success" id="success-msg" style="display: none"></div>
                         </div>
-                        <form class="form-horizontal m-t-20" method="POST" action="{{ route('login') }}">
+                        <form class="form-horizontal m-t-20" method="POST" action="{{ route('postLogin') }}">
+                        {{-- <form class="form-horizontal m-t-20" method="POST" action="{{ route('login') }}"> --}}
                             @csrf
                             <div class="form-group ">
                                 <div class="col-xs-12">

@@ -39,14 +39,15 @@ class NguoidungController extends Controller
 
         $data_user = array(
             'username' => $request->username,
-            'password' => $request->password
+            'password' => $request->password,
+            'active' => 1
         );
 
         if(Auth::attempt( $data_user ))
         {
-            return redirect()->route('nhan-khau.index');
+            return redirect('/');
         }
-        return redirect()->route('getLogin');
+        return redirect()->route('login');
         
     }
 

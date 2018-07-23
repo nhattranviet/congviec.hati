@@ -5,17 +5,17 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Canbo extends Authenticatable
 {
     use Notifiable;
-
+    // protected $connection = 'coredb';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddoi_iddonvi'
     ];
 
     /**

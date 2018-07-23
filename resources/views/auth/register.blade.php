@@ -39,7 +39,7 @@
                     </div>
                     <div class="text-xs-center m-t-10">
                         <a href="#" style="font-size: 1.5em; color: #1bb99a; font-weight: bold">
-                            <span>CÔNG AN HUYỆN KỲ ANH <br> HỆ THỐNG QUẢN LÝ NHÂN KHẨU</span>
+                            <span>CÔNG AN HUYỆN KỲ ANH <br> PHẦN MỀM QUẢN LÝ NHÂN KHẨU</span>
                         </a>
                     </div>
                     <div class="m-t-30 m-b-20">

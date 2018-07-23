@@ -7,6 +7,7 @@ use Validator;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
+use Session;
 
 class CongviecController extends Controller
 {
@@ -29,13 +30,27 @@ class CongviecController extends Controller
 
     public function __construct()
     {
-        $_SESSION['curr_donvi'] = $this->curr_donvi;
+        $this->middleware('auth');
     }
 
     public function index( Request $request )
     {
         $arrWhere = array();
-        
+        // session('name', 'Trần Viết Nhật');
+        // echo session('name'); die;
+        // Session::put('id',12 );
+        // echo Session::get('id' );
+        // // if($request->session()->has('name'))
+        // // {
+        // //     echo 'have';
+        // // }else{
+        // //     echo 'No';
+        // // }
+        // // die;
+        // echo $request->session()->get('name', 'Không có giá trị');
+        // $a = session(['key' => 'value']);
+        // print_r($a['key']);
+        // die;
 
         if($request->id_iddonvi_iddoi != NULL)
         {

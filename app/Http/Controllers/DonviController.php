@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Session;
 
 class DonviController extends Controller
 {
@@ -14,6 +15,7 @@ class DonviController extends Controller
      */
     public function index( Request $request )
     {
+        echo Session::get('id' ); die;
         if($request->keyword)
         {
             $data['list_donvi'] = DB::table('tbl_donvi')
