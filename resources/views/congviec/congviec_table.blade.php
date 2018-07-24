@@ -16,7 +16,23 @@
 
     <tbody>
         @foreach($list_congviec as $congviec)
-        <tr>
+            @php
+                $text_color = '';
+                $delta_time = ceil( ( strtotime($congviec->hancongviec) - time() ) / 86400);
+                if ($congviec->idstatus == 1)
+                {
+                    if( $delta_time == 1 )
+                    {
+                        $text_color = 'text-warning';
+                    }
+                    elseif($delta_time < 1)
+                    {
+                        $text_color = 'text-danger';
+                    }
+                    
+                }
+            @endphp
+        <tr class="{{ $text_color }}">
             <td>{{ $congviec->idcongviec }}</td>
             <td>{{ $congviec->sotailieu }}</td>
             <td>{{ $congviec->trichyeu }}</td>

@@ -71,6 +71,7 @@ class CongviecController extends Controller
             ->select('name', 'tbl_donvi_doi.id')
             ->get()->toArray();
         }
+        $data['current_day'] = date('Y-m-d', time());
         $arrListdoi = array();
         foreach ($data['list_doicongtac'] as $value) {
             $arrListdoi[] = $value->id;
@@ -96,9 +97,18 @@ class CongviecController extends Controller
 
             if($request->idstatus != NULL)
             {
-                $arrWhere[] = array('idstatus', '=', $request->idstatus );
+                if( $request->idstatus == 3 )   // Quá hạn
+                {
+                    $current_day = date('Y-m-d', time());
+                    // echo date('')
+                    $arrWhere[] = array('idstatus', '=', 1 );
+                    $arrWhere[] = array('hancongviec', '<=', $current_day );
+                }
+                else
+                {
+                    $arrWhere[] = array('idstatus', '=', $request->idstatus );
+                }
             }
-
 
             if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
             {
@@ -118,8 +128,13 @@ class CongviecController extends Controller
                         ->orWhere('trichyeu', 'LIKE', '%'.$request->keyword.'%');
                     });
                 }
+
+                if( $request->idstatus == 3 )
+                {
+                    $dt = $dt->orderBy('hancongviec', 'ASC');
+                }
+                
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->orderBy('tbl_congviec.id', 'DESC')
                 ->distinct()
                 ->paginate(10, ['idcongviec']);
             }
@@ -138,12 +153,15 @@ class CongviecController extends Controller
                         ->orWhere('trichyeu', 'LIKE', '%'.$request->keyword.'%');
                     });
                 }
+                if( $request->idstatus == 3 )
+                {
+                   $dt = $dt->orderBy('hancongviec', 'ASC');
+                }
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->orderBy('tbl_congviec.id', 'DESC')
                 ->distinct()
                 ->paginate(10, ['idcongviec']);
             }
-            
+
             return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
 
         }

@@ -28,6 +28,9 @@
 		.has-danger ~ .select2 .select2-selection {
 		border: 1px solid #ff5d48;
 		}
+		.profile-dropdown {
+			width: 250px;
+		}
 	</style>
 	<!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

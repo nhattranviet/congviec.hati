@@ -67,6 +67,7 @@
                                             <option value="">Tất cả</option>
                                             <option value="1">Đang xử lý</option>
                                             <option value="2">Hoàn thành</option>
+                                            <option value="3">Quá hạn</option>
                                         </select>
                                     </fieldset>
                                 </div>

@@ -23,6 +23,11 @@ class CanboController extends Controller
         'username.unique' => 'Username này đã tồn tại trong hệ thống',
     ];
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Request $request)
     {
         $arrWhere = array();
