@@ -45,8 +45,6 @@ class CongviecController extends Controller
 
     public function index( Request $request )
     {
-        // echo Auth::user()->id; die;
-        print_r(Session::get('userinfo')->email); die;
         $arrWhere = array();
         if($request->id_iddonvi_iddoi != NULL)
         {
@@ -72,7 +70,6 @@ class CongviecController extends Controller
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
         ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
         ->where($arrWhere);
-        // ->where('tbl_congviec_chuyentiep.id', DB::raw("(SELECT MAX(`id`) FROM tbl_congviec_chuyentiep WHERE idcongviec =".));
         if ($request->keyword)
         {
             $dt = $dt->where(function ($query) use ($request)
@@ -82,19 +79,35 @@ class CongviecController extends Controller
             });
         }
         $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
+        // ->groupBy('idcongviec')
         ->orderBy('tbl_congviec.id', 'DESC')
         ->distinct()
-        ->paginate(10);
-
+        
+        ->paginate(10, ['idcongviec']);
+        // print_r($data['list_congviec']); die;
         $data['list_doicongtac'] = DB::table('tbl_donvi_doi')
         ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
         ->where( 'iddonvi', Session::get('userinfo')->iddonvi )
         ->select('name', 'tbl_donvi_doi.id')
         ->get();
 
+        
+        if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() )
+        {
+            $data['list_doicongtac'] = DB::table('tbl_lanhdaodonvi_quanlydoi')
+            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_lanhdaodonvi_quanlydoi.idcanbo')
+            ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_lanhdaodonvi_quanlydoi.id_iddonvi_iddoi')
+            ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+            ->where('idcanbo', Session::get('userinfo')->idcanbo)
+            ->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')
+            ->get();
+        }
+        else{
+
+        }
+
         if( $request->ajax() )
         {
-            
             return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
         }
         return view('congviec.index', $data);
@@ -131,7 +144,7 @@ class CongviecController extends Controller
         }
 
         $dataCongViec = array(
-            'idcanbo_creater' => $this->Session::get('userinfo')->idcanbo,
+            'idcanbo_creater' => Session::get('userinfo')->idcanbo,
             'id_iddonvi_iddoi_creater' => Session::get('userinfo')->id_iddonvi_iddoi,
             'sotailieu' => $request->sotailieu,
             'trichyeu' => $request->trichyeu,
@@ -340,8 +353,9 @@ class CongviecController extends Controller
     public function deleteNodeChuyentiep( $idnode )
     {
         $congviec_node_info = DB::table('tbl_congviec_chuyentiep')->where('id',$idnode)->first();
+        // print_r( $congviec_node_info ); die;
         DB::table('tbl_congviec_chuyentiep')->where('id', $idnode)->delete();
-        if( $congviec_node_info->order === 0 )
+        if( $congviec_node_info->order == 0 )
         {
             DB::table('tbl_congviec')->where('id', $congviec_node_info->idcongviec)->delete();
             return redirect()->route('cong-viec.index');
@@ -350,7 +364,5 @@ class CongviecController extends Controller
         {
             return redirect()->route('get-show-cong-viec', $congviec_node_info->idcongviec);
         }
-        
-        
     }
 }

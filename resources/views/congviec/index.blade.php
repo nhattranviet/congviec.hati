@@ -75,9 +75,9 @@
                                     <fieldset class="form-group" >
                                         <label>Lọc công việc theo đội<span class="text-danger">*</span></label>
                                         <select name="id_iddonvi_iddoi" id="iddoicongtac" class="form-control select2">
-                                            <option value="">Tất cả các đội</option>
+                                            <option value="">Tất cả</option>
                                             @foreach($list_doicongtac as $doicongtac)
-                                            <option value="{{ $doicongtac->id }}">{{ $doicongtac->name }}</option>
+                                                <option value="{{ $doicongtac->id }}">{{ $doicongtac->name }}</option>
                                             @endforeach
                                         </select>
                                     </fieldset>
