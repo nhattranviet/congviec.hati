@@ -87,20 +87,20 @@ $config['defaultResourceTypes'] = '';
 $config['resourceTypes'][] = array(
     'name'              => 'Files', // Single quotes not allowed.
     'directory'         => 'files',
-    'maxSize'           => "20M",
+    'maxSize'           => "5M",
     'allowedExtensions' => '7z,csv,doc,docx,gzip,pdf,png,ppt,pptx,pxd,jpg,rar,zip',
     'deniedExtensions'  => '',
     'backend'           => 'default'
 );
 
-$config['resourceTypes'][] = array(
-    'name'              => 'Images',
-    'directory'         => 'images',
-    'maxSize'           => "20M",
-    'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
-    'deniedExtensions'  => '',
-    'backend'           => 'default'
-);
+// $config['resourceTypes'][] = array(
+//     'name'              => 'Images',
+//     'directory'         => 'images',
+//     'maxSize'           => "20M",
+//     'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
+//     'deniedExtensions'  => '',
+//     'backend'           => 'default'
+// );
 
 /*================================ Access Control =====================================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_roleSessionVar

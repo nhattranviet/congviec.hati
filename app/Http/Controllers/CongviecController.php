@@ -79,6 +79,16 @@ class CongviecController extends Controller
 
         if( $request->ajax() )
         {
+            if($request->sotailieu != NULL)
+            {
+                $arrWhere[] = array('sotailieu', 'LIKE', '%'.$request->sotailieu.'%');
+            }
+
+            if($request->trichyeu != NULL)
+            {
+                $arrWhere[] = array('trichyeu', 'LIKE', '%'.$request->trichyeu.'%');
+            }
+
             if($request->id_iddonvi_iddoi != NULL)
             {
                 $arrListdoi = array($request->id_iddonvi_iddoi);
@@ -120,18 +130,13 @@ class CongviecController extends Controller
                     $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
                     ->orWhere('idcanbonhan', Session::get('userinfo')->idcanbo);
                 });
-                if ($request->keyword)
-                {
-                    $dt = $dt->where(function ($query) use ($request)
-                    {
-                        $query->where('sotailieu', 'LIKE', '%'.$request->keyword.'%')
-                        ->orWhere('trichyeu', 'LIKE', '%'.$request->keyword.'%');
-                    });
-                }
-
                 if( $request->idstatus == 3 )
                 {
                     $dt = $dt->orderBy('hancongviec', 'ASC');
+                }
+                else
+                {
+                    $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
                 }
                 
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
@@ -145,23 +150,18 @@ class CongviecController extends Controller
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
                 ->where( $arrWhere );
-                if ($request->keyword)
-                {
-                    $dt = $dt->where(function ($query) use ($request)
-                    {
-                        $query->where('sotailieu', 'LIKE', '%'.$request->keyword.'%')
-                        ->orWhere('trichyeu', 'LIKE', '%'.$request->keyword.'%');
-                    });
-                }
                 if( $request->idstatus == 3 )
                 {
                    $dt = $dt->orderBy('hancongviec', 'ASC');
+                }
+                else
+                {
+                    $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
                 }
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
                 ->distinct()
                 ->paginate(10, ['idcongviec']);
             }
-
             return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
 
         }
@@ -170,14 +170,14 @@ class CongviecController extends Controller
             
             if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
             {
-                $data['list_congviec'] = DB::table( 'tbl_congviec' )
+                $data['list_congviec'] = DB::table( 'tbl_congviec' )->distinct()
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
                 ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
                 ->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
                 ->orWhere('idcanbonhan', Session::get('userinfo')->idcanbo)
+                ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo)
                 ->orderBy('tbl_congviec.id', 'DESC')
-                ->distinct()
                 ->paginate(10, ['idcongviec']);
             }
             else
@@ -187,6 +187,7 @@ class CongviecController extends Controller
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
                 ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
                 ->where('idcanbonhan', Session::get('userinfo')->idcanbo)
+                ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo)
                 ->orderBy('tbl_congviec.id', 'DESC')
                 ->distinct()
                 ->paginate(10, ['idcongviec']);

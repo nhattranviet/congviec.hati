@@ -39,28 +39,23 @@
                         <form id="tim-kiem-hoso" action="{{ route('cong-viec.index') }}" method="GET" role="form" idresult="ajax_table">
                             <div class="row">
                                 @csrf
-                                <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 col-xl-3">
-                                    <fieldset class="form-group">
-                                        <label for="sotailieu">Nội dung tìm kiếm</label>
-                                        <input type="text" name="keyword" parsley-trigger="change" placeholder="Nhập Số/Ký hiệu hoặc trích yếu để lọc" class="form-control" id="sotailieu" value="">
-                                    </fieldset>
-                                </div>
+                                
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Ngày tạo: Từ ngày</label>
                                         <input type="text" name="ngaytao_tungay" parsley-trigger="change" placeholder="Nhập từ ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Ngày tạo: Đến ngày</label>
                                         <input type="text" name="ngaytao_denngay" parsley-trigger="change" placeholder="Nhập đến ngày để lọc" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                     <fieldset class="form-group">
                                         <label>Lọc theo trạng thái</label>
                                         <select id="idstatus" name="idstatus" class="form-control app_select2">
@@ -72,7 +67,7 @@
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                     <fieldset class="form-group" >
                                         <label>Lọc công việc theo đội<span class="text-danger">*</span></label>
                                         <select name="id_iddonvi_iddoi" id="iddoicongtac" class="form-control select2">
@@ -84,8 +79,22 @@
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1">
-                                    <button style="margin-top: 2em;" id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Tìm kiếm công việc"> <i class="fa fa-search"></i> Tìm</button>
+                                <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 col-xl-6">
+                                    <fieldset class="form-group">
+                                        <label for="sotailieu">Số/Ký hiệu công việc</label>
+                                        <input type="text" name="sotailieu" parsley-trigger="change" placeholder="Nhập Số/Ký hiệu công việc để lọc" class="form-control" id="sotailieu" value="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-2 col-xs-2 col-md-2 col-xl-6">
+                                    <fieldset class="form-group">
+                                        <label for="trichyeu">Trích yếu</label>
+                                        <input type="text" name="trichyeu" parsley-trigger="change" placeholder="Nhập Số/Ký hiệu hoặc trích yếu để lọc" class="form-control" id="trichyeu" value="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1" style="margin-top: 5px;">
+                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Tìm kiếm công việc"> <i class="fa fa-search"></i> Tìm</button>
                                     
                                 </div>
                             </div>
