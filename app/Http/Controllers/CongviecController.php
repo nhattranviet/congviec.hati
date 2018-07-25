@@ -40,27 +40,33 @@ class CongviecController extends Controller
         $this->middleware('auth');
     }
 
-    public function get_curr_id_iddonvi_iddoi_lanhdao()
+    public function get_curr_id_iddonvi_iddoi_lanhdao($iddonvi)
     {
         return DB::table('tbl_donvi_doi')->where( array(
-            ['iddonvi', Session::get('userinfo')->iddonvi],
+            ['iddonvi', $iddonvi],
             ['iddoi', '=', 2]
         ) )->value('id');
+    }
+
+    public function get_id_iddonvi_iddoi_quanly($idlanhdao)
+    {
+        return $data['list_doicongtac'] = DB::table('tbl_lanhdaodonvi_quanlydoi')
+            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_lanhdaodonvi_quanlydoi.idcanbo')
+            ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_lanhdaodonvi_quanlydoi.id_iddonvi_iddoi')
+            ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+            ->where('idcanbo', $idlanhdao)
+            ->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')
+            ->get()->toArray();
     }
 
 
     public function index( Request $request )
     {
+        // Session::flash('alert_message', array('type'=>'error', 'content' => 'Trần Viết Nhật'));
         $arrWhere = array();
-        if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() )
+        if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi) )
         {
-            $data['list_doicongtac'] = DB::table('tbl_lanhdaodonvi_quanlydoi')
-            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_lanhdaodonvi_quanlydoi.idcanbo')
-            ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_lanhdaodonvi_quanlydoi.id_iddonvi_iddoi')
-            ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
-            ->where('idcanbo', Session::get('userinfo')->idcanbo)
-            ->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')
-            ->get()->toArray();
+            $data['list_doicongtac'] = $this->get_id_iddonvi_iddoi_quanly(Session::get('userinfo')->idcanbo);
         }
         else
         {
@@ -119,7 +125,7 @@ class CongviecController extends Controller
                 }
             }
 
-            if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
+            if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi) || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
             {
                 $dt = DB::table( 'tbl_congviec' )
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -140,7 +146,7 @@ class CongviecController extends Controller
                     $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
                 }
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->paginate(2, ['idcongviec']);
+                ->paginate(10, ['idcongviec']);
             }
             else
             {   
@@ -165,14 +171,14 @@ class CongviecController extends Controller
                     $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
                 }
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->paginate(2, ['idcongviec']);
+                ->paginate(10, ['idcongviec']);
             }
             return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
 
         }
         else
         {
-            if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
+            if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi) || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
             {
                 $data['list_congviec'] = DB::table( 'tbl_congviec' )
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -185,7 +191,7 @@ class CongviecController extends Controller
                 })
                 ->select('tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
                 ->orderBy('idcongviec', 'DESC')
-                ->paginate(2, ['tbl_congviec.id']);
+                ->paginate(10, ['tbl_congviec.id']);
                 
             }
             else
@@ -200,7 +206,7 @@ class CongviecController extends Controller
                 })
                 ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
                 ->orderBy('tbl_congviec.id', 'DESC')
-                ->paginate(2, ['tbl_congviec.id']);
+                ->paginate(10, ['tbl_congviec.id']);
             }
 
             
@@ -218,7 +224,7 @@ class CongviecController extends Controller
         ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
         ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
         ->where(array(
-            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao()]
+            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi)]
         ))
         ->get();
         return view('congviec.create', $data);
@@ -231,7 +237,6 @@ class CongviecController extends Controller
             'trichyeu' => 'required',
             'idcanbonhan' => 'required',
             'hancongviec' => 'required',
-            'ghichu' => 'required',
 
         ], $this->messages);
 
@@ -259,7 +264,7 @@ class CongviecController extends Controller
             'idcongviec' => $idcongviec,
             'idcanbonhan' => $request->idcanbonhan,
             'timechuyentiep' => Carbon::now(),
-            'id_iddonvi_iddoi_nhan' => $this->get_curr_id_iddonvi_iddoi_lanhdao(),
+            'id_iddonvi_iddoi_nhan' => $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'order' => 0,
@@ -278,7 +283,7 @@ class CongviecController extends Controller
         ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
         ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
         ->where(array(
-            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao()]
+            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi)]
         ))
         ->get();
         $data['congviec_info'] = DB::table('tbl_congviec')->where('id',$idcongviec)->first();
@@ -461,4 +466,68 @@ class CongviecController extends Controller
             return redirect()->route('get-show-cong-viec', $congviec_node_info->idcongviec);
         }
     }
+
+    public function toggle_congviec_status($idcongviec)
+    {
+        
+        if( $this->check_role_congviec($idcongviec) )
+        {
+            $current_status = DB::table('tbl_congviec')->where('id',$idcongviec)->value('idstatus');
+            $data_update = array(
+                'idstatus' => ($current_status == 1) ? 2 : 1
+            );
+            DB::table('tbl_congviec')->where('id',$idcongviec)->update($data_update);
+            $data_message = array('alert_message' => ['type' => 'success', 'content' => 'Cập nhật trạng thái công việc thành công']);
+        }
+        else{
+            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
+        }
+        return redirect()->route('cong-viec.index')->with($data_message);
+    }
+
+    public function check_role_congviec($idcongviec)
+    {
+        $congviec_info = DB::table('tbl_congviec_chuyentiep')->whereRaw("tbl_congviec_chuyentiep.id = ( SELECT max(id) FROM tbl_congviec_chuyentiep WHERE  idcongviec = $idcongviec) ")->select('idcanbonhan', 'id_iddonvi_iddoi_nhan')->first();
+        if($congviec_info == NULL)
+        {
+            return FALSE;
+        }
+        if(Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_captruongdonvi || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_capphodonvi)   // lãnh đạo đơn vị
+        {
+            $list_doi_quanly = $this->get_id_iddonvi_iddoi_quanly( Session::get('userinfo')->idcanbo );
+            if($list_doi_quanly == NULL)
+            {
+                return FALSE;
+            }
+
+            foreach( $list_doi_quanly as $doi )
+            {
+                if($doi->id == $congviec_info->id_iddonvi_iddoi_nhan)
+                {
+                    return TRUE;
+                }
+            }
+            return FALSE;
+        }
+        elseif(Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong)    // Đội trưởng
+        {
+            if(Session::get('userinfo')->id_iddonvi_iddoi == $congviec_info->id_iddonvi_iddoi_nhan)
+            {
+                return TRUE;
+            }
+            return FALSE;
+        }
+        else {  //Cán bộ và đội phó
+            if( $congviec_info->idcanbonhan == Session::get('userinfo')->idcanbo )
+            {
+                return TRUE;
+            }
+            else
+            {
+                return FALSE;
+            }
+        }
+    }
+
+
 }

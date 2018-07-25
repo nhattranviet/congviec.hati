@@ -111,28 +111,29 @@
 	<!-- App js -->
 	
 	<script src="{{ asset('/assets/js/jquery.app.js?v=1.0.0') }}"></script>
-
+	
 	<script type="text/javascript">
 	$(document).ready(function(){
+		
 		@if(session('alert_message'))
-		toastr.options = {
-			"closeButton": true,
-			"debug": false,
-			"newestOnTop": true,
-			"progressBar": true,
-			"positionClass": "toast-top-right",
-			"preventDuplicates": false,
-			"onclick": null,
-			"showDuration": "300",
-			"hideDuration": "1000",
-			"timeOut": "6000",
-			"extendedTimeOut": "1000",
-			"showEasing": "swing",
-			"hideEasing": "linear",
-			"showMethod": "fadeIn",
-			"hideMethod": "fadeOut"
-		}
-		Command: toastr["{{ session('alert_message')['type'] }}"]("{{ session('alert_message')['content'] }}")
+			toastr.options = {
+				"closeButton": true,
+				"debug": false,
+				"newestOnTop": true,
+				"progressBar": true,
+				"positionClass": "toast-top-right",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1000",
+				"timeOut": "6000",
+				"extendedTimeOut": "1000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+			}
+			Command: toastr["{{ session('alert_message')['type'] }}"]("{{ session('alert_message')['content'] }}")
 		@endif
 
 		$('.app_select2').select2(

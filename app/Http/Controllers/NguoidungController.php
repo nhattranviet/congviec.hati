@@ -49,7 +49,8 @@ class NguoidungController extends Controller
             $data_user_session = DB::table('tbl_canbo')
             ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
             ->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', 'tbl_donvi_doi.id')
-            ->select('idcanbo', 'idnhomquyen', 'email', 'username', 'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddonvi_iddoi', 'iddonvi')
+            ->join('tbl_nhomquyen', 'users.idnhomquyen', 'tbl_nhomquyen.id')
+            ->select('idcanbo', 'idnhomquyen', 'email', 'username', 'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddonvi_iddoi', 'iddonvi', 'tbl_nhomquyen.name as tennhomquyen')
             ->where('username', $data_user['username'])
             ->first();
             Session::put('userinfo', $data_user_session);

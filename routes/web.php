@@ -116,6 +116,7 @@ Route::get('/cong-viec/{idcongviec}/delete_confirm', 'CongviecController@destroy
 Route::get('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@chuyentiep')->name('get-chuyentiep-cong-viec');
 Route::post('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@postChuyentiep')->name('post-chuyentiep-cong-viec');
 Route::get('/cong-viec/{idnodecongviec}/deleteNode', 'CongviecController@deleteNodeChuyentiep')->name('get-delte-node-chuyen-tiep');
+Route::get('/cong-viec/{idcongviec}/toggle-congviec-status', 'CongviecController@toggle_congviec_status')->name('toggle-congviec-status');
 //-------------------END CÔNG VIỆC-----------------------
 
 //-------------------ĐƠN VỊ - ĐỘI-----------------------
@@ -131,8 +132,10 @@ Route::get('/can-bo/create', 'CanboController@create')->name('get-create-can-bo'
 Route::post('/can-bo/create', 'CanboController@store')->name('can-bo.store');
 Route::get('/can-bo/{idcanbo}/edit', 'CanboController@edit')->name('can-bo.edit');
 Route::post('/can-bo/{idcanbo}/update', 'CanboController@update')->name('can-bo.update');
+Route::get('/can-bo/{idcanbo?}/showinfo', 'CanboController@showinfo')->name('can-bo-showinfo');
 Route::get('/can-bo/add_old_data', 'CanboController@add_old_data');
 Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->name('ajax-get-can-bo');
+
 //-------------------END CÁN BỘ-----------------------
 
 Route::get('test', function () {
@@ -166,7 +169,6 @@ Route::get('test', function () {
         "Hà Huy Phong, 4, 13, 13",
         "Trực Ban PC44, 4, 2, 15",
     ];
-
     //Họ ten, cap bac, chuc vu, id_iddonvi_iddoi
     foreach ($data as $value)
     {
@@ -179,7 +181,6 @@ Route::get('test', function () {
                 'updated_at' => Carbon::now()
             ]
         );
-
         $idcanbo = DB::table('tbl_canbo')->insertGetId(
             [
                 'idconnguoi' => $idconnguoi,
@@ -190,18 +191,16 @@ Route::get('test', function () {
                 'updated_at' => Carbon::now()
             ]
         );
-
         $username = $this->vn_str_filter($a[0]);
         $check = DB::table('users')->where('username', $username)->count();
         $username = ( $check == 0 ) ? $username : $username.'_'.$idcanbo ;
-
         $iduser = DB::table('users')->insertGetId(
             [
                 'idcanbo' => $idcanbo,
                 'username' => $username,
                 'email' => $username.'@hati.bca',
                 'password' => Hash::make('123456'),
-                'idnhomquyen' => 3,
+                'idnhomquyen' => 1,
                 'active' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
@@ -211,6 +210,8 @@ Route::get('test', function () {
     
     // print_r($a);
 });
+
+
 
 
 

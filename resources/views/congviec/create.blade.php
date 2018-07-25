@@ -90,15 +90,6 @@
                                                     </div><!-- input-group -->
                                                 </div>
                                             </fieldset>
-                                            <fieldset class="form-group">
-                                                <label for="datepicker">Ghi chú<span class="text-danger">*</span></label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input type="text" name="ghichu" placeholder="Nhập cán bộ nhập văn bản" value="" class="form-control pull-right">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="fa fa-user"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
 
                                             <fieldset class="form-group" >
                                                 <label>Lãnh đạo duyệt<span class="text-danger">*</span></label>
@@ -108,6 +99,16 @@
                                                     <option value="{{ $lanhdao->id }}">{{ $lanhdao->hoten }} - {{ $lanhdao->name }}</option>
                                                     @endforeach
                                                 </select>
+                                            </fieldset>
+
+                                            <fieldset class="form-group">
+                                                <label for="datepicker">Ghi chú</label>
+                                                <div>
+                                                    <div class="input-group">
+                                                        <input type="text" name="ghichu" placeholder="Ghi chú công việc" value="" class="form-control pull-right">
+                                                        <span class="input-group-addon bg-custom b-0"><i class="fa fa-user"></i></span>
+                                                    </div><!-- input-group -->
+                                                </div>
                                             </fieldset>
                                         </div>
 

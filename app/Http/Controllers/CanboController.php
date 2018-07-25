@@ -9,6 +9,16 @@ use Illuminate\Validation\Rule;
 use Hash;
 use Validator;
 use Carbon\Carbon;
+use App\QuocGia;
+use App\Relation;
+use App\Religion;
+use App\Nation;
+use App\Education;
+use App\Province;
+use App\District;
+use App\Ward;
+use App\Career;
+use Auth;
 
 class CanboController extends Controller
 {
@@ -23,9 +33,20 @@ class CanboController extends Controller
         'username.unique' => 'Username này đã tồn tại trong hệ thống',
     ];
 
-    public function __construct()
-    {
+    public function __construct(QuocGia $quocgia, Relation $relation, Religion $religion
+        , Nation $nation, Education $education, Career $career, Province $province, District $district
+        , Ward $ward) {
+
         $this->middleware('auth');
+        $this->quocgia = $quocgia;
+        $this->relation = $relation;
+        $this->religion = $religion;
+        $this->nation = $nation;
+        $this->education = $education;
+        $this->career = $career;
+        $this->province = $province;
+        $this->district = $district;
+        $this->ward = $ward;
     }
 
     public function index(Request $request)
@@ -299,6 +320,36 @@ class CanboController extends Controller
         //
     }
 
+    public function showinfo($idcanbo = NULL)
+    {
+        $idcanbo = ($idcanbo == NULL) ? Session::get('userinfo')->idcanbo : $idcanbo;
+        $data['userinfo'] = DB::table('tbl_canbo')
+        ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
+        ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
+        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->leftJoin('tbl_tongiao', 'tbl_tongiao.id', '=', 'tbl_connguoi.idtongiao')
+        ->leftJoin('tbl_nghenghiep', 'tbl_nghenghiep.id', '=', 'tbl_connguoi.idnghenghiep')
+        ->leftJoin('tbl_dantoc', 'tbl_dantoc.id', '=', 'tbl_connguoi.iddantoc')
+        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+        ->join('tbl_donvi', 'tbl_donvi.id', '=', 'tbl_donvi_doi.iddonvi')
+        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+        ->where('idcanbo', $idcanbo)
+        ->select('users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi')
+        ->first();
+        $data['page_title'] = "Thông tin cán bộ";
+
+        $data['countries'] = $this->quocgia->get();
+        $data['relations'] = $this->relation->get();
+        $data['religions'] = $this->religion->get();
+        $data['nations'] = $this->nation->get();
+        $data['educations'] = $this->education->get();
+        $data['careers'] = $this->career->get();
+        $data['list_quanhechuho'] = DB::table('tbl_moiquanhe')->where('loaiquanhe', 'nhanthan')->get();
+        return view( 'cahtcore.canbo.show', $data );
+        // print_r($userinfo);
+    }
+
     public function getCanbo($id_iddonvi_iddoi = NULL)
     {
         $data['list_canbo'] = DB::table('tbl_canbo')
@@ -378,7 +429,7 @@ class CanboController extends Controller
                     'username' => $username,
                     'email' => $username.'@hati.bca',
                     'password' => Hash::make('123456'),
-                    'idnhomquyen' => 3,
+                    'idnhomquyen' => 1,
                     'active' => 1,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
