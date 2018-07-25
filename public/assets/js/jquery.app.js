@@ -318,43 +318,43 @@
                 });
             });
 
-            // $(document).on("click", ".pagination a", function (event) {
-            //     event.preventDefault();
-            //     $(".loading").append(
-            //         '<img style="position: absolute; left: 30%; top: 10%; z-index: 100000;" src="/img/loading.gif" />'
-            //     );
-            //     var idresult = $("#tim-kiem-hoso").attr("idresult");
-            //     var page = $(this)
-            //         .attr("href")
-            //         .split("page=")[1];
-            //     $.ajax({
-            //         url: $("#tim-kiem-hoso").attr("action") + "?page=" + page,
-            //         type: "GET",
-            //         data: $("#tim-kiem-hoso").serialize(),
-            //         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            //         dataType: "json",
-            //         success: function (data) {
-            //             if ($.isEmptyObject(data.error)) {
-            //                 if (idresult) {
-            //                     $("#" + idresult).html(data.html);
-            //                 }
+            $(document).on("click", ".pagination a", function (event) {
+                event.preventDefault();
+                $(".loading").append(
+                    '<img style="position: absolute; left: 30%; top: 10%; z-index: 100000;" src="/img/loading.gif" />'
+                );
+                var idresult = $("#tim-kiem-hoso").attr("idresult");
+                var page = $(this)
+                    .attr("href")
+                    .split("page=")[1];
+                $.ajax({
+                    url: $("#tim-kiem-hoso").attr("action") + "?page=" + page,
+                    type: "GET",
+                    data: $("#tim-kiem-hoso").serialize(),
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType: "json",
+                    success: function (data) {
+                        if ($.isEmptyObject(data.error)) {
+                            if (idresult) {
+                                $("#" + idresult).html(data.html);
+                            }
 
-            //                 if (data.url) {
-            //                     window.location.href = data.url;
-            //                 }
-            //             } else {
-            //                 printMsg("#error-msg", data.error[0]);
-            //             }
-            //             window.scrollTo(0, 0);
-            //         },
-            //         error: function (data) {
-            //             var errors = $.parseJSON(data.responseText);
-            //             $.each(errors, function (key, value) {
-            //                 console.log(data.responseText);
-            //             });
-            //         }
-            //     });
-            // });
+                            if (data.url) {
+                                window.location.href = data.url;
+                            }
+                        } else {
+                            printMsg("#error-msg", data.error[0]);
+                        }
+                        window.scrollTo(0, 0);
+                    },
+                    error: function (data) {
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function (key, value) {
+                            console.log(data.responseText);
+                        });
+                    }
+                });
+            });
 
             $("#submitBtn").on("click", function (event) {
                 event.preventDefault();

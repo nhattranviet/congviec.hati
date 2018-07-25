@@ -48,7 +48,7 @@ class CongviecController extends Controller
         ) )->value('id');
     }
 
-    public function index( Request $request )
+    public function indexss( Request $request )
     {
         $arrWhere = array();
         if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() )
@@ -76,42 +76,42 @@ class CongviecController extends Controller
         }
             
         if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
-            {
-                $data['list_congviec'] = DB::table( 'tbl_congviec' )
-                ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-                ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
-                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function($query) use ($arrListdoi){
-                    $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
-                    ->orWhere('idcanbonhan', Session::get('userinfo')->idcanbo)
-                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo)
-                    ->orderBy('idcongviec', 'DESC');
-                })
-                ->select('tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->paginate(4, ['tbl_congviec.id']);
-                
-            }
-            else
-            {   
-                $data['list_congviec'] = DB::table( 'tbl_congviec' )
-                ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-                ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
-                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function ($query){
-                    $query->where('idcanbonhan', Session::get('userinfo')->idcanbo)
-                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
-                })
-                ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->orderBy('tbl_congviec.id', 'DESC')
-                ->paginate(4, ['tbl_congviec.id']);
-            }
+        {
+            $data['list_congviec'] = DB::table( 'tbl_congviec' )
+            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+            ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
+            ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+            ->where(function($query) use ($arrListdoi){
+                $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
+                ->orWhere('idcanbonhan', Session::get('userinfo')->idcanbo)
+                ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo)
+                ->orderBy('idcongviec', 'DESC');
+            })
+            ->select('tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
+            ->paginate(4, ['tbl_congviec.id']);
+            
+        }
+        else
+        {   
+            $data['list_congviec'] = DB::table( 'tbl_congviec' )
+            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+            ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
+            ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+            ->where(function ($query){
+                $query->where('idcanbonhan', Session::get('userinfo')->idcanbo)
+                ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+            })
+            ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
+            ->orderBy('tbl_congviec.id', 'DESC')
+            ->paginate(4, ['tbl_congviec.id']);
+        }
         
         return view('congviec.index', $data);
     }
 
     
 
-    public function indexss( Request $request )
+    public function index( Request $request )
     {
         $arrWhere = array();
         if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() )
@@ -201,10 +201,8 @@ class CongviecController extends Controller
                 {
                     $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
                 }
-                
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->distinct()
-                ->paginate(3, ['idcongviec']);
+                ->paginate(2, ['idcongviec']);
             }
             else
             {   
@@ -213,7 +211,13 @@ class CongviecController extends Controller
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
                 ->where( $arrWhere )
-                ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+                ->where(function ($query){
+                    $query->where('idcanbonhan', Session::get('userinfo')->idcanbo)
+                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+                });
+
+
                 if( $request->idstatus == 3 )
                 {
                    $dt = $dt->orderBy('hancongviec', 'ASC');
@@ -223,15 +227,13 @@ class CongviecController extends Controller
                     $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
                 }
                 $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->distinct()
-                ->paginate(3, ['idcongviec']);
+                ->paginate(2, ['idcongviec']);
             }
             return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
 
         }
         else
-        {   
-            
+        {
             if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao() || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
             {
                 $data['list_congviec'] = DB::table( 'tbl_congviec' )
@@ -241,11 +243,11 @@ class CongviecController extends Controller
                 ->where(function($query) use ($arrListdoi){
                     $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
                     ->orWhere('idcanbonhan', Session::get('userinfo')->idcanbo)
-                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo)
-                    ->orderBy('idcongviec', 'DESC');
+                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
                 })
                 ->select('tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->paginate(4, ['tbl_congviec.id']);
+                ->orderBy('idcongviec', 'DESC')
+                ->paginate(2, ['tbl_congviec.id']);
                 
             }
             else
@@ -253,12 +255,14 @@ class CongviecController extends Controller
                 $data['list_congviec'] = DB::table( 'tbl_congviec' )
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
+                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+                ->where(function ($query){
+                    $query->where('idcanbonhan', Session::get('userinfo')->idcanbo)
+                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+                })
                 ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->where('idcanbonhan', Session::get('userinfo')->idcanbo)
-                ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo)
                 ->orderBy('tbl_congviec.id', 'DESC')
-                ->distinct()
-                ->paginate(4, ['tbl_congviec.id']);
+                ->paginate(2, ['tbl_congviec.id']);
             }
 
             
