@@ -81,10 +81,11 @@
                                         <h4 class="{{ ($i % 2 == 1) ? 'text-warning' : 'text-purple' }}"> {{ $item->hoten }} </h4>
                                         <p class="timeline-date text-muted"> <i class="zmdi zmdi-alarm-check"></i> <small>  {{ date('H:i d-m-Y', strtotime( $item->timechuyentiep )) }} </small></p>
                                         <p class="text-danger"> {{ $item->ghichu }} </p>
-                                        <p>
-                                            <a onclick="return confirm('Đồng chí có muốn xóa chuyển tiếp công việc này không ?');" href="{{ route('get-delte-node-chuyen-tiep', $item->id) }}" class="btn btn-danger waves-effect waves-light btn-sm">Xóa</a>
-                                        </p>
-
+                                        @if ($item->id == $maxNodeCongViec)
+                                           <p>
+                                                <a onclick="return confirm('Đồng chí có muốn xóa chuyển tiếp công việc này không ?');" href="{{ route('get-delte-node-chuyen-tiep', $item->id) }}" class="btn btn-danger waves-effect waves-light btn-sm">Xóa</a>
+                                            </p> 
+                                        @endif
                                     </div>
                                 </div>
                             </div>

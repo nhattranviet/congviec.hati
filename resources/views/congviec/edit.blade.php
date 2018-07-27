@@ -86,16 +86,6 @@
                                                 <label for="exampleTextarea">Trích yếu<span class="text-danger">*</span></label>
                                                 <textarea class="form-control" name="trichyeu" placeholder="Nhập trích yếu của văn bản, công việc" rows="1">{{ $congviec_info->trichyeu }}</textarea>
                                             </fieldset>
-
-                                            <fieldset class="form-group" >
-                                                <label>Lãnh đạo duyệt<span class="text-danger">*</span></label>
-                                                <select name="idcanbonhan" class="form-control select2">
-                                                    <option value="">Chọn lãnh đạo duyệt ban đầu</option>
-                                                    @foreach($list_lanhdao as $lanhdao)
-                                                    <option {{ ($idcanboxulybandau == $lanhdao->id) ? 'selected' : NULL }} value="{{ $lanhdao->id }}">{{ $lanhdao->hoten }} - {{ $lanhdao->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </fieldset>
                                             
                                         </div>
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
@@ -109,24 +99,6 @@
                                                     </div><!-- input-group -->
                                                 </div>
                                             </fieldset>
-                                            <fieldset class="form-group">
-                                                <label for="datepicker">Hạn xử lý xong <span class="text-danger">*</span></label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input type="text" name="hanxuly" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="{{ ($congviec_info->hanxuly) ? date('d-m-Y', strtotime($congviec_info->hanxuly)) : NULL }}">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
-                                            <fieldset class="form-group">
-                                                <label for="datepicker">Ghi chú<span class="text-danger">*</span></label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input type="text" name="ghichu" placeholder="Nhập cán bộ nhập văn bản" value="{{ $congviec_info->ghichu }}" class="form-control pull-right">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="fa fa-user"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
 
                                             <fieldset class="form-group" >
                                                 <label>Trạng thái<span class="text-danger">*</span></label>
@@ -135,6 +107,28 @@
                                                     <option {{ ($congviec_info->idstatus == 1) ? 'selected' : NULL }} value="1">Đang xử lý</option>
                                                     <option {{ ($congviec_info->idstatus == 2) ? 'selected' : NULL }} value="2">Hoàn thành</option>
                                                 </select>
+                                            </fieldset>
+
+                                            <fieldset class="form-group" >
+                                                <label>Lãnh đạo duyệt<span class="text-danger">*</span></label>
+                                                <select name="idcanbonhan" class="form-control select2">
+                                                    <option value="">Chọn lãnh đạo duyệt ban đầu</option>
+                                                    @foreach($list_lanhdao as $lanhdao)
+                                                    <option {{ ($idcanboxulybandau == $lanhdao->id) ? 'selected' : NULL }} value="{{ $lanhdao->id }}">{{ $lanhdao->hoten }} - {{ $lanhdao->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                                            <fieldset class="form-group">
+                                                <label for="datepicker">Ghi chú</label>
+                                                <div>
+                                                    <div class="input-group">
+                                                        <input type="text" name="ghichu" placeholder="Ghi chú công việc" value="{{ $congviec_info->ghichu }}" class="form-control pull-right">
+                                                        <span class="input-group-addon bg-custom b-0"><i class="fa fa-user"></i></span>
+                                                    </div><!-- input-group -->
+                                                </div>
                                             </fieldset>
                                         </div>
 

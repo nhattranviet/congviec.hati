@@ -48,13 +48,13 @@ class NguoidungController extends Controller
         {
             $data_user_session = DB::table('tbl_canbo')
             ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
+            ->join('tbl_connguoi', 'tbl_canbo.idconnguoi', '=', 'tbl_connguoi.id')
             ->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', 'tbl_donvi_doi.id')
             ->join('tbl_nhomquyen', 'users.idnhomquyen', 'tbl_nhomquyen.id')
-            ->select('idcanbo', 'idnhomquyen', 'email', 'username', 'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddonvi_iddoi', 'iddonvi', 'tbl_nhomquyen.name as tennhomquyen')
+            ->select('users.id as iduser', 'idcanbo', 'idnhomquyen', 'email', 'username', 'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddonvi_iddoi', 'iddonvi', 'tbl_nhomquyen.name as tennhomquyen', 'hoten')
             ->where('username', $data_user['username'])
             ->first();
             Session::put('userinfo', $data_user_session);
-            
             return redirect('/');
         }
         return redirect()->route('login');
@@ -94,5 +94,36 @@ class NguoidungController extends Controller
     {
         Auth::logout();
         return redirect()->route('login');
+    }
+
+    public function changePassword( Request $request )
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+			'password' => 'required',
+			're_password' => 'required|same:password',
+
+        ], $this->messages);
+
+        $validator->after(function ($validator) use ($request) {
+            $data_user = array(
+                'id' => Session::get('userinfo')->iduser,
+                'password' => $request->old_password,
+                'active' => 1
+            );
+            if( !Auth::attempt( $data_user ) )
+            {
+                $validator->errors()->add('old_password', 'Mật khẩu cũ không đúng!');
+            }
+        });
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
+
+        DB::table('users')->where('id',Session::get('userinfo')->iduser)->update(array('password' =>  Hash::make($request->password)));
+        return response()->json(['success' => 'Thay đổi mật khẩu thành công ']);
+
+
     }
 }

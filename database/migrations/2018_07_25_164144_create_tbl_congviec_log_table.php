@@ -20,10 +20,9 @@ class CreateTblCongviecLogTable extends Migration
             $table->string('ip')->nullable();
             $table->string('content');
             $table->unsignedInteger('idcanbo');
-            $table->unsignedInteger('username');
+            $table->string('username');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('idcongviec')->references('id')->on('tbl_congviec');
         });
     }
 

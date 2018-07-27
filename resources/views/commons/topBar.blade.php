@@ -43,24 +43,14 @@
                     </h5>
                 </div>
                 <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <i class="zmdi zmdi-account-circle"></i>
-                    <span>Profile</span>
-                </a>
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="{{ route('can-bo-showinfo') }}" class="dropdown-item notify-item">
                     <i class="zmdi zmdi-settings"></i>
-                    <span>Settings</span>
-                </a>
-                <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
-                    <i class="zmdi zmdi-lock-open"></i>
-                    <span>Lock Screen</span>
+                    <span>Thông tin</span>
                 </a>
                 <!-- item-->
                 <a href="{{ URL::to('logout') }}" class="dropdown-item notify-item">
                     <i class="zmdi zmdi-power"></i>
-                    <span>Logout</span>
+                    <span>Thoát</span>
                 </a>
                 </div>
             </li>

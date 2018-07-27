@@ -20,7 +20,6 @@ class CongviecController extends Controller
         'hancongviec.required' => 'Hạn công việc không được để trống',
         'ghichu.required' => 'Ghi chú, cán bộ nhập công việc không được để trống',
         'idstatus.required' => 'Trạng thái không được để trống',
-        
     ];
     
     // public $id_iddonvi_iddoi_lanhdao = 11;
@@ -62,7 +61,7 @@ class CongviecController extends Controller
 
     public function index( Request $request )
     {
-        // Session::flash('alert_message', array('type'=>'error', 'content' => 'Trần Viết Nhật'));
+        $this->authorize('show-index', 1);
         $arrWhere = array();
         if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi) )
         {
@@ -272,11 +271,28 @@ class CongviecController extends Controller
         );
         DB::table('tbl_congviec_chuyentiep')->insert( $dataCongViecChuyentiep );
 
+        $data_log = array(
+            'idcongviec' => $idcongviec,
+            'user_agent' => $request->header('User-Agent'),
+            'ip' => $request->ip(),
+            'content' => Session::get('userinfo')->username.' thêm công việc '.$idcongviec.' - '.$request->sotailieu,
+            'idcanbo' => Session::get('userinfo')->idcanbo,
+            'username' => Session::get('userinfo')->username,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+        DB::table('tbl_congviec_log')->insert($data_log);
         return response()->json(['success' => 'Thêm công việc thành công ', 'url' => route('cong-viec.index')]);
     }
 
     public function edit($idcongviec)
     {
+        if( ! $this->check_role_congviec( $idcongviec ) )
+        {
+            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
+            return redirect()->route('cong-viec.index')->with($data_message);
+        }
+
         $data['page_name'] = "Sửa công việc";
         $data['list_lanhdao'] = DB::table('tbl_canbo')
         ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
@@ -303,7 +319,6 @@ class CongviecController extends Controller
             'trichyeu' => 'required',
             'idcanbonhan' => 'required',
             'hancongviec' => 'required',
-            'ghichu' => 'required',
             'idstatus' => 'required',
 
         ], $this->messages);
@@ -342,12 +357,28 @@ class CongviecController extends Controller
             ['idcongviec', '=', $idcongviec],
             ['order', '=', 0],
         ))->update( $dataCongViecChuyentiep_update );
+
+        $data_log = array(
+            'idcongviec' => $idcongviec,
+            'user_agent' => $request->header('User-Agent'),
+            'ip' => $request->ip(),
+            'content' => Session::get('userinfo')->username.' sửa công việc '.$idcongviec.' - '.$request->sotailieu,
+            'idcanbo' => Session::get('userinfo')->idcanbo,
+            'username' => Session::get('userinfo')->username,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+        DB::table('tbl_congviec_log')->insert($data_log);
         return response()->json(['success' => 'Thêm công việc thành công ', 'url' => route('cong-viec.index')]);
     }
 
     public function show($idcongviec)
     {
-        // echo 5 % 2; die;
+        if( ! $this->check_role_congviec( $idcongviec ) )
+        {
+            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
+            return redirect()->route('cong-viec.index')->with($data_message);
+        }
         $data['page_name'] = "Chi tiết công việc";
         $data['congviec_info'] = DB::table('tbl_congviec')
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -362,12 +393,18 @@ class CongviecController extends Controller
         ->orderBy('timechuyentiep', 'ASC')
         ->select('tbl_congviec_chuyentiep.*', 'hoten')
         ->get()->toArray();
-        // echo ( $data['congviec_chuyentiep_info'][0]->hoten ); die;
+        $data['maxNodeCongViec'] = DB::table('tbl_congviec_chuyentiep')->where('idcongviec',$idcongviec)->max('id');
+        // print_r ( $data['maxNodeCongViec'] ); die;
         return view('congviec.show', $data);
     }
 
     public function chuyentiep($idcongviec)
     {
+        if( ! $this->check_role_congviec( $idcongviec ) )
+        {
+            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
+            return redirect()->route('cong-viec.index')->with($data_message);
+        }
         $data['page_name'] = "Chuyển công việc";
         $data['congviec_info'] = DB::table('tbl_congviec')
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -395,7 +432,6 @@ class CongviecController extends Controller
         $validator = Validator::make($request->all(), [
                 'id_iddonvi_iddoi' => 'required',
                 'idcanbonhan' => 'required',
-                'hanxuly' => 'required|date_format:d-m-Y',
                 'thoigiangiao' => 'required|date_format:d-m-Y|before_or_equal:hanxuly'
 
             ],
@@ -422,12 +458,29 @@ class CongviecController extends Controller
         );
         DB::table('tbl_congviec_chuyentiep')->insert( $dataCongViecChuyentiep );
 
+        $data_log = array(
+            'idcongviec' => $idcongviec,
+            'user_agent' => $request->header('User-Agent'),
+            'ip' => $request->ip(),
+            'content' => Session::get('userinfo')->username.' chuyển tiếp công việc '.$idcongviec.' cho: '.$request->idcanbonhan. ' - id_iddonvi_iddoi: '.$request->id_iddonvi_iddoi,
+            'idcanbo' => Session::get('userinfo')->idcanbo,
+            'username' => Session::get('userinfo')->username,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+        DB::table('tbl_congviec_log')->insert($data_log);
+
         return response()->json(['success' => 'Chuyển tiếp công việc thành công ', 'url' => route('get-show-cong-viec', $idcongviec)]);        
     
     }
 
     public function delete($idcongviec)
     {
+        if( ! $this->check_role_congviec( $idcongviec ) )
+        {
+            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
+            return redirect()->route('cong-viec.index')->with($data_message);
+        }
         $data['page_name'] = "Chi tiết công việc";
         $data['congviec_info'] = DB::table('tbl_congviec')
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -446,28 +499,72 @@ class CongviecController extends Controller
 
     public function destroy($idcongviec)
     {
+        if( ! $this->check_role_congviec( $idcongviec ) )
+        {
+            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
+            return redirect()->route('cong-viec.index')->with($data_message);
+        }
         DB::table('tbl_congviec_chuyentiep')->where('idcongviec', $idcongviec)->delete();
         DB::table('tbl_congviec')->where('id', $idcongviec)->delete();
+        $data_log = array(
+            'idcongviec' => $idcongviec,
+            'user_agent' => $request->header('User-Agent'),
+            'ip' => $request->ip(),
+            'content' => Session::get('userinfo')->username.' xóa công việc '.$idcongviec,
+            'idcanbo' => Session::get('userinfo')->idcanbo,
+            'username' => Session::get('userinfo')->username,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+        DB::table('tbl_congviec_log')->insert($data_log);
         return redirect()->route('cong-viec.index');
     }
 
-    public function deleteNodeChuyentiep( $idnode )
+    public function deleteNodeChuyentiep(Request $request, $idnode )
     {
-        $congviec_node_info = DB::table('tbl_congviec_chuyentiep')->where('id',$idnode)->first();
+        $congviec_node_info = DB::table('tbl_congviec_chuyentiep')->where('id',$idnode)->select('idcongviec', 'idcanbonhan', 'id_iddonvi_iddoi_nhan', 'order')->first();
         // print_r( $congviec_node_info ); die;
         DB::table('tbl_congviec_chuyentiep')->where('id', $idnode)->delete();
+
+
+        $data_log = array(
+            'idcongviec' => $congviec_node_info->idcongviec,
+            'user_agent' => $request->header('User-Agent'),
+            'ip' => $request->ip(),
+            'content' => Session::get('userinfo')->username.' xóa node công việc '.$congviec_node_info->idcongviec.' - của cán bộ nhận: '.$congviec_node_info->idcanbonhan.' - id_iddonvo_iddoi_nhan: '.$congviec_node_info->id_iddonvi_iddoi_nhan,
+            'idcanbo' => Session::get('userinfo')->idcanbo,
+            'username' => Session::get('userinfo')->username,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+        
+        DB::table('tbl_congviec_log')->insert($data_log);
         if( $congviec_node_info->order == 0 )
         {
+            DB::table('tbl_congviec_chuyentiep')->where('idcongviec', $congviec_node_info->idcongviec)->delete();
             DB::table('tbl_congviec')->where('id', $congviec_node_info->idcongviec)->delete();
+            $data_log = array(
+                'idcongviec' => $congviec_node_info->idcongviec,
+                'user_agent' => $request->header('User-Agent'),
+                'ip' => $request->ip(),
+                'content' => Session::get('userinfo')->username.' xóa công việc '.$congviec_node_info->idcongviec,
+                'idcanbo' => Session::get('userinfo')->idcanbo,
+                'username' => Session::get('userinfo')->username,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            );
+            DB::table('tbl_congviec_log')->insert($data_log);
+            
             return redirect()->route('cong-viec.index');
         }
         else
         {
             return redirect()->route('get-show-cong-viec', $congviec_node_info->idcongviec);
         }
+
     }
 
-    public function toggle_congviec_status($idcongviec)
+    public function toggle_congviec_status(Request $request, $idcongviec)
     {
         
         if( $this->check_role_congviec($idcongviec) )
@@ -481,17 +578,34 @@ class CongviecController extends Controller
         }
         else{
             $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
+            return redirect()->route('cong-viec.index')->with($data_message);
         }
+        $data_log = array(
+            'idcongviec' => $idcongviec,
+            'user_agent' => $request->header('User-Agent'),
+            'ip' => $request->ip(),
+            'content' => Session::get('userinfo')->username.' thay đổi trạng thái công việc '.$idcongviec. ' từ '.$current_status. ' sang '. $data_update["idstatus"],
+            'idcanbo' => Session::get('userinfo')->idcanbo,
+            'username' => Session::get('userinfo')->username,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+        DB::table('tbl_congviec_log')->insert($data_log);
         return redirect()->route('cong-viec.index')->with($data_message);
     }
 
     public function check_role_congviec($idcongviec)
     {
-        $congviec_info = DB::table('tbl_congviec_chuyentiep')->whereRaw("tbl_congviec_chuyentiep.id = ( SELECT max(id) FROM tbl_congviec_chuyentiep WHERE  idcongviec = $idcongviec) ")->select('idcanbonhan', 'id_iddonvi_iddoi_nhan')->first();
+        $congviec_info = DB::table('tbl_congviec_chuyentiep')->join('tbl_congviec', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')->whereRaw("tbl_congviec_chuyentiep.id = ( SELECT max(id) FROM tbl_congviec_chuyentiep WHERE  idcongviec = $idcongviec) ")->select('idcanbonhan', 'id_iddonvi_iddoi_nhan', 'idcanbo_creater')->first();
         if($congviec_info == NULL)
         {
             return FALSE;
         }
+        if( Session::get('userinfo')->idcanbo == $congviec_info->idcanbo_creater )
+        {
+            return TRUE;
+        }
+
         if(Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_captruongdonvi || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_capphodonvi)   // lãnh đạo đơn vị
         {
             $list_doi_quanly = $this->get_id_iddonvi_iddoi_quanly( Session::get('userinfo')->idcanbo );

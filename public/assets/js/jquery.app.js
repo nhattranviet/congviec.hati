@@ -286,10 +286,10 @@
                             printMsg("#success-msg", data.success);
                             if (data.url) {
                                 window.location.href = data.url;
-                            } else {
-                                window.location.href = "/nhan-khau/";
                             }
-                        } else {
+                        }
+                        else
+                        {
                             var n = data.error[0].indexOf(".");
                             tab_idx = data.error[0].substring(n + 1, n + 2);
 
@@ -324,9 +324,7 @@
                     '<img style="position: absolute; left: 30%; top: 10%; z-index: 100000;" src="/img/loading.gif" />'
                 );
                 var idresult = $("#tim-kiem-hoso").attr("idresult");
-                var page = $(this)
-                    .attr("href")
-                    .split("page=")[1];
+                var page = $(this).attr("href").split("page=")[1];
                 $.ajax({
                     url: $("#tim-kiem-hoso").attr("action") + "?page=" + page,
                     type: "GET",

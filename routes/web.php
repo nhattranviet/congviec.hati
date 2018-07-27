@@ -15,22 +15,20 @@ use Carbon\Carbon;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+
 Route::get('/', 'CongviecController@index');
 //--------------------NGƯỜI DÙNG---------------------------
 // Route::get('/nguoi-dung/getLogin', 'NguoidungController@getLogin')->name('getLogin');
 Route::post('/nguoi-dung/postLogin', 'NguoidungController@postLogin')->name('postLogin');
-
 // Route::get('/nguoi-dung/getRegister', 'NguoidungController@getRegister');
 // Route::get('/register', 'NguoidungController@getRegister');
 // Route::post('/nguoi-dung/postRegister', 'NguoidungController@postRegister')->name('postRegister');
 
 // Route::get('/nguoi-dung/getLogout', 'NguoidungController@getLogout')->name('getLogout');
 Route::get('/logout', 'NguoidungController@getLogout')->name('getLogout');
-//--------------------End NGƯỜI DÙNG---------------------------
-
-
-
-
+Route::post('/change-password/', 'NguoidungController@changePassword')->name('nguoi-dung-changepassword');
+//------------------------------END NGƯỜI DÙNG ---------------------------
 Route::get('/tai-khoan', 'TaiKhoanController@index');
 Route::resource('/nhan-khau', 'NhanKhauController');
 Route::post('/nhan-khau/store', 'NhanKhauController@store')->name('nhankhau.store');
@@ -102,8 +100,6 @@ Route::post('/tam-tru/{idnhankhau}/{idsotamtru}/post-gia-han-tam-tru-nhan-khau',
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
 //-------------------CÔNG VIỆC-----------------------
 Route::get('/cong-viec', 'CongviecController@index')->name('cong-viec.index');
 Route::get('/cong-viec/create', 'CongviecController@create')->name('get-create-cong-viec');
@@ -132,7 +128,8 @@ Route::get('/can-bo/create', 'CanboController@create')->name('get-create-can-bo'
 Route::post('/can-bo/create', 'CanboController@store')->name('can-bo.store');
 Route::get('/can-bo/{idcanbo}/edit', 'CanboController@edit')->name('can-bo.edit');
 Route::post('/can-bo/{idcanbo}/update', 'CanboController@update')->name('can-bo.update');
-Route::get('/can-bo/{idcanbo?}/showinfo', 'CanboController@showinfo')->name('can-bo-showinfo');
+Route::get('/can-bo/showinfo/{idcanbo?}', 'CanboController@showinfo')->name('can-bo-showinfo');
+Route::get('/can-bo/{idcanbo?}/editInfo', 'CanboController@editInfo')->name('can-bo-editInfo');
 Route::get('/can-bo/add_old_data', 'CanboController@add_old_data');
 Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->name('ajax-get-can-bo');
 
@@ -173,7 +170,6 @@ Route::get('test', function () {
     foreach ($data as $value)
     {
         $a = explode( ',', $value );
-        
         $idconnguoi = DB::table('tbl_connguoi')->insertGetId(
             [
                 'hoten' => $a[0],
@@ -182,14 +178,14 @@ Route::get('test', function () {
             ]
         );
         $idcanbo = DB::table('tbl_canbo')->insertGetId(
-            [
-                'idconnguoi' => $idconnguoi,
-                'idcapbac' => $a[1],
-                'idchucvu' => $a[2],
-                'id_iddonvi_iddoi' => $a[3],
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]
+        [
+            'idconnguoi' => $idconnguoi,
+            'idcapbac' => $a[1],
+            'idchucvu' => $a[2],
+            'id_iddonvi_iddoi' => $a[3],
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]
         );
         $username = $this->vn_str_filter($a[0]);
         $check = DB::table('users')->where('username', $username)->count();
@@ -207,7 +203,6 @@ Route::get('test', function () {
             ]
         );
     }
-    
     // print_r($a);
 });
 

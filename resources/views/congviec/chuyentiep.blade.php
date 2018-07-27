@@ -82,18 +82,6 @@
 
                             <div class="col-md-3">
                                 <fieldset class="form-group" >
-                                    <label>Thời gian lãnh đạo giao hoàn thành<span class="text-danger">*</span></label>
-                                    <div>
-                                        <div class="input-group">
-                                            <input type="text" name="hanxuly" value="{{ ($congviec_info->hancongviec != NULL) ? date('d-m-Y', strtotime($congviec_info->hancongviec)) : NULL }}" class="form-control pull-right" id="datepicker">
-                                            <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-
-                            <div class="col-md-3">
-                                <fieldset class="form-group" >
                                     <label>Thời gian bắt đầu tính giao việc<span class="text-danger">*</span></label>
                                     <div>
                                         <div class="input-group">
@@ -104,7 +92,7 @@
                                 </fieldset>
                             </div>
 
-                            <div class="col-md-12">
+                            <div class="col-md-3">
                                 <fieldset class="form-group">
                                     <label for="datepicker">Bút phê/Ghi chú chuyển</label>
                                     <div>
@@ -119,7 +107,7 @@
                                 <fieldset class="form-group">
                                     <label for="datepicker">&nbsp;</label>
                                     <div>
-                                        <button type="submit" class="btn btn-primary"> <i class="zmdi zmdi-forward"></i> Chuyển</button>
+                                        <button type="submit" class="btn btn-primary"> <i class="zmdi zmdi-forward"></i> Giao việc</button>
                                     </div>
                                 </fieldset>
                                 
