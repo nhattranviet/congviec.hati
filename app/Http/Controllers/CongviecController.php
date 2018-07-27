@@ -235,18 +235,7 @@ class CongviecController extends Controller
             'ghichu' => $request->ghichu,
         );
         DB::table('tbl_congviec_chuyentiep')->insert( $dataCongViecChuyentiep );
-
-        $data_log = array(
-            'idcongviec' => $idcongviec,
-            'user_agent' => $request->header('User-Agent'),
-            'ip' => $request->ip(),
-            'content' => Session::get('userinfo')->username.' thêm công việc '.$idcongviec.' - '.$request->sotailieu,
-            'idcanbo' => Session::get('userinfo')->idcanbo,
-            'username' => Session::get('userinfo')->username,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        );
-        DB::table('tbl_congviec_log')->insert($data_log);
+        CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' thêm công việc '.$idcongviec.' - '.$request->sotailieu );
         return response()->json(['success' => 'Thêm công việc thành công ', 'url' => route('cong-viec.index')]);
     }
 
@@ -306,18 +295,7 @@ class CongviecController extends Controller
             ['idcongviec', '=', $idcongviec],
             ['order', '=', 0],
         ))->update( $dataCongViecChuyentiep_update );
-
-        $data_log = array(
-            'idcongviec' => $idcongviec,
-            'user_agent' => $request->header('User-Agent'),
-            'ip' => $request->ip(),
-            'content' => Session::get('userinfo')->username.' sửa công việc '.$idcongviec.' - '.$request->sotailieu,
-            'idcanbo' => Session::get('userinfo')->idcanbo,
-            'username' => Session::get('userinfo')->username,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        );
-        DB::table('tbl_congviec_log')->insert($data_log);
+        CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' sửa công việc '.$idcongviec.' - '.$request->sotailieu );
         return response()->json(['success' => 'Thêm công việc thành công ', 'url' => route('cong-viec.index')]);
     }
 
@@ -369,18 +347,8 @@ class CongviecController extends Controller
             'updated_at' => Carbon::now(),
         );
         DB::table('tbl_congviec_chuyentiep')->insert( $dataCongViecChuyentiep );
-
-        $data_log = array(
-            'idcongviec' => $idcongviec,
-            'user_agent' => $request->header('User-Agent'),
-            'ip' => $request->ip(),
-            'content' => Session::get('userinfo')->username.' chuyển tiếp công việc '.$idcongviec.' cho: '.$request->idcanbonhan. ' - id_iddonvi_iddoi: '.$request->id_iddonvi_iddoi,
-            'idcanbo' => Session::get('userinfo')->idcanbo,
-            'username' => Session::get('userinfo')->username,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        );
-        DB::table('tbl_congviec_log')->insert($data_log);
+        CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' chuyển tiếp công việc '.$idcongviec.' cho: '.$request->idcanbonhan. ' - id_iddonvi_iddoi: '.$request->id_iddonvi_iddoi );
+        
         return response()->json(['success' => 'Chuyển tiếp công việc thành công ', 'url' => route('get-show-cong-viec', $idcongviec)]);        
     }
 
@@ -392,21 +360,11 @@ class CongviecController extends Controller
         return view('congviec.delete', $data);
     }
 
-    public function destroy($idcongviec)
+    public function destroy(Request $request, $idcongviec)
     {
         DB::table('tbl_congviec_chuyentiep')->where('idcongviec', $idcongviec)->delete();
         DB::table('tbl_congviec')->where('id', $idcongviec)->delete();
-        $data_log = array(
-            'idcongviec' => $idcongviec,
-            'user_agent' => $request->header('User-Agent'),
-            'ip' => $request->ip(),
-            'content' => Session::get('userinfo')->username.' xóa công việc '.$idcongviec,
-            'idcanbo' => Session::get('userinfo')->idcanbo,
-            'username' => Session::get('userinfo')->username,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        );
-        DB::table('tbl_congviec_log')->insert($data_log);
+        CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' xóa công việc '.$idcongviec );
         return redirect()->route('cong-viec.index');
     }
 
@@ -414,33 +372,12 @@ class CongviecController extends Controller
     {
         $congviec_node_info = DB::table('tbl_congviec_chuyentiep')->where('id',$idnode)->select('idcongviec', 'idcanbonhan', 'id_iddonvi_iddoi_nhan', 'order')->first();
         DB::table('tbl_congviec_chuyentiep')->where('id', $idnode)->delete();
-        $data_log = array(
-            'idcongviec' => $congviec_node_info->idcongviec,
-            'user_agent' => $request->header('User-Agent'),
-            'ip' => $request->ip(),
-            'content' => Session::get('userinfo')->username.' xóa node công việc '.$congviec_node_info->idcongviec.' - của cán bộ nhận: '.$congviec_node_info->idcanbonhan.' - id_iddonvo_iddoi_nhan: '.$congviec_node_info->id_iddonvi_iddoi_nhan,
-            'idcanbo' => Session::get('userinfo')->idcanbo,
-            'username' => Session::get('userinfo')->username,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        );
-        
-        DB::table('tbl_congviec_log')->insert($data_log);
-        if( $congviec_node_info->order == 0 )
+        CongviecLibrary::logCongviec($request, $congviec_node_info->idcongviec, Session::get('userinfo')->username.' xóa node công việc '.$congviec_node_info->idcongviec.' - của cán bộ nhận: '.$congviec_node_info->idcanbonhan.' - id_iddonvo_iddoi_nhan: '.$congviec_node_info->id_iddonvi_iddoi_nhan );
+        if( $congviec_node_info->order && $congviec_node_info->order == 0 )
         {
             DB::table('tbl_congviec_chuyentiep')->where('idcongviec', $congviec_node_info->idcongviec)->delete();
             DB::table('tbl_congviec')->where('id', $congviec_node_info->idcongviec)->delete();
-            $data_log = array(
-                'idcongviec' => $congviec_node_info->idcongviec,
-                'user_agent' => $request->header('User-Agent'),
-                'ip' => $request->ip(),
-                'content' => Session::get('userinfo')->username.' xóa công việc '.$congviec_node_info->idcongviec,
-                'idcanbo' => Session::get('userinfo')->idcanbo,
-                'username' => Session::get('userinfo')->username,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            );
-            DB::table('tbl_congviec_log')->insert($data_log);
+            CongviecLibrary::logCongviec($request, $congviec_node_info->idcongviec, Session::get('userinfo')->username.' xóa công việc '.$congviec_node_info->idcongviec );
             
             return redirect()->route('cong-viec.index');
         }
@@ -458,17 +395,7 @@ class CongviecController extends Controller
         );
         DB::table('tbl_congviec')->where('id',$idcongviec)->update($data_update);
         $data_message = array('alert_message' => ['type' => 'success', 'content' => 'Cập nhật trạng thái công việc thành công']);
-        $data_log = array(
-            'idcongviec' => $idcongviec,
-            'user_agent' => $request->header('User-Agent'),
-            'ip' => $request->ip(),
-            'content' => Session::get('userinfo')->username.' thay đổi trạng thái công việc '.$idcongviec. ' từ '.$current_status. ' sang '. $data_update["idstatus"],
-            'idcanbo' => Session::get('userinfo')->idcanbo,
-            'username' => Session::get('userinfo')->username,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        );
-        DB::table('tbl_congviec_log')->insert($data_log);
+        CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' thay đổi trạng thái công việc '.$idcongviec. ' từ '.$current_status. ' sang '. $data_update["idstatus"] );
         return redirect()->route('cong-viec.index')->with($data_message);
     }
 

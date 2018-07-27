@@ -3,6 +3,9 @@
 namespace App\UserApp;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Session;
 
 class CongviecLibrary
 {
@@ -42,6 +45,21 @@ class CongviecLibrary
     public static function getMaxNode( $idcongviec )
     {
         return DB::table('tbl_congviec_chuyentiep')->where('idcongviec',$idcongviec)->max('id');
+    }
+
+    public static function logCongviec($request, $idcongviec, $content )
+    {
+        $data_log = array(
+            'idcongviec' => $idcongviec,
+            'user_agent' => $request->header('User-Agent'),
+            'ip' => $request->ip(),
+            'content' => $content,
+            'idcanbo' => Session::get('userinfo')->idcanbo,
+            'username' => Session::get('userinfo')->username,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+        DB::table('tbl_congviec_log')->insert($data_log);
     }
 
     
