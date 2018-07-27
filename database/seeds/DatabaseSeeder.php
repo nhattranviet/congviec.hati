@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TbldonviSeeder::class);
 		$this->call(TbldoicongtacSeeder::class);
 		$this->call(TblDonviDoicongtacSeeder::class);
+		$this->call(ConfigSeeder::class);
         //End Core seed
 
 		/* //Nhan khau seed
@@ -44,6 +45,22 @@ class DatabaseSeeder extends Seeder
 /**
  * 
  */
+ class ConfigSeeder extends Seeder
+{
+	public function run()
+	{
+		$data = array(
+			["key" => "idnhomquyen_canbo", 'value' => 1],
+			["key" => "idnhomquyen_doipho", 'value' => 2],
+			["key" => "idnhomquyen_doitruong", 'value' => 3],
+			["key" => "idnhomquyen_capphodonvi", 'value' => 4],
+			["key" => "idnhomquyen_captruongdonvi", 'value' => 5],
+			["key" => "idnhomquyen_khach", 'value' => 6],
+			["key" => "idnhomquyen_administrator", 'value' => 7],
+		);
+		DB::table('configs')->insert($data);
+	}
+}
 
  class TblMoiquanheSeeder extends Seeder
 {

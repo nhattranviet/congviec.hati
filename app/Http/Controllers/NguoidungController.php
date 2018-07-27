@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Hash;
 use Auth;
 use Session;
+use Cookie;
 class NguoidungController extends Controller
 {
 	public $messages = array(
