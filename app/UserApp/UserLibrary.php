@@ -17,12 +17,6 @@ class UserLibrary
     {
         return DB::table('tbl_canbo')->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')->where('tbl_canbo.id', $idcanbo)->value('iddonvi');
     }
-
-    // // Lấy iddonvi_iddoi của cán bộ
-    // public static function getIdDonViIdDoiOfCanBo( $idcanbo )
-    // {
-    //     return DB::table('tbl_canbo')->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')->where('tbl_canbo.id', $idcanbo)->value('iddoi');
-    // }
     
     // Lấy iddonvi_iddoi của lãnh đạo trong đơn vị nào đó
     public static function getIdDonviIddoiLanhdaoOfDonVi($iddonvi)
@@ -33,18 +27,6 @@ class UserLibrary
         ) )->value('id');
     }
 
-    // Lấy iddonvi_iddoi lãnh đạo của cán bộ nào đó
-    public static function getIdDonviIddoiLanhdaoOfCanBo($idcanbo)
-    {
-        return DB::table('tbl_lanhdaodonvi_quanlydoi')
-            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_lanhdaodonvi_quanlydoi.idcanbo')
-            ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_lanhdaodonvi_quanlydoi.id_iddonvi_iddoi')
-            ->where(array(
-                ['idcanbo', '=', $idcanbo],
-                ['iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]
-            ))
-            ->value('tbl_donvi_doi.id');
-    }
 
     // Lấy danh sách đội thuộc quản lý của id lãnh đạo nào đó, trả về dạng mảng 1 chiều hoặc object
     public static function getListDoiLanhdaoQuanly( $idcanbo_lanhdao, $type = 'array' )
@@ -64,8 +46,22 @@ class UserLibrary
             return $data;
     }
 
+    //Lấy danh sách lãnh đạo của đơn vị
+    public static function getListLanhDaoOfDonVi( $iddonvi )
+    {
+        $id_iddonvi_iddoi = UserLibrary::getIdDonviIddoiLanhdaoOfDonVi($iddonvi);
+        return DB::table('tbl_canbo')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
+        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
+        ->where(array(
+            ['id_iddonvi_iddoi', '=', $id_iddonvi_iddoi]
+        ))
+        ->get();
+    }
+
     //Lấy iddonvi_iddoi của cán bộ, trả về object hoặc giá trị  value, array, object
-    public static function getIdDonviIdDoiofCanBo( $idcanbo, $type = '' )
+    public static function getIdDonviIdDoiOfCanBo( $idcanbo, $type = '' )
     {
         $data = DB::table('tbl_canbo')
             ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')

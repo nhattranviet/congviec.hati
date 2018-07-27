@@ -2,30 +2,50 @@
 
 namespace App\UserApp;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Session;
 
 class CongviecLibrary
 {
     public function __construct()
     {
-        return TRUE;
+        
     }
 
-    public static function getDonViOfCanBo($idcanbo)
+    public static function getIdCanboXulybandau( $idcongviec )
     {
-        return DB::table('tbl_canbo')->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')->where('tbl_canbo.id', $idcanbo)->value('iddonvi');
+        return DB::table('tbl_congviec_chuyentiep')->where( array(
+            ['idcongviec', '=', $idcongviec],
+            ['order', '=', 0],
+        ) )->value('idcanbonhan');
     }
+
+    public static function getCongviecInfo( $idcongviec )
+    {
+        return DB::table('tbl_congviec')
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->where('tbl_congviec.id',$idcongviec)
+        ->select('tbl_congviec.*', 'hoten')->first();
+    }
+
+    public static function getCongviecChuyentiepInfo ($idcongviec)
+    {
+        return DB::table('tbl_congviec_chuyentiep')
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec_chuyentiep.idcanbonhan')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->where('idcongviec', $idcongviec)
+        ->orderBy('timechuyentiep', 'ASC')
+        ->select('tbl_congviec_chuyentiep.*', 'hoten')
+        ->get()->toArray();
+    }
+
+    public static function getMaxNode( $idcongviec )
+    {
+        return DB::table('tbl_congviec_chuyentiep')->where('idcongviec',$idcongviec)->max('id');
+    }
+
     
-    public static function get_curr_id_iddonvi_iddoi_lanhdao($iddonvi)
-    {
-        return DB::table('tbl_donvi_doi')->where( array(
-            ['iddonvi', $iddonvi],
-            ['iddoi', '=', 2]
-        ) )->value('id');
-    }
+    
 
     // public static function check_role_congviec($idcongviec)
     // {

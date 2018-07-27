@@ -10,8 +10,6 @@ use Auth;
 use Session;
 use App\User;
 use App\Canbo;
-use App\Congviec;
-use App\Config;
 use App\UserApp\CongviecLibrary;
 use App\UserApp\UserLibrary;
 
@@ -26,28 +24,28 @@ class CongviecController extends Controller
         'idstatus.required' => 'Trạng thái không được để trống',
     ];
     
-    public $check_permission;
-
-    public $permission_user_info;
-    public $permission_object_info;
+    public $current_idcanbo;
+    public $current_iduser;
+    public $current_idrole;
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-
     public function index( Request $request )
     {
         $arrWhere = array();
-        $current_role = UserLibrary::getIdRoleUser(Session::get('userinfo')->iduser);
-        if( $current_role == config('user_config.idnhomquyen_capphodonvi') || $current_role == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
+        $current_idcanbo = Session::get('userinfo')->idcanbo;
+        $current_iduser = Session::get('userinfo')->iduser;
+        $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
+        if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
         {
-            $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly(Session::get('userinfo')->idcanbo, 'object');
+            $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly($current_idcanbo, 'object');
         }
         else
         {
-            $data['list_doicongtac'] = UserLibrary::getIdDonviIdDoiofCanBo( Session::get('userinfo')->idcanbo, 'object' );
+            $data['list_doicongtac'] = UserLibrary::getIdDonviIdDoiofCanBo( $current_idcanbo, 'object' );
         }
         
         $data['current_day'] = date('Y-m-d', time());
@@ -56,7 +54,7 @@ class CongviecController extends Controller
             $arrListdoi[] = $value->id;
         }
 
-        if( $request->ajax() )
+        if( $request->ajax() )      //Begin ajax
         {
             if($request->sotailieu != NULL)
             {
@@ -99,8 +97,7 @@ class CongviecController extends Controller
                 }
             }
 
-
-            // if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi) || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
+            if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') ||  $current_idrole == config('user_config.idnhomquyen_doitruong') )        // Lãnh đạo đơn vị hoặc đội trưởng
             {
                 $dt = DB::table( 'tbl_congviec' )
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -109,8 +106,8 @@ class CongviecController extends Controller
                 ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
                 ->where(function ($query) use ($arrListdoi) {
                     $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
-                    ->orWhere('idcanbonhan', Session::get('userinfo')->idcanbo)
-                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+                    ->orWhere('idcanbonhan', $current_idcanbo)
+                    ->orWhere('idcanbo_creater', $current_idcanbo);
                 });
                 if( $request->idstatus == 3 )
                 {
@@ -125,15 +122,15 @@ class CongviecController extends Controller
             }
             else
             {   
-                $arrWhere[] = array('idcanbonhan', '=', Session::get('userinfo')->idcanbo);
+                $arrWhere[] = array('idcanbonhan', '=', $current_idcanbo);
                 $dt = DB::table( 'tbl_congviec' )
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
                 ->where( $arrWhere )
                 ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
                 ->where(function ($query){
-                    $query->where('idcanbonhan', Session::get('userinfo')->idcanbo)
-                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+                    $query->where('idcanbonhan', $current_idcanbo)
+                    ->orWhere('idcanbo_creater', $current_idcanbo);
                 });
 
 
@@ -150,19 +147,19 @@ class CongviecController extends Controller
             }
             return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
 
-        }
+        }   //End Ajax
         else
         {
-            if( Session::get('userinfo')->id_iddonvi_iddoi ==  $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi) || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong )    // Lãnh đạo đơn vị hoặc đội trưởng
+            if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') ||  $current_idrole == config('user_config.idnhomquyen_doitruong') )        // Lãnh đạo đơn vị hoặc đội trưởng
             {
                 $data['list_congviec'] = DB::table( 'tbl_congviec' )
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
                 ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function($query) use ($arrListdoi){
+                ->where(function($query) use ($arrListdoi, $current_idcanbo) {
                     $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
-                    ->orWhere('idcanbonhan', Session::get('userinfo')->idcanbo)
-                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+                    ->orWhere('idcanbonhan', $current_idcanbo)
+                    ->orWhere('idcanbo_creater', $current_idcanbo);
                 })
                 ->select('tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
                 ->orderBy('idcongviec', 'DESC')
@@ -170,21 +167,19 @@ class CongviecController extends Controller
                 
             }
             else
-            {   
+            {
                 $data['list_congviec'] = DB::table( 'tbl_congviec' )
                 ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
                 ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
                 ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function ($query){
-                    $query->where('idcanbonhan', Session::get('userinfo')->idcanbo)
-                    ->orWhere('idcanbo_creater', Session::get('userinfo')->idcanbo);
+                ->where(function ($query) use ($current_idcanbo) {
+                    $query->where('idcanbonhan', $current_idcanbo)
+                    ->orWhere('idcanbo_creater', $current_idcanbo);
                 })
                 ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
                 ->orderBy('tbl_congviec.id', 'DESC')
                 ->paginate(10, ['tbl_congviec.id']);
             }
-
-            
         }
         
         return view('congviec.index', $data);
@@ -193,15 +188,9 @@ class CongviecController extends Controller
     
     public function create()
     {
+        $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo ); 
         $data['page_name'] = "Thêm mới công việc";
-        $data['list_lanhdao'] = DB::table('tbl_canbo')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
-        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
-        ->where(array(
-            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi)]
-        ))
-        ->get();
+        $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );
         return view('congviec.create', $data);
     }
 
@@ -221,7 +210,7 @@ class CongviecController extends Controller
 
         $dataCongViec = array(
             'idcanbo_creater' => Session::get('userinfo')->idcanbo,
-            'id_iddonvi_iddoi_creater' => Session::get('userinfo')->id_iddonvi_iddoi,
+            'id_iddonvi_iddoi_creater' => UserLibrary::getIdDonviIdDoiOfCanBo( Session::get('userinfo')->idcanbo, 'value' ),
             'sotailieu' => $request->sotailieu,
             'trichyeu' => $request->trichyeu,
             'noisoanthao' => $request->noisoanthao,
@@ -238,8 +227,8 @@ class CongviecController extends Controller
         $dataCongViecChuyentiep = array(
             'idcongviec' => $idcongviec,
             'idcanbonhan' => $request->idcanbonhan,
-            'timechuyentiep' => Carbon::now(),
-            'id_iddonvi_iddoi_nhan' => $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi),
+            'timechuyentiep' => Carbon::now(),  
+            'id_iddonvi_iddoi_nhan' => UserLibrary::getIdDonviIddoiLanhdaoOfDonVi( UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo ) ),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'order' => 0,
@@ -263,27 +252,11 @@ class CongviecController extends Controller
 
     public function edit($idcongviec)
     {
-        if( ! $this->check_role_congviec( $idcongviec ) )
-        {
-            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
-            return redirect()->route('cong-viec.index')->with($data_message);
-        }
-
+        $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo ); 
         $data['page_name'] = "Sửa công việc";
-        $data['list_lanhdao'] = DB::table('tbl_canbo')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
-        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name')
-        ->where(array(
-            ['id_iddonvi_iddoi', '=', $this->get_curr_id_iddonvi_iddoi_lanhdao(Session::get('userinfo')->iddonvi)]
-        ))
-        ->get();
+        $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );
         $data['congviec_info'] = DB::table('tbl_congviec')->where('id',$idcongviec)->first();
-        $data['idcanboxulybandau'] = DB::table('tbl_congviec_chuyentiep')->where( array(
-            ['idcongviec', '=', $idcongviec],
-            ['order', '=', 0],
-        ) )->value('idcanbonhan');
-        // print_r($data['congviec_info']); die;
+        $data['idcanboxulybandau'] = CongviecLibrary::getIdCanboXulybandau( $idcongviec );
         return view('congviec.edit', $data);
     }
 
@@ -350,27 +323,10 @@ class CongviecController extends Controller
 
     public function show($idcongviec)
     {
-        if( ! $this->check_role_congviec( $idcongviec ) )
-        {
-            $data_message = array('alert_message' => ['type' => 'error', 'content' => 'Bạn không có quyền công việc này!']);
-            return redirect()->route('cong-viec.index')->with($data_message);
-        }
         $data['page_name'] = "Chi tiết công việc";
-        $data['congviec_info'] = DB::table('tbl_congviec')
-        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->where('tbl_congviec.id',$idcongviec)
-        ->select('tbl_congviec.*', 'hoten')->first();
-
-        $data['congviec_chuyentiep_info'] = DB::table('tbl_congviec_chuyentiep')
-        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec_chuyentiep.idcanbonhan')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->where('idcongviec', $idcongviec)
-        ->orderBy('timechuyentiep', 'ASC')
-        ->select('tbl_congviec_chuyentiep.*', 'hoten')
-        ->get()->toArray();
-        $data['maxNodeCongViec'] = DB::table('tbl_congviec_chuyentiep')->where('idcongviec',$idcongviec)->max('id');
-        // print_r ( $data['maxNodeCongViec'] ); die;
+        $data['congviec_info'] = CongviecLibrary::getCongviecInfo( $idcongviec );
+        $data['congviec_chuyentiep_info'] = CongviecLibrary::getCongviecChuyentiepInfo( $idcongviec );
+        $data['maxNodeCongViec'] = CongviecLibrary::getMaxNode( $idcongviec );
         return view('congviec.show', $data);
     }
 
