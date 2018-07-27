@@ -42,8 +42,24 @@ class UserLibrary
             }else{
                 $data = $data->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')->get();
             }
-            
             return $data;
+    }
+
+    // Lấy danh sách đội thuộc đơn vị
+    public static function getListDoidonVi( $iddonvi, $type = 'object' )
+    {
+        $data = DB::table('tbl_donvi_doi')
+        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+        ->where('iddonvi', $iddonvi );
+        if( $type == 'array' )
+        {
+            $data = $data->pluck('tbl_donvi_doi.id');
+        }
+        else
+        {
+            $data = $data->select('name', 'tbl_donvi_doi.id')->get();
+        }
+        return $data;
     }
 
     //Lấy danh sách lãnh đạo của đơn vị
