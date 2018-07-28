@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Session;
+use App\UserApp\UserLibrary;
 
 class CongviecLibrary
 {
@@ -114,46 +115,21 @@ class CongviecLibrary
     //     }
     // }
 
-    // public static function get_permission_user_info( $idcanbo )
-    // {
-    //     $permission_user_info['idcanbo'] = array( $idcanbo );
-    //     $canbo_data = DB::table('users')
-    //     ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
-    //     ->join('tbl_canbo', 'tbl_canbo.id', '=', 'users.idcanbo')
-    //     ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
-    //     ->where('idcanbo', $idcanbo)
-    //     ->select('idnhomquyen', 'id_iddonvi_iddoi')
-    //     ->first();
-    //     print_r( $canbo_data ); die;
-    //     if($idnhomquyen == $this->idnhomquyen_doitruong)
-    //     {
-    //         $permission_user_info['id_iddonvi_iddoi'] = array( Session::get('userinfo')->id_iddonvi_iddoi );
-    //     }
+    public static function getCanboRole( $idcanbo )
+    {
+        $canboRoleInfo['idcanbo'] = array( $idcanbo );
+        $current_idnhomquyen = UserLibrary::getIdRoleUser( Session::get('userinfo')->iduser );
+        if( $current_idnhomquyen == config('user_config.idnhomquyen_doitruong') )
+        {
+            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo );
+        }
 
-    //     if(Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_captruongdonvi || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_capphodonvi)   // lãnh đạo đơn vị
-    //     {
-    //         $list_doi_quanly = $this->get_id_iddonvi_iddoi_quanly( Session::get('userinfo')->idcanbo );
-    //         if( $list_doi_quanly == NULL )
-    //         {
-    //             $permission_user_info['id_iddonvi_iddoi'] == array();
-    //         }
-    //         foreach( $list_doi_quanly as $doi )
-    //         {
-    //             $permission_user_info['id_iddonvi_iddoi'][] = $doi->id;
-    //         }
-    //     }
-    // }
-
-    // public static function get_id_iddonvi_iddoi_quanly( $idlanhdao )
-    // {
-    //     return $data['list_doicongtac'] = DB::table('tbl_lanhdaodonvi_quanlydoi')
-    //         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_lanhdaodonvi_quanlydoi.idcanbo')
-    //         ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_lanhdaodonvi_quanlydoi.id_iddonvi_iddoi')
-    //         ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
-    //         ->where('idcanbo', $idlanhdao)
-    //         ->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')
-    //         ->get()->toArray();
-    // }
+        if( $current_idnhomquyen == config('user_config.idnhomquyen_capphodonvi') || $current_idnhomquyen == config('user_config.idnhomquyen_captruongdonvi') )
+        {
+            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getListDoiLanhdaoQuanly( $idcanbo, 'array' );
+        }
+        return $canboRoleInfo;
+    }
 
 
 }

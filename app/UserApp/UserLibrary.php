@@ -3,6 +3,7 @@
 namespace App\UserApp;
 
 use Illuminate\Support\Facades\DB;
+use Session;
 
 class UserLibrary
 {
@@ -94,9 +95,25 @@ class UserLibrary
             
             return $data;
     }
+
+    //Get các role hiện tại của một cán bôj
+    public static function getCanboRole( $idcanbo )
+    {
+        $canboRoleInfo['idcanbo'] = array( $idcanbo );
+        $current_idnhomquyen = UserLibrary::getIdRoleUser( Session::get('userinfo')->iduser );
+        if( $current_idnhomquyen == config('user_config.idnhomquyen_doitruong') )
+        {
+            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo );
+        }
+
+        if( $current_idnhomquyen == config('user_config.idnhomquyen_capphodonvi') || $current_idnhomquyen == config('user_config.idnhomquyen_captruongdonvi') )
+        {
+            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getListDoiLanhdaoQuanly( $idcanbo, 'array' );
+        }
+        return $canboRoleInfo;
+    }
+
     //-----------------------END CAN BO------------------------------
-
-
 
 
     //-----------------------USER------------------------------
