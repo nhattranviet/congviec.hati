@@ -130,6 +130,35 @@ class UserLibrary
         return $canboRoleInfo;
     }
 
+    public static function getListRole()
+    {
+        return DB::table('tbl_nhomquyen')->get();
+    }
+
+    public static function getListDonvi()
+    {
+        return DB::table('tbl_donvi')->where('loaidonvi', '!=', 'bgd')->get();
+    }
+
+    public static function getListModule()
+    {
+        return DB::table('tbl_modules')->get();
+    }
+
+    public static function getListLevel()
+    {
+        return DB::table('tbl_level')->get();
+    }
+
+    public static function getListChucnang($idmodule)
+    {
+        return DB::table('tbl_modules')
+            ->join('tbl_chucnang', 'tbl_modules.id', '=', 'tbl_chucnang.idmodule')
+            ->where('idmodule', $idmodule)
+            ->select('tbl_chucnang.id', 'tbl_chucnang.name')
+            ->get();
+    }
+
     //-----------------------end PHÂN QUYỀN------------------------
 
 

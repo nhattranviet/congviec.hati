@@ -18,12 +18,13 @@ class CreateTblUserChucnangTable extends Migration
             $table->unsignedInteger('iduser');
             $table->unsignedInteger('idchucnang');
             $table->unsignedInteger('idlevel');
+            $table->tinyInteger('private')->default(NULL);
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('iduser')->references('id')->on('users');
             $table->foreign('idchucnang')->references('id')->on('tbl_chucnang');
             $table->foreign('idlevel')->references('id')->on('tbl_level');
-            $table->softDeletes();
+            
         });
     }
 

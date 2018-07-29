@@ -135,6 +135,11 @@ Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->
 
 //-------------------END CÁN BỘ-----------------------
 
+//-------------------PERMISSION-----------------------
+Route::get('/permission', 'Permission\RolePermissionController@index');
+Route::get('/ajax-get-chuc-nang/{idmodule}', 'Permission\RolePermissionController@getChucnang')->name('ajax-get-chuc-nang');
+//-------------------END PERMISSION-----------------------
+
 Route::get('test', function () {
     die;
     $data = [

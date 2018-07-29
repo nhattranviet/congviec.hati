@@ -405,6 +405,24 @@
                 ajax_get_data_to_html_json(url, '.doicongtac');
             });
 
+            $("#module").on('change', function () {
+                var idmodule = $('#module').val();
+                if (idmodule)
+                {
+                    var url = bare_url + '/ajax-get-chuc-nang/' + idmodule;
+                    ajax_get_data_to_html_json(url, '#chucnanglist');
+                    $('.chucnang_checkbox').on('click', function (e) {
+                        // if(e.target.checked){
+                        //     $('#address-modal').modal();
+                        // }
+                        alert('111 chuc nang');
+                    });
+                }else{
+                    $('#chucnanglist').empty();
+                }
+                
+            });
+
             $("#iddoicongtac").on('change', function () {
                 var doicongtac_id = $('#iddoicongtac').val();
                 var url = bare_url + '/ajax-get-can-bo/' + doicongtac_id;

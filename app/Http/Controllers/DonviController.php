@@ -249,7 +249,6 @@ class DonviController extends Controller
                 ->select('tbl_doicongtac.name', 'tbl_donvi_doi.id')
                 ->get()->toArray();
         return response()->json(['html' => view('cahtcore.doicongtac.option_select_doi', $data)->render()]);
-
     }
 
     
