@@ -2,29 +2,30 @@
 
 @section('js')
 <script type="text/javascript">
-    var global_id;
+    
     $(document).ready(function(){
+        var global_id;
         $("#checkAllDonvi").click(function () {
             $('.donvi').prop('checked', this.checked);
         });
 
         $(document).on('click', '.chucnang_checkbox', function(e){
-            // console.log(e);
+            global_id = this.id;
             if(e.target.checked){
-                var global_id = this.id;
+                
                 $('#address-modal').modal();
             }
             else
             {
-
+                $('#chucnang_level_'+global_id).val('');
             }
             
         });
 
         $('#modalsaveChange').on('click', function(e){
             idlevel_select = $('#idlevel').val();
-            alert(global_id);
-            // $('#chucnang_level_'+global_id).val(idlevel_select);
+            // alert(global_id);
+            $('#chucnang_level_'+global_id).val(idlevel_select);
             // alert(idlevel_select);
         });
     })
@@ -89,10 +90,6 @@
                                 
                         </div>
 
-                        {{-- <div class="row">
-                            <input type="checkbox" class="check btn btn-primary" value="check all" />
-                        </div> --}}
-
                         <div class="row">
                             <div class="col-xs-12 col-sm-3">
 
@@ -124,6 +121,12 @@
                         <div class="row" id="chucnanglist">
 
                         </div>
+
+                        <div class="row m-t-20">
+                            <div class="col-xs-12 col-sm-3">
+                                <button type="submit" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu lại</button>
+                            </div>
+                        </div>
                         
                     </form>
                 </div>
@@ -146,7 +149,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <fieldset class="form-group">
-                            <select name="idlevel" id="idlevel" class="form-control select2">
+                            <select id="idlevel" class="form-control select2">
                                 @foreach ($list_level as $level)
                                     <option value="{{ $level->id }}">{{ $level->name }}</option>
                                 @endforeach
