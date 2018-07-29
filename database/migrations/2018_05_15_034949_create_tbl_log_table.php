@@ -15,9 +15,9 @@ class CreateTblLogTable extends Migration
     {
         Schema::create('tbl_log', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('thoigian');
-            $table->integer('idtaikhoan');
-            $table->integer('level');
+            $table->unsignedInteger('thoigian');
+            $table->unsignedInteger('idtaikhoan');
+            $table->unsignedInteger('level');
             $table->string('ip');
             $table->string('user_agent');
             $table->string('noidung');

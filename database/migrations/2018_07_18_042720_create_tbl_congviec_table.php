@@ -15,8 +15,8 @@ class CreateTblCongviecTable extends Migration
     {
         Schema::create('tbl_congviec', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idcanbo_creater');
-            $table->integer('id_iddonvi_iddoi_creater');
+            $table->unsignedInteger('idcanbo_creater');
+            $table->unsignedInteger('id_iddonvi_iddoi_creater');
             $table->string('sotailieu')->nullable();
             $table->text('trichyeu')->nullable();
             $table->text('chitiet')->nullable();

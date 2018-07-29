@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('email')->unique();
-            $table->integer('idcanbo');
-            $table->integer('idnhomquyen');
+            $table->unsignedInteger('idcanbo');
+            $table->unsignedInteger('idnhomquyen');
             $table->tinyInteger('active');
             $table->rememberToken();
             $table->string('name')->nullable();

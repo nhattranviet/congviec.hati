@@ -15,9 +15,9 @@ class CreateTblNhomquyenChucnangTable extends Migration
     {
         Schema::create('tbl_nhomquyen_chucnang', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idnhomquyen');
-            $table->integer('iddonvi');
-            $table->integer('idchucnang');
+            $table->unsignedInteger('idnhomquyen');
+            $table->unsignedInteger('iddonvi');
+            $table->unsignedInteger('idchucnang');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,8 +15,8 @@ class CreateTblDonviDoiTable extends Migration
     {
         Schema::create('tbl_donvi_doi', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('iddonvi');
-            $table->integer('iddoi');
+            $table->unsignedInteger('iddonvi');
+            $table->unsignedInteger('iddoi');
             $table->foreign('iddonvi')->references('id')->on('tbl_donvi');
             $table->foreign('iddoi')->references('id')->on('tbl_doicongtac');
             $table->timestamps();

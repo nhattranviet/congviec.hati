@@ -18,7 +18,7 @@ class CreateTblConnguoiTable extends Migration
             $table->string('hoten');
             $table->string('tenkhac')->nullable();
             $table->string('manhankhau', 100)->nullable();
-            $table->integer('ngaysinh')->nullable();
+            $table->date('ngaysinh')->nullable();
             $table->smallInteger('idquoctich')->nullable();
 
             $table->smallInteger('idquocgia_nguyenquan')->nullable();
@@ -61,13 +61,13 @@ class CreateTblConnguoiTable extends Migration
             $table->string('cmnd_so')->nullable();
             $table->string('ghichu')->nullable();
 
-            $table->integer('idtongiao')->nullable();
-            $table->integer('iddantoc')->nullable();
-            $table->integer('idtrinhdohocvan')->nullable();
-            $table->integer('idnghenghiep')->nullable();
+            $table->unsignedInteger('idtongiao')->nullable();
+            $table->unsignedInteger('iddantoc')->nullable();
+            $table->unsignedInteger('idtrinhdohocvan')->nullable();
+            $table->unsignedInteger('idnghenghiep')->nullable();
 
-            $table->integer('ngayvaodang')->nullable();
-            $table->integer('gioitinh')->nullable();
+            $table->date('ngayvaodang')->nullable();
+            $table->unsignedInteger('gioitinh')->nullable();
             $table->string('sodienthoai', 100)->nullable();
             $table->string('trinhdochuyenmon', 200)->nullable();
             $table->string('trinhdongoaingu', 200)->nullable();
@@ -81,7 +81,6 @@ class CreateTblConnguoiTable extends Migration
             $table->foreign('iddantoc')->references('id')->on('tbl_dantoc');
             $table->foreign('idtongiao')->references('id')->on('tbl_tongiao');
             $table->foreign('idtrinhdohocvan')->references('id')->on('tbl_trinhdohocvan');
-            $table->timestamps();
             $table->softDeletes();
         });
     }

@@ -15,14 +15,17 @@ class CreateTblChucnangTable extends Migration
     {
         Schema::create('tbl_chucnang', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('idmodule');
             $table->string('name');
             $table->string('url');
             $table->string('icon');
-            $table->integer('id_cha');
+            $table->unsignedInteger('id_cha');
             $table->tinyInteger('show_menu');
             $table->tinyInteger('order');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('idmodule')->references('id')->on('tbl_modules');
         });
     }
 

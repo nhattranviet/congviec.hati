@@ -17,7 +17,7 @@ class CreateTblHinhanhTable extends Migration
             $table->increments('id');
             $table->string('url');
             $table->string('loaianh')->nullable();
-            $table->integer('idconnguoi');
+            $table->unsignedInteger('idconnguoi'); 
             $table->timestamps();
             $table->foreign('idconnguoi')->references('id')->on('tbl_connguoi');
             $table->softDeletes();

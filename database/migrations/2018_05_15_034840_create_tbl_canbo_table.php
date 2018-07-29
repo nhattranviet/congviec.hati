@@ -15,10 +15,10 @@ class CreateTblCanboTable extends Migration
     {
         Schema::create('tbl_canbo', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idconnguoi');
-            $table->integer('idcapbac');
-            $table->integer('idchucvu');
-            $table->integer('id_iddonvi_iddoi');
+            $table->unsignedInteger('idconnguoi');
+            $table->unsignedInteger('idcapbac');
+            $table->unsignedInteger('idchucvu');
+            $table->unsignedInteger('id_iddonvi_iddoi');
             $table->foreign('idconnguoi')->references('id')->on('tbl_connguoi');
             $table->foreign('id_iddonvi_iddoi')->references('id')->on('tbl_donvi_doi');
             $table->foreign('idcapbac')->references('id')->on('tbl_capbac');

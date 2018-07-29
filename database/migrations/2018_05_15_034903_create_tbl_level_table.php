@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTblXaPhuongTtTable extends Migration
+class CreateTblLevelTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateTblXaPhuongTtTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_xa_phuong_tt', function (Blueprint $table) {
+        Schema::create('tbl_level', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('idhuyentx');
             $table->string('name');
+            $table->string('keyword');
             $table->timestamps();
-            $table->index('idhuyentx');
-            $table->foreign('idhuyentx')->references('id')->on('tbl_huyen_tx');
-            $table->softDeletes();
         });
     }
 
@@ -31,6 +28,6 @@ class CreateTblXaPhuongTtTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_xa_phuong_tt');
+        Schema::dropIfExists('tbl_level');
     }
 }

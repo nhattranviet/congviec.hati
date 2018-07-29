@@ -15,8 +15,8 @@ class CreateTblLanhdaodonviQuanlydoiTable extends Migration
     {
         Schema::create('tbl_lanhdaodonvi_quanlydoi', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idcanbo');
-            $table->integer('id_iddonvi_iddoi');
+            $table->unsignedInteger('idcanbo');
+            $table->unsignedInteger('id_iddonvi_iddoi');
 
             $table->foreign('idcanbo')->references('id')->on('tbl_canbo');
             $table->foreign('id_iddonvi_iddoi')->references('id')->on('tbl_donvi_doi');

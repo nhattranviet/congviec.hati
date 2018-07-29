@@ -15,8 +15,9 @@ class CreateTblUserChucnangTable extends Migration
     {
         Schema::create('tbl_user_chucnang', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('iduser');
-            $table->integer('idchucnang');
+            $table->unsignedInteger('iduser');
+            $table->unsignedInteger('idchucnang');
+            $table->unsignedInteger('idlevel');
             $table->timestamps();
 
             $table->foreign('iduser')->references('id')->on('users');

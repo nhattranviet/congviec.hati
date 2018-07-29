@@ -15,12 +15,12 @@ class CreateTblCongviecChuyentiepTable extends Migration
     {
         Schema::create('tbl_congviec_chuyentiep', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idcongviec');
-            $table->integer('idcanbonhan');
+            $table->unsignedInteger('idcongviec');
+            $table->unsignedInteger('idcanbonhan');
             $table->text('ghichu')->nullable();
             $table->datetime('timechuyentiep')->nullable();
             $table->smallInteger('order')->nullable();
-            $table->integer('id_iddonvi_iddoi_nhan')->nullable();
+            $table->unsignedInteger('id_iddonvi_iddoi_nhan')->nullable();
             $table->softDeletes();
             $table->foreign('idcongviec')->references('id')->on('tbl_congviec');
             $table->foreign('idcanbonhan')->references('id')->on('tbl_canbo');

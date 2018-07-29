@@ -15,7 +15,7 @@ class CreateTblTinhTpTable extends Migration
     {
         Schema::create('tbl_tinh_tp', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idquocgia');
+            $table->unsignedInteger('idquocgia');
             $table->string('name');
             $table->timestamps();
 

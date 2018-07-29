@@ -15,7 +15,7 @@ class CreateTblHuyenTxTable extends Migration
     {
         Schema::create('tbl_huyen_tx', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idtinhtp');
+            $table->unsignedInteger('idtinhtp');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
