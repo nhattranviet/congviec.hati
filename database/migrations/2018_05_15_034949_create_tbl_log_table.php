@@ -15,14 +15,18 @@ class CreateTblLogTable extends Migration
     {
         Schema::create('tbl_log', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('thoigian');
-            $table->unsignedInteger('idtaikhoan');
-            $table->unsignedInteger('level');
-            $table->string('ip');
-            $table->string('user_agent');
-            $table->string('noidung');
+            $table->unsignedInteger('idmodule')->nullable();
+            $table->unsignedInteger('value_object')->nullable();
+            $table->unsignedInteger('name_object')->nullable();
+            $table->unsignedInteger('iduser')->nullable();
+            $table->unsignedInteger('idcanbo')->nullable();
+            $table->unsignedInteger('level')->nullable();
+            $table->string('ip')->nullable();
+            $table->string('user_agent')->nullable();
+            $table->string('content')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
         });
     }
 

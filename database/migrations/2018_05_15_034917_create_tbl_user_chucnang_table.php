@@ -22,6 +22,7 @@ class CreateTblUserChucnangTable extends Migration
 
             $table->foreign('iduser')->references('id')->on('users');
             $table->foreign('idchucnang')->references('id')->on('tbl_chucnang');
+            $table->foreign('idlevel')->references('id')->on('tbl_level');
             $table->softDeletes();
         });
     }

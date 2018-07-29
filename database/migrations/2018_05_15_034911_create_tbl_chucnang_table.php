@@ -15,13 +15,16 @@ class CreateTblChucnangTable extends Migration
     {
         Schema::create('tbl_chucnang', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('idmodule');
-            $table->string('name');
-            $table->string('url');
-            $table->string('icon');
-            $table->unsignedInteger('id_cha');
-            $table->tinyInteger('show_menu');
-            $table->tinyInteger('order');
+            $table->unsignedInteger('idmodule')->nullable();
+            $table->string('name')->nullable();
+            $table->string('method')->nullable();
+
+
+            $table->string('url')->nullable();
+            $table->string('icon')->nullable();
+            $table->unsignedInteger('id_cha')->nullable();
+            $table->tinyInteger('show_menu')->nullable();
+            $table->tinyInteger('order')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

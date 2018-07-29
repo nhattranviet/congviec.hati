@@ -51,16 +51,17 @@ class CongviecLibrary
     public static function logCongviec($request, $idcongviec, $content )
     {
         $data_log = array(
-            'idcongviec' => $idcongviec,
+            'idmodule' => config('user_config.id_module_congviec'),
+            'name_object' => 'idcongviec',
+            'value_object' => $idcongviec,
             'user_agent' => $request->header('User-Agent'),
             'ip' => $request->ip(),
             'content' => $content,
             'idcanbo' => Session::get('userinfo')->idcanbo,
-            'username' => Session::get('userinfo')->username,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         );
-        DB::table('tbl_congviec_log')->insert($data_log);
+        DB::table('tbl_log')->insert($data_log);
     }
 
     public static function getCongviecOwner($idcongviec)

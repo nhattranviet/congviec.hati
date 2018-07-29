@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
 		$this->call(TbldoicongtacSeeder::class);
 		$this->call(TblDonviDoicongtacSeeder::class);
 		$this->call(ConfigSeeder::class);
+		$this->call(TblModuleSeeder::class);
+		$this->call(TblChucnangSeeder::class);
+		$this->call(TblLevelSeeder::class);
         //End Core seed
 
 		/* //Nhan khau seed
@@ -59,6 +62,59 @@ class DatabaseSeeder extends Seeder
 			["key" => "idnhomquyen_administrator", 'value' => 7],
 		);
 		DB::table('configs')->insert($data);
+	}
+}
+
+class TblLevelSeeder extends Seeder
+{
+	public function run()
+	{
+		$data = array(
+			["name" => "Cấp cán bộ", "keyword" => "idcanbo"],
+			["name" => "Cấp đội thuộc quyền", "keyword" => "id_iddonvi_iddoi"],
+			["name" => "Tất cả", "keyword" => ""],
+		);
+		DB::table('tbl_level')->insert($data);
+	}
+}
+
+class TblModuleSeeder extends Seeder
+{
+	public function run()
+	{
+		$data = array(
+			["name" => "Công việc"],
+			["name" => "Nhật ký công tác"],
+			["name" => "Lịch công tác"],
+			["name" => "Báo cáo"],
+			["name" => "Đối tượng"],
+			["name" => "Vụ việc"],
+			["name" => "Cán bộ"],
+			["name" => "Người dùng"],
+		);
+		DB::table('tbl_modules')->insert($data);
+	}
+}
+
+class TblChucnangSeeder extends Seeder
+{
+	public function run()
+	{
+		$data = array(
+			["idmodule" => 1, 'name' => 'Quản lý', 'method' => 'index'],
+			["idmodule" => 1, 'name' => 'Thêm mới', 'method' => 'create'],
+			["idmodule" => 1, 'name' => 'Thêm mới_save', 'method' => 'store'],
+			["idmodule" => 1, 'name' => 'Sửa việc', 'method' => 'edit'],
+			["idmodule" => 1, 'name' => 'Sửa việc_save', 'method' => 'update'],
+			["idmodule" => 1, 'name' => 'Xem việc', 'method' => 'show'],
+			["idmodule" => 1, 'name' => 'Chuyển tiếp', 'method' => 'chuyentiep'],
+			["idmodule" => 1, 'name' => 'Chuyển tiếp_save', 'method' => 'postChuyentiep'],
+			["idmodule" => 1, 'name' => 'Xóa việc', 'method' => 'delete'],
+			["idmodule" => 1, 'name' => 'Xóa việc_save', 'method' => 'destroy'],
+			["idmodule" => 1, 'name' => 'Xóa node việc', 'method' => 'deleteNodeChuyentiep'],
+			["idmodule" => 1, 'name' => 'Thay đổi trạng thái', 'method' => 'toggle_congviec_status'],
+		);
+		DB::table('tbl_chucnang')->insert($data);
 	}
 }
 

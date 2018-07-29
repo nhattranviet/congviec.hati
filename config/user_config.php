@@ -10,4 +10,6 @@ return [
     "idnhomquyen_administrator" => 7,
 
     "id_doi_lanhdaodonvi" => 2,
+
+    "id_module_congviec" => 1,
 ];
