@@ -96,7 +96,24 @@ class UserLibrary
             return $data;
     }
 
-    //Get các role hiện tại của một cán bôj
+    //-----------------------END CAN BO------------------------------
+
+
+    //-----------------------USER------------------------------
+
+    public static function getIdRoleUser($iduser)
+    {
+        return DB::table('users')
+        ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
+        ->where('users.id', $iduser)
+        ->value('idnhomquyen');
+    }
+
+    //-----------------------END USER--------------------------
+
+    //-----------------------PHÂN QUYỀN------------------------
+
+    //Get current role of canbo
     public static function getCanboRole( $idcanbo )
     {
         $canboRoleInfo['idcanbo'] = array( $idcanbo );
@@ -113,20 +130,7 @@ class UserLibrary
         return $canboRoleInfo;
     }
 
-    //-----------------------END CAN BO------------------------------
-
-
-    //-----------------------USER------------------------------
-
-    public static function getIdRoleUser($iduser)
-    {
-        return DB::table('users')
-        ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
-        ->where('users.id', $iduser)
-        ->value('idnhomquyen');
-    }
-
-    //-----------------------END USER--------------------------
+    //-----------------------end PHÂN QUYỀN------------------------
 
 
 }

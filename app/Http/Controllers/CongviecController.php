@@ -188,6 +188,7 @@ class CongviecController extends Controller
     
     public function create()
     {
+        dd(CongviecLibrary::getCongviecOwner( 4 )); die;
         $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo );
         $data['page_name'] = "Thêm mới công việc";
         $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );
@@ -348,7 +349,6 @@ class CongviecController extends Controller
         );
         DB::table('tbl_congviec_chuyentiep')->insert( $dataCongViecChuyentiep );
         CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' chuyển tiếp công việc '.$idcongviec.' cho: '.$request->idcanbonhan. ' - id_iddonvi_iddoi: '.$request->id_iddonvi_iddoi );
-        
         return response()->json(['success' => 'Chuyển tiếp công việc thành công ', 'url' => route('get-show-cong-viec', $idcongviec)]);        
     }
 

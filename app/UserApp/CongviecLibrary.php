@@ -63,6 +63,22 @@ class CongviecLibrary
         DB::table('tbl_congviec_log')->insert($data_log);
     }
 
+    public static function getCongviecOwner($idcongviec)
+    {
+        $own = array();
+        $congviec_info = DB::table( 'tbl_congviec' )
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+        ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
+        ->where( 'tbl_congviec.id', $idcongviec)
+        ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+        ->select( 'idcanbo_creater', 'idcanbonhan', 'id_iddonvi_iddoi_nhan' )
+        ->first();
+        $own['idcanbo'] = array( $congviec_info->idcanbo_creater, $congviec_info->idcanbonhan );
+
+        $own['id_iddonvi_iddoi'] = $congviec_info->id_iddonvi_iddoi_nhan;
+        return $own;
+    }
+
     
     
 
@@ -115,21 +131,7 @@ class CongviecLibrary
     //     }
     // }
 
-    public static function getCanboRole( $idcanbo )
-    {
-        $canboRoleInfo['idcanbo'] = array( $idcanbo );
-        $current_idnhomquyen = UserLibrary::getIdRoleUser( Session::get('userinfo')->iduser );
-        if( $current_idnhomquyen == config('user_config.idnhomquyen_doitruong') )
-        {
-            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo );
-        }
-
-        if( $current_idnhomquyen == config('user_config.idnhomquyen_capphodonvi') || $current_idnhomquyen == config('user_config.idnhomquyen_captruongdonvi') )
-        {
-            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getListDoiLanhdaoQuanly( $idcanbo, 'array' );
-        }
-        return $canboRoleInfo;
-    }
+    
 
 
 }
