@@ -137,6 +137,7 @@ Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->
 
 //-------------------PERMISSION-----------------------
 Route::get('/permission', 'Permission\RolePermissionController@index');
+Route::post('/permission/set-role', 'Permission\RolePermissionController@setRole')->name('permission-set-role');
 Route::get('/ajax-get-chuc-nang/{idmodule}', 'Permission\RolePermissionController@getChucnang')->name('ajax-get-chuc-nang');
 //-------------------END PERMISSION-----------------------
 

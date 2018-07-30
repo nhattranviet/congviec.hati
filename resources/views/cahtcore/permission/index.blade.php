@@ -18,13 +18,15 @@
             else
             {
                 $('#chucnang_level_'+global_id).val('');
+                $('#chucnang_'+global_id).val('');
             }
             
         });
 
         $('#modalsaveChange').on('click', function(e){
-            idlevel_select = $('#idlevel').val();
-            // alert(global_id);
+            var current_chucnang_val = $('#'+global_id).val();
+            var idlevel_select = $('#idlevel').val();
+            $('#chucnang_'+global_id).val(current_chucnang_val);
             $('#chucnang_level_'+global_id).val(idlevel_select);
             // alert(idlevel_select);
         });
@@ -65,7 +67,7 @@
         <div class="row m-t-10">
             <div class="col-xs-12">
                 <div class="card-box table-responsive">
-                    <form id="tim-kiem-hoso" action="{{ URL::to('nhan-khau') }}" method="GET" role="form" idresult="nhankhautable">
+                    <form id="form-nhankhaus" action="{{ route('permission-set-role') }}" method="POST" role="form">
                         @csrf
                         <div class="row">
                             <div class="col-xs-12 col-sm-12">
@@ -76,6 +78,7 @@
                                     </label>
                                 </div>
                             </div>
+
                             @foreach($list_donvi as $donvi)
                                 <div class="col-xs-12 col-sm-2">
                                     <div class="checkbox checkbox-primary">
@@ -86,25 +89,23 @@
                                     </div>
                                 </div>
                             @endforeach
-
-                                
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-6">
 
                                 <fieldset class="form-group" >
                                     <label>Chọn nhóm quyền<span class="text-danger">*</span></label>
-                                    <select name="idnhomquyen" class="form-control select2">
-                                        <option value="">Chọn nhóm quyền</option>
+                                    <select name="idnhomquyen[]" multiple="multiple" class="form-control select2">
                                         @foreach($list_nhomquyen as $nhomquyen)
                                         <option value="{{ $nhomquyen->id }}">{{ $nhomquyen->name }}</option>
                                         @endforeach
                                     </select>
+                                    <input type="hidden" name="test" value="1">
                                 </fieldset>
                             </div>
 
-                            <div class="col-xs-12 col-sm-3">
+                            <div class="col-xs-12 col-sm-6">
 
                                 <fieldset class="form-group" >
                                     <label>Chọn modules phân quyền<span class="text-danger">*</span></label>
@@ -138,7 +139,7 @@
 <!-- content -->
 </div>
 
-<div class="modal fade" id="address-modal">
+<div class="modal fade" id="address-modal" data-backdrop="static">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">

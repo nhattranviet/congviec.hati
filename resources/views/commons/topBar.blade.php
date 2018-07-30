@@ -39,7 +39,7 @@
                 <!-- item-->
                 <div class="dropdown-item noti-title">
                     <h5 class="text-overflow">
-                    <small>Quyền:<b class="text-default"> {{ Session::get('userinfo')->tennhomquyen }} </b></small>
+                    {{-- <small>Quyền:<b class="text-default"> {{ Session::get('userinfo')->tennhomquyen }} </b></small> --}}
                     </h5>
                 </div>
                 <!-- item-->
