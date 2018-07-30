@@ -96,6 +96,34 @@ class UserLibrary
             return $data;
     }
 
+    public static function getCanboInfo($id, $type = 'idcanbo')
+    {
+        $data = DB::table('tbl_canbo')
+        ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
+        ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
+        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->leftJoin('tbl_tongiao', 'tbl_tongiao.id', '=', 'tbl_connguoi.idtongiao')
+        ->leftJoin('tbl_nghenghiep', 'tbl_nghenghiep.id', '=', 'tbl_connguoi.idnghenghiep')
+        ->leftJoin('tbl_dantoc', 'tbl_dantoc.id', '=', 'tbl_connguoi.iddantoc')
+        ->leftJoin('tbl_capbac', 'tbl_capbac.id', '=', 'tbl_canbo.idcapbac')
+        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+        ->join('tbl_donvi', 'tbl_donvi.id', '=', 'tbl_donvi_doi.iddonvi')
+        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi');
+        if($type = 'idcanbo')
+        {
+            $data = $data->where('tbl_canbo.id', $id)
+            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'users.username', 'users.email')
+            ->first();
+        }
+        else{
+            $data = $data->where('users.id', $id)
+            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'users.username', 'users.email')
+            ->first();
+        }
+        return $data;
+    }
+
     //-----------------------END CAN BO------------------------------
 
 
@@ -167,9 +195,29 @@ class UserLibrary
         ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
         ->whereIn( 'iddonvi', $arrDonvi )
         ->select('users.id as iduser', 'idnhomquyen', 'iddonvi')
-        ->get();
-
+        ->get()->toArray();
         return $data;
+    }
+
+    public static function getChucnangByModule( $arrModule )
+    {
+        $data = DB::table('tbl_chucnang')
+        ->join('tbl_modules', 'tbl_chucnang.idmodule', '=', 'tbl_modules.id')
+        ->whereIn( 'idmodule', $arrModule )
+        ->select('tbl_chucnang.id as idchucnang')
+        ->get()->toArray();
+        return $data;
+    }
+
+    public static function destroyCurrentNomalRole( $iduser, $arrModule )
+    {
+        $list_chucnang = DB::table('tbl_chucnang')
+        ->join('tbl_modules', 'tbl_modules.id', '=', 'tbl_chucnang.idmodule')
+        ->whereIn('idmodule', $arrModule)
+        ->pluck('tbl_chucnang.id')->toArray();
+
+        DB::table('tbl_user_chucnang')->where(array(['iduser', '=', $iduser], ['private', '!=', 1] ))->whereIn('idchucnang', $list_chucnang)->delete();
+        return TRUE;
     }
 
     //-----------------------end PHÂN QUYỀN------------------------

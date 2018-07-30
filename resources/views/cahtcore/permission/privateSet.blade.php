@@ -67,66 +67,31 @@
         <div class="row m-t-10">
             <div class="col-xs-12">
                 <div class="card-box table-responsive">
-                    <form id="form-nhankhau" action="{{ route('permission-set-role') }}" method="POST" role="form">
+                    <form id="form-nhankhaus" action="{{ route('post-set-private-role') }}" method="POST" role="form">
                         @csrf
                         <div class="row">
                             <div class="col-xs-12 col-sm-12">
                                 <div class="checkbox checkbox-primary">
                                     <input id="checkAllDonvi" type="checkbox" >
                                     <label for="checkbox">
-                                        <b>Chọn tất cả các đơn vị</b>
+                                        <b>Chọn tất cả</b>
                                     </label>
                                 </div>
                             </div>
-
-                            @foreach($list_donvi as $donvi)
-                                <div class="col-xs-12 col-sm-2">
-                                    <div class="checkbox checkbox-primary">
-                                        <input class="donvi" name="iddonvi[]" type="checkbox" value="{{ $donvi->id }}" >
-                                        <label for="checkbox">
-                                            {{ $donvi->kyhieu }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-12 col-sm-6">
-
-                                <fieldset class="form-group" >
-                                    <label>Chọn nhóm quyền<span class="text-danger">*</span></label>
-                                    <select name="idnhomquyen[]" class="form-control select2">
-                                        <option value="">Tất cả</option>
-                                        @foreach($list_nhomquyen as $nhomquyen)
-                                        <option value="{{ $nhomquyen->id }}">{{ $nhomquyen->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <input type="hidden" name="test" value="1">
-                                </fieldset>
-                            </div>
 
                             <div class="col-xs-12 col-sm-6">
                                 <fieldset class="form-group" >
                                     <label>Chọn modules phân quyền<span class="text-danger">*</span></label>
-                                    <select multiple="multiple" name="idmodule[]" class="form-control select2">
+                                    <select id="module" name="idmodule" class="form-control select2">
                                         <option value="">Chọn Module</option>
                                         @foreach($list_module as $module)
                                         <option value="{{ $module->id }}">{{ $module->name }}</option>
                                         @endforeach
                                     </select>
                                 </fieldset>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="checkbox checkbox-primary">
-                                    <input type="checkbox" name="quick_set_role" value="1" checked >
-                                    <label for="checkbox">
-                                        Phân quyền mặc định
-                                    </label>
-                                </div>
                             </div>
                         </div>
                         <div class="row" id="chucnanglist">

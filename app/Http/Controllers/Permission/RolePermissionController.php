@@ -27,14 +27,17 @@ class RolePermissionController extends Controller
     }
 
     public function setRole(Request $request)
-    {   
+    {
         $list_donvi = $request->iddonvi;
         $list_nhomquyen = $request->idnhomquyen;
         $list_chucnang = $request->chucnang;
-        $list_chucnang_level = $request->chucnang_level;
+        $list_module = $request->idmodule;
+
         if(count( $list_donvi ) == 0) return response()->json(['error' => array('Đơn vị phân quyền phải được chọn')]);
         if(count( $list_nhomquyen ) == 0 && $request->quick_set_role == NULL ) return response()->json(['error' => array('Nhóm quyền phải được chọn')]);
-        $num = count( $list_chucnang_level );
+        if(count( $list_module ) == 0 ) return response()->json(['error' => array('Module phân quyền phải được chọn')]);
+
+        $num = count( $list_chucnang );
         for ($i=0; $i < $num; $i++)
         { 
             if( $list_chucnang[$i] != NULL &&  $list_chucnang_level == NULL )
@@ -43,12 +46,51 @@ class RolePermissionController extends Controller
             }
         }
 
-        dd(UserLibrary::getUserByDonVi($list_donvi));
+        $list_user = UserLibrary::getUserByDonVi($list_donvi);
+        $list_chucnang_module = UserLibrary::getChucnangByModule( $list_module );
+        $arrDefaultRole = config('user_config.idnhomquyen_level_default');
+        $arrUser = array();
+        foreach ($list_user as $user)
+        {
+            $arrUser[$user->idnhomquyen][] = $user->iduser;
+        }
+
+        foreach ($arrUser as $idnhomquyen => $users)
+        {
+            
+            foreach ($users as $user)
+            {
+                UserLibrary::destroyCurrentNomalRole($user, $list_module);
+                $data_chucnang_user_add = array();
+                foreach ($list_chucnang_module as $chucnang)
+                {
+                    $data_chucnang_user_add[] = array(
+                        'iduser' => $user,
+                        'idchucnang' => $chucnang->idchucnang,
+                        'idlevel' => $arrDefaultRole[$idnhomquyen],
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    );
+                }
+                DB::table('tbl_user_chucnang')->insert( $data_chucnang_user_add );
+
+            }
+        }
 
 
+        return response()->json(['success' => 'Phân quyền thành công ']);
+    }
 
+    public function privateSetPermisson($userid)
+    {
+        $data['list_module'] = UserLibrary::getListModule();
+        $data['list_level'] = UserLibrary::getListLevel();
+        return view('cahtcore.permission.privateSet', $data);
+    }
 
-        // return response()->json(['success' => 'Thêm nhân khẩu thành công ']);
+    public function postPrivateSetPermisson(Request $request)
+    {
+        
     }
 
     public function getChucnang($idmodule = NULL)
