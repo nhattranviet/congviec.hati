@@ -119,13 +119,23 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="checkbox checkbox-primary">
+                                    <input type="checkbox" name="quick_set_role" value="1" >
+                                    <label for="checkbox">
+                                        Phân quyền mặc định
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row" id="chucnanglist">
 
                         </div>
 
                         <div class="row m-t-20">
                             <div class="col-xs-12 col-sm-3">
-                                <button type="submit" class="btn btn-danger"> <i class="fa fa-save"></i> Lưu lại</button>
+                                <button type="submit" class="btn btn-danger"> <i class="fa fa-save"></i> Thực hiện</button>
                             </div>
                         </div>
                         

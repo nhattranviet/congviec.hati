@@ -159,6 +159,19 @@ class UserLibrary
             ->get();
     }
 
+    public static function getUserByDonVi( $arrDonvi )
+    {
+        $data = DB::table('tbl_canbo')
+        ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
+        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+        ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
+        ->whereIn( 'iddonvi', $arrDonvi )
+        ->select('users.id as iduser', 'idnhomquyen', 'iddonvi')
+        ->get();
+
+        return $data;
+    }
+
     //-----------------------end PHÂN QUYỀN------------------------
 
 

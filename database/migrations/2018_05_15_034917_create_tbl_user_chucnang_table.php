@@ -18,7 +18,7 @@ class CreateTblUserChucnangTable extends Migration
             $table->unsignedInteger('iduser');
             $table->unsignedInteger('idchucnang');
             $table->unsignedInteger('idlevel');
-            $table->tinyInteger('private')->default(NULL);
+            $table->tinyInteger('private')->default(0);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('iduser')->references('id')->on('users');

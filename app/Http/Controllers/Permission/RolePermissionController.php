@@ -27,47 +27,26 @@ class RolePermissionController extends Controller
     }
 
     public function setRole(Request $request)
-    {
-        // $validator = Validator::make($request->all(), [
-        //     'iddonvi.*' => 'required|array|numeric',
-        // ], $this->messages);
-
-        // // $validator->after(function ($validator) use ($request) {
-        // //     // $validator->errors()->add('hanxuly', 'Hạn xử lý xong phải trước hoặc bằng hạn công việc!');
-        // //     // if($request->hanxuly &&  strtotime($request->hanxuly) > strtotime($request->hancongviec) )
-        // //     // {
-        // //     //     $validator->errors()->add('hanxuly', 'Hạn xử lý xong phải trước hoặc bằng hạn công việc!');
-        // //     // }
-        // // });
-        
-        // if ($validator->fails()) {
-        //     return response()->json(['error' => $validator->errors()->all()]);
-        // }
-
-        // dd( $request->idnhomquyen );
+    {   
         $list_donvi = $request->iddonvi;
-
-        $list_chucnang = $request->idchucnang;
+        $list_nhomquyen = $request->idnhomquyen;
+        $list_chucnang = $request->chucnang;
         $list_chucnang_level = $request->chucnang_level;
-        echo '<pre>';
-        print_r( $list_chucnang );
-        echo '</pre>';
-        echo '<br>';
-        echo '<pre>';
-        print_r( $list_chucnang_level );
-        echo '</pre>'; die;
-        // if(count( $request->iddonvi ) == 0) return response()->json(['error' => array('Đơn vị phân quyền phải được chọn')]);
-        // if(count( $request->idnhomquyen ) == 0) return response()->json(['error' => array('Nhóm quyền phải được chọn')]);
+        if(count( $list_donvi ) == 0) return response()->json(['error' => array('Đơn vị phân quyền phải được chọn')]);
+        if(count( $list_nhomquyen ) == 0 && $request->quick_set_role == NULL ) return response()->json(['error' => array('Nhóm quyền phải được chọn')]);
         $num = count( $list_chucnang_level );
-        //
         for ($i=0; $i < $num; $i++)
         { 
-            if( $list_chucnang[$i] != NULL )
+            if( $list_chucnang[$i] != NULL &&  $list_chucnang_level == NULL )
             {
-                echo $list_chucnang[$i];  //.'-'.$list_chucnang_level[$i].'<br>';
-                // return response()->json(['error' => array('Muc quyen phai duoc chon')]);
+                return response()->json(['error' => array('Mức quyền của mỗi chức năng phải được chọn')]);
             }
         }
+
+        dd(UserLibrary::getUserByDonVi($list_donvi));
+
+
+
 
         // return response()->json(['success' => 'Thêm nhân khẩu thành công ']);
     }
