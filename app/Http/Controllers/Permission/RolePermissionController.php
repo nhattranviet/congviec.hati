@@ -85,18 +85,27 @@ class RolePermissionController extends Controller
     {
         $data['list_module'] = UserLibrary::getListModule();
         $data['list_level'] = UserLibrary::getListLevel();
+        $data['iduser'] = $userid;
         return view('cahtcore.permission.privateSet', $data);
     }
 
     public function postPrivateSetPermisson(Request $request)
     {
-        
+
     }
 
-    public function getChucnang($idmodule = NULL)
+    public function getChucnang($iduser, $idmodule)
     {
         $data['list_level'] = UserLibrary::getListLevel();
         $data['list_chucnang'] = UserLibrary::getListChucnang($idmodule);
+        $data['list_chucnang_db'] = UserLibrary::getUserRoleModule($iduser, $idmodule);
+        $data['arr_list_chucnang'] = array();
+        $data['arr_list_level'] = array();
+        foreach ($data['list_chucnang_db'] as $idchucnang => $idlevel)
+        {
+            $data['arr_list_chucnang'][] = $idchucnang;
+            $data['arr_list_level'][] = $idlevel;
+        }
         return response()->json(['html' => view('cahtcore.permission.module_chucnang_component', $data)->render()]);
     }
 }

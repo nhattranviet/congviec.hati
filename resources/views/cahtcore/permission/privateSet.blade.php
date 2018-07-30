@@ -67,18 +67,9 @@
         <div class="row m-t-10">
             <div class="col-xs-12">
                 <div class="card-box table-responsive">
-                    <form id="form-nhankhaus" action="{{ route('post-set-private-role') }}" method="POST" role="form">
+                    <form id="form-nhankhaus" action="{{ route('post-set-private-role', $iduser) }}" method="POST" role="form">
                         @csrf
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="checkbox checkbox-primary">
-                                    <input id="checkAllDonvi" type="checkbox" >
-                                    <label for="checkbox">
-                                        <b>Chọn tất cả</b>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" id="iduser" name="iduser" value="{{ $iduser }}">
 
                         <div class="row">
 

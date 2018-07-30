@@ -407,16 +407,11 @@
 
             $("#module").on('change', function () {
                 var idmodule = $('#module').val();
+                var iduser = $('#iduser').val();
                 if (idmodule)
                 {
-                    var url = bare_url + '/ajax-get-chuc-nang/' + idmodule;
+                    var url = bare_url + '/ajax-get-chuc-nang/'+iduser+'/'+idmodule;
                     ajax_get_data_to_html_json(url, '#chucnanglist');
-                    $('.chucnang_checkbox').on('click', function (e) {
-                        // if(e.target.checked){
-                        //     $('#address-modal').modal();
-                        // }
-                        alert('111 chuc nang');
-                    });
                 }else{
                     $('#chucnanglist').empty();
                 }

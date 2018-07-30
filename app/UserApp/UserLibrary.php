@@ -220,6 +220,14 @@ class UserLibrary
         return TRUE;
     }
 
+    public static function getUserRoleModule($iduser, $idmodule)
+    {
+        return DB::table('tbl_user_chucnang')
+        ->join('tbl_chucnang', 'tbl_chucnang.id', '=', 'tbl_user_chucnang.idchucnang')
+        ->where(array(['iduser', '=', $iduser], ['idmodule', '=', $idmodule]))
+        ->pluck('idlevel', 'idchucnang')->toArray();
+    }
+
     //-----------------------end PHÂN QUYỀN------------------------
 
 

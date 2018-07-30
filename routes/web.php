@@ -140,7 +140,7 @@ Route::get('/permission', 'Permission\RolePermissionController@index');
 Route::post('/permission/set-role', 'Permission\RolePermissionController@setRole')->name('permission-set-role');
 Route::get('/permission/{iduser}/set-private-role', 'Permission\RolePermissionController@privateSetPermisson')->name('set-private-role');
 Route::post('/permission/{iduser}/set-private-role', 'Permission\RolePermissionController@postPrivateSetPermisson')->name('post-set-private-role');
-Route::get('/ajax-get-chuc-nang/{idmodule}', 'Permission\RolePermissionController@getChucnang')->name('ajax-get-chuc-nang');
+Route::get('/ajax-get-chuc-nang/{iduser}/{idmodule}', 'Permission\RolePermissionController@getChucnang')->name('ajax-get-chuc-nang');
 //-------------------END PERMISSION-----------------------
 
 
