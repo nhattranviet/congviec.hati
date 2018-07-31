@@ -89,9 +89,74 @@ class RolePermissionController extends Controller
         return view('cahtcore.permission.privateSet', $data);
     }
 
-    public function postPrivateSetPermisson(Request $request)
+    public function postPrivateSetPermisson(Request $request, $iduser)
     {
+        $list_chucnang_post = $request->chucnang;
+        $list_level_post = $request->chucnang_level;
+        $idmodule = $request->idmodule;
+        $list_current_user_module_role = UserLibrary::getUserRoleModule($iduser, $idmodule);
+        $num = count( $list_chucnang_post );
 
+        $chucnang_level_post = array();
+        for ($i=0; $i < $num; $i++)
+        { 
+            if( $list_chucnang_post[$i] != NULL &&  $list_level_post[$i] == NULL )
+            {
+                return response()->json(['error' => array('Mức quyền của mỗi chức năng phải được chọn')]);
+            }
+            $chucnang_level_post[$list_chucnang_post[$i]] = $list_level_post[$i];
+        }
+        // print_r( $chucnang_level_post ); die;
+
+        $arr_chucnang_post = array();
+        foreach ($list_chucnang_post as $chucnang) {
+            if( $chucnang  != NULL )
+            {
+                $arr_chucnang_post[] = $chucnang;
+            }
+        }
+        $arr_chucnang_post_db = array_keys($list_current_user_module_role);
+
+        $arr_chucnang_add = array_diff($arr_chucnang_post, $arr_chucnang_post_db);
+        $arr_chucnang_del = array_diff($arr_chucnang_post_db, $arr_chucnang_post);
+        $arr_chucnang_maybe_update = array_diff($arr_chucnang_post, $arr_chucnang_add);
+
+        //Update role
+        if( count($arr_chucnang_maybe_update) > 0 )
+        {
+            foreach ($arr_chucnang_maybe_update as $chucnang)
+            {
+                if( $chucnang_level_post[$chucnang] != $list_current_user_module_role[$chucnang] )
+                {
+                    DB::table('tbl_user_chucnang')->where(array( ['iduser', '=', $iduser], ['idchucnang', '=', $chucnang] ) )->update( ['idlevel' => $chucnang_level_post[$chucnang], 'private' => 1 ] );
+                }
+            }
+        }
+
+        //Add role
+        if( count($arr_chucnang_add) > 0 )
+        {
+            $data_add = array();
+            foreach ($arr_chucnang_add as $value)
+            {
+                $data_add[] = array(
+                    'iduser' => $iduser,
+                    'idchucnang' => $value,
+                    'idlevel' => $chucnang_level_post[$value],
+                    'private' => 1,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                );
+            }
+            DB::table('tbl_user_chucnang')->insert( $data_add );
+        }
+
+        if( count( $arr_chucnang_del ) > 0 )
+        {
+            DB::table('tbl_user_chucnang')->where('iduser', $iduser)->whereIn('idchucnang', $arr_chucnang_del)->delete();
+        }
+        
+        return response()->json(['success' => 'Phân quyền thành công ']);
     }
 
     public function getChucnang($iduser, $idmodule)

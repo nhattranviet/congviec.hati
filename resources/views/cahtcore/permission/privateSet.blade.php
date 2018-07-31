@@ -19,6 +19,8 @@
             {
                 $('#chucnang_level_'+global_id).val('');
                 $('#chucnang_'+global_id).val('');
+                $('#level_info_'+global_id).text('');
+                
             }
             
         });
@@ -26,8 +28,10 @@
         $('#modalsaveChange').on('click', function(e){
             var current_chucnang_val = $('#'+global_id).val();
             var idlevel_select = $('#idlevel').val();
+            var level_text = $('#idlevel option:selected').text();
             $('#chucnang_'+global_id).val(current_chucnang_val);
             $('#chucnang_level_'+global_id).val(idlevel_select);
+            $('#level_info_'+global_id).text(level_text);
             // alert(idlevel_select);
         });
     })
@@ -67,13 +71,11 @@
         <div class="row m-t-10">
             <div class="col-xs-12">
                 <div class="card-box table-responsive">
-                    <form id="form-nhankhaus" action="{{ route('post-set-private-role', $iduser) }}" method="POST" role="form">
+                    <form id="form-nhankhau" action="{{ route('post-set-private-role', $iduser) }}" method="POST" role="form">
                         @csrf
                         <input type="hidden" id="iduser" name="iduser" value="{{ $iduser }}">
-
                         <div class="row">
-
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-12">
                                 <fieldset class="form-group" >
                                     <label>Chọn modules phân quyền<span class="text-danger">*</span></label>
                                     <select id="module" name="idmodule" class="form-control select2">
@@ -94,7 +96,6 @@
                                 <button type="submit" class="btn btn-danger"> <i class="fa fa-save"></i> Thực hiện</button>
                             </div>
                         </div>
-                        
                     </form>
                 </div>
             </div>
