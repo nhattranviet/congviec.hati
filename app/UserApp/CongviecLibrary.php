@@ -61,6 +61,7 @@ class CongviecLibrary
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         );
+        // print_r($data_log); die;
         DB::table('tbl_log')->insert($data_log);
     }
 
@@ -80,57 +81,14 @@ class CongviecLibrary
         return $own;
     }
 
-    
-    
-
-    // public static function check_role_congviec($idcongviec)
-    // {
-    //     $congviec_info = DB::table('tbl_congviec_chuyentiep')->join('tbl_congviec', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')->whereRaw("tbl_congviec_chuyentiep.id = ( SELECT max(id) FROM tbl_congviec_chuyentiep WHERE  idcongviec = $idcongviec) ")->select('idcanbonhan', 'id_iddonvi_iddoi_nhan', 'idcanbo_creater')->first();
-    //     if($congviec_info == NULL)
-    //     {
-    //         return FALSE;
-    //     }
-    //     if( Session::get('userinfo')->idcanbo == $congviec_info->idcanbo_creater )
-    //     {
-    //         return TRUE;
-    //     }
-
-    //     if(Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_captruongdonvi || Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_capphodonvi)   // lãnh đạo đơn vị
-    //     {
-    //         $list_doi_quanly = $this->get_id_iddonvi_iddoi_quanly( Session::get('userinfo')->idcanbo );
-    //         if($list_doi_quanly == NULL)
-    //         {
-    //             return FALSE;
-    //         }
-
-    //         foreach( $list_doi_quanly as $doi )
-    //         {
-    //             if($doi->id == $congviec_info->id_iddonvi_iddoi_nhan)
-    //             {
-    //                 return TRUE;
-    //             }
-    //         }
-    //         return FALSE;
-    //     }
-    //     elseif(Session::get('userinfo')->idnhomquyen == $this->idnhomquyen_doitruong)    // Đội trưởng
-    //     {
-    //         if(Session::get('userinfo')->id_iddonvi_iddoi == $congviec_info->id_iddonvi_iddoi_nhan)
-    //         {
-    //             return TRUE;
-    //         }
-    //         return FALSE;
-    //     }
-    //     else {  //Cán bộ và đội phó
-    //         if( $congviec_info->idcanbonhan == Session::get('userinfo')->idcanbo )
-    //         {
-    //             return TRUE;
-    //         }
-    //         else
-    //         {
-    //             return FALSE;
-    //         }
-    //     }
-    // }
+    public function checkPermissionCongviec( $method, $iduser, $url_redirect = '/' , $message = 'Bạn không có quyền ở đây' )
+    {
+        $data = DB::table('tbl_user_chucnang')
+        ->join('tbl_chucnang', 'tbl_chucnang.id', '=', 'tbl_user_chucnang.idchucnang')
+        ->join('tbl_level', 'tbl_level.id', '=', 'tbl_user_chucnang.idlevel')
+        ->where( array( ['method', '=', $method ], ['iduser', '=', $iduser] ) )
+        ->select('keyword', 'idlevel')->first()->roArray();
+    }
 
     
 

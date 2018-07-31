@@ -188,7 +188,7 @@ class CongviecController extends Controller
     
     public function create()
     {
-        dd(CongviecLibrary::getCongviecOwner( 4 )); die;
+        // dd(CongviecLibrary::checkPermissionCongviec( 4 )); die;
         $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo );
         $data['page_name'] = "Thêm mới công việc";
         $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );

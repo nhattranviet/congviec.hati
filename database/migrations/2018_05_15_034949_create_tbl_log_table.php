@@ -17,7 +17,7 @@ class CreateTblLogTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('idmodule')->nullable();
             $table->unsignedInteger('value_object')->nullable();
-            $table->unsignedInteger('name_object')->nullable();
+            $table->string('name_object')->nullable();
             $table->unsignedInteger('iduser')->nullable();
             $table->unsignedInteger('idcanbo')->nullable();
             $table->unsignedInteger('level')->nullable();
