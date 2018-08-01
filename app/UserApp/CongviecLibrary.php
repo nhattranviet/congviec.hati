@@ -67,7 +67,7 @@ class CongviecLibrary
         DB::table('tbl_log')->insert($data_log);
     }
 
-    public static function getCongviecOfCanbo( $request, $idcanbo, $arrWhere = array() )
+    public static function getCongviecOfCanbo( $request, $idcanbo, $paginate_number = 10, $arrWhere = array() )
     {
         $data = DB::table( 'tbl_congviec' )
             ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -91,7 +91,7 @@ class CongviecLibrary
                 {
                     $data = $data->orderBy('tbl_congviec.id', 'DESC');
                 }
-                $data = $data->paginate(10, ['tbl_congviec.id']);
+                $data = $data->paginate($paginate_number, ['tbl_congviec.id']);
             
         return $data;
     }
@@ -136,7 +136,7 @@ class CongviecLibrary
         return $arrWhere;
     }
 
-    public static function getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, $arrWhere = array())
+    public static function getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, $paginate_number = 10, $arrWhere = array())
     {
         $data = DB::table( 'tbl_congviec' )
         ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
@@ -160,7 +160,7 @@ class CongviecLibrary
         {
             $data = $data->orderBy('tbl_congviec.id', 'DESC');
         }
-        $data = $data->paginate(10, ['tbl_congviec.id']);
+        $data = $data->paginate($paginate_number, ['tbl_congviec.id']);
         return $data;
     }
 

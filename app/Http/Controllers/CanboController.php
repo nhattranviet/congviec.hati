@@ -81,7 +81,7 @@ class CanboController extends Controller
         ->join('tbl_doicongtac', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id')
         ->join('tbl_donvi', 'tbl_donvi_doi.iddonvi', '=', 'tbl_donvi.id')
         ->where( $arrWhere )
-        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu', 'email', 'tbl_donvi.name as tendonvi', 'tbl_doicongtac.name as tendoi', 'tbl_nhomquyen.name as tennhomquyen', 'users.active')
+        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu', 'email', 'tbl_donvi.name as tendonvi', 'tbl_doicongtac.name as tendoi', 'tbl_nhomquyen.name as tennhomquyen', 'users.active', 'users.id as iduser')
         ->orderBy('tbl_canbo.id', 'desc')
         ->paginate(10);
 
