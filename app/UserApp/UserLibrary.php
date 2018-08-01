@@ -233,14 +233,13 @@ class UserLibrary
         return $data;
     }
 
-    public static function destroyCurrentNomalRole( $iduser, $arrModule )
+    public static function destroyCurrentRole( $iduser, $arrModule )
     {
         $list_chucnang = DB::table('tbl_chucnang')
         ->join('tbl_modules', 'tbl_modules.id', '=', 'tbl_chucnang.idmodule')
         ->whereIn('idmodule', $arrModule)
         ->pluck('tbl_chucnang.id')->toArray();
-
-        DB::table('tbl_user_chucnang')->where(array(['iduser', '=', $iduser], ['private', '!=', 1] ))->whereIn('idchucnang', $list_chucnang)->delete();
+        DB::table('tbl_user_chucnang')->where(array('iduser', $iduser ))->whereIn('idchucnang', $list_chucnang)->delete();
         return TRUE;
     }
 

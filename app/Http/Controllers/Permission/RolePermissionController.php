@@ -60,7 +60,7 @@ class RolePermissionController extends Controller
             
             foreach ($users as $user)
             {
-                UserLibrary::destroyCurrentNomalRole($user, $list_module);
+                UserLibrary::destroyCurrentRole($user, $list_module);
                 $data_chucnang_user_add = array();
                 foreach ($list_chucnang_module as $chucnang)
                 {
