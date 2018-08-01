@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Session;
 use App\UserApp\UserLibrary;
+use Redirect;
+use Illuminate\Http\RedirectResponse;
 
 class CongviecLibrary
 {
@@ -81,16 +83,50 @@ class CongviecLibrary
         return $own;
     }
 
-    public function checkPermissionCongviec( $method, $iduser, $url_redirect = '/' , $message = 'Bạn không có quyền ở đây' )
+    public static function getUserMethodRoleInfo( $iduser, $method )
     {
-        $data = DB::table('tbl_user_chucnang')
+        return DB::table('tbl_user_chucnang')
         ->join('tbl_chucnang', 'tbl_chucnang.id', '=', 'tbl_user_chucnang.idchucnang')
         ->join('tbl_level', 'tbl_level.id', '=', 'tbl_user_chucnang.idlevel')
-        ->where( array( ['method', '=', $method ], ['iduser', '=', $iduser] ) )
-        ->select('keyword', 'idlevel')->first()->roArray();
+        ->join('tbl_modules', 'tbl_modules.id', '=', 'tbl_chucnang.idmodule')
+        ->where( array( ['method', '=', $method ], ['iduser', '=', $iduser], ['idmodule', '=', config('user_config.id_module_congviec') ] ) )
+        ->select('keyword', 'idlevel')->first();
     }
 
-    
+    public static function checkPermissionCongviec($idcongviec, $iduser, $idcanbo, $method )
+    {
+        $data = CongviecLibrary::getUserMethodRoleInfo($iduser, $method);
+        if( $data == NULL ){
+            return FALSE;
+        }
+
+        if($data->idlevel == NULL || $data->idlevel == config('user_config.max_level_id') )
+        {   
+            return TRUE;
+        }
+        else
+        {   
+            $current_role = UserLibrary::getCanboRole($idcanbo);
+            $own_congviec = CongviecLibrary::getCongviecOwner( $idcongviec );
+            if( $data->keyword == 'idcanbo' )
+            {
+                if( in_array( $current_role['idcanbo'], $own_congviec['idcanbo'] ) )
+                {
+                    return TRUE;
+                }
+            }
+            elseif( $data->keyword == 'id_iddonvi_iddoi' )
+            {
+                if( in_array( $own_congviec['id_iddonvi_iddoi'], $current_role['id_iddonvi_iddoi'] ) )
+                {
+                    return TRUE;
+                }
+            }
+
+        }
+        return FALSE;
+    }
+
 
 
 }

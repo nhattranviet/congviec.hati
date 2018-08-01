@@ -88,6 +88,30 @@ class UserLibrary
             {
                 $data = $data->value('tbl_donvi_doi.id');
             }
+            elseif( $type == 'array' )
+            {
+                $data = $data->pluck('tbl_donvi_doi.id')->toArray();
+            }
+            else
+            {
+                $data = $data->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')->get();
+            }
+            
+            return $data;
+    }
+
+    //Lấy iddonvi_iddoi của cán bộ, trả về object hoặc giá trị  value, array, object
+    public static function getIdDonviIdDoiOfUser( $iduser, $type = '' )
+    {
+        $data = DB::table('tbl_canbo')
+            ->join('users', 'tbl_canbo.id', '=', 'users.idcanbo')
+            ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+            ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+            ->where('users.id', $iduser);
+            if( $type == 'value')
+            {
+                $data = $data->value('tbl_donvi_doi.id');
+            }
             elseif( $type == 'object' )
             {
                 $data = $data->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')->get();
@@ -144,11 +168,11 @@ class UserLibrary
     //Get current role of canbo
     public static function getCanboRole( $idcanbo )
     {
-        $canboRoleInfo['idcanbo'] = array( $idcanbo );
+        $canboRoleInfo['idcanbo'] = $idcanbo;
         $current_idnhomquyen = UserLibrary::getIdRoleUser( Session::get('userinfo')->iduser );
         if( $current_idnhomquyen == config('user_config.idnhomquyen_doitruong') )
         {
-            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo );
+            $canboRoleInfo['id_iddonvi_iddoi'] = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo, 'array' );
         }
 
         if( $current_idnhomquyen == config('user_config.idnhomquyen_capphodonvi') || $current_idnhomquyen == config('user_config.idnhomquyen_captruongdonvi') )

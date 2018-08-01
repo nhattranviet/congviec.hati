@@ -12,10 +12,11 @@ use App\User;
 use App\Canbo;
 use App\UserApp\CongviecLibrary;
 use App\UserApp\UserLibrary;
+use Illuminate\Support\Facades\Redirect;
 
 class CongviecController extends Controller
 {
-    public $messages = [
+    public $messages_validate = [
         'sotailieu.required' => 'Số tài liệu/Ký hiệu không được để trống',
         'trichyeu.required' => 'Trích yếu không được để trống',
         'canbonhan.required' => 'Lãnh đạo xử lý không được để trống',
@@ -35,24 +36,24 @@ class CongviecController extends Controller
 
     public function index( Request $request )
     {
-        $arrWhere = array();
-        $current_idcanbo = Session::get('userinfo')->idcanbo;
-        $current_iduser = Session::get('userinfo')->iduser;
-        $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
-        if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
-        {
-            $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly($current_idcanbo, 'object');
-        }
-        else
-        {
-            $data['list_doicongtac'] = UserLibrary::getIdDonviIdDoiofCanBo( $current_idcanbo, 'object' );
-        }
+        // $arrWhere = array();
+        // $current_idcanbo = Session::get('userinfo')->idcanbo;
+        // $current_iduser = Session::get('userinfo')->iduser;
+        // $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
+        // if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
+        // {
+        //     $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly($current_idcanbo, 'object');
+        // }
+        // else
+        // {
+        //     $data['list_doicongtac'] = UserLibrary::getIdDonviIdDoiofCanBo( $current_idcanbo, 'object' );
+        // }
         
-        $data['current_day'] = date('Y-m-d', time());
-        $arrListdoi = array();
-        foreach ($data['list_doicongtac'] as $value) {
-            $arrListdoi[] = $value->id;
-        }
+        // $data['current_day'] = date('Y-m-d', time());
+        // $arrListdoi = array();
+        // foreach ($data['list_doicongtac'] as $value) {
+        //     $arrListdoi[] = $value->id;
+        // }
 
         if( $request->ajax() )      //Begin ajax
         {
@@ -150,6 +151,9 @@ class CongviecController extends Controller
         }   //End Ajax
         else
         {
+            $index_role_info = CongviecLibrary::getUserMethodRoleInfo( Session::get('userinfo')->iduser, 'index' );
+            if( $index_role_info->keyword == 'idcanbo' )
+
             if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') ||  $current_idrole == config('user_config.idnhomquyen_doitruong') )        // Lãnh đạo đơn vị hoặc đội trưởng
             {
                 $data['list_congviec'] = DB::table( 'tbl_congviec' )
@@ -187,8 +191,8 @@ class CongviecController extends Controller
 
     
     public function create()
-    {
-        // dd(CongviecLibrary::checkPermissionCongviec( 4 )); die;
+    {           
+        // CongviecLibrary::checkPermissionCongviec( 'a', 1, 'http://google.com');
         $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo );
         $data['page_name'] = "Thêm mới công việc";
         $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );
@@ -203,7 +207,7 @@ class CongviecController extends Controller
             'idcanbonhan' => 'required',
             'hancongviec' => 'required',
 
-        ], $this->messages);
+        ], $this->messages_validate);
 
         if ($validator->fails()) {
             return response()->json([ 'error' => $validator->errors()->all() ]);
@@ -242,6 +246,11 @@ class CongviecController extends Controller
 
     public function edit($idcongviec)
     {
+        if( CongviecLibrary::checkPermissionCongviec($idcongviec, Session::get('userinfo')->iduser, Session::get('userinfo')->idcanbo, 'edit' ) == FALSE )
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('cong-viec.index')->with('alert_message', $message);
+        }
         $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo ); 
         $data['page_name'] = "Sửa công việc";
         $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );
@@ -260,7 +269,7 @@ class CongviecController extends Controller
             'hancongviec' => 'required',
             'idstatus' => 'required',
 
-        ], $this->messages);
+        ], $this->messages_validate);
 
         $validator->after(function ($validator) use ($request) {
             if($request->hanxuly &&  strtotime($request->hanxuly) > strtotime($request->hancongviec) )
@@ -398,5 +407,12 @@ class CongviecController extends Controller
         CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' thay đổi trạng thái công việc '.$idcongviec. ' từ '.$current_status. ' sang '. $data_update["idstatus"] );
         return redirect()->route('cong-viec.index')->with($data_message);
     }
+
+    // public function checkPermission($idcongviec)
+    // {
+
+        
+    //     $owner_congviec = CongviecLibrary::getCongviecOwner($idcongviec);
+    // }
 
 }
