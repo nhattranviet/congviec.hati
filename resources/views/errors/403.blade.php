@@ -37,7 +37,7 @@
                 <div class="text-error">4<span class="ion-sad"></span>3</div>
                 <h3 class="text-uppercase text-white font-600">Bạn không có quyền ở đây</h3>
                 <p class="text-white m-t-30">
-                    Dường như bạn cố gắng truy cập vào chức năng mà bạn không được quyền. Có vấn đề thắc mắc liên lạc quản trị hệ thống.
+                    Bạn đang truy cập vào chức năng mà bạn chưa được cấp quyền..
                 </p>
                 <br>
                 <a href="{{ URL::to('/') }}" class="btn btn-pink waves-effect waves-light" href="index.html"> Quay lại trang chủ</a>

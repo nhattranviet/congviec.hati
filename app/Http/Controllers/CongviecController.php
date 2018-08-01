@@ -36,163 +36,63 @@ class CongviecController extends Controller
 
     public function index( Request $request )
     {
-        // $arrWhere = array();
-        // $current_idcanbo = Session::get('userinfo')->idcanbo;
-        // $current_iduser = Session::get('userinfo')->iduser;
-        // $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
-        // if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
-        // {
-        //     $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly($current_idcanbo, 'object');
-        // }
-        // else
-        // {
-        //     $data['list_doicongtac'] = UserLibrary::getIdDonviIdDoiofCanBo( $current_idcanbo, 'object' );
-        // }
-        
-        // $data['current_day'] = date('Y-m-d', time());
-        // $arrListdoi = array();
-        // foreach ($data['list_doicongtac'] as $value) {
-        //     $arrListdoi[] = $value->id;
-        // }
-
+        $current_idcanbo = Session::get('userinfo')->idcanbo;
+        $current_iduser = Session::get('userinfo')->iduser;
+        $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
+        if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
+        {
+            $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly($current_idcanbo, 'object');
+        }
+        else
+        {
+            $data['list_doicongtac'] = UserLibrary::getIdDonviIdDoiofCanBo( $current_idcanbo, 'object' );
+        }
+        $arrListdoi = array();
+        foreach ($data['list_doicongtac'] as $value) {
+            $arrListdoi[] = $value->id;
+        }
+        $index_role_info = CongviecLibrary::getUserMethodRoleInfo( Session::get('userinfo')->iduser, 'index' );
         if( $request->ajax() )      //Begin ajax
         {
-            if($request->sotailieu != NULL)
-            {
-                $arrWhere[] = array('sotailieu', 'LIKE', '%'.$request->sotailieu.'%');
-            }
-
-            if($request->trichyeu != NULL)
-            {
-                $arrWhere[] = array('trichyeu', 'LIKE', '%'.$request->trichyeu.'%');
-            }
-
+            $arrWhere = CongviecLibrary::processArrWhereCongviec($request);
             if($request->id_iddonvi_iddoi != NULL)
             {
                 $arrListdoi = array($request->id_iddonvi_iddoi);
                 $arrWhere[] = array('tbl_congviec_chuyentiep.id_iddonvi_iddoi_nhan', '=', $request->id_iddonvi_iddoi );
             }
 
-            if($request->ngaytao_tungay != NULL)
+            if( $index_role_info->keyword == 'idcanbo' )    //Get job for canbo role
             {
-                $arrWhere[] = array('tbl_congviec.created_at', '>=', date('Y-m-d', strtotime($request->ngaytao_tungay)));
+                $data['list_congviec'] = CongviecLibrary::getCongviecOfCanbo( $request, Session::get('userinfo')->idcanbo, $arrWhere );
             }
-
-            if($request->ngaytao_denngay != NULL)
-            {
-                $arrWhere[] = array('tbl_congviec.created_at', '<=', date('Y-m-d', strtotime($request->ngaytao_denngay)));
-            }
-
-            if($request->idstatus != NULL)
-            {
-                if( $request->idstatus == 3 )   // Quá hạn
-                {
-                    $current_day = date('Y-m-d', time());
-                    // echo date('')
-                    $arrWhere[] = array('idstatus', '=', 1 );
-                    $arrWhere[] = array('hancongviec', '<=', $current_day );
-                }
-                else
-                {
-                    $arrWhere[] = array('idstatus', '=', $request->idstatus );
-                }
-            }
-
-            if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') ||  $current_idrole == config('user_config.idnhomquyen_doitruong') )        // Lãnh đạo đơn vị hoặc đội trưởng
-            {
-                $dt = DB::table( 'tbl_congviec' )
-                ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-                ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
-                ->where( $arrWhere )
-                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function ($query) use ($arrListdoi) {
-                    $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
-                    ->orWhere('idcanbonhan', $current_idcanbo)
-                    ->orWhere('idcanbo_creater', $current_idcanbo);
-                });
-                if( $request->idstatus == 3 )
-                {
-                    $dt = $dt->orderBy('hancongviec', 'ASC');
-                }
-                else
-                {
-                    $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
-                }
-                $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->paginate(10, ['idcongviec']);
-            }
-            else
+            elseif( $index_role_info->keyword == 'id_iddonvi_iddoi' )   //Get job for id_iddonvi_iddoi role
             {   
-                $arrWhere[] = array('idcanbonhan', '=', $current_idcanbo);
-                $dt = DB::table( 'tbl_congviec' )
-                ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-                ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
-                ->where( $arrWhere )
-                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function ($query){
-                    $query->where('idcanbonhan', $current_idcanbo)
-                    ->orWhere('idcanbo_creater', $current_idcanbo);
-                });
-
-
-                if( $request->idstatus == 3 )
-                {
-                   $dt = $dt->orderBy('hancongviec', 'ASC');
-                }
-                else
-                {
-                    $dt = $dt->orderBy('tbl_congviec.id', 'DESC');
-                }
-                $data['list_congviec'] = $dt->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->paginate(10, ['idcongviec']);
+                $data['list_congviec'] = $data['list_congviec'] = CongviecLibrary::getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, $arrWhere);
+            }
+            else{
+                return view('errors.403');
             }
             return response()->json(['html' => view('congviec.congviec_table', $data)->render()]);
-
         }   //End Ajax
         else
         {
-            $index_role_info = CongviecLibrary::getUserMethodRoleInfo( Session::get('userinfo')->iduser, 'index' );
             if( $index_role_info->keyword == 'idcanbo' )
-
-            if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') ||  $current_idrole == config('user_config.idnhomquyen_doitruong') )        // Lãnh đạo đơn vị hoặc đội trưởng
             {
-                $data['list_congviec'] = DB::table( 'tbl_congviec' )
-                ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-                ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
-                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function($query) use ($arrListdoi, $current_idcanbo) {
-                    $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
-                    ->orWhere('idcanbonhan', $current_idcanbo)
-                    ->orWhere('idcanbo_creater', $current_idcanbo);
-                })
-                ->select('tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->orderBy('idcongviec', 'DESC')
-                ->paginate(10, ['tbl_congviec.id']);
-                
+                $data['list_congviec'] = CongviecLibrary::getCongviecOfCanbo( $request, Session::get('userinfo')->idcanbo );
             }
-            else
-            {
-                $data['list_congviec'] = DB::table( 'tbl_congviec' )
-                ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
-                ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
-                ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
-                ->where(function ($query) use ($current_idcanbo) {
-                    $query->where('idcanbonhan', $current_idcanbo)
-                    ->orWhere('idcanbo_creater', $current_idcanbo);
-                })
-                ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
-                ->orderBy('tbl_congviec.id', 'DESC')
-                ->paginate(10, ['tbl_congviec.id']);
+            elseif( $index_role_info->keyword == 'id_iddonvi_iddoi' )
+            {   
+                $data['list_congviec'] = $data['list_congviec'] = CongviecLibrary::getCongviecOfDoiPhuTrach($current_idcanbo, $arrListdoi);
+            }
+            else{
+                return view('errors.403');
             }
         }
-        
         return view('congviec.index', $data);
     }
-
     
     public function create()
-    {           
-        // CongviecLibrary::checkPermissionCongviec( 'a', 1, 'http://google.com');
+    {
         $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo );
         $data['page_name'] = "Thêm mới công việc";
         $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );

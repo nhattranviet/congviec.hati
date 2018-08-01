@@ -67,6 +67,103 @@ class CongviecLibrary
         DB::table('tbl_log')->insert($data_log);
     }
 
+    public static function getCongviecOfCanbo( $request, $idcanbo, $arrWhere = array() )
+    {
+        $data = DB::table( 'tbl_congviec' )
+            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+            ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec');
+            if( count($arrWhere) > 0 )
+            {
+                $data = $data->where( $arrWhere );
+            }
+            $data = $data->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+            ->where(function ($query) use ($idcanbo) {
+                $query->where('idcanbonhan', $idcanbo)
+                ->orWhere('idcanbo_creater', $idcanbo);
+            })
+            ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' );
+
+            if( $request->idstatus == 3 )
+                {
+                   $data = $data->orderBy('hancongviec', 'ASC');
+                }
+                else
+                {
+                    $data = $data->orderBy('tbl_congviec.id', 'DESC');
+                }
+                $data = $data->paginate(10, ['tbl_congviec.id']);
+            
+        return $data;
+    }
+
+    public static function processArrWhereCongviec($request)
+    {
+        $arrWhere = array();
+        if($request->sotailieu != NULL)
+        {
+            $arrWhere[] = array('sotailieu', 'LIKE', '%'.$request->sotailieu.'%');
+        }
+
+        if($request->trichyeu != NULL)
+        {
+            $arrWhere[] = array('trichyeu', 'LIKE', '%'.$request->trichyeu.'%');
+        }
+
+        if($request->ngaytao_tungay != NULL)
+        {
+            $arrWhere[] = array('tbl_congviec.created_at', '>=', date('Y-m-d', strtotime($request->ngaytao_tungay)));
+        }
+
+        if($request->ngaytao_denngay != NULL)
+        {
+            $arrWhere[] = array('tbl_congviec.created_at', '<=', date('Y-m-d', strtotime($request->ngaytao_denngay)));
+        }
+
+        if($request->idstatus != NULL)
+        {
+            if( $request->idstatus == 3 )   // Quá hạn
+            {
+                $current_day = date('Y-m-d', time());
+                $arrWhere[] = array('idstatus', '=', 1 );
+                $arrWhere[] = array('hancongviec', '<=', $current_day );
+            }
+            else
+            {
+                $arrWhere[] = array('idstatus', '=', $request->idstatus );
+            }
+        }
+
+        return $arrWhere;
+    }
+
+    public static function getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, $arrWhere = array())
+    {
+        $data = DB::table( 'tbl_congviec' )
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+        ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec');
+        if( count($arrWhere) > 0 )
+        {
+            $data = $data->where( $arrWhere );
+        }
+        $data = $data->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+        ->where(function($query) use ($arrListdoi, $current_idcanbo) {
+            $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
+            ->orWhere('idcanbonhan', $current_idcanbo)
+            ->orWhere('idcanbo_creater', $current_idcanbo);
+        })
+        ->select('tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' );
+        if( $request->idstatus == config('user_config.congviec_idstatus_quahan') )
+        {
+            $data = $data->orderBy('hancongviec', 'ASC');
+        }
+        else
+        {
+            $data = $data->orderBy('tbl_congviec.id', 'DESC');
+        }
+        $data = $data->paginate(10, ['tbl_congviec.id']);
+        return $data;
+    }
+
     public static function getCongviecOwner($idcongviec)
     {
         $own = array();
