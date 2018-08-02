@@ -5,7 +5,6 @@
             <th>ID</th>
             <th style="width: 200px;">Số/ký hiệu</th>
             <th>Trích yếu</th>
-            <th>Hạn xử lý</th>
             <th>Hạn công việc</th>
             <th>Đang xử lý</th>
             <th>Trạng thái</th>
@@ -36,7 +35,6 @@
             <td>{{ $congviec->idcongviec }}</td>
             <td>{{ $congviec->sotailieu }}</td>
             <td>{{ $congviec->trichyeu }}</td>
-            <td>{{ ($congviec->hanxuly) ? date('d-m-Y', strtotime($congviec->hanxuly)) : NULL }}</td>
             <td>{{ ($congviec->hancongviec) ? date('d-m-Y', strtotime($congviec->hancongviec)) : NULL }}</td>
             @php
                 $nguoidangxuly = DB::table( 'tbl_canbo' )

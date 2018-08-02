@@ -161,6 +161,11 @@ class CongviecController extends Controller
 
     public function update(Request $request, $idcongviec)
     {
+        if( CongviecLibrary::checkPermissionCongviec($idcongviec, Session::get('userinfo')->iduser, Session::get('userinfo')->idcanbo, 'edit' ) == FALSE )
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('cong-viec.index')->with('alert_message', $message);
+        }
          $validator = Validator::make($request->all(), [
             'sotailieu' => 'required',
             'sotailieu' => 'required',
@@ -211,6 +216,12 @@ class CongviecController extends Controller
 
     public function show($idcongviec)
     {
+        if( CongviecLibrary::checkPermissionCongviec($idcongviec, Session::get('userinfo')->iduser, Session::get('userinfo')->idcanbo, 'edit' ) == FALSE )
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('cong-viec.index')->with('alert_message', $message);
+        }
+
         $data['page_name'] = "Chi tiết công việc";
         $data['congviec_info'] = CongviecLibrary::getCongviecInfo( $idcongviec );
         $data['congviec_chuyentiep_info'] = CongviecLibrary::getCongviecChuyentiepInfo( $idcongviec );
@@ -263,6 +274,11 @@ class CongviecController extends Controller
 
     public function delete($idcongviec)
     {
+        if( CongviecLibrary::checkPermissionCongviec($idcongviec, Session::get('userinfo')->iduser, Session::get('userinfo')->idcanbo, 'edit' ) == FALSE )
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('cong-viec.index')->with('alert_message', $message);
+        }
         $data['page_name'] = "Chi tiết công việc";
         $data['congviec_info'] = CongviecLibrary::getCongviecInfo( $idcongviec );
         $data['congviec_chuyentiep_info'] = CongviecLibrary::getCongviecChuyentiepInfo( $idcongviec );
@@ -271,6 +287,11 @@ class CongviecController extends Controller
 
     public function destroy(Request $request, $idcongviec)
     {
+        if( CongviecLibrary::checkPermissionCongviec($idcongviec, Session::get('userinfo')->iduser, Session::get('userinfo')->idcanbo, 'edit' ) == FALSE )
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('cong-viec.index')->with('alert_message', $message);
+        }
         DB::table('tbl_congviec_chuyentiep')->where('idcongviec', $idcongviec)->delete();
         DB::table('tbl_congviec')->where('id', $idcongviec)->delete();
         CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' xóa công việc '.$idcongviec );
@@ -280,6 +301,12 @@ class CongviecController extends Controller
     public function deleteNodeChuyentiep(Request $request, $idnode )
     {
         $congviec_node_info = DB::table('tbl_congviec_chuyentiep')->where('id',$idnode)->select('idcongviec', 'idcanbonhan', 'id_iddonvi_iddoi_nhan', 'order')->first();
+        if( CongviecLibrary::checkPermissionCongviec($congviec_node_info->idcongviec, Session::get('userinfo')->iduser, Session::get('userinfo')->idcanbo, 'edit' ) == FALSE )
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('cong-viec.index')->with('alert_message', $message);
+        }
+        
         DB::table('tbl_congviec_chuyentiep')->where('id', $idnode)->delete();
         CongviecLibrary::logCongviec($request, $congviec_node_info->idcongviec, Session::get('userinfo')->username.' xóa node công việc '.$congviec_node_info->idcongviec.' - của cán bộ nhận: '.$congviec_node_info->idcanbonhan.' - id_iddonvo_iddoi_nhan: '.$congviec_node_info->id_iddonvi_iddoi_nhan );
         if( $congviec_node_info->order && $congviec_node_info->order == 0 )
@@ -298,6 +325,11 @@ class CongviecController extends Controller
 
     public function toggle_congviec_status(Request $request, $idcongviec)
     {
+        if( CongviecLibrary::checkPermissionCongviec($idcongviec, Session::get('userinfo')->iduser, Session::get('userinfo')->idcanbo, 'edit' ) == FALSE )
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('cong-viec.index')->with('alert_message', $message);
+        }
         $current_status = DB::table('tbl_congviec')->where('id',$idcongviec)->value('idstatus');
         $data_update = array(
             'idstatus' => ($current_status == 1) ? 2 : 1
@@ -307,12 +339,5 @@ class CongviecController extends Controller
         CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' thay đổi trạng thái công việc '.$idcongviec. ' từ '.$current_status. ' sang '. $data_update["idstatus"] );
         return redirect()->route('cong-viec.index')->with($data_message);
     }
-
-    // public function checkPermission($idcongviec)
-    // {
-
-        
-    //     $owner_congviec = CongviecLibrary::getCongviecOwner($idcongviec);
-    // }
 
 }

@@ -77,7 +77,6 @@ class RolePermissionController extends Controller
             }
         }
 
-
         return response()->json(['success' => 'Phân quyền thành công ']);
     }
 
