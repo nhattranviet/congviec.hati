@@ -21,6 +21,8 @@ use App\Career;
 use Auth;
 use Session;
 use App\UserApp\UserLibrary;
+use App\UserApp\CanboLibrary;
+use App\UserApp\DonviLibrary;
 
 class CanboController extends Controller
 {
@@ -40,57 +42,15 @@ class CanboController extends Controller
         // $this->middleware('auth');
     }
 
-    public function setDataForPeople()
-    {
-        $this->quocgia = new Quocgia;
-        $this->relation = new Relation;
-        $this->religion = new Religion;
-        $this->nation = new Nation;
-        $this->education = new Education;
-        $this->career = new Career;
-        $this->province = new Province;
-        $this->district = new District;
-        $this->ward = new Ward;
-    }
-
     public function index(Request $request)
     {
-        $arrWhere = array();
-        if ($request->hoten) {
-            $arrWhere[] = array('hoten', 'LIKE', '%'.$request->hoten.'%');
-        }
-
-        if ($request->email) {
-            $arrWhere[] = array('email', 'LIKE', '%'.$request->email.'%');
-        }
-
-        if ($request->iddonvi && $request->iddonvi != 'all') {
-            $arrWhere[] = array('tbl_donvi.id', '=', $request->iddonvi);
-        }
-
-        if ($request->iddoicongtac && $request->iddoicongtac != 'all') {
-            $arrWhere[] = array('tbl_donvi_doi.id', '=', $request->iddoicongtac);
-        }
-        // print_r( $arrWhere ); die;
-        $data['list_canbo'] = DB::table('tbl_canbo')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
-        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
-        ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
-        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
-        ->join('tbl_doicongtac', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id')
-        ->join('tbl_donvi', 'tbl_donvi_doi.iddonvi', '=', 'tbl_donvi.id')
-        ->where( $arrWhere )
-        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu', 'email', 'tbl_donvi.name as tendonvi', 'tbl_doicongtac.name as tendoi', 'tbl_nhomquyen.name as tennhomquyen', 'users.active', 'users.id as iduser')
-        ->orderBy('tbl_canbo.id', 'desc')
-        ->paginate(10);
-
+        $arrWhere = CanboLibrary::processArrWhere($request);
+        $data['list_canbo'] = CanboLibrary::getListCanbo($arrWhere);
         if( $request->ajax() )
         {
             return response()->json(['html' => view('cahtcore.canbo.canbo_table', $data)->render()]);
         }
-
-        $data['list_donvi'] = DB::table('tbl_donvi')->orderBy('id', 'ASC')->get();
+        $data['list_donvi'] = CanboLibrary::getListDonvi();
         return view('cahtcore.canbo.index', $data );
     }
 
@@ -102,10 +62,10 @@ class CanboController extends Controller
     public function create()
     {
         $data['page_title'] = 'Thêm cán bộ và tài khoản';
-        $data['list_donvi'] = DB::table('tbl_donvi')->get();
-        $data['list_capbac'] = DB::table('tbl_capbac')->get();
-        $data['list_chucvu'] = DB::table('tbl_chucvu')->get();
-        $data['list_nhomquyen'] = DB::table('tbl_nhomquyen')->get();
+        $data['list_donvi'] = CanboLibrary::getListDonvi();
+        $data['list_capbac'] = CanboLibrary::getListCapbac();
+        $data['list_chucvu'] = CanboLibrary::getListChucvu();
+        $data['list_nhomquyen'] = CanboLibrary::getListNhomquyen();
         return view('cahtcore.canbo.create', $data );
     }
 
@@ -162,7 +122,7 @@ class CanboController extends Controller
             DB::table('tbl_lanhdaodonvi_quanlydoi')->insert( $data_lanhdao_doi );
         }
 
-        $username = $this->vn_str_filter($request->hoten);
+        $username = UserLibrary::vn_str_filter($request->hoten);
         $check = DB::table('users')->where('username', $username)->count();
         $username = ( $check == 0 ) ? $username : $username.'_'.$idcanbo ;
 
@@ -202,27 +162,13 @@ class CanboController extends Controller
     public function edit($idcanbo)
     {
         $data['page_title'] = "Sửa thông tin cán bộ";
-        $data['canbo_info'] = DB::table('tbl_canbo')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
-        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
-        ->select('username', 'tbl_canbo.id as idcanbo', 'hoten', 'idcapbac', 'idchucvu', 'email', 'id_iddonvi_iddoi', 'idnhomquyen', 'iddonvi', 'iddoi', 'tbl_donvi_doi.id as id_iddonvi_iddoi', 'active', 'users.id as userid', 'tbl_connguoi.id as idconnguoi') 
-        ->where('tbl_canbo.id', $idcanbo)->first();
-
-        $data['list_donvi'] = DB::table('tbl_donvi')->get();
-        $data['list_capbac'] = DB::table('tbl_capbac')->get();
-        $data['list_chucvu'] = DB::table('tbl_chucvu')->get();
-        $data['list_nhomquyen'] = DB::table('tbl_nhomquyen')->get();
-
-        $data['list_doicongtac'] = DB::table('tbl_doicongtac')
-        ->join('tbl_donvi_doi', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id')
-        ->select('name', 'tbl_donvi_doi.id')
-        ->where('iddonvi', $data['canbo_info']->iddonvi)
-        ->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')
-        ->get();
-
-        $data['list_doiquanly'] = DB::table('tbl_lanhdaodonvi_quanlydoi')->where('idcanbo', $idcanbo)->pluck('id_iddonvi_iddoi')->toArray();
-        // print_r( $data['list_doiquanly'] ); die;
+        $data['canbo_info'] = CanboLibrary::getCanboInfo($idcanbo);
+        $data['list_donvi'] = CanboLibrary::getListDonvi();
+        $data['list_capbac'] = CanboLibrary::getListCapbac();
+        $data['list_chucvu'] = CanboLibrary::getListChucvu();
+        $data['list_nhomquyen'] = CanboLibrary::getListNhomquyen();
+        $data['list_doicongtac'] = UserLibrary::getListDoidonVi($data['canbo_info']->iddonvi);
+        $data['list_doiquanly'] = UserLibrary::getListDoiLanhdaoQuanly($idcanbo);
         return view( 'cahtcore.canbo.edit', $data );
     }
 
@@ -319,7 +265,7 @@ class CanboController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($idcanbo)
     {
         //
     }
@@ -327,38 +273,32 @@ class CanboController extends Controller
     public function showinfo($idcanbo = NULL)
     {
         $idcanbo = ($idcanbo == NULL) ? Session::get('userinfo')->idcanbo : $idcanbo;
-        $data['userinfo'] = UserLibrary::getCanboInfo($idcanbo, 'idcanbo');
+        $data['userinfo'] = CanboLibrary::getCanboFullInfo($idcanbo);
         $data['page_title'] = "Thông tin cán bộ";
         return view( 'cahtcore.canbo.showInfo', $data );
         // print_r($userinfo);
     }
 
-    public function editInfo($idcanbo = NULL)
+    public function editHoso($idcanbo = NULL)
     {
         $idcanbo = ($idcanbo == NULL) ? Session::get('userinfo')->idcanbo : $idcanbo;
-        $data['userinfo'] = UserLibrary::getCanboInfo($idcanbo, 'idcanbo');
+        $data['userinfo'] = CanboLibrary::getCanboFullInfo($idcanbo);
         $data['page_title'] = "Thông tin cán bộ";
 
-        $data['countries'] = $this->quocgia->get();
-        $data['relations'] = $this->relation->get();
-        $data['religions'] = $this->religion->get();
-        $data['nations'] = $this->nation->get();
-        $data['educations'] = $this->education->get();
-        $data['careers'] = $this->career->get();
+        $data['countries'] = CanboLibrary::getListQuocgia();
+        $data['relations'] = CanboLibrary::getListQuanhe();
+        $data['religions'] = CanboLibrary::getListTongiao();
+        $data['nations'] = CanboLibrary::getListDantoc();
+        $data['educations'] = CanboLibrary::getListHocvan();
+        $data['careers'] = CanboLibrary::getListNghenghiep();
         $data['list_quanhechuho'] = DB::table('tbl_moiquanhe')->where('loaiquanhe', 'nhanthan')->get();
-        return view( 'cahtcore.canbo.editInfo', $data );
+        return view( 'cahtcore.canbo.editHoso', $data );
         // print_r($userinfo);
     }
 
     public function getCanbo($id_iddonvi_iddoi = NULL)
     {
-        $data['list_canbo'] = DB::table('tbl_canbo')
-        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
-        ->where('id_iddonvi_iddoi', $id_iddonvi_iddoi)
-        ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu')
-        ->get()->toArray();
+        $data['list_canbo'] = CanboLibrary::getListCanboOfDoi( $id_iddonvi_iddoi );
         return response()->json(['html' => view('cahtcore.canbo.option_select_canbo', $data)->render()]);
 
     }
@@ -419,7 +359,7 @@ class CanboController extends Controller
                 ]
             );
 
-            $username = $this->vn_str_filter($a[0]);
+            $username = UserLibrary::vn_str_filter($a[0]);
             $check = DB::table('users')->where('username', $username)->count();
             $username = ( $check == 0 ) ? $username : $username.'_'.$idcanbo ;
 
@@ -438,29 +378,6 @@ class CanboController extends Controller
         }
     }
 
-    public function vn_str_filter ($str = 'Đây là dòng để test'){
-        $unicode = array(
-            'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
-            'd'=>'đ',
-            'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
-            'i'=>'í|ì|ỉ|ĩ|ị',
-            'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
-            'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
-            'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
-            'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
-            'D'=>'Đ',
-            'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
-            'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
-            'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
-            'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
-            'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
-            '' => ' '
-        );
-        
-       foreach($unicode as $nonUnicode=>$uni){
-            $str = preg_replace("/($uni)/i", $nonUnicode, $str);
-       }
-        return strtolower($str);
-    }
+    
 
 }

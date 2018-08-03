@@ -40,7 +40,8 @@ class UserLibrary
             if( $type == 'array')
             {
                 $data = $data->select('tbl_donvi_doi.id')->pluck('tbl_donvi_doi.id')->toArray();
-            }else{
+            }
+            else{
                 $data = $data->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')->get();
             }
             return $data;
@@ -120,33 +121,7 @@ class UserLibrary
             return $data;
     }
 
-    public static function getCanboInfo($id, $type = 'idcanbo')
-    {
-        $data = DB::table('tbl_canbo')
-        ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
-        ->join('tbl_nhomquyen', 'tbl_nhomquyen.id', '=', 'users.idnhomquyen')
-        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
-        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
-        ->leftJoin('tbl_tongiao', 'tbl_tongiao.id', '=', 'tbl_connguoi.idtongiao')
-        ->leftJoin('tbl_nghenghiep', 'tbl_nghenghiep.id', '=', 'tbl_connguoi.idnghenghiep')
-        ->leftJoin('tbl_dantoc', 'tbl_dantoc.id', '=', 'tbl_connguoi.iddantoc')
-        ->leftJoin('tbl_capbac', 'tbl_capbac.id', '=', 'tbl_canbo.idcapbac')
-        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
-        ->join('tbl_donvi', 'tbl_donvi.id', '=', 'tbl_donvi_doi.iddonvi')
-        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi');
-        if($type = 'idcanbo')
-        {
-            $data = $data->where('tbl_canbo.id', $id)
-            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'users.username', 'users.email')
-            ->first();
-        }
-        else{
-            $data = $data->where('users.id', $id)
-            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'users.username', 'users.email')
-            ->first();
-        }
-        return $data;
-    }
+    
 
     //-----------------------END CAN BO------------------------------
 
@@ -252,6 +227,40 @@ class UserLibrary
     }
 
     //-----------------------end PHÂN QUYỀN------------------------
+
+
+    //------------------HELPER-------------------------------------
+
+
+    public static function vn_str_filter ($str = 'Đây là dòng để test'){
+            $unicode = array(
+                'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+                'd'=>'đ',
+                'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+                'i'=>'í|ì|ỉ|ĩ|ị',
+                'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+                'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+                'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
+                'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+                'D'=>'Đ',
+                'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+                'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
+                'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+                'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+                'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+                '' => ' '
+            );
+            
+        foreach($unicode as $nonUnicode=>$uni){
+                $str = preg_replace("/($uni)/i", $nonUnicode, $str);
+        }
+            return strtolower($str);
+    }
+
+
+
+
+    //------------------END HELPER--------------------
 
 
 }
