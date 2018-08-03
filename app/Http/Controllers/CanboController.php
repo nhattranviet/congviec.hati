@@ -274,9 +274,27 @@ class CanboController extends Controller
     {
         $idcanbo = ($idcanbo == NULL) ? Session::get('userinfo')->idcanbo : $idcanbo;
         $data['userinfo'] = CanboLibrary::getCanboFullInfo($idcanbo);
+        $data['list_capbac'] = CanboLibrary::getListCapbac();
         $data['page_title'] = "Thông tin cán bộ";
         return view( 'cahtcore.canbo.showInfo', $data );
-        // print_r($userinfo);
+    }
+
+    public function selfUpdate(Request $request, $idcanbo)
+    {
+        $validator = Validator::make($request->all(), [
+            'hoten' => 'required',
+            'idcapbac' => 'required',
+        ], $this->messages);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->all(), 'message_type' => 'alert']);
+        }
+
+        $idconnguoi = CanboLibrary::getIdConnguoi( $idcanbo );
+
+        DB::table('tbl_connguoi')->where('id', $idconnguoi)->update(['hoten' => $request->hoten]);
+        DB::table('tbl_canbo')->where('id', $idcanbo)->update(['idcapbac' => $request->idcapbac]);
+        return response()->json(['success' => 'Cập nhật cán bộ thành công ', 'message_type' => 'alert']);
     }
 
     public function editHoso($idcanbo = NULL)

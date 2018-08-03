@@ -119,11 +119,11 @@ class NguoidungController extends Controller
         });
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->all()]);
+            return response()->json(['error' => $validator->errors()->all(), 'message_type' => 'alert']);
         }
 
         DB::table('users')->where('id',Session::get('userinfo')->iduser)->update(array('password' =>  Hash::make($request->password)));
-        return response()->json(['success' => 'Thay đổi mật khẩu thành công ']);
+        return response()->json(['success' => 'Thay đổi mật khẩu thành công ', 'message_type' => 'alert']);
 
 
     }

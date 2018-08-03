@@ -207,6 +207,23 @@
 
             var tabIndexs = 0;
             var currentTab = "";
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "6000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
 
             $("#createTab").click(function (event) {
                 /* Act on the event */
@@ -259,9 +276,7 @@
                     .remove();
             });
 
-            $(document).on("click", ".gender-radio input[type=radio]", function (
-                event
-            ) {
+            $(document).on("click", ".gender-radio input[type=radio]", function () {
                 /* Act on the event */
                 var gender = $(this)
                     .parent()
@@ -282,8 +297,18 @@
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
+                        
                         if ($.isEmptyObject(data.error)) {
-                            printMsg("#success-msg", data.success);
+                            if (data.message_type == 'alert')
+                            {
+                                Command: toastr["success"](data.success);
+                            }else{
+                                printMsg("#success-msg", data.success);
+                            }
+                            
+                            
+                            
+
                             if (data.url) {
                                 window.location.href = data.url;
                             }
@@ -295,7 +320,13 @@
 
                             // check tab index exist
                             if (tab_idx.match(/\d+/g) != null) {
-                                printMsg("#error-msg", data.error[0].substr(n + 2));
+                                if (data.message_type == 'alert') {
+                                    Command: toastr["error"](data.error[0].substr(n + 2));
+                                }
+                                else
+                                {
+                                    printMsg("#error-msg", data.error[0].substr(n + 2));
+                                }
 
                                 // active tab
                                 if (tabs.length > 1) {
@@ -303,11 +334,61 @@
                                     $("#" + tabs[tab_idx].id).addClass("active in");
                                 }
                             } else {
-                                printMsg("#error-msg", data.error[0]);
+                                if (data.message_type == 'alert')
+                                {
+                                    Command: toastr["error"](data.error[0]);
+                                }
+                                else
+                                {
+                                    printMsg("#error-msg", data.error[0]);
+                                }
+                                // printMsg("#error-msg", data.error[0]);
+                                
                             }
                         }
                         window.scrollTo(0, 0);
                         // window.location.href = "/nhan-khau/";
+                    },
+                    error: function (data) {
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function (key, value) {
+                            console.log(data.responseText);
+                        });
+                    }
+                });
+            });
+
+            $("#form-user").on("submit", function (event) {
+                event.preventDefault();
+                var tabs = $("#myTabaltContent > .tab-pane").toArray();
+                var tab_idx = 0;
+
+                $.ajax({
+                    url: $(this).attr("action"),
+                    type: "POST",
+                    data: $(this).serialize(),
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        if ($.isEmptyObject(data.error)) {
+                            if (data.message_type == 'alert') {
+                                Command: toastr["success"](data.success);
+                            }
+                            else {
+                                printMsg("#success-msg", data.success);
+                            }
+                            if (data.url) {
+                                window.location.href = data.url;
+                            }
+                        } else {
+                            if (data.message_type == 'alert') {
+                                Command: toastr["error"](data.error[0]);
+                            }
+                            else {
+                                printMsg("#error-msg", data.error[0]);
+                            }
+                        }
                     },
                     error: function (data) {
                         var errors = $.parseJSON(data.responseText);
