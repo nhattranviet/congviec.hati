@@ -196,7 +196,6 @@ class CongviecLibrary
         if( $data == NULL ){
             return FALSE;
         }
-
         if($data->idlevel == NULL || $data->idlevel == config('user_config.max_level_id') )
         {   
             return TRUE;
@@ -214,6 +213,11 @@ class CongviecLibrary
             }
             elseif( $data->keyword == 'id_iddonvi_iddoi' )
             {
+                if( in_array( $current_role['idcanbo'], $own_congviec['idcanbo'] ) )
+                {
+                    return TRUE;
+                }
+                
                 if( in_array( $own_congviec['id_iddonvi_iddoi'], $current_role['id_iddonvi_iddoi'] ) )
                 {
                     return TRUE;

@@ -10,12 +10,11 @@
                 {
                     height: 100,
                     entities_latin: false,
-                    filebrowserBrowseUrl: '{{ asset('/assets/ckfinder/ckfinder.html') }}',
-                    filebrowserImageBrowseUrl: '{{ asset('/assets/ckfinder/ckfinder.html?type=Images') }}',
-                    filebrowserFlashBrowseUrl: '{{ asset('/assets/ckfinder/ckfinder.html?type=Flash') }}',
-                    filebrowserUploadUrl: '{{ asset('/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
-                    filebrowserImageUploadUrl: '{{ asset('/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
-                    filebrowserFlashUploadUrl: '{{ asset('/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+                    filebrowserBrowseUrl: "{{ route('ckfinder-get-view') }}",
+                    filebrowserImageBrowseUrl: "{{ route('ckfinder-get-view') }}?type=Images",
+                    filebrowserFlashBrowseUrl: "{{ route('ckfinder-get-view') }}?type=ImaFlashges",
+                    filebrowserUploadUrl: "{{ route('ckfinder-get-connector') }}?command=QuickUpload&type=Files",
+                    filebrowserImageUploadUrl: "{{ route('ckfinder-get-connector') }}?command=QuickUpload&type=Images",
                 }
             );
 

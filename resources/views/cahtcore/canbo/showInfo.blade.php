@@ -43,10 +43,10 @@
 
                             <ul class="nav nav-pills m-b-10" id="myTabalt" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link" id="home-tab1" data-toggle="tab" href="#change_password" role="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-lock"></i> Đổi mật khẩu</a>
+                                    <a class="nav-link active" id="home-tab1" data-toggle="tab" href="#change_password" role="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-lock"></i> Đổi mật khẩu</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="profile-tab1" data-toggle="tab" href="#user_info" role="tab" aria-controls="profile"><i class="fa fa-info-circle"></i> Thông tin cá nhân</a>
+                                    <a class="nav-link" id="profile-tab1" data-toggle="tab" href="#user_info" role="tab" aria-controls="profile"><i class="fa fa-info-circle"></i> Thông tin cá nhân</a>
                                 </li>
 
                                 <li class="nav-item">
@@ -55,7 +55,7 @@
                                 
                             </ul>
                             <div class="tab-content" id="myTabaltContent">
-                                <div role="tabpanel" class="tab-pane fade in" id="change_password" aria-labelledby="home-tab">
+                                <div role="tabpanel" class="tab-pane fade in active" id="change_password" aria-labelledby="home-tab">
                                     <div class="row">
                                         <div class="col-xs-12">
                                             <div class="alert alert-danger" id="error-msg" style="display: none"></div>
@@ -92,7 +92,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane fade in active" id="user_info" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="tab-pane fade" id="user_info" role="tabpanel" aria-labelledby="profile-tab">
                                     <form id="form-user" action="{{ route('can-bo-selfUpdate', $userinfo->idcanbo) }}" method="POST" role="form">
                                         @csrf
                                         <div class="row">
@@ -103,6 +103,17 @@
                                                     </label>
                                                     <input type="text" name="hoten" parsley-trigger="change" placeholder="Họ và tên" class="form-control" id="hoten" value="{{ $userinfo->hoten }}">
                                                 </fieldset>
+
+                                                <fieldset class="form-group" >
+                                                    <label>Chức vụ<span class="text-danger">*</span></label>
+                                                    <select name="idchucvu" class="form-control select2  {{ ($errors->has('idchucvu')) ? 'has-danger' : '' }}">
+                                                        <option value="">Chọn chức vụ</option>
+                                                        @foreach($list_chucvu as $chucvu)
+                                                            <option {{ ($userinfo->idchucvu == $chucvu->id ? 'selected' : NULL) }} value="{{ $chucvu->id }}" >{{ $chucvu->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </fieldset>
+
                                             </div>
                                             <div class="col-md-6">
                                                 <fieldset class="form-group" >

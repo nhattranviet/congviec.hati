@@ -89,12 +89,12 @@ class CanboLibrary
         if($type = 'idcanbo')
         {
             $data = $data->where('tbl_canbo.id', $id)
-            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'tbl_capbac.id as idcapbac', 'users.username', 'users.email')
+            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.id as idchucvu', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'tbl_capbac.id as idcapbac', 'users.username', 'users.email')
             ->first();
         }
         else{
             $data = $data->where('users.id', $id)
-            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'tbl_capbac.id as idcapbac', 'users.username', 'users.email')
+            ->select('tbl_canbo.id as idcanbo', 'users.id as iduser', 'tbl_nghenghiep.name as tennghenghiep', 'tbl_dantoc.name as tendantoc', 'tbl_tongiao.name as tentongiao', 'tbl_chucvu.id as idchucvu', 'tbl_chucvu.name as tenchucvu', 'tbl_nhomquyen.name as tennhomquyen', 'tbl_connguoi.hoten', 'tbl_doicongtac.name as tendoicongtac', 'tbl_donvi.name as tendonvi', 'tbl_capbac.name as tencapbac', 'tbl_capbac.id as idcapbac', 'users.username', 'users.email')
             ->first();
         }
         return $data;

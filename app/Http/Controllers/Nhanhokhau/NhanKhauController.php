@@ -253,15 +253,16 @@ class NhanKhauController extends Controller
         }
 
         $fullname = $request->hoten;
-        $brief = new Brief;
-        $brief->hosohokhau_so = $request->hosohokhau_so;
-        $brief->hokhau_so = $request->hokhau_so;
-        $brief->so_dktt_so = $request->so_dktt_so;
-        $brief->so_dktt_toso = $request->so_dktt_toso;
-        $brief->created_at = Carbon::now();
-        $brief->updated_at = Carbon::now();
-        $brief->save();
-        $idBrief = $brief->id;
+        $data_ho = array(
+            'hosohokhau_so' => $request->hosohokhau_so,
+            'hokhau_so' => $request->hokhau_so,
+            'so_dktt_so' => $request->so_dktt_so,
+            'so_dktt_toso' => $request->so_dktt_toso,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        );
+        
+        $idBrief = DB::table('tbl_hoso')->insertGetId( $data_ho );
 
         //Ghi log cua ho so
         for ($i=0; $i < count($fullname); $i++)
@@ -289,69 +290,70 @@ class NhanKhauController extends Controller
         //End dhi log cua ho so
         for ($i=0; $i < count($fullname); $i++)
         {
-            $nhankhau = new NhanKhau;
-            $nhankhau->hoten = $fullname[$i];
-            $nhankhau->tenkhac = $request->tenkhac[$i];
-            $nhankhau->ngaysinh = date('Y-m-d', strtotime($request->birthday[$i]));
-            $nhankhau->idquoctich = $request->idquoctich[$i];
-            $nhankhau->idquocgia_nguyenquan = $request->idquocgia_nguyenquan[$i];
-            $nhankhau->idtinh_nguyenquan = $request->idtinh_nguyenquan[$i];
-            $nhankhau->idhuyen_nguyenquan = $request->idhuyen_nguyenquan[$i];
-            $nhankhau->idxa_nguyenquan = $request->idxa_nguyenquan[$i];
-            $nhankhau->chitiet_nguyenquan = $request->chitiet_nguyenquan[$i];
+            $nhankhau_data = array(
+                'hoten' => $fullname[$i],
+                'tenkhac' => $request->tenkhac[$i],
+                'ngaysinh' => date('Y-m-d', strtotime($request->birthday[$i])),
+                'idquoctich' => $request->idquoctich[$i],
+                'idquocgia_nguyenquan' => $request->idquocgia_nguyenquan[$i],
+                'idtinh_nguyenquan' => $request->idtinh_nguyenquan[$i],
+                'idhuyen_nguyenquan' => $request->idhuyen_nguyenquan[$i],
+                'idxa_nguyenquan' => $request->idxa_nguyenquan[$i],
+                'chitiet_nguyenquan' => $request->chitiet_nguyenquan[$i],
 
-            $nhankhau->idquocgia_thuongtru = $request->idquocgia_thuongtru;
-            $nhankhau->idtinh_thuongtru = $request->idtinh_thuongtru;
-            $nhankhau->idhuyen_thuongtru = $request->idhuyen_thuongtru;
-            $nhankhau->idxa_thuongtru = $request->idxa_thuongtru;
-            $nhankhau->chitiet_thuongtru = $request->chitiet_thuongtru;
+                'idquocgia_thuongtru' => $request->idquocgia_thuongtru,
+                'idtinh_thuongtru' => $request->idtinh_thuongtru,
+                'idhuyen_thuongtru' => $request->idhuyen_thuongtru,
+                'idxa_thuongtru' => $request->idxa_thuongtru,
+                'chitiet_thuongtru' => $request->chitiet_thuongtru,
 
-            $nhankhau->idquocgia_noiohiennay = $request->idquocgia_noiohiennay[$i];
-            $nhankhau->idtinh_noiohiennay = $request->idtinh_noiohiennay[$i];
-            $nhankhau->idhuyen_noiohiennay = $request->idhuyen_noiohiennay[$i];
-            $nhankhau->idxa_noiohiennay = $request->idxa_noiohiennay[$i];
-            $nhankhau->chitiet_noiohiennay = $request->chitiet_noiohiennay[$i];
+                'idquocgia_noiohiennay' => $request->idquocgia_noiohiennay[$i],
+                'idtinh_noiohiennay' => $request->idtinh_noiohiennay[$i],
+                'idhuyen_noiohiennay' => $request->idhuyen_noiohiennay[$i],
+                'idxa_noiohiennay' => $request->idxa_noiohiennay[$i],
+                'chitiet_noiohiennay' => $request->chitiet_noiohiennay[$i],
 
-            $nhankhau->idquocgia_noisinh = $request->idquocgia_noisinh[$i];
-            $nhankhau->idtinh_noisinh = $request->idtinh_noisinh[$i];
-            $nhankhau->idhuyen_noisinh = $request->idhuyen_noisinh[$i];
-            $nhankhau->idxa_noisinh = $request->idxa_noisinh[$i];
-            $nhankhau->chitiet_noisinh = $request->chitiet_noisinh[$i];
+                'idquocgia_noisinh' => $request->idquocgia_noisinh[$i],
+                'idtinh_noisinh' => $request->idtinh_noisinh[$i],
+                'idhuyen_noisinh' => $request->idhuyen_noisinh[$i],
+                'idxa_noisinh' => $request->idxa_noisinh[$i],
+                'chitiet_noisinh' => $request->chitiet_noisinh[$i],
 
-            $nhankhau->idquocgia_noilamviec = $request->idquocgia_noilamviec[$i];
-            $nhankhau->idtinh_noilamviec = $request->idtinh_noilamviec[$i];
-            $nhankhau->idhuyen_noilamviec = $request->idhuyen_noilamviec[$i];
-            $nhankhau->idxa_noilamviec = $request->idxa_noilamviec[$i];
-            $nhankhau->chitiet_noilamviec = $request->chitiet_noilamviec[$i];
+                'idquocgia_noilamviec' => $request->idquocgia_noilamviec[$i],
+                'idtinh_noilamviec' => $request->idtinh_noilamviec[$i],
+                'idhuyen_noilamviec' => $request->idhuyen_noilamviec[$i],
+                'idxa_noilamviec' => $request->idxa_noilamviec[$i],
+                'chitiet_noilamviec' => $request->chitiet_noilamviec[$i],
 
-            $nhankhau->idquocgia_thuongtrutruoc = $request->idquocgia_thuongtrutruoc[$i];
-            $nhankhau->idtinh_thuongtrutruoc = $request->idtinh_thuongtrutruoc[$i];
-            $nhankhau->idhuyen_thuongtrutruoc = $request->idhuyen_thuongtrutruoc[$i];
-            $nhankhau->idxa_thuongtrutruoc = $request->idxa_thuongtrutruoc[$i];
-            $nhankhau->chitiet_thuongtrutruoc = $request->idxa_thuongtrutruoc[$i];
+                'idquocgia_thuongtrutruoc' => $request->idquocgia_thuongtrutruoc[$i],
+                'idtinh_thuongtrutruoc' => $request->idtinh_thuongtrutruoc[$i],
+                'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc[$i],
+                'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i],
+                'chitiet_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i],
 
-            $nhankhau->hochieu_so = $request->hochieu_so[$i];
-            $nhankhau->cmnd_so = $request->cmnd_so[$i];
-            $nhankhau->idtongiao = $request->idtongiao[$i];
-            $nhankhau->iddantoc = $request->iddantoc[$i];
-            $nhankhau->idtrinhdohocvan = $request->idtrinhdohocvan[$i];
-            $nhankhau->idnghenghiep = $request->idnghenghiep[$i];
-            $nhankhau->trinhdochuyenmon = $request->trinhdochuyenmon[$i];
-            $nhankhau->trinhdongoaingu = $request->trinhdongoaingu[$i];
-            $nhankhau->biettiengdantoc = $request->biettiengdantoc[$i];
-            $nhankhau->tomtatbanthan = $request->description[$i];
-            $nhankhau->tomtatgiadinh = $request->descriptionFamily[$i];
-            $nhankhau->tienan_tiensu = $request->criminalRecord[$i];
-            $nhankhau->gioitinh = $request->gender[$i];
-            $nhankhau->created_at = Carbon::now();
-            $nhankhau->updated_at = Carbon::now();
-            $nhankhau->save();
+                'hochieu_so' => $request->hochieu_so[$i],
+                'cmnd_so' => $request->cmnd_so[$i],
+                'idtongiao' => $request->idtongiao[$i],
+                'iddantoc' => $request->iddantoc[$i],
+                'idtrinhdohocvan' => $request->idtrinhdohocvan[$i],
+                'idnghenghiep' => $request->idnghenghiep[$i],
+                'trinhdochuyenmon' => $request->trinhdochuyenmon[$i],
+                'trinhdongoaingu' => $request->trinhdongoaingu[$i],
+                'biettiengdantoc' => $request->biettiengdantoc[$i],
+                'tomtatbanthan' => $request->description[$i],
+                'tomtatgiadinh' => $request->descriptionFamily[$i],
+                'tienan_tiensu' => $request->criminalRecord[$i],
+                'gioitinh' => $request->gender[$i],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            );
+            $nhankhau_id_inserted = DB::table('tbl_nhankhau')->insertGetId( $nhankhau_data );
 
             //------------------Log nhan khau
             $data_log_nhankhau = array(
                 'idthutuccutru' => $this->thutuc_dangkynhankhau,
                 'type' => 'nhankhau',
-                'idnhankhau' => $nhankhau->id,
+                'idnhankhau' => $nhankhau_id_inserted,
                 'idhoso' => $idBrief,
                 'date_action' => date('Y-m-d', strtotime($request->ngaydangky[$i])),
                 'created_at' => Carbon::now(),
@@ -364,16 +366,17 @@ class NhanKhauController extends Controller
             );
             DB::table('tbl_history_cutru')->insert( $data_log_nhankhau );
             //------------------End log nhan khau
-
-            // insert sổ hộ khẩu
-            $hokhau = new Hokhau;
-            $hokhau->idhoso = $idBrief;
-            $hokhau->idnhankhau = $nhankhau->id;
-            $hokhau->idquanhechuho = $request->idquanhechuho[$i];
-            $hokhau->ngaydangky = date('Y-m-d', strtotime($request->ngaydangky[$i]));
-            $hokhau->created_at = Carbon::now();
-            $hokhau->updated_at = Carbon::now();
-            $hokhau->save();
+            
+            $data_sohokhau_insert = array(
+                'idhoso' => $idBrief,
+                'idnhankhau' => $nhankhau_id_inserted,
+                'idquanhechuho' => $request->idquanhechuho[$i],
+                'ngaydangky' => date('Y-m-d', strtotime($request->ngaydangky[$i])),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            );
+            DB::table('tbl_sohokhau')->insert( $data_sohokhau_insert );
+            
         }
 
         return response()->json(['success' => 'Thêm nhân khẩu thành công ', 'url' => route('chi-tiet-ho-khau', $idBrief)]);

@@ -1,6 +1,5 @@
 <?php
-session_start();
-$_SESSION['name'] = 'nhat';
+
 /*
  * CKFinder Configuration File
  *
@@ -12,7 +11,7 @@ $_SESSION['name'] = 'nhat';
 
 // Production
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 // Development
 // error_reporting(E_ALL);
@@ -67,7 +66,7 @@ $config['images'] = array(
 /*=================================== Backends ========================================*/
 
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_backends
-$root_folder = '/uploads/'.$_SESSION['name'];
+$root_folder = '/uploads/';
 // if(! is_dir($root_folder)) mkdir($root_folder);
 $config['backends'][] = array(
     'name'         => 'default',
@@ -93,14 +92,14 @@ $config['resourceTypes'][] = array(
     'backend'           => 'default'
 );
 
-// $config['resourceTypes'][] = array(
-//     'name'              => 'Images',
-//     'directory'         => 'images',
-//     'maxSize'           => "20M",
-//     'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
-//     'deniedExtensions'  => '',
-//     'backend'           => 'default'
-// );
+$config['resourceTypes'][] = array(
+    'name'              => 'Images',
+    'directory'         => 'images',
+    'maxSize'           => "20M",
+    'allowedExtensions' => 'bmp,gif,jpeg,jpg,png',
+    'deniedExtensions'  => '',
+    'backend'           => 'default'
+);
 
 /*================================ Access Control =====================================*/
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_roleSessionVar

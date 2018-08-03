@@ -274,7 +274,9 @@ class CanboController extends Controller
     {
         $idcanbo = ($idcanbo == NULL) ? Session::get('userinfo')->idcanbo : $idcanbo;
         $data['userinfo'] = CanboLibrary::getCanboFullInfo($idcanbo);
-        $data['list_capbac'] = CanboLibrary::getListCapbac();
+        $data['list_capbac'] = CanboLibrary::getListCapbac(); //dd($data['list_capbac']);
+        $data['list_chucvu'] = CanboLibrary::getListChucvu();
+        $data['list_hocvan'] = CanboLibrary::getListHocvan();
         $data['page_title'] = "Thông tin cán bộ";
         return view( 'cahtcore.canbo.showInfo', $data );
     }
@@ -293,7 +295,7 @@ class CanboController extends Controller
         $idconnguoi = CanboLibrary::getIdConnguoi( $idcanbo );
 
         DB::table('tbl_connguoi')->where('id', $idconnguoi)->update(['hoten' => $request->hoten]);
-        DB::table('tbl_canbo')->where('id', $idcanbo)->update(['idcapbac' => $request->idcapbac]);
+        DB::table('tbl_canbo')->where('id', $idcanbo)->update(['idcapbac' => $request->idcapbac, 'idchucvu' => $request->idchucvu]);
         return response()->json(['success' => 'Cập nhật cán bộ thành công ', 'message_type' => 'alert']);
     }
 

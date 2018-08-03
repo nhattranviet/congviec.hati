@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\TaiKhoanController;
-use App\NhanKhau;
-use App\Hokhau;
-use App\Brief;
-use Carbon\Carbon;
+// use App\Http\Controllers\TaiKhoanController;
+// use App\NhanKhau;
+// use App\Hokhau;
+// use App\Brief;
+// use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +18,13 @@ use Carbon\Carbon;
 Auth::routes();
 
 Route::get('/', 'CongviecController@index');
+
+//----------------------------BASECONTROLLER---------------------------
+
+Route::any('/ckfinder-get-connector', 'BaseController@ckfinder_getConnector')->name('ckfinder-get-connector');
+Route::any('/ckfinder-get-view', 'BaseController@getCkfinderView')->name('ckfinder-get-view');
+
+//----------------------------End BASECONTROLLER---------------------------
 //--------------------NGƯỜI DÙNG---------------------------
 // Route::get('/nguoi-dung/getLogin', 'NguoidungController@getLogin')->name('getLogin');
 Route::post('/nguoi-dung/postLogin', 'NguoidungController@postLogin')->name('postLogin');

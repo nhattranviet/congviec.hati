@@ -12,7 +12,7 @@ class SeedNhanHoKhau extends Command
      *
      * @var string
      */
-    protected $signature = 'nhankhauimport:thuongtru';
+    protected $signature = 'nhanhokhau:import_thuongtru';
 
     /**
      * The console command description.
