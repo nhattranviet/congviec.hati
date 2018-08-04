@@ -88,7 +88,7 @@
                                                         </fieldset>
                                                     </div>
 
-                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-9">
+                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                                         <fieldset class="form-group" id="addressPickerGroup">
                                                             <label for="thuongtru_view">Nơi đăng ký thường trú <span class="text-danger">*</span></label>
                                                             <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control" id="thuongtru_view">
@@ -103,7 +103,6 @@
 
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                                         <fieldset class="form-group">
-                                                            <label> &nbsp; </label>
                                                             <div>
                                                                 <div class="checkbox checkbox-primary">
                                                                     <input name="ngoaihuyenden" value="1" type="checkbox">
@@ -116,7 +115,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row m-t-20">
+                                                <div class="row">
                                                     <div class="col-xs-12 col-sm-12 tab-header">
                                                         <h4 class="header-title m-t-0 m-b-10">THÔNG TIN NHÂN KHẨU</h4>
                                                     </div>

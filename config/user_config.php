@@ -15,5 +15,14 @@ return [
     'idnhomquyen_level_default' => ['1' => 1, '2' => 1, '3' => 2, '4' => 2, '5' => 2, '7' => 3],    //key: 1:can bo; 2: doi pho; 3: doitruong; 4:capphodonvi: 5:captruongdonvi: 7: Admin--------value: 1:canbo;  2:doiphutrach; 3: all
     'level_info' => ['1' => 'Cán bộ', '2' => 'Cấp đội thuộc quyền', '3' => 'Tất cả'],
     'max_level_id' => 3,
-    'congviec_idstatus_quahan' => 3
+    'congviec_idstatus_quahan' => 3,
+    'thuongtru' => [
+        'thutuc_capmoi' => 1,
+        'thutuc_caplai' => 2,
+        'thutuc_capdoi' => 3,
+        'thutuc_tach' => 4,
+        'thutuc_dangkynhankhau' =>  5,
+        'thutuc_dieuchinhthaydoi' =>  6,
+        'thutuc_dangkynoimoi' => 11,
+    ],
 ];

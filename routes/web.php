@@ -160,3 +160,5 @@ Route::get('/ajax-get-chuc-nang/{iduser}/{idmodule}', 'Permission\RolePermission
 
 
 
+
+

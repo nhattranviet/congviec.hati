@@ -1,49 +1,32 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace App\Console\Commands;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Console\Command;
 
-class DatabaseSeeder extends Seeder
+class SeedCoreDB extends Command
 {
     /**
-     * Run the database seeds.
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = "import {module}";
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Import default Database';
+
+    /**
+     * Create a new command instance.
      *
      * @return void
      */
-    public function run()
-    {
-    	//Core seed
-        $this->call(TblChucVuSeeder::class);
-        $this->call(TblcapbacSeeder::class);
-        $this->call(TbltrinhdohocvanSeeder::class);
-        $this->call(TbltongiaoSeeder::class);
-        $this->call(TblnghenghiepSeeder::class);
-        $this->call(TbldantocSeeder::class);
-        $this->call(TblnhomquyenSeeder::class);
-        $this->call(TbldonviSeeder::class);
-		$this->call(TbldoicongtacSeeder::class);
-		$this->call(TblDonviDoicongtacSeeder::class);
-		$this->call(ConfigSeeder::class);
-		$this->call(TblModuleSeeder::class);
-		$this->call(TblChucnangSeeder::class);
-		$this->call(TblLevelSeeder::class);
-        //End Core seed
 
-		// //Nhan khau seed
-    	// $this->call(TblLoaiCutruSeeder::class);
-    	// $this->call(TblThutuccutruSeeder::class);
-    	// $this->call(TblMoiquanheSeeder::class);
-        // //End Nhan khau seed
-    }
-}
-
-/**
- * 
- */
- class ConfigSeeder extends Seeder
-{
-	public function run()
-	{
-		$data = array(
+    public $data_config_nhomquyen = array(
 			["key" => "idnhomquyen_canbo", 'value' => 1],
 			["key" => "idnhomquyen_doipho", 'value' => 2],
 			["key" => "idnhomquyen_doitruong", 'value' => 3],
@@ -51,29 +34,15 @@ class DatabaseSeeder extends Seeder
 			["key" => "idnhomquyen_captruongdonvi", 'value' => 5],
 			["key" => "idnhomquyen_khach", 'value' => 6],
 			["key" => "idnhomquyen_administrator", 'value' => 7],
-		);
-		DB::table('configs')->insert($data);
-	}
-}
-
-class TblLevelSeeder extends Seeder
-{
-	public function run()
-	{
-		$data = array(
+        );
+    
+    public $data_level_role = array(
 			["name" => "Cấp cán bộ", "keyword" => "idcanbo"],
 			["name" => "Cấp đội thuộc quyền", "keyword" => "id_iddonvi_iddoi"],
 			["name" => "Tất cả", "keyword" => ""],
-		);
-		DB::table('tbl_level')->insert($data);
-	}
-}
-
-class TblModuleSeeder extends Seeder
-{
-	public function run()
-	{
-		$data = array(
+        );
+    
+    public $data_modules = array(
 			["name" => "Công việc"],
 			["name" => "Nhật ký công tác"],
 			["name" => "Lịch công tác"],
@@ -82,16 +51,10 @@ class TblModuleSeeder extends Seeder
 			["name" => "Vụ việc"],
 			["name" => "Cán bộ"],
 			["name" => "Người dùng"],
-		);
-		DB::table('tbl_modules')->insert($data);
-	}
-}
-
-class TblChucnangSeeder extends Seeder
-{
-	public function run()
-	{
-		$data = array(
+        );
+    
+    
+    public $data_chucnang = array(
 			["idmodule" => 1, 'name' => 'Quản lý', 'method' => 'index'],
 			["idmodule" => 1, 'name' => 'Thêm mới', 'method' => 'create'],
 			["idmodule" => 1, 'name' => 'Thêm mới (post)', 'method' => 'store'],
@@ -104,16 +67,9 @@ class TblChucnangSeeder extends Seeder
 			["idmodule" => 1, 'name' => 'Xóa việc (post)', 'method' => 'destroy'],
 			["idmodule" => 1, 'name' => 'Xóa node việc', 'method' => 'deleteNodeChuyentiep'],
 			["idmodule" => 1, 'name' => 'Thay đổi trạng thái', 'method' => 'toggle_congviec_status'],
-		);
-		DB::table('tbl_chucnang')->insert($data);
-	}
-}
-
- class TblMoiquanheSeeder extends Seeder
-{
-	public function run()
-	{
-		$data = array(
+        );
+    
+    public $data_moiquanhe = array(
 			["name" => "Chủ hộ", 'loaiquanhe' => 'nhanthan'],
 			["name" => "Chồng", 'loaiquanhe' => 'nhanthan'],
 			["name" => "Vợ", 'loaiquanhe' => 'nhanthan'],
@@ -138,32 +94,17 @@ class TblChucnangSeeder extends Seeder
 			["name" => "Mự", 'loaiquanhe' => 'nhanthan'],
 			["name" => "Chắt", 'loaiquanhe' => 'nhanthan'],
 			["name" => "Quan hệ khác", 'loaiquanhe' => 'nhanthan'],
-		);
-		DB::connection('nhanhokhau')->table('tbl_moiquanhe')->insert($data);
-	}
-}
-
-
-class TblLoaiCutruSeeder extends Seeder
-{
-	public function run()
-	{
-		$data = array(
+        );
+        
+    
+        public $data_loaicutru = array(
 			["name" => "Thường trú"],
 			["name" => "Tạm trú"],
 			["name" => "Lưu trú"],
 			["name" => "Tạm vắng"]
-		);
-		DB::connection('nhanhokhau')->table('tbl_loaicutru')->insert($data);
-	}
-}
-
-class TblThutuccutruSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        );
+        
+        public $data_thutuccutru = [
 		    ['name' => 'Cấp mới hộ khẩu', 'idloaicutru' => 1, 'type' => 'dangkythuongtru'],
 		    ['name' => 'Cấp lại hộ khẩu', 'idloaicutru' => 1, 'type' => 'dangkythuongtru'],
 		    ['name' => 'Cấp đổi hộ khẩu', 'idloaicutru' => 1, 'type' => 'dangkythuongtru'],
@@ -180,18 +121,9 @@ class TblThutuccutruSeeder extends Seeder
 		    ['name' => 'Gia hạn tạm trú', 'idloaicutru' => 2, 'type' => 'dangkytamtru'],
 		    ['name' => 'Xóa tạm trú', 'idloaicutru' => 2, 'type' => 'dangkytamtru'],
 		    ['name' => 'Cấp sổ tạm trú', 'idloaicutru' => 2, 'type' => 'dangkytamtru'],
-		];
-		DB::connection('nhanhokhau')->table('tbl_thutuccutru')->insert( $data );
-	}
-}
-
-
-class TblChucVuSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_chucvu = [
 		    ["name" => "Đội phó"],
 			["name" => "Đội trưởng"],
 			["name" => "Phó trưởng phòng"],
@@ -206,17 +138,9 @@ class TblChucVuSeeder extends Seeder
 			["name" => "Giám đốc"],
 			["name" => "Cán bộ"],
 			["name" => "Lao động có thời hạn"],
-		];
-		DB::table('tbl_chucvu')->insert( $data );
-	}
-}
-
-class TblcapbacSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_capbac = [
 		    ["name" => "Hạ sỹ"],
 			["name" => "Trung sỹ"],
 			["name" => "Thượng sỹ"],
@@ -233,17 +157,9 @@ class TblcapbacSeeder extends Seeder
 			["name" => "Thượng tướng"],
 			["name" => "Đại tướng"],
 			["name" => "Khác"],
-		];
-		DB::table('tbl_capbac')->insert( $data );
-	}
-}
-
-class TbltrinhdohocvanSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_trinhdohocvan = [
 		    ["name" => "Tiểu học"],
 			["name" => "Trung học cơ sở"],
 			["name" => "Trung học phổ thông"],
@@ -278,17 +194,9 @@ class TbltrinhdohocvanSeeder extends Seeder
 			["name" => "9/10"],
 			["name" => "10/10"],
 			["name" => "Khác"],
-		];
-		DB::table('tbl_trinhdohocvan')->insert( $data );
-	}
-}
-
-class TbltongiaoSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_tongiao = [
 		    ["name" => "Không"],
 		    ["name" => "Thiên chúa giáo"],
 			["name" => "Phật giáo"],
@@ -297,39 +205,23 @@ class TbltongiaoSeeder extends Seeder
 			["name" => "Cao Đài"],
 			["name" => "Hoà Hảo"],
 			["name" => "Tôn giáo khác"],
-		];
-			DB::table('tbl_tongiao')->insert( $data );
-	}
-}
-
-class TblnghenghiepSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_nghenghiep = [
 		    ["name" => "Học sinh"],
 			["name" => "Sinh viên"],
 			["name" => "Công an"],
 			["name" => "Bộ đội"],
 			["name" => "Cán bộ, công nhân, viên chức"],
 			["name" => "Hợp đồng sỹ quan"],
-			["name" => "Lao động tự do"],
-			["name" => "Nghề nghiệp khác"],
 			["name" => "Nông nghiệp"],
 			["name" => "Lâm nghiệp"],
 			["name" => "Ngư nghiệp"],
-		];
-			DB::table('tbl_nghenghiep')->insert( $data );
-	}
-}
-
-class TbldantocSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+			["name" => "Lao động tự do"],
+			["name" => "Nghề nghiệp khác"],
+        ];
+        
+        public $data_dantoc = [
 		    ["name" => "Kinh (Việt)"],
 			["name" => "Thái"],
 			["name" => "Tày"],
@@ -385,17 +277,9 @@ class TbldantocSeeder extends Seeder
 			["name" => "Ơ-đu"],
 			["name" => "Rơ-măm"],
 			["name" => "Dân tộc khác"],
-		];
-			DB::table('tbl_dantoc')->insert( $data );
-	}
-}
-
-class TblnhomquyenSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_nhomquyen = [
 		    ["name" => "Cán bộ"],
 			["name" => "Phó Đội trưởng"],
 			["name" => "Đội trưởng"],
@@ -403,17 +287,9 @@ class TblnhomquyenSeeder extends Seeder
 			["name" => "Cấp trưởng đơn vị"],
 			["name" => "Khách"],
 			["name" => "Administrator"],
-		];
-			DB::table('tbl_nhomquyen')->insert( $data );
-	}
-}
-
-class TbldonviSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_donvi = [
 			["kyhieu" => "Ban Giám đốc", "name" => "Ban Giám đốc", "loaidonvi" => "bgd"],
 		    ["kyhieu" => "PV11", "name" => "Phòng tham mưu", "loaidonvi" => "phongban"],
 			["kyhieu" => "PX13", "name" => "Phòng tổ chức cán bộ", "loaidonvi" => "phongban"],
@@ -459,17 +335,9 @@ class TbldonviSeeder extends Seeder
 			["kyhieu" => "CA Huyện Hương Khê", "name" => "CA Huyện Hương Khê", "loaidonvi" => "huyentptx"],
 			["kyhieu" => "CA Huyện Vũ Quang", "name" => "CA Huyện Vũ Quang", "loaidonvi" => "huyentptx"],
 			["kyhieu" => "CA Huyện Nghi Xuân", "name" => "CA Huyện Nghi Xuân", "loaidonvi" => "huyentptx"],
-		];
-			DB::table('tbl_donvi')->insert( $data );
-	}
-}
-
-class TbldoicongtacSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+        public $data_doicongtac = [
 			["name" => "Lãnh đạo Công an tỉnh", "loaidoi" => "doi_phongban"],
 		    ["name" => "Lãnh đạo đơn vị", "loaidoi" => "doi_phongban"],
 			["name" => "Đội Tổng hợp", "loaidoi" => "doi_phongban"],
@@ -496,17 +364,9 @@ class TbldoicongtacSeeder extends Seeder
 			["name" => "Công an phường Trần Phú", "loaidoi" => "doi_phongban"],
 			["name" => "Đội Thanh Tra", "loaidoi" => "doi_phongban"],
 			["name" => "Đội điều tra và Thẩm định tố tụng", "loaidoi" => "doi_phongban"],
-		];
-			DB::table('tbl_doicongtac')->insert( $data );
-	}
-}
-
-class TblDonviDoicongtacSeeder extends Seeder
-{
-	
-	public function run()
-	{
-		$data = [
+        ];
+        
+    public $data_donvi_doi = [
 			['iddonvi' => 2, 'iddoi' => 2],
 			['iddonvi' => 2, 'iddoi' => 3],
 			['iddonvi' => 2, 'iddoi' => 14],
@@ -534,9 +394,42 @@ class TblDonviDoicongtacSeeder extends Seeder
 			['iddonvi' => 33, 'iddoi' => 12],
 			['iddonvi' => 33, 'iddoi' => 13],
 		];
-		DB::table('tbl_donvi_doi')->insert( $data );
-	}
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+		$module = $this->argument('module');
+		if($module == 'coredb')
+		{
+			DB::table('tbl_chucvu')->insert( $data_chucvu );
+			DB::table('tbl_capbac')->insert( $data_capbac );
+			DB::table('tbl_trinhdohocvan')->insert( $data_trinhdohocvan );
+			DB::table('tbl_tongiao')->insert( $data_tongiao );
+			DB::table('tbl_nghenghiep')->insert( $data_nghenghiep );
+			DB::table('tbl_dantoc')->insert( $data_dantoc );
+			DB::table('tbl_nhomquyen')->insert( $data_nhomquyen );
+			DB::table('tbl_donvi')->insert( $data_donvi );
+			DB::table('tbl_doicongtac')->insert( $data_doicongtac );
+			DB::table('tbl_donvi_doi')->insert( $data_donvi_doi );
+			DB::table('configs')->insert($data_config_nhomquyen);
+			DB::table('tbl_modules')->insert($data_modules);
+			DB::table('tbl_chucnang')->insert($data_chucnang);
+			DB::table('tbl_level')->insert($data_level_role);
+		}
+		elseif( $module == 'nhanhokhau' )
+		{
+			DB::connection('nhanhokhau')->table('tbl_loaicutru')->insert($data_loaicutru);
+			DB::connection('nhanhokhau')->table('tbl_thutuccutru')->insert( $data_thutuccutru );
+		}
+		
+    }
 }
-
-
-
