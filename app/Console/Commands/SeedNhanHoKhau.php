@@ -12,7 +12,7 @@ class SeedNhanHoKhau extends Command
      *
      * @var string
      */
-    protected $signature = 'nhanhokhau:import_thuongtru';
+    protected $signature = 'nhanhokhau:import_thuongtru {num_hogiadinh=10}';
 
     /**
      * The console command description.
@@ -44,8 +44,8 @@ class SeedNhanHoKhau extends Command
         $dantoc = collect(['Kinh', 'Thái', 'Tày', 'Nùng', 'Dao', 'Ê-đê', 'Khơ-mú']);
         $ngoaingu = collect(['A1', 'B1', 'C1', 'IELSE', 'TOEIC']);
         $trinhdochuyenmon = collect(['Tiến sĩ khoa học', 'Tiến sĩ', 'Thạc sĩ', 'Cử nhân', 'Kỹ sư', 'Cao đẳng', 'Trung cấp', 'Sơ cấp']);
-
-        $limit_hoso = 108;
+        $limit_hoso = $this->argument('num_hogiadinh');
+        // $limit_hoso = 108;
         $bar = $this->output->createProgressBar($limit_hoso);
         for ($i = 0; $i < $limit_hoso; $i++)
         {
@@ -57,50 +57,50 @@ class SeedNhanHoKhau extends Command
             'so_dktt_toso' => rand(10,1000),
             'ngaynopluu' => $faker->date,
             );
-            $idhosohokhau = DB::table('tbl_hoso')->insertGetId($arrHoso);
+            $idhosohokhau = DB::connection('nhanhokhau')->table('tbl_hoso')->insertGetId($arrHoso);
 
             //-----------------------Chủ hộ-------------------------
             $arrnhankhau = array(
-            'hoten' => $ho_pho_bien->random() . ' ' . $faker->middleName() . ' ' . $faker->firstName,
-            'tenkhac' => $faker->middleName() . ' ' . $faker->firstName,
-            'ngaysinh' => $faker->dateTimeThisCentury->format('Y-m-d'),
-            'idquoctich' => 1,
-            'idquocgia_nguyenquan' => 1,
-            'idtinh_nguyenquan' => 19,
-            'idhuyen_nguyenquan' => 202,
-            'idxa_nguyenquan' => rand(3044,3064),
+                'hoten' => $ho_pho_bien->random() . ' ' . $faker->middleName() . ' ' . $faker->firstName,
+                'tenkhac' => $faker->middleName() . ' ' . $faker->firstName,
+                'ngaysinh' => $faker->dateTimeThisCentury->format('Y-m-d'),
+                'idquoctich' => 1,
+                'idquocgia_nguyenquan' => 1,
+                'idtinh_nguyenquan' => 19,
+                'idhuyen_nguyenquan' => 202,
+                'idxa_nguyenquan' => rand(3044,3064),
 
-            'idquocgia_thuongtru' => 1,
-            'idtinh_thuongtru' => 19,
-            'idhuyen_thuongtru' => 202,
-            'idxa_thuongtru' => rand(3044,3064),
+                'idquocgia_thuongtru' => 1,
+                'idtinh_thuongtru' => 19,
+                'idhuyen_thuongtru' => 202,
+                'idxa_thuongtru' => rand(3044,3064),
 
-            'idquocgia_noiohiennay' => 1,
-            'idtinh_noiohiennay' => 19,
-            'idhuyen_noiohiennay' => 202,
-            'idxa_noiohiennay' => rand(3044,3064),
+                'idquocgia_noiohiennay' => 1,
+                'idtinh_noiohiennay' => 19,
+                'idhuyen_noiohiennay' => 202,
+                'idxa_noiohiennay' => rand(3044,3064),
 
-            'idquocgia_noisinh' => 1,
-            'idtinh_noisinh' => 19,
-            'idhuyen_noisinh' => 202,
-            'idxa_noisinh' => rand(3044,3064),
+                'idquocgia_noisinh' => 1,
+                'idtinh_noisinh' => 19,
+                'idhuyen_noisinh' => 202,
+                'idxa_noisinh' => rand(3044,3064),
 
-            'idquocgia_noilamviec' => 1,
-            'idtinh_noilamviec' => 19,
-            'idhuyen_noilamviec' => 202,
-            'idxa_noilamviec' => rand(3044,3064),
-            'hochieu_so' => $faker->unique()->ean13,
-            'cmnd_so' => $faker->unique()->ean13,
-            'idtongiao' => rand(1,6),
-            'iddantoc' => rand(1,20),
-            'idtrinhdohocvan' => rand(1,6),
-            'idnghenghiep' => rand(1,6),
-            'trinhdochuyenmon' => $trinhdochuyenmon->random(),
-            'trinhdongoaingu' => $ngoaingu->random(),
-            'biettiengdantoc' => $dantoc->random(),
-            'tomtatbanthan' => $faker->realText,
-            'tomtatgiadinh' => $faker->realText,
-            'gioitinh' => rand(0,1),
+                'idquocgia_noilamviec' => 1,
+                'idtinh_noilamviec' => 19,
+                'idhuyen_noilamviec' => 202,
+                'idxa_noilamviec' => rand(3044,3064),
+                'hochieu_so' => $faker->unique()->ean13,
+                'cmnd_so' => $faker->unique()->ean13,
+                'idtongiao' => rand(1,6),
+                'iddantoc' => rand(1,20),
+                'idtrinhdohocvan' => rand(1,6),
+                'idnghenghiep' => rand(1,6),
+                'trinhdochuyenmon' => $trinhdochuyenmon->random(),
+                'trinhdongoaingu' => $ngoaingu->random(),
+                'biettiengdantoc' => $dantoc->random(),
+                'tomtatbanthan' => $faker->realText,
+                'tomtatgiadinh' => $faker->realText,
+                'gioitinh' => rand(0,1),
             );
 
             $check_ttt = rand(1,5);
@@ -119,7 +119,7 @@ class SeedNhanHoKhau extends Command
                 $arrnhankhau['tienan_tiensu'] = $faker->realText;
             }
 
-            $idnhankhau = DB::table('tbl_nhankhau')->insertGetId($arrnhankhau);
+            $idnhankhau = DB::connection('nhanhokhau')->table('tbl_nhankhau')->insertGetId($arrnhankhau);
 
             $arrHoKhau = array(
             'idhoso' => $idhosohokhau,
@@ -127,7 +127,7 @@ class SeedNhanHoKhau extends Command
             'idquanhechuho' =>  1,
             'ngaydangky' => $faker->dateTimeThisCentury->format('Y-m-d'),
             );
-            $idsohokhau = DB::table('tbl_sohokhau')->insertGetId($arrHoKhau);
+            $idsohokhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')->insertGetId($arrHoKhau);
 
             $xa_tt_save = $arrnhankhau['idxa_thuongtru'];
             //-----------------End Chủ hộ----------------
@@ -195,7 +195,7 @@ class SeedNhanHoKhau extends Command
                     $arrnhankhau['tienan_tiensu'] = $faker->realText;
                 }
 
-                $idnhankhau = DB::table('tbl_nhankhau')->insertGetId($arrnhankhau);
+                $idnhankhau = DB::connection('nhanhokhau')->table('tbl_nhankhau')->insertGetId($arrnhankhau);
 
                 $arrHoKhau = array(
                 'idhoso' => $idhosohokhau,
@@ -204,7 +204,7 @@ class SeedNhanHoKhau extends Command
                 'ngaydangky' => $faker->dateTimeThisCentury->format('Y-m-d'),
                 );
 
-                $idhokhau = DB::table('tbl_sohokhau')->insertGetId($arrHoKhau);
+                $idhokhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')->insertGetId($arrHoKhau);
             }
             //--------End Thành viên trong gia đình--------------
 
