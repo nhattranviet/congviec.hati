@@ -410,25 +410,26 @@ class SeedCoreDB extends Command
 		$module = $this->argument('module');
 		if($module == 'coredb')
 		{
-			DB::table('tbl_chucvu')->insert( $data_chucvu );
-			DB::table('tbl_capbac')->insert( $data_capbac );
-			DB::table('tbl_trinhdohocvan')->insert( $data_trinhdohocvan );
-			DB::table('tbl_tongiao')->insert( $data_tongiao );
-			DB::table('tbl_nghenghiep')->insert( $data_nghenghiep );
-			DB::table('tbl_dantoc')->insert( $data_dantoc );
-			DB::table('tbl_nhomquyen')->insert( $data_nhomquyen );
-			DB::table('tbl_donvi')->insert( $data_donvi );
-			DB::table('tbl_doicongtac')->insert( $data_doicongtac );
-			DB::table('tbl_donvi_doi')->insert( $data_donvi_doi );
-			DB::table('configs')->insert($data_config_nhomquyen);
-			DB::table('tbl_modules')->insert($data_modules);
-			DB::table('tbl_chucnang')->insert($data_chucnang);
-			DB::table('tbl_level')->insert($data_level_role);
+			DB::table('tbl_chucvu')->insert( $this->data_chucvu );
+			DB::table('tbl_capbac')->insert( $this->data_capbac );
+			DB::table('tbl_trinhdohocvan')->insert( $this->data_trinhdohocvan );
+			DB::table('tbl_tongiao')->insert( $this->data_tongiao );
+			DB::table('tbl_nghenghiep')->insert( $this->data_nghenghiep );
+			DB::table('tbl_dantoc')->insert( $this->data_dantoc );
+			DB::table('tbl_moiquanhe')->insert($this->data_moiquanhe);
+			DB::table('tbl_nhomquyen')->insert( $this->data_nhomquyen );
+			DB::table('tbl_donvi')->insert( $this->data_donvi );
+			DB::table('tbl_doicongtac')->insert( $this->data_doicongtac );
+			DB::table('tbl_donvi_doi')->insert( $this->data_donvi_doi );
+			DB::table('configs')->insert($this->data_config_nhomquyen);
+			DB::table('tbl_modules')->insert($this->data_modules);
+			DB::table('tbl_chucnang')->insert($this->data_chucnang);
+			DB::table('tbl_level')->insert($this->data_level_role);
 		}
 		elseif( $module == 'nhanhokhau' )
 		{
-			DB::connection('nhanhokhau')->table('tbl_loaicutru')->insert($data_loaicutru);
-			DB::connection('nhanhokhau')->table('tbl_thutuccutru')->insert( $data_thutuccutru );
+			DB::connection('nhanhokhau')->table('tbl_loaicutru')->insert($this->data_loaicutru);
+			DB::connection('nhanhokhau')->table('tbl_thutuccutru')->insert( $this->data_thutuccutru );
 		}
 		
     }

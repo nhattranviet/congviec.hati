@@ -151,4 +151,114 @@ class NhanhokhauLibrary
         }
     }
 
+    public static function getListQuocgia($array_pluck = FALSE)
+    {
+        if($array_pluck)
+        {
+           return DB::table('tbl_quocgia')->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_quocgia')->get();
+        }
+        
+    }
+
+    public static function getListTinhTP($idquocgia, $array_pluck = FALSE)
+    {
+        if ($array_pluck)
+        {
+            return DB::table('tbl_tinh_tp')->where('idquocgia', $idquocgia)->pluck('name', 'id')->toArray();
+        }
+        else
+        {
+            return DB::table('tbl_tinh_tp')->where('idquocgia', $idquocgia)->get();
+        }
+        
+    }
+
+    public static function getListHuyenTX($idtinhtp, $array_pluck = FALSE)
+    {
+        if($array_pluck)
+        {
+           return DB::table('tbl_huyen_tx')->where('idtinhtp', $idtinhtp)->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_huyen_tx')->where('idtinhtp', $idtinhtp)->get();
+        }
+        
+    }
+
+    public static function getListXaPhuongTT($idhuyentx, $array_pluck = FALSE)
+    {
+        if( $array_pluck )
+        {
+           return DB::table('tbl_xa_phuong_tt')->where('idhuyentx', $idhuyentx)->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_xa_phuong_tt')->where('idhuyentx', $idhuyentx)->get();
+        }
+        
+    }
+
+    public static function getListMoiQuanHe($array_pluck = FALSE)
+    {
+        if( $array_pluck )
+        {
+           return DB::table('tbl_moiquanhe')->where('loaiquanhe', 'nhanthan')->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_moiquanhe')->where('loaiquanhe', 'nhanthan')->get();
+        }
+        
+    }
+
+    public static function getListTonGiao($array_pluck = FALSE)
+    {
+        if( $array_pluck )
+        {
+           return DB::table('tbl_tongiao')->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_tongiao')->get();
+        }
+        
+    }
+
+    public static function getListDanToc($array_pluck = FALSE)
+    {
+        if( $array_pluck )
+        {
+           return DB::table('tbl_dantoc')->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_dantoc')->get();
+        }
+        
+    }
+
+    public static function getListTrinhDoHocVan($array_pluck = FALSE)
+    {
+        if( $array_pluck )
+        {
+           return DB::table('tbl_trinhdohocvan')->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_trinhdohocvan')->get();
+        }
+        
+    }
+
+    public static function getListNgheNghiep($array_pluck = FALSE)
+    {
+        if( $array_pluck )
+        {
+           return DB::table('tbl_nghenghiep')->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_nghenghiep')->get();
+        }
+        
+    }
+
+
 }

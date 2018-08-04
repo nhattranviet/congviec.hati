@@ -126,24 +126,24 @@ class NhanKhauController extends Controller
         'denngay.required' => ':attribute Đến ngày không được trống',
     ];
 
-    // public function __construct(NhanKhau $nhankhau, QuocGia $quocgia, Relation $relation, Religion $religion
-    //     , Nation $nation, Education $education, Career $career, Province $province, District $district
-    //     , Ward $ward, Brief $brief, Hokhau $hokhau) {
+    public function __construct(NhanKhau $nhankhau, QuocGia $quocgia, Relation $relation, Religion $religion
+        , Nation $nation, Education $education, Career $career, Province $province, District $district
+        , Ward $ward, Brief $brief, Hokhau $hokhau) {
 
-    //     // $this->middleware('auth');
-    //     $this->nhankhau = $nhankhau;
-    //     $this->quocgia = $quocgia;
-    //     $this->relation = $relation;
-    //     $this->religion = $religion;
-    //     $this->nation = $nation;
-    //     $this->education = $education;
-    //     $this->career = $career;
-    //     $this->province = $province;
-    //     $this->district = $district;
-    //     $this->ward = $ward;
-    //     $this->brief = $brief;
-    //     $this->hokhau = $hokhau;
-    // }
+        // $this->middleware('auth');
+        // $this->nhankhau = $nhankhau;
+        $this->quocgia = $quocgia;
+        // $this->relation = $relation;
+        $this->religion = $religion;
+        $this->nation = $nation;
+        // $this->education = $education;
+        // $this->career = $career;
+        $this->province = $province;
+        $this->district = $district;
+        $this->ward = $ward;
+        // $this->brief = $brief;
+        // $this->hokhau = $hokhau;
+    }
 
 //HO SO HO KHAU - SO HO KHAU
 
@@ -158,21 +158,21 @@ class NhanKhauController extends Controller
     }
 
     public function create() {
-        $this->data['countries'] = $this->quocgia->get();
-        $this->data['relations'] = $this->relation->get();
-        $this->data['religions'] = $this->religion->get();
-        $this->data['nations'] = $this->nation->get();
-        $this->data['educations'] = $this->education->get();
-        $this->data['careers'] = $this->career->get();
-        $this->data['list_quanhechuho'] = DB::table('tbl_moiquanhe')->where('loaiquanhe', 'nhanthan')->get();
+        $this->data['countries'] = NhanhokhauLibrary::getListQuocgia(); //dd($this->data['countries']);
+        $this->data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $this->data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $this->data['nations'] = NhanhokhauLibrary::getListDanToc();
+        $this->data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
+        $this->data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+        $this->data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
         return view('nhankhau-layouts.thuongtru/create', $this->data);
     }
 
     public function store(Request $request) {
         $validator = Validator::make($request->all(), [
-            'hosohokhau_so' => 'required|unique:tbl_hoso',
+            'hosohokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
             'so_dktt_so' => 'required|min:2',
-            'hokhau_so' => 'required|unique:tbl_hoso',
+            'hokhau_so' => 'required|unique:.nhanhokhau.tbl_hoso',
             'hoten.*' => 'required',
             'idquanhechuho.*' => 'required',
             'birthday.*' => 'required|date_format:d-m-Y',
@@ -238,7 +238,7 @@ class NhanKhauController extends Controller
                     'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
                     'idquocgia_thuongtrutruoc' => $request->idquocgia_thuongtrutruoc[$i], 'idtinh_thuongtrutruoc' => $request->idtinh_thuongtrutruoc[$i], 'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc[$i], 'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i], 'chitiet_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i],
                 );
-                DB::table('tbl_history_cutru')->insert( $data_log );
+                DB::connection('nhanhokhau')->table('tbl_history_cutru')->insert( $data_log );
             }
             break;
         }

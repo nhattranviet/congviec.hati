@@ -11,7 +11,7 @@ class Hanhchinh extends Command
      *
      * @var string
      */
-    protected $signature = "coredb:import_hanhchinh {connection='nhanhokhau'}";
+    protected $signature = "coredb:import_hanhchinh {module}";
 
     /**
      * The console command description.
@@ -37,7 +37,7 @@ class Hanhchinh extends Command
      */
     public function handle()
     {
-        $connection = $this->argument('connection');
+        $connection = ($this->argument('module') == 'coredb' ) ? 'mysql' : 'nhanhokhau' ;
         $data_quocgia = [
 			["name" => "Việt Nam"],
 			["name" => "Úc"],
