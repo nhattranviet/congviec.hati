@@ -5,6 +5,8 @@
 // use App\Hokhau;
 // use App\Brief;
 // use Carbon\Carbon;
+use App\UserApp\UserLibrary;
+use Illuminate\Support\Facades\Session;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,9 +17,23 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// $ControllerFunction
 Auth::routes();
 
-Route::get('/', 'CongviecController@index');
+Route::get('/', function(){
+    $iddonvi = UserLibrary::getIdDonViOfCanBo ( Session::get('userinfo')->idcanbo );
+    $default_route = config('user_config.default_route.'.$iddonvi);
+    if( $default_route )
+    {
+        return redirect()->route($default_route);
+    }
+    else
+    {
+        echo 'stop'; die;
+    }
+});
+// Route::get('/', 'CongviecController@index');
 
 //----------------------------BASECONTROLLER---------------------------
 

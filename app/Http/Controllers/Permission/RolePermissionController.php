@@ -54,7 +54,7 @@ class RolePermissionController extends Controller
         {
             $arrUser[$user->idnhomquyen][] = $user->iduser;
         }
-
+        
         foreach ($arrUser as $idnhomquyen => $users)
         {
             

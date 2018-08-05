@@ -214,8 +214,10 @@ class UserLibrary
         ->join('tbl_modules', 'tbl_modules.id', '=', 'tbl_chucnang.idmodule')
         ->whereIn('idmodule', $arrModule)
         ->pluck('tbl_chucnang.id')->toArray();
-        DB::table('tbl_user_chucnang')->where(array('iduser', $iduser ))->whereIn('idchucnang', $list_chucnang)->delete();
-        return TRUE;
+        if( count($list_chucnang) >= 1 )
+        {
+            DB::table('tbl_user_chucnang')->where('iduser', $iduser )->whereIn('idchucnang', $list_chucnang)->delete();
+        }
     }
 
     public static function getUserRoleModule($iduser, $idmodule)

@@ -25,4 +25,9 @@ return [
         'thutuc_dieuchinhthaydoi' =>  6,
         'thutuc_dangkynoimoi' => 11,
     ],
+
+    'default_route' => [
+        '19' => 'cong-viec.index',
+        '35' => 'nhan-khau.index',
+    ]
 ];

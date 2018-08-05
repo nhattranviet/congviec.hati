@@ -35,7 +35,6 @@ class NhanKhauController extends Controller
     public $thutuc_dangkynhankhau = 5;
     public $thutuc_dieuchinhthaydoi = 6;
     public $thutuc_dangkynoimoi = 11;
-    public $connection = 'nhanhokhau';
     //End khai báo các thủ tục và địa giới
     
 
@@ -46,18 +45,11 @@ class NhanKhauController extends Controller
         , Ward $ward, Brief $brief, Hokhau $hokhau) {
 
         // $this->middleware('auth');
-        // $this->nhankhau = $nhankhau;
         $this->quocgia = $quocgia;
-        // $this->relation = $relation;
-        $this->religion = $religion;
         $this->nation = $nation;
-        // $this->education = $education;
-        // $this->career = $career;
         $this->province = $province;
         $this->district = $district;
         $this->ward = $ward;
-        // $this->brief = $brief;
-        // $this->hokhau = $hokhau;
     }
 
 //HO SO HO KHAU - SO HO KHAU
@@ -150,7 +142,7 @@ class NhanKhauController extends Controller
             'idthutuccutru' => $this->thutuc_dieuchinhthaydoi, 'type' => 'hogiadinh', 'idhoso' => $idhoso, 'ghichu' => $request->ghichu, 'date_action' => date('Y-m-d', strtotime($request->date_action)),
         );
         NhanhokhauLibrary::logCutru($data_log);
-        return response()->json(['success' => 'Cập nhật hồ sơ thành công ']);
+        return response()->json(['success' => 'Cập nhật hồ sơ thành công ', 'url' => route('chi-tiet-ho-khau', $idhoso)]);
     }
 
     // CAC THU TUC HO KHAU
@@ -401,10 +393,10 @@ class NhanKhauController extends Controller
     {
         $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso);
         $data['idhoso'] = $idhoso;
-        $data['countries'] = $this->quocgia->get();
-        $data['relations'] = $this->relation->get();
-        $data['religions'] = $this->religion->get();
-        $data['nations'] = $this->nation->get();
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
         return view('nhankhau-layouts.thuongtru.chitiethosoHGD_caplai', $data);
     }
 
@@ -449,10 +441,11 @@ class NhanKhauController extends Controller
     {
         $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso);
         $data['idhoso'] = $idhoso;
-        $data['countries'] = $this->quocgia->get();
-        $data['relations'] = $this->relation->get();
-        $data['religions'] = $this->religion->get();
-        $data['nations'] = $this->nation->get();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
         return view('nhankhau-layouts.thuongtru.chitiethosoHGD_capdoi', $data);
     }
 
@@ -539,23 +532,29 @@ class NhanKhauController extends Controller
     public function getTachhokhau($idhoso)
     {
         $data['list_nhankhau'] = NhanhokhauLibrary::getListNhankhauHoso($idhoso);
-        $list_quanhechuho = DB::connection('nhanhokhau')->table('tbl_moiquanhe')->where('loaiquanhe', 'nhanthan')->get();
+        if(count($data['list_nhankhau']) <= 1)
+        {
+            
+            $message = array('type' => 'warning', 'content' => 'Hộ tách phải có 2 người trở lên');
+            return redirect()->route('chi-tiet-ho-khau', $idhoso)->with('alert_message', $message);
+        }
+        $list_quanhechuho = NhanhokhauLibrary::getListMoiQuanHe();
         $str = '';
         foreach ($list_quanhechuho as $value)
         {
             $str .= '<option value="'.$value->id.'">'.$value->name.'</option>';
         }
         $data['str_ret'] = $str;
-        $data['idhoso'] = $id;
+        $data['idhoso'] = $idhoso;
         return view('nhankhau-layouts.thuongtru.tachhokhau', $data);
     }
 
     public function postTachhokhau(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'hosohokhau_so' => 'required|unique:tbl_hoso',
+            'hosohokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
             'so_dktt_so' => 'required|min:2',
-            'hokhau_so' => 'required|unique:tbl_hoso',
+            'hokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
             'idquanhechuho.*' => 'required',
             'id_in_sohokhau.*' => 'required',
             'nhankhautach' => 'required',
@@ -612,7 +611,7 @@ class NhanKhauController extends Controller
             NhanhokhauLibrary::logCutru( $data_log );
         }
 
-        return response()->json(['success' => 'Tách hộ khẩu thành công ']);
+        return response()->json(['success' => 'Tách hộ khẩu thành công ', 'url' => route('nhan-khau.index')]);
     }
 
     public function getNhaphokhau($idhoso)
