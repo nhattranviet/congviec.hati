@@ -9,6 +9,164 @@ use Carbon\Carbon;
 class NhanhokhauLibrary
 {
     public $connection = 'nhanhokhau';
+
+    public static function getMessageRule()
+    {
+        return [
+            'idquanhechuho.*.required' => 'Quan hệ với chủ hộ không được trống',
+            'hosohokhau_so.required' => 'Hồ sơ hộ khẩu số bị trống.',
+            'so_dktt_so.required' => 'Số đăng ký thường chú bị trống',
+            'datetime.date_format' => 'Vui lòng nhập chính xác ngày nộp lưu',
+            'hokhau_so.required' => 'Hộ khẩu số bị trống',
+            'so_dktt_toso.required' => 'Tờ số bị trống',
+            'hoten.*.required' => ':attribute Vui lòng nhập họ tên',
+            'gender.*.required' => ':attribute Vui lòng chọn giới tính',
+            'tenkhac.*.required' => ':attribute Vui lòng nhập biệt danh',
+            'idtongiao.*.required' => ':attribute Vui lòng chọn tôn giáo',
+            'idquoctich.*.required' => ':attribute Vui lòng chọn quốc tịch',
+            'cmnd_so.*.required'   => ':attribute Vui lòng nhập số CMND',
+            'idtrinhdohocvan.*.required' => ':attribute Vui lòng chọn trình độ học vấn',
+            'iddantoc.*.required' => ':attribute Vui lòng chọn dân tộc',
+            'idnghenghiep.*.required' => ':attribute Vui lòng chọn nghề nghiệp',
+            'trinhdochuyenmon.*.required' => ':attribute Vui lòng nhập trình độ chuyên môn',
+            'biettiengdantoc.*.required' => ':attribute Vui lòng nhập tiếng dân tộc',
+            'trinhdongoaingu.*.required' => ':attribute Vui lòng nhập trình độ ngoại ngữ',
+            'birthday.*.date_format' => ':attribute Vui lòng nhập chính xác ngày sinh',
+            'idquocgia_noisinh.*.required' => ':attribute Vui lòng chọn quốc gia nơi sinh',
+            'idtinh_noisinh.*.required' => ':attribute Vui lòng chọn tỉnh nơi sinh',
+            'idhuyen_noisinh.*.required' => ':attribute Vui lòng chọn huyện nơi sinh',
+            'idxa_noisinh.*.required' => ':attribute Vui lòng chọn xã nơi sinh',
+
+            'idtinh_noisinh.*.required_if' => ':attribute Vui lòng chọn tỉnh nơi sinh',
+            'idhuyen_noisinh.*.required_if' => ':attribute Vui lòng chọn huyện nơi sinh',
+            'idxa_noisinh.*.required_if' => ':attribute Vui lòng chọn xã nơi sinh',
+
+            'idquocgia_nguyenquan.*.required' => ':attribute Vui lòng chọn quốc gia nguyên quán',
+            'idtinh_nguyenquan.*.required' => ':attribute Vui lòng chọn tỉnh nguyên quán',
+            'idhuyen_nguyenquan.*.required' => ':attribute Vui lòng chọn huyện nguyên quán',
+            'idxa_nguyenquan.*.required' => ':attribute Vui lòng chọn xã nguyên quán',
+
+            'idtinh_nguyenquan.*.required_if' => ':attribute Vui lòng chọn tỉnh nguyên quán',
+            'idhuyen_nguyenquan.*.required_if' => ':attribute Vui lòng chọn huyện nguyên quán',
+            'idxa_nguyenquan.*.required_if' => ':attribute Vui lòng chọn xã nguyên quán',
+
+            'idquocgia_thuongtru.*.required' => ':attribute Vui lòng chọn quốc gia thường trú',
+            'idtinh_thuongtru.*.required' => ':attribute Vui lòng chọn tỉnh thường trú',
+            'idhuyen_thuongtru.*.required' => ':attribute Vui lòng chọn huyện thường trú',
+            'idxa_thuongtru.*.required' => ':attribute Vui lòng chọn xã thường trú',
+            'idquocgia_thuongtru.required' => 'Vui lòng chọn quốc gia thường trú',
+            'idtinh_thuongtru.required' => 'Vui lòng chọn tỉnh thường trú',
+            'idhuyen_thuongtru.required' => 'Vui lòng chọn huyện thường trú',
+            'idxa_thuongtru.required' => 'Vui lòng chọn xã thường trú',
+            'idquocgia_noiohiennay.*.required' => ':attribute Vui lòng chọn quốc gia nơi ở hiện nay',
+            'idtinh_noiohiennay.*.required' => ':attribute Vui lòng chọn tỉnh nơi ở hiện nay',
+            'idhuyen_noiohiennay.*.required' => ':attribute Vui lòng chọn huyện nơi ở hiện nay',
+            'idxa_noiohiennay.*.required' => ':attribute Vui lòng chọn xã nơi ở hiện nay',
+
+            'idtinh_noiohiennay.*.required_if' => ':attribute Vui lòng chọn tỉnh nơi ở hiện nay',
+            'idhuyen_noiohiennay.*.required_if' => ':attribute Vui lòng chọn huyện nơi ở hiện nay',
+            'idxa_noiohiennay.*.required_if' => ':attribute Vui lòng chọn xã nơi ở hiện nay',
+
+            'idquocgia_noilamviec.*.required' => ':attribute Vui lòng chọn quốc gia nơi làm việc',
+            'idtinh_noilamviec.*.required' => ':attribute Vui lòng chọn tỉnh nơi làm việc',
+            'idhuyen_noilamviec.*.required' => ':attribute Vui lòng chọn huyện nơi làm việc',
+            'idxa_noilamviec.*.required' => ':attribute Vui lòng chọn xã nơi làm việc',
+            'hosohokhau_so.unique' => 'Mã Hồ sơ hộ khẩu số này đã tồn tại',
+            'hokhau_so.unique' => 'Hộ khẩu số không được trùng với mã hộ khẩu đã nhập',
+            'birthday.*.required' => 'Ngày sinh không được để trống',
+            'ngaydangky.*.required' => 'Ngày đăng ký thường trú không được để trống',
+            'birthday.*.date_format' => 'Ngày sinh phải đúng định dạng ngày-tháng-năm',
+            'ngaydangky.*.date_format' => 'Ngày đăng ký thường trú phải đúng định dạng ngày-tháng-năm',
+            'lydoxoa.required' => 'Lý do xóa thường trú không được để trống.',
+            'ngayxoathuongtru.req;uired' => 'Ngày xóa thường trú không được để trống',
+            'idtinh_thuongtru.*.required_if' => ':attribute Tỉnh nơi đăng ký thường trú không được trống',
+            'idquocgia_thuongtrutruoc.*.required_if' => ':attribute Quốc gia nơi thường trú trước khi chuyển đến không được trống',
+            'idtinh_thuongtrutruoc.*.required_if' => ':attribute Tỉnh nơi thường trú trước khi chuyển đến không được trống',
+            'idhuyen_thuongtrutruoc.*.required_if' => ':attribute Huyện nơi thường trú trước khi chuyển đến không được trống',
+            'idxa_thuongtrutruoc.*.required_if' => ':attribute Xã nơi thường trú trước khi chuyển đến không được trống',
+            'ghichu.required' => ':attribute Ghi chú/Lý do không được trống',
+            'date_action.required' => ':attribute Ngày thực hiện không được trống',
+            'idtruonghopxoa.required' => ':attribute Trường hợp xóa không được trống',
+            'ngaycaplai.required' => ':attribute Ngày cấp lại không được trống',
+            'ngaycaplai.date_format' => 'Vui lòng nhập chính xác định dạng ngày cấp lại',
+            'date_action.date_format' => 'Vui lòng nhập chính xác định dạng ngày cấp lại',
+            'ngaycapdoi.required' => ':attribute Ngày cấp lại không được trống',
+            'ngaycapdoi.date_format' => 'Vui lòng nhập chính xác định dạng ngày cấp lại',
+            'nhankhautach.required' => ':attribute Nhân khẩu tách phải được chọn',
+            'keyword.required' => ':attribute Từ khóa tìm kiếm không được trống',
+            'keyword.min' => ':attribute Từ khóa tìm kiếm dài ít nhất 3 ký tự',
+            'tungay.required' => ':attribute Từ ngày không được trống',
+            'denngay.required' => ':attribute Đến ngày không được trống',
+        ];
+    }
+
+    public static function getStoreRule()
+    {
+        return [
+            'hosohokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
+            'so_dktt_so' => 'required|min:2',
+            'hokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
+            'hoten.*' => 'required',
+            'idquanhechuho.*' => 'required',
+            'birthday.*' => 'required|date_format:d-m-Y',
+            'ngaydangky.*' => 'required|date_format:d-m-Y',
+            'idtongiao.*' => 'required',
+            'idquoctich.*' => 'required',
+            'gender.*' => 'required',
+
+            'idquocgia_thuongtru' => 'required',
+            'idtinh_thuongtru' => 'required',
+            'idhuyen_thuongtru' => 'required',
+            'idxa_thuongtru' => 'required',
+
+            'idquocgia_noisinh.*' => 'required',
+            'idtinh_noisinh.*' => 'required_if:idquocgia_noisinh.*,1',
+            'idhuyen_noisinh.*' => 'required_if:idquocgia_noisinh.*,1',
+            'idxa_noisinh.*' => 'required_if:idquocgia_noisinh.*,1',
+
+            'idquocgia_nguyenquan.*' => 'required',
+            'idtinh_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+            'idhuyen_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+            'idxa_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+
+            'idquocgia_noiohiennay.*' => 'required',
+            'idtinh_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
+            'idhuyen_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
+            'idxa_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
+
+            'idquocgia_thuongtrutruoc.*' => 'required_if:ngoaihuyenden,1',
+            'idtinh_thuongtrutruoc.*' => 'required_if:idquocgia_thuongtrutruoc.*,1',
+            'idhuyen_thuongtrutruoc.*' => 'required_if:idquocgia_thuongtrutruoc.*,1',
+            'idxa_thuongtrutruoc.*' => 'required_if:idquocgia_thuongtrutruoc.*,1',
+
+        ];
+    }
+
+    public static function getUpdateRule($idhoso)
+    {
+        return [
+            'hosohokhau_so' => 'required|min:2|unique:nhanhokhau.tbl_hoso,hosohokhau_so,'.$idhoso,
+            'so_dktt_so' => 'required|min:2',
+            'ghichu' => 'required',
+            'hokhau_so' => 'required|unique:nhanhokhau.tbl_hoso,hokhau_so,'.$idhoso,
+            'date_action' => 'required|date_format:d-m-Y',
+        ];
+    }
+
+    public static function updateHoso($request, $idhoso)
+    {
+        $hoso_update = array(
+            'hosohokhau_so' => $request->hosohokhau_so,
+            'hokhau_so' => $request->hokhau_so,
+            'so_dktt_so' => $request->so_dktt_so,
+            'so_dktt_toso' => $request->so_dktt_toso,
+            'updated_at' => Carbon::now(),
+            'ngaynopluu' => date('Y-m-d', strtotime($request->datetime)),
+        );
+        DB::connection('nhanhokhau')->table('tbl_hoso')->where('id',$idhoso)->update($hoso_update);
+    }
+
+
     public static function getListHosoIndex($keyword = NULL)
     {
         $data = DB::connection('nhanhokhau')->table('tbl_sohokhau')

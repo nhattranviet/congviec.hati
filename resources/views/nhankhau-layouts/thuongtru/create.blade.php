@@ -31,7 +31,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhau" action="{{ route('nhankhau.store') }}" method="POST" role="form">
+                        <form id="form-nhankhau" action="{{ route('nhankhau.store') }}" method="POST" role="form" autocomplete="on">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
                                     <h4 class="header-title m-t-0 pull-left">Nhập hồ sơ hộ khẩu</h4>
