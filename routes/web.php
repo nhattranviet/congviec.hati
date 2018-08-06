@@ -121,7 +121,7 @@ Route::post('/tam-tru/{idnhankhau}/{idsotamtru}/post-xoa-tam-tru-nhan-khau', 'Nh
 Route::get('/tam-tru/{idnhankhau}/{idsotamtru}/get-gia-han-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@getGiaHanTamTruNhanKhau')->name('get-gia-han-tam-tru-nhan-khau');
 Route::post('/tam-tru/{idnhankhau}/{idsotamtru}/post-gia-han-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@postGiaHanTamTruNhanKhau')->name('post-gia-han-tam-tru-nhan-khau');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/nhan-ho-khau-home', 'Nhanhokhau\HomeNhanhokhauController@index')->name('nhan-ho-khau-home');
 
 //-------------------CÔNG VIỆC-----------------------
 Route::get('/cong-viec', 'CongviecController@index')->name('cong-viec.index');
@@ -154,7 +154,6 @@ Route::post('/can-bo/{idcanbo}/update', 'CanboController@update')->name('can-bo.
 Route::get('/can-bo/showinfo/{idcanbo?}', 'CanboController@showinfo')->name('can-bo-showinfo');
 Route::get('/can-bo/{idcanbo?}/editHoso', 'CanboController@editHoso')->name('can-bo-editHoso');
 Route::post('/can-bo/{idcanbo?}/selfUpdate', 'CanboController@selfUpdate')->name('can-bo-selfUpdate');
-
 
 
 Route::get('/can-bo/add_old_data', 'CanboController@add_old_data');

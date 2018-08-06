@@ -67,7 +67,6 @@ class TamtruController extends Controller
     {
         $data['list_thongtinsotamtru'] = TamtruLibrary::getChitietSotamtru($idsotamtru);
         $data['idsotamtru'] = $idsotamtru;
-        $data['listqh'] = DB::connection('nhanhokhau')->table('tbl_moiquanhe')->pluck('name','id');
         return view('nhankhau-layouts.tamtru.chitiethosotamtru', $data);
 
     }
@@ -116,7 +115,7 @@ class TamtruController extends Controller
         $this->data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $this->data['nations'] = NhanhokhauLibrary::getListDanToc();
         $this->data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
-        $this->data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauTamtru($idnhankhau, $idsotamtru);
+        $this->data['nhankhau'] = TamtruLibrary::getChitietNhankhauTamtru($idnhankhau, $idsotamtru);
         return view('nhankhau-layouts.tamtru.editnhankhau', $this->data);
     }
 
@@ -226,7 +225,6 @@ class TamtruController extends Controller
             'chitiet_tamtru' => $request->chitiet_tamtru,
         );
         NhanhokhauLibrary::logCutru($data_log_sotamtru);
-
         return response()->json(['success' => 'Thêm nhân khẩu thành công ', 'url' => route('tam-tru.index')]);
 
         
@@ -274,8 +272,6 @@ class TamtruController extends Controller
             return response()->json(['error' => array('Chủ hộ chỉ được duy nhất 01 người')]);
         }
         $id_sotamtru = TamtruLibrary::insertDataSotamtru($request, 'hogiadinh');
-
-
         //--------------------Log tạm trú hộ gia đình---------------------------
         $data_log = array(
             'idthutuccutru' => $this->thutuc_capsotamtu,
@@ -473,7 +469,7 @@ class TamtruController extends Controller
     public function update(Request $request, $idsotamtru)
     {
         $validator = Validator::make($request->all(), [
-            'sotamtru_so' => 'required|min:2|unique:tbl_sotamtru,sotamtru_so,'.$idsotamtru,
+            'sotamtru_so' => 'required|min:2|unique:nhanhokhau.tbl_sotamtru,sotamtru_so,'.$idsotamtru,
             'ghichu' => 'required',
             'date_action' => 'required|date_format:d-m-Y',
         ], TamtruLibrary::getMessageRule());

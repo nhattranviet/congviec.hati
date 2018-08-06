@@ -94,8 +94,8 @@ class TamtruLibrary
     public static function getTamtruDataIndex($keyword)
     {
         $data = DB::connection('nhanhokhau')->table('tbl_tamtru')
-        ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_tamtru.idnhankhau')
-        ->join('tbl_sotamtru', 'tbl_sotamtru.id' , '=', 'tbl_tamtru.idsotamtru');
+        ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
+        ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru');
         if( $keyword )
         {
             $data = $data->where(array(
@@ -106,6 +106,9 @@ class TamtruLibrary
                 ['hoten', 'like', '%'.$keyword.'%'],
                 ['idquanhechuho', '=', 1]
             ));
+        }
+        else{
+            $data = $data->where('idquanhechuho', 1);
         }
         $data = $data->select('tbl_sotamtru.type', 'tbl_nhankhau.hoten', 'sotamtru_so', 'tbl_sotamtru.id as idsotamtru', 'tbl_sotamtru.idquocgia_tamtru', 'tbl_sotamtru.idtinh_tamtru', 'tbl_sotamtru.idhuyen_tamtru', 'tbl_sotamtru.idxa_tamtru', 'tbl_sotamtru.chitiet_tamtru' )
             ->orderBy('idsotamtru', 'DESC')

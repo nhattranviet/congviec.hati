@@ -54,8 +54,6 @@
                            <th style="width: 100px; text-align: center;">Hành động</th>
                         </tr>
                      </thead>
-
-
                       <tbody>
                         @foreach($list_thongtinsotamtru as $thongtinsotamtru)
                            <tr>
@@ -63,12 +61,11 @@
                                 <td>{{ $thongtinsotamtru->hoten }}</td>
                                 <td>{{ ($thongtinsotamtru->idquanhechuho) ? DB::table('tbl_moiquanhe')->where('id', $thongtinsotamtru->idquanhechuho)->value('name') : '' }}</td>
                                 <td>{{ $thongtinsotamtru->chitiet_thuongtru }} - {{ ($thongtinsotamtru->idxa_thuongtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $thongtinsotamtru->idxa_thuongtru)->value('name') : '' }} - {{ ($thongtinsotamtru->idhuyen_thuongtru) ? DB::table('tbl_huyen_tx')->where('id', $thongtinsotamtru->idhuyen_thuongtru)->value('name') : '' }} - {{ ($thongtinsotamtru->idtinh_thuongtru) ? DB::table('tbl_tinh_tp')->where('id', $thongtinsotamtru->idtinh_thuongtru)->value('name') : '' }}</td>
-                                <td>{{ $thongtinsotamtru->chitiet_tamtru }} - {{ ($thongtinsotamtru->idxa_tamtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $thongtinsotamtru->idxa_tamtru)->value('name') : '' }} - {{ ($thongtinsotamtru->idhuyen_tamtru) ? DB::table('tbl_huyen_tx')->where('id', $thongtinsotamtru->idhuyen_tamtru)->value('name') : '' }} - {{ ($thongtinsotamtru->idtinh_tamtru) ? DB::table('tbl_tinh_tp')->where('id', $thongtinsotamtru->idtinh_tamtru)->value('name') : '' }}</td>
+                                <td>{{ $thongtinsotamtru->chitiet_tamtru }} - {{ ($thongtinsotamtru->idxa_tamtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $thongtinsotamtru->idxa_tamtru)->value('name') : '' }}</td>
                                 <td>{{ ($thongtinsotamtru->tamtru_tungay != NULL) ? date('d-m-Y', strtotime($thongtinsotamtru->tamtru_tungay)) : '' }}</td>
                                 <td>{{ ($thongtinsotamtru->tamtru_denngay != NULL) ? date('d-m-Y', strtotime($thongtinsotamtru->tamtru_denngay)) : '' }}</td>
                                 <td>{!! ($thongtinsotamtru->deleted_at != NULL) ? '<span class="label label-danger">Đã xóa</span>'  : '<span class="label label-success">Đang tạm trú</span>' !!}</td>
                                 <td>
-                                    
                                     <div class="button-list">
                                         <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/chi-tiet-nhan-khau" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết nhân khẩu"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
                                         <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/sua-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhân khẩu"> <i class="zmdi zmdi-edit"></i> </a>

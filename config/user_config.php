@@ -28,7 +28,7 @@ return [
 
     'default_route' => [
         '19' => 'cong-viec.index',
-        '35' => 'nhan-khau.index',
+        '35' => 'nhan-ho-khau-home',
     ],
 
     'idmoiquanhechuho' => 1,

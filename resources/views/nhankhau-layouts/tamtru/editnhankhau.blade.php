@@ -53,15 +53,7 @@
                                         <label for="tenkhac">Tên gọi khác </label>
                                         <input type="text" name="tenkhac" parsley-trigger="change" placeholder="Tên gọi khác/Biệt danh" class="form-control" id="tenkhac" value="{{old('tenkhac', $nhankhau->tenkhac)}}">
                                     </fieldset>
-                                    <fieldset class="form-group {{ ($errors->has('ngaydangky')) ? 'has-danger' : '' }}">
-                                        <label for="datepicker">Ngày đăng ký tạm trú <span class="text-danger">*</span> </label>
-                                        <div>
-                                            <div class="input-group">
-                                                <input type="text" name="ngaydangky" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="{{old('ngaydangky', ($nhankhau->ngaydangky) ? date('d-m-Y', strtotime($nhankhau->ngaydangky)) : ''  )}}">
-                                                <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                            </div><!-- input-group -->
-                                        </div>
-                                    </fieldset>
+                                    
 
                                     <fieldset class="form-group {{ ($errors->has('ngaysua')) ? 'has-danger' : '' }}">
                                         <label for="datepicker">Ngày sửa <span class="text-danger">*</span> </label>
@@ -154,13 +146,15 @@
                                         </div>
                                     </fieldset>
 
-                                    <fieldset class="form-group {{ ($errors->has('ghichu')) ? 'has-danger' : '' }}">
-                                        <label for="ghichu">Ghi chú sửa <span class="text-danger">*</span> </label>
-                                        <input type="text" name="ghichu" parsley-trigger="change" placeholder="" class="form-control" id="ghichu" value="">
+                                    <fieldset class="form-group {{ ($errors->has('ngaydangky')) ? 'has-danger' : '' }}">
+                                        <label for="datepicker">Ngày đăng ký tạm trú <span class="text-danger">*</span> </label>
+                                        <div>
+                                            <div class="input-group">
+                                                <input type="text" name="ngaydangky" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="{{old('ngaydangky', ($nhankhau->ngaydangky) ? date('d-m-Y', strtotime($nhankhau->ngaydangky)) : ''  )}}">
+                                                <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                            </div><!-- input-group -->
+                                        </div>
                                     </fieldset>
-
-                                    
-
                                 </div>
 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6" id="picker">
@@ -210,7 +204,15 @@
                                     </fieldset>
 
                                 </div>
+                                <div class="col-md-12">
+                                    <fieldset class="form-group {{ ($errors->has('ghichu')) ? 'has-danger' : '' }}">
+                                        <label for="ghichu">Ghi chú sửa <span class="text-danger">*</span> </label>
+                                        <input type="text" name="ghichu" parsley-trigger="change" placeholder="" class="form-control" id="ghichu" value="">
+                                    </fieldset>
+                                </div>
                             </div>
+
+                            
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
                                     <input type="hidden" name="idtamtru" value="{{ $nhankhau->idtamtru }}">

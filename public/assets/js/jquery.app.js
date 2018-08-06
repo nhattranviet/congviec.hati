@@ -287,6 +287,7 @@
 
             $("#form-nhankhau").on("submit", function (event) {
                 event.preventDefault();
+                $("#wait").css("display", "block");
                 var tabs = $("#myTabaltContent > .tab-pane").toArray();
                 var tab_idx = 0;
 
@@ -297,7 +298,7 @@
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
-                        
+                        $("#wait").css("display", "none");
                         if ($.isEmptyObject(data.error)) {
                             if (data.message_type == 'alert')
                             {
@@ -305,10 +306,6 @@
                             }else{
                                 printMsg("#success-msg", data.success);
                             }
-                            
-                            
-                            
-
                             if (data.url) {
                                 window.location.href = data.url;
                             }
@@ -350,6 +347,7 @@
                         // window.location.href = "/nhan-khau/";
                     },
                     error: function (data) {
+                        $("#wait").css("display", "none");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function (key, value) {
                             console.log(data.responseText);
@@ -360,6 +358,7 @@
 
             $("#form-user").on("submit", function (event) {
                 event.preventDefault();
+                $("#wait").css("display", "block");
                 var tabs = $("#myTabaltContent > .tab-pane").toArray();
                 var tab_idx = 0;
 
@@ -370,7 +369,7 @@
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
-
+                        $("#wait").css("display", "none");
                         if ($.isEmptyObject(data.error)) {
                             if (data.message_type == 'alert') {
                                 Command: toastr["success"](data.success);
@@ -391,6 +390,7 @@
                         }
                     },
                     error: function (data) {
+                        $("#wait").css("display", "none");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function (key, value) {
                             console.log(data.responseText);
@@ -401,9 +401,7 @@
 
             $(document).on("click", ".pagination a", function (event) {
                 event.preventDefault();
-                $(".loading").append(
-                    '<img style="position: absolute; left: 30%; top: 10%; z-index: 100000;" src="/img/loading.gif" />'
-                );
+                $("#wait").css("display", "block");
                 var idresult = $("#tim-kiem-hoso").attr("idresult");
                 var page = $(this).attr("href").split("page=")[1];
                 $.ajax({
@@ -413,6 +411,7 @@
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
+                        $("#wait").css("display", "none");
                         if ($.isEmptyObject(data.error)) {
                             if (idresult) {
                                 $("#" + idresult).html(data.html);

@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Nhanhokhau;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
@@ -8,7 +9,7 @@ use Validator;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
-class HomeController extends Controller
+class HomeNhanhokhauController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -30,8 +31,8 @@ class HomeController extends Controller
         $current_date = date('Y-m-d', time());
         $ago_14_year = date('Y-m-d', strtotime($current_date. ' - 14 years'));
 
-        $data['thuongtru_tongsoho'] = DB::table('tbl_hoso')->where('deleted_at', NULL)->count();
-        $data_sonhankhau = DB::table('tbl_sohokhau')
+        $data['thuongtru_tongsoho'] = DB::connection('nhanhokhau')->table('tbl_hoso')->where('deleted_at', NULL)->count();
+        $data_sonhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id', '=', 'tbl_sohokhau.idhoso')
         ->where('tbl_hoso.deleted_at', NULL);
@@ -47,9 +48,9 @@ class HomeController extends Controller
 
         $data['thuongtru_nhankhau_better_14'] = $data_sonhankhau->whereDate('ngaysinh', '<=', $ago_14_year)->count();
 
-        $data['tamtru_tongso_so'] = DB::table('tbl_sotamtru')->where('deleted_at', NULL)->count();
+        $data['tamtru_tongso_so'] = DB::connection('nhanhokhau')->table('tbl_sotamtru')->where('deleted_at', NULL)->count();
 
-        $data_tamtru = DB::table('tbl_tamtru')
+        $data_tamtru = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
         ->where(array(
@@ -59,7 +60,7 @@ class HomeController extends Controller
         $data['tamtru_sonhankhau'] = $data_tamtru->count();
         $data['tamtru_nhankhau_better_14'] = $data_tamtru->whereDate('ngaysinh', '<=', $ago_14_year)->count();
         
-        $data['tamtru_gioitinhnu'] = DB::table('tbl_tamtru')
+        $data['tamtru_gioitinhnu'] = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
         ->where(array(
@@ -68,7 +69,7 @@ class HomeController extends Controller
         ))
         ->where('gioitinh',0)->count();
 
-        $data['thuongtru_hosohokhau'] = DB::table('tbl_sohokhau')
+        $data['thuongtru_hosohokhau'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
             ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
             ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
             ->where( 'idquanhechuho', 1 )
@@ -76,14 +77,13 @@ class HomeController extends Controller
             ->orderBy('idhoso', 'DESC')
             ->take(5)->get();
         
-        $data['tamtru_hosohokhau'] = DB::table('tbl_tamtru')
+        $data['tamtru_hosohokhau'] = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id' , '=', 'tbl_tamtru.idsotamtru')
         ->where( 'idquanhechuho', 1 )
         ->select('sotamtru_so', 'hoten', 'idxa_tamtru', 'idsotamtru' )
         ->orderBy('idsotamtru', 'DESC')
         ->take(5)->get();
-            // print_r($data['thuongtru_hosohokhau']); die;
         return view('home', $data);
     }
 }
