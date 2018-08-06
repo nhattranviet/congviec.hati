@@ -568,7 +568,6 @@ class NhanhokhauLibrary
 
     public static function logCutru($data_log)
     {
-        $data['created_at'] = Carbon::now();
         $data['updated_at'] = Carbon::now();
         DB::connection('nhanhokhau')->table('tbl_history_cutru')->insert( $data_log );
     }
@@ -671,6 +670,18 @@ class NhanhokhauLibrary
         }
         else {
             return DB::table('tbl_moiquanhe')->where('loaiquanhe', 'nhanthan')->get();
+        }
+        
+    }
+
+    public static function getListMoiQuanHeNotChuHo($array_pluck = FALSE)
+    {
+        if( $array_pluck )
+        {
+           return DB::table('tbl_moiquanhe')->where(array(['loaiquanhe', '=', 'nhanthan'], ['id', '!=', config('user_config.idmoiquanhechuho')]))->pluck('name', 'id')->toArray();
+        }
+        else {
+            return DB::table('tbl_moiquanhe')->where(array(['loaiquanhe', '=', 'nhanthan'], ['id', '!=', config('user_config.idmoiquanhechuho')]))->get();
         }
         
     }
