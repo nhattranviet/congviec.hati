@@ -94,6 +94,19 @@
                                                         </fieldset>
                                                     </div>
 
+                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                                                        <fieldset class="form-group" id="addressPickerGroup">
+                                                            <label for="thuongtru_view">Nơi đăng ký tạm trú <span class="text-danger">*</span></label>
+                                                            <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ tạm trú" class="form-control" id="thuongtru_view">
+                                                            <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_tamtru" class="form-control" id="idquocgia_tamtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_tamtru" class="form-control" id="idtinh_tamtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_tamtru" class="form-control" id="idhuyen_tamtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_tamtru" class="form-control" id="idxa_tamtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_tamtru" class="form-control" id="chitiet_tamtru" value="">
+                                                        </fieldset>
+                                                    </div>
+
                                                 </div>
 
                                                 <div class="row m-t-20">
@@ -113,14 +126,21 @@
                                                         </fieldset>
 
                                                         <fieldset class="form-group">
-                                                            <label for="datepicker">Ngày sinh <span class="text-danger">*</span></label>
+                                                            <label>Giới tính <span class="text-danger">*</span></label>
                                                             <div>
-                                                                <div class="input-group">
-                                                                    <input type="text" name="birthday" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
-                                                                    <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                                </div><!-- input-group -->
+                                                                <input class="gender" type="hidden" name="gender" value="">
+                                                                <div class="radio gender-radio">
+                                                                    <input type="radio" name="gender0" value="1" id="radio1" >
+                                                                    <label for="radio1">Nam</label>
+                                                                </div>
+                                                                <div class="radio gender-radio">
+                                                                    <input type="radio" name="gender0" value="0" id="radio2" >
+                                                                    <label for="radio2">Nữ</label>
+                                                                </div>
                                                             </div>
                                                         </fieldset>
+
+                                                        
 
                                                     </div>
 
@@ -160,17 +180,12 @@
                                                         </fieldset>
 
                                                         <fieldset class="form-group">
-                                                            <label>Giới tính <span class="text-danger">*</span></label>
+                                                            <label for="datepicker">Ngày sinh <span class="text-danger">*</span></label>
                                                             <div>
-                                                                <input class="gender" type="hidden" name="gender" value="">
-                                                                <div class="radio gender-radio">
-                                                                    <input type="radio" name="gender0" value="1" id="radio1" >
-                                                                    <label for="radio1">Nam</label>
-                                                                </div>
-                                                                <div class="radio gender-radio">
-                                                                    <input type="radio" name="gender0" value="0" id="radio2" >
-                                                                    <label for="radio2">Nữ</label>
-                                                                </div>
+                                                                <div class="input-group">
+                                                                    <input type="text" name="birthday" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                                                    <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                                                </div><!-- input-group -->
                                                             </div>
                                                         </fieldset>
                                                         
@@ -210,17 +225,6 @@
                                                             <input type="hidden" data-addr="" hidden="hidden" name="idxa_thuongtru" class="form-control" id="idxa_thuongtru" value="">
                                                             <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtru" class="form-control" id="chitiet_thuongtru" value="">
                                                         </fieldset>
-                                                        <fieldset class="form-group" id="addressPickerGroup">
-                                                            <label for="thuongtru_view">Nơi đăng ký tạm trú <span class="text-danger">*</span></label>
-                                                            <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ tạm trú" class="form-control" id="thuongtru_view">
-                                                            <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_tamtru" class="form-control" id="idquocgia_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_tamtru" class="form-control" id="idtinh_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_tamtru" class="form-control" id="idhuyen_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_tamtru" class="form-control" id="idxa_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_tamtru" class="form-control" id="chitiet_tamtru" value="">
-                                                        </fieldset>
-
                                                     </div>
                                                 </div>
 

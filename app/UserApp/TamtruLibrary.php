@@ -142,7 +142,7 @@ class TamtruLibrary
         ->first();
     }
 
-    public static function insertNhankhauTamtruToNhanKhauTable($request, $get_id = TRUE)
+    public static function insertNhankhauTamtruToNhanKhauTable($request, $sotamtru_info, $get_id = TRUE)
     {
         $data_nhankhau = array(
             'hoten' => $request->hoten,
@@ -172,6 +172,9 @@ class TamtruLibrary
             'chitiet_thuongtru' => $sotamtru_info->chitiet_thuongtru,
 
             'created_at' => Carbon::now(),
+
+
+
         );
         if( $get_id )
         {
@@ -218,7 +221,7 @@ class TamtruLibrary
     public static function getPostSuanhankhauRule($idsotamtru)
     {
         return [
-            'sotamtru_so' => 'required|unique:tbl_sotamtru,sotamtru_so,'.$idsotamtru,
+            'sotamtru_so' => 'required|unique:nhanhokhau.tbl_sotamtru,sotamtru_so,'.$idsotamtru,
             'idquocgia_thuongtru' => 'required',
             'idtinh_thuongtru' => 'required_if:idquocgia_thuongtru,1',
             'idhuyen_thuongtru' => 'required_if:idquocgia_thuongtru,1',
@@ -245,6 +248,233 @@ class TamtruLibrary
             'idhuyen_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
             'idxa_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
         ];
+    }
+
+    public static function updateNhankhauTamtru($request, $idnhankhau)
+    {
+        $data_nhankhau = array(
+            'hoten' => $request->hoten,
+            'tenkhac' => $request->tenkhac,
+            'ngaysinh' => date('Y-m-d', strtotime($request->birthday)),
+            'idquoctich' => $request->idquoctich,
+            'iddantoc' => $request->iddantoc,
+            'idnghenghiep' => $request->idnghenghiep,
+            'gioitinh' => $request->gender,
+
+            'idquocgia_nguyenquan' => $request->idquocgia_nguyenquan,
+            'idtinh_nguyenquan' => $request->idtinh_nguyenquan,
+            'idhuyen_nguyenquan' => $request->idhuyen_nguyenquan,
+            'idxa_nguyenquan' => $request->idxa_nguyenquan,
+            'chitiet_nguyenquan' => $request->chitiet_nguyenquan,
+
+            'idquocgia_noilamviec' => $request->idquocgia_noilamviec,
+            'idtinh_noilamviec' => $request->idtinh_noilamviec,
+            'idhuyen_noilamviec' => $request->idhuyen_noilamviec,
+            'idxa_noilamviec' => $request->idxa_noilamviec,
+            'chitiet_noilamviec' => $request->chitiet_noilamviec,
+
+            'idquocgia_thuongtru' => $request->idquocgia_thuongtru,
+            'idtinh_thuongtru' => $request->idtinh_thuongtru,
+            'idhuyen_thuongtru' => $request->idhuyen_thuongtru,
+            'idxa_thuongtru' => $request->idxa_thuongtru,
+            'chitiet_thuongtru' => $request->chitiet_thuongtru,
+
+            'updated_at' => Carbon::now(),
+        );
+        DB::connection('nhanhokhau')->table('tbl_nhankhau')->where('id',$idnhankhau)->update($data_nhankhau);
+    }
+
+    public static function getPostAddSoTamTruCaNhanRule()
+    {
+        return [
+            'idquocgia_thuongtru' => 'required',
+            'idtinh_thuongtru' => 'required_if:idquocgia_thuongtru,1',
+            'idhuyen_thuongtru' => 'required_if:idquocgia_thuongtru,1',
+            'idxa_thuongtru' => 'required_if:idquocgia_thuongtru,1',
+            'idquocgia_tamtru' => 'required',
+            'idtinh_tamtru' => 'required',
+            'idhuyen_tamtru' => 'required',
+            'idxa_tamtru' => 'required',
+            'chitiet_tamtru' => 'required',
+            'sotamtru_so' => 'required|unique:nhanhokhau.tbl_sotamtru',
+            'tamtru_tungay' => 'required',
+            'tamtru_denngay' => 'required',
+            
+            'hoten' => 'required',
+            'birthday' => 'required|date_format:d-m-Y',
+            'ngaydangky' => 'required|date_format:d-m-Y',
+            'idquoctich' => 'required',
+            'gender' => 'required',
+
+            'idquocgia_nguyenquan' => 'required',
+            'idtinh_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
+            'idhuyen_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
+            'idxa_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
+
+        ];
+    }
+
+    public static function insertDataSotamtru($request, $type, $get_id = TRUE)
+    {
+        $data_sotamtru = array(
+            'type' => $type,
+            'sotamtru_so' => $request->sotamtru_so,
+            'idquocgia_tamtru' => $request->idquocgia_tamtru,
+            'idtinh_tamtru' => $request->idtinh_tamtru,
+            'idhuyen_tamtru' => $request->idhuyen_tamtru,
+            'idxa_tamtru' => $request->idxa_tamtru,
+            'chitiet_tamtru' => $request->chitiet_tamtru,
+            'ngaydangky' => date('Y-m-d', strtotime($request->ngaydangky)),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        );
+        if( $get_id )
+        {
+            return DB::connection('nhanhokhau')->table('tbl_sotamtru')->insertGetId($data_sotamtru);
+        }else
+        {
+            return DB::connection('nhanhokhau')->table('tbl_sotamtru')->insert($data_sotamtru);
+        }
+    }
+
+    public static function postAddNhankhauSoTamTruCaNhan($request, $get_id = TRUE)
+    {
+        $data_nhankhau = array(
+            'hoten' => $request->hoten,
+            'tenkhac' => $request->tenkhac,
+            'idnghenghiep' => $request->idnghenghiep,
+            'iddantoc' => $request->iddantoc,
+            'ngaysinh' => date('Y-m-d', strtotime($request->birthday)),
+            'idquoctich' => $request->idquoctich,
+            'gioitinh' => $request->gender,
+
+            'idquocgia_thuongtru' => $request->idquocgia_thuongtru,
+            'idtinh_thuongtru' => $request->idtinh_thuongtru,
+            'idhuyen_thuongtru' => $request->idhuyen_thuongtru,
+            'idxa_thuongtru' => $request->idxa_thuongtru,
+            'chitiet_thuongtru' => $request->chitiet_thuongtru,
+
+            'idquocgia_nguyenquan' => $request->idquocgia_nguyenquan,
+            'idtinh_nguyenquan' => $request->idtinh_nguyenquan,
+            'idhuyen_nguyenquan' => $request->idhuyen_nguyenquan,
+            'idxa_nguyenquan' => $request->idxa_nguyenquan,
+            'chitiet_nguyenquan' => $request->chitiet_nguyenquan,
+
+            'idquocgia_noilamviec' => $request->idquocgia_noilamviec,
+            'idtinh_noilamviec' => $request->idtinh_noilamviec,
+            'idhuyen_noilamviec' => $request->idhuyen_noilamviec,
+            'idxa_noilamviec' => $request->idxa_noilamviec,
+            'chitiet_noilamviec' => $request->chitiet_noilamviec,
+        );
+
+        if( $get_id )
+        {
+            return DB::connection('nhanhokhau')->table('tbl_nhankhau')->insertGetId($data_nhankhau);
+        }
+        else
+        {
+            return DB::connection('nhanhokhau')->table('tbl_nhankhau')->insert($data_nhankhau);
+        }
+    }
+
+    public static function addTamtruCaNhan($request, $id_sotamtru, $id_nhankhau)
+    {
+        $data_tamtru = array(
+            'type' => 'nhankhau',
+            'idsotamtru' => $id_sotamtru,
+            'idnhankhau' => $id_nhankhau,
+            'idquanhechuho' => 1,
+            'tamtru_tungay' => date('Y-m-d', strtotime($request->tamtru_tungay)),
+            'tamtru_denngay' => date('Y-m-d', strtotime($request->tamtru_denngay)),
+            'ngaydangky_tamtrunhankhau' => date('Y-m-d', strtotime($request->ngaydangky)),
+        );
+
+        return DB::connection('nhanhokhau')->table('tbl_tamtru')->insertGetId($data_tamtru);
+    }
+
+    public static function getStoreRule()
+    {
+        return [
+            'idquocgia_thuongtru' => 'required',
+            'idtinh_thuongtru' => 'required_if:idquocgia_thuongtru,1',
+            'idhuyen_thuongtru' => 'required_if:idquocgia_thuongtru,1',
+            'idxa_thuongtru' => 'required_if:idquocgia_thuongtru,1',
+            'idquocgia_tamtru' => 'required',
+            'idtinh_tamtru' => 'required',
+            'idhuyen_tamtru' => 'required',
+            'idxa_tamtru' => 'required',
+            'chitiet_tamtru' => 'required',
+            'sotamtru_so' => 'required|unique:nhanhokhau.tbl_sotamtru',
+            'tamtru_tungay' => 'required',
+            'tamtru_denngay' => 'required',
+            
+            'hoten.*' => 'required',
+            'idquanhechuho.*' => 'required',
+            'birthday.*' => 'required|date_format:d-m-Y',
+            'ngaydangky.*' => 'required|date_format:d-m-Y',
+            'idquoctich.*' => 'required',
+            'gender.*' => 'required',
+
+            'idquocgia_nguyenquan.*' => 'required',
+            'idtinh_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+            'idhuyen_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+            'idxa_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+
+        ];
+    }
+
+    public static function insertArrNhankhau($request, $i, $get_id = TRUE)
+    {
+        $data_nhankhau = array(
+            'hoten' => $request->hoten[$i],
+            'tenkhac' => $request->tenkhac[$i],
+            'idnghenghiep' => $request->idnghenghiep[$i],
+            'iddantoc' => $request->iddantoc[$i],
+            'ngaysinh' => date('Y-m-d', strtotime($request->birthday[$i])),
+            'idquoctich' => $request->idquoctich[$i],
+            'gioitinh' => $request->gender[$i],
+
+            'idquocgia_thuongtru' => $request->idquocgia_thuongtru,
+            'idtinh_thuongtru' => $request->idtinh_thuongtru,
+            'idhuyen_thuongtru' => $request->idhuyen_thuongtru,
+            'idxa_thuongtru' => $request->idxa_thuongtru,
+            'chitiet_thuongtru' => $request->chitiet_thuongtru,
+
+            'idquocgia_nguyenquan' => $request->idquocgia_nguyenquan[$i],
+            'idtinh_nguyenquan' => $request->idtinh_nguyenquan[$i],
+            'idhuyen_nguyenquan' => $request->idhuyen_nguyenquan[$i],
+            'idxa_nguyenquan' => $request->idxa_nguyenquan[$i],
+            'chitiet_nguyenquan' => $request->chitiet_nguyenquan[$i],
+
+            'idquocgia_noilamviec' => $request->idquocgia_noilamviec[$i],
+            'idtinh_noilamviec' => $request->idtinh_noilamviec[$i],
+            'idhuyen_noilamviec' => $request->idhuyen_noilamviec[$i],
+            'idxa_noilamviec' => $request->idxa_noilamviec[$i],
+            'chitiet_noilamviec' => $request->chitiet_noilamviec[$i],
+        );
+        if( $get_id )
+        {
+            return DB::connection('nhanhokhau')->table('tbl_nhankhau')->insertGetId($data_nhankhau);
+        }
+        else
+        {
+            return DB::connection('nhanhokhau')->table('tbl_nhankhau')->insert($data_nhankhau);
+        }
+    }
+
+    public static function arrDataTamTru($request, $i, $id_sotamtru, $id_nhankhau)
+    {
+        $data_tamtru = array(
+            'type' => 'hogiadinh',
+            'idsotamtru' => $id_sotamtru,
+            'idnhankhau' => $id_nhankhau,
+            'idquanhechuho' => $request->idquanhechuho[$i],
+            'tamtru_tungay' => date('Y-m-d', strtotime($request->tamtru_tungay)),
+            'tamtru_denngay' => date('Y-m-d', strtotime($request->tamtru_denngay)),
+            'ngaydangky_tamtrunhankhau' => date('Y-m-d', strtotime($request->ngaydangky)),
+        );
+
+        return DB::connection('nhanhokhau')->table('tbl_tamtru')->insert($data_tamtru);
     }
 
 }
