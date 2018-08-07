@@ -22,16 +22,23 @@ use Illuminate\Support\Facades\Session;
 Auth::routes();
 
 Route::get('/', function(){
-    $iddonvi = UserLibrary::getIdDonViOfCanBo ( Session::get('userinfo')->idcanbo );
-    $default_route = config('user_config.default_route.'.$iddonvi);
-    if( $default_route )
+    if( Session::has('userinfo') )
     {
-        return redirect()->route($default_route);
+        $iddonvi = UserLibrary::getIdDonViOfCanBo ( Session::get('userinfo')->idcanbo );
+        $default_route = config('user_config.default_route.'.$iddonvi);
+        if( $default_route )
+        {
+            return redirect()->route($default_route);
+        }
+        else
+        {
+            echo 'stop'; die;
+        }
     }
-    else
-    {
-        echo 'stop'; die;
+    else {
+        return redirect()->route('login');
     }
+    
 });
 // Route::get('/', 'CongviecController@index');
 
@@ -154,7 +161,6 @@ Route::post('/can-bo/{idcanbo}/update', 'CanboController@update')->name('can-bo.
 Route::get('/can-bo/showinfo/{idcanbo?}', 'CanboController@showinfo')->name('can-bo-showinfo');
 Route::get('/can-bo/{idcanbo?}/editHoso', 'CanboController@editHoso')->name('can-bo-editHoso');
 Route::post('/can-bo/{idcanbo?}/selfUpdate', 'CanboController@selfUpdate')->name('can-bo-selfUpdate');
-
 
 Route::get('/can-bo/add_old_data', 'CanboController@add_old_data');
 Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->name('ajax-get-can-bo');

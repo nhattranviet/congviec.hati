@@ -141,11 +141,6 @@
                             <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="@if(isset($nhankhau)){{$nhankhau->cmnd_so}}@endif">
                         </fieldset>
 
-                        <fieldset class="form-group">
-                            <label for="hochieu_so">Số Hộ Chiếu</label>
-                            <input type="text" name="hochieu_so[]" parsley-trigger="change" placeholder="Nhập số hộ chiếu (Nếu có)" class="form-control"so value="@if(isset($nhankhau)){{$nhankhau->hochieu_so}}@endif" id="hochieu_so">
-                        </fieldset>
-
                         
 
                     </div>

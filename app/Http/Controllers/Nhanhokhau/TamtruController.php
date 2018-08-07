@@ -30,7 +30,6 @@ class TamtruController extends Controller
     public $thutuc_giahantamtru = 14;
     public $thutuc_xoatamtru = 15;
     public $thutuc_capsotamtu = 16;
-    // public $messages = ;
 
     function __construct(NhanKhau $nhankhau, QuocGia $quocgia, Relation $relation, Religion $religion
         , Nation $nation, Education $education, Career $career, Province $province, District $district
@@ -68,7 +67,6 @@ class TamtruController extends Controller
         $data['list_thongtinsotamtru'] = TamtruLibrary::getChitietSotamtru($idsotamtru);
         $data['idsotamtru'] = $idsotamtru;
         return view('nhankhau-layouts.tamtru.chitiethosotamtru', $data);
-
     }
 
     public function getChitietnhankhauTamtru($idnhankhau, $idsotamtru)

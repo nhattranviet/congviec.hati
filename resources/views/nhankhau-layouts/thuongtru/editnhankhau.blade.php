@@ -106,21 +106,6 @@
                                                             </div>
                                                         </fieldset>
 
-                                                        <fieldset class="form-group">
-                                                            <label>Giới tính <span class="text-danger">*</span></label>
-                                                            <div>
-                                                                <input type="hidden" name="gender" value="@if(isset($nhankhau)){{$nhankhau->gioitinh}} @endif">
-                                                                <div class="radio gender-radio">
-                                                                    <input type="radio" name="gender" value="1" id="radio1" {{ (old('gender', $nhankhau->gioitinh) == 1) ? 'checked' : NULL }} >
-                                                                    <label for="radio1">Nam</label>
-                                                                </div>
-                                                                <div class="radio gender-radio">
-                                                                    <input type="radio" name="gender" value="0" id="radio2" {{ (old('gender', $nhankhau->gioitinh) == 0) ? 'checked' : NULL }} >
-                                                                    <label for="radio2">Nữ</label>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-
                                                     </div>
 
 
@@ -161,19 +146,17 @@
                                                             <input type="text" name="cmnd_so" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="{{old('cmnd_so', $nhankhau->cmnd_so)}}">
                                                         </fieldset>
 
-                                                        <fieldset class="form-group {{ ($errors->has('hochieu_so')) ? 'has-danger' : '' }}">
-                                                            <label for="hochieu_so">Số Hộ Chiếu</label>
-                                                            <input type="text" name="hochieu_so" parsley-trigger="change" placeholder="Nhập số hộ chiếu (Nếu có)" class="form-control" value="{{old('hochieu_so', $nhankhau->hochieu_so)}}" id="hochieu_so">
-                                                        </fieldset>
-
                                                         <fieldset class="form-group">
-                                                            <label> &nbsp; </label>
+                                                            <label>Giới tính <span class="text-danger">*</span></label>
                                                             <div>
-                                                                <div class="checkbox checkbox-primary">
-                                                                    <input name="moisinh" value="1" {{ old('moisinh', $nhankhau->moisinh) == 1 ? 'checked' : '' }} type="checkbox">
-                                                                    <label for="checkbox21">
-                                                                        Nhân khẩu mới sinh
-                                                                    </label>
+                                                                <input type="hidden" name="gender" value="@if(isset($nhankhau)){{$nhankhau->gioitinh}} @endif">
+                                                                <div class="radio gender-radio">
+                                                                    <input type="radio" name="gender" value="1" id="radio1" {{ (old('gender', $nhankhau->gioitinh) == 1) ? 'checked' : NULL }} >
+                                                                    <label for="radio1">Nam</label>
+                                                                </div>
+                                                                <div class="radio gender-radio">
+                                                                    <input type="radio" name="gender" value="0" id="radio2" {{ (old('gender', $nhankhau->gioitinh) == 0) ? 'checked' : NULL }} >
+                                                                    <label for="radio2">Nữ</label>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -214,18 +197,6 @@
                                                         <fieldset class="form-group {{ ($errors->has('biettiengdantoc')) ? 'has-danger' : '' }}">
                                                             <label for="biettiengdantoc">Biết tiếng dân tộc</label>
                                                             <input type="text" name="biettiengdantoc" parsley-trigger="change" placeholder="Biết tiếng dân tộc" class="form-control" value="{{old('biettiengdantoc', $nhankhau->biettiengdantoc)}}" id="biettiengdantoc">
-                                                        </fieldset>
-                                                        
-                                                        <fieldset class="form-group">
-                                                            <label> &nbsp; </label>
-                                                            <div>
-                                                                <div class="checkbox checkbox-primary">
-                                                                    <input name="ngoaihuyenden" value="1" type="checkbox">
-                                                                    <label for="checkbox21">
-                                                                        Nhân khẩu ngoài huyện đến
-                                                                    </label>
-                                                                </div>
-                                                            </div>
                                                         </fieldset>
                                                         
                                                     </div>
@@ -287,10 +258,7 @@
                                                             <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtrutruoc" class="form-control" value="{{old('chitiet_thuongtrutruoc', $nhankhau->chitiet_thuongtrutruoc)}}" id="chitiet_thuongtrutruoc">
                                                         </fieldset>
 
-                                                        <fieldset class="form-group">
-                                                            <label for="ghichu">Lý do</label>
-                                                            <input type="text" name="ghichu" parsley-trigger="change" placeholder="Nhập lý do" class="form-control" value="{{old('ghichu')}}" id="ghichu">
-                                                        </fieldset>
+                                                        
 
                                                     </div>
 
@@ -302,6 +270,26 @@
                                                                     <input  value="{{old('date_action')}}" type="text" name="date_action" class="form-control" placeholder="dd-mm-yyyy" id="datepicker">
                                                                     <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                                                 </div><!-- input-group -->
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-10">
+                                                        <fieldset class="form-group">
+                                                            <label for="ghichu">Lý do</label>
+                                                            <input type="text" name="ghichu" parsley-trigger="change" placeholder="Nhập lý do" class="form-control" value="{{old('ghichu')}}" id="ghichu">
+                                                        </fieldset>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                                                        <fieldset class="form-group">
+                                                            <div>
+                                                                <div class="checkbox checkbox-primary">
+                                                                    <input name="moisinh" value="1" {{ old('moisinh', $nhankhau->moisinh) == 1 ? 'checked' : '' }} type="checkbox">
+                                                                    <label for="checkbox21">
+                                                                        Nhân khẩu mới sinh
+                                                                    </label>
+                                                                </div>
                                                             </div>
                                                         </fieldset>
                                                     </div>
@@ -384,7 +372,7 @@
 
                                                         <fieldset class="form-group">
                                                             <label for="exampleTextarea">Tiền án (Tội danh, hình phạt, theo bản án số)</label>
-                                                            <textarea class="form-control" name="criminalRecord" rows="3">{{old('criminalRecord', $nhankhau->tienan_tiensu)}} </textarea>
+                                                            <textarea class="form-control" name="criminalRecord" rows="1">{{old('criminalRecord', $nhankhau->tienan_tiensu)}} </textarea>
                                                         </fieldset>
                                                     </div>
                                                 </div>
@@ -394,9 +382,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row m-t-50">
+                            <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
-                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Cập nhật</button>
                                 </div>
                             </div>
                             <input type="hidden" name="idhoso" value="{{ $nhankhau->idhoso }}">

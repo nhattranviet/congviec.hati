@@ -107,8 +107,6 @@
                                             </fieldset>
                                         </div>
 
-                                        
-
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
 
                                             <fieldset class="form-group">
@@ -136,17 +134,9 @@
                                                 <input type="text" name="cmnd_so" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so"
                                                     value="">
                                             </fieldset>
-
-                                            
-
                                         </div>
 
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                            <fieldset class="form-group">
-                                                <label for="hochieu_so">Số Hộ Chiếu</label>
-                                                <input type="text" name="hochieu_so" parsley-trigger="change" placeholder="Nhập số hộ chiếu (Nếu có)" class="form-control"
-                                                    so value="" id="hochieu_so">
-                                            </fieldset>
                                             <fieldset class="form-group">
                                                 <label for="trinhdochuyenmon">Trình độ chuyên môn</label>
                                                 <input type="text" name="trinhdochuyenmon" parsley-trigger="change" placeholder="Trình độ chuyên môn" class="form-control" value="" id="trinhdochuyenmon">

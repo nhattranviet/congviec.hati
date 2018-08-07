@@ -71,10 +71,6 @@
                                     <td>{{ ($nhankhau->cmnd_so)}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Hộ chiếu số</td>
-                                    <td>{{ ($nhankhau->hochieu_so)}}</td>
-                                </tr>
-                                <tr>
                                     <td>Trình độ học vấn</td>
                                     <td>{{ DB::table('tbl_trinhdohocvan')->where('id', $nhankhau->idtrinhdohocvan)->value('name') }}</td>
                                 </tr>

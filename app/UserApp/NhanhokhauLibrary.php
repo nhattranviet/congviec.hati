@@ -216,7 +216,6 @@ class NhanhokhauLibrary
             'tenkhac' => $request->tenkhac,
             'ngaysinh' => date('Y-m-d', strtotime($request->birthday)),
             'idquoctich' => $request->idquoctich,
-            'hochieu_so' => $request->hochieu_so,
             'cmnd_so' => $request->cmnd_so,
             'idtongiao' => $request->idtongiao,
             'iddantoc' => $request->iddantoc,
@@ -398,7 +397,6 @@ class NhanhokhauLibrary
                 'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i],
                 'chitiet_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i],
 
-                'hochieu_so' => $request->hochieu_so[$i],
                 'cmnd_so' => $request->cmnd_so[$i],
                 'idtongiao' => $request->idtongiao[$i],
                 'iddantoc' => $request->iddantoc[$i],
@@ -432,7 +430,6 @@ class NhanhokhauLibrary
             'tenkhac' => $request->tenkhac,
             'ngaysinh' => date('Y-m-d', strtotime($request->birthday)),
             'idquoctich' => $request->idquoctich,
-            'hochieu_so' => $request->hochieu_so,
             'cmnd_so' => $request->cmnd_so,
             'idtongiao' => $request->idtongiao,
             'iddantoc' => $request->iddantoc,

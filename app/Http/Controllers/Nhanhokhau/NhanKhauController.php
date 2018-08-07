@@ -553,7 +553,7 @@ class NhanKhauController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'hosohokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
-            'so_dktt_so' => 'required|min:2',
+            'so_dktt_so' => 'required',
             'hokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
             'idquanhechuho.*' => 'required',
             'id_in_sohokhau.*' => 'required',

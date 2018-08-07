@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Nhanhokhau;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
+use App\UserApp\NhanhokhauLibrary;
+
+
 use App\NhanKhau;
 use App\QuocGia;
 use App\Relation;
@@ -147,13 +150,13 @@ class BaocaoThongkeController extends Controller
         $data['relations'] = $this->relation->get();
         $data['religions'] = $this->religion->get();
         $data['nations'] = $this->nation->get();
-        $data['list_tongiao'] = DB::table('tbl_tongiao')->get();
-        $data['list_quoctich'] = DB::table('tbl_quocgia')->get();
-        $data['educations'] = DB::table('tbl_trinhdohocvan')->get();
-        $data['list_dantoc'] = DB::table('tbl_dantoc')->get();
-        $data['careers'] = DB::table('tbl_nghenghiep')->get();
-        $data['list_quanhechuho'] = DB::table('tbl_moiquanhe')->where(array(['loaiquanhe', '=', 'nhanthan'], ['id', '!=', 1]))->get();
-        $data['list_xa_phuong'] = DB::table('tbl_xa_phuong_tt')->where('idhuyentx',202)->get();
+        $data['list_tongiao'] = DB::connection('nhanhokhau')->table('tbl_tongiao')->get();
+        $data['list_quoctich'] = DB::connection('nhanhokhau')->table('tbl_quocgia')->get();
+        $data['educations'] = DB::connection('nhanhokhau')->table('tbl_trinhdohocvan')->get();
+        $data['list_dantoc'] = DB::connection('nhanhokhau')->table('tbl_dantoc')->get();
+        $data['careers'] = DB::connection('nhanhokhau')->table('tbl_nghenghiep')->get();
+        $data['list_quanhechuho'] = DB::connection('nhanhokhau')->table('tbl_moiquanhe')->where(array(['loaiquanhe', '=', 'nhanthan'], ['id', '!=', 1]))->get();
+        $data['list_xa_phuong'] = DB::connection('nhanhokhau')->table('tbl_xa_phuong_tt')->where('idhuyentx',202)->get();
         // print_r($data['list_xa_phuong']); die;
         return view('nhankhau-layouts.thuongtru.thongke', $data);
     }
@@ -240,7 +243,7 @@ class BaocaoThongkeController extends Controller
             $arrWhere[] = array('iddantoc', '=', $request->iddantoc);
         }
         
-        $data['briefs'] = DB::table('tbl_sohokhau')
+        $data['briefs'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
         ->where($arrWhere)
@@ -277,8 +280,8 @@ class BaocaoThongkeController extends Controller
         
         $this->ago_14_year = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 14 years'));
 
-        $thuongtru_tongsoho = DB::table('tbl_hoso')->where('deleted_at', NULL)->count();
-        $data_sonhankhau = DB::table('tbl_sohokhau')
+        $thuongtru_tongsoho = DB::connection('nhanhokhau')->table('tbl_hoso')->where('deleted_at', NULL)->count();
+        $data_sonhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id', '=', 'tbl_sohokhau.idhoso')
         ->where('tbl_hoso.deleted_at', NULL);
@@ -297,7 +300,7 @@ class BaocaoThongkeController extends Controller
         //-----------------------------TAM TRU--------------------
 
         
-        $data_tamtru_chunk = DB::table('tbl_tamtru')
+        $data_tamtru_chunk = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
         ->where(array(
@@ -349,10 +352,10 @@ class BaocaoThongkeController extends Controller
             }
         });
         
-        $tamtru_sotamtru_data = DB::table('tbl_sotamtru')->where('deleted_at', NULL);
+        $tamtru_sotamtru_data = DB::connection('nhanhokhau')->table('tbl_sotamtru')->where('deleted_at', NULL);
         $tamtru_tongso_ho = $tamtru_sotamtru_data->count();
 
-        $data_tamtru = DB::table('tbl_tamtru')
+        $data_tamtru = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
         ->where(array(
@@ -362,10 +365,10 @@ class BaocaoThongkeController extends Controller
         $tamtru_tongso_nhankhau = $data_tamtru->count();
         $tamtru_nk_better_14 = $data_tamtru->whereDate('ngaysinh', '<=', $this->ago_14_year)->count();
         
-        $this->list_truonghopxoa = DB::table('tbl_thutuccutru')->where('type', 'xoathuongtru')->pluck('id')->toArray();
+        $this->list_truonghopxoa = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->pluck('id')->toArray();
         //History
         
-         $data_history_chunk = DB::table('tbl_history_cutru')
+         $data_history_chunk = DB::connection('nhanhokhau')->table('tbl_history_cutru')
         ->whereDate('date_action', '>=', date('Y-m-d', strtotime($request->tungay))) 
         ->whereDate('date_action', '<=', date('Y-m-d', strtotime($request->denngay)))
         ->orderBy('id')

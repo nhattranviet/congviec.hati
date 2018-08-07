@@ -143,11 +143,6 @@
                                                             <label for="cmnd_so">Số CMND</label>
                                                             <input type="text" name="cmnd_so" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="{{old('cmnd_so')}}">
                                                         </fieldset>
-
-                                                        <fieldset class="form-group {{ ($errors->has('hochieu_so')) ? 'has-danger' : '' }}">
-                                                            <label for="hochieu_so">Số Hộ Chiếu</label>
-                                                            <input type="text" name="hochieu_so" parsley-trigger="change" placeholder="Nhập số hộ chiếu (Nếu có)" class="form-control" value="{{old('hochieu_so')}}" id="hochieu_so">
-                                                        </fieldset>
                                                     </div>
 
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">

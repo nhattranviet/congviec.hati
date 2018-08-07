@@ -134,11 +134,6 @@
                                                         </fieldset>
 
                                                         <fieldset class="form-group">
-                                                            <label for="hochieu_so">Số Hộ Chiếu<span class="text-danger">*</span></label>
-                                                            <input type="text" name="hochieu_so" parsley-trigger="change" placeholder="Họ và tên" class="form-control" id="hochieu_so">
-                                                        </fieldset>
-
-                                                        <fieldset class="form-group">
                                                             <label for="trinhdochuyenmon">Trình độ chuyên môn<span class="text-danger">*</span></label>
                                                             <input type="text" name="trinhdochuyenmon" parsley-trigger="change" placeholder="Trình độ chuyên môn" class="form-control" id="trinhdochuyenmon">
                                                         </fieldset>
