@@ -35,7 +35,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="tim-kiem-hoso" action="{{ URL::to('get-bao-cao-nhan-khau') }}" idresult="nhankhautable" method="GET" role="form">
+                        <form id="tim-kiem-hoso" action="{{ route('post-bao-cao-nhan-khau-ToResult') }}" idresult="nhankhautable" method="GET" role="form">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
                                     <h4 class="header-title m-t-0 pull-left">Thông tin nhân khẩu</h4>
@@ -65,8 +65,6 @@
                                                     </div><!-- input-group -->
                                                 </div>
                                             </fieldset>
-
-
                                         </div>
 
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
@@ -89,15 +87,15 @@
                                                 </div>
                                             </fieldset>
                                             <fieldset class="form-group">
-                                                <label>Tôn giáo</label>
-                                                <select name="idtongiao" class="form-control select2">
-                                                    <option value="all">Tất cả</option>
-                                                    @foreach($religions as $religion)
-                                                    <option value="{{ $religion->id }}">{{ $religion->name }}</option>
-                                                    @endforeach
-                                                </select>
+                                                <label for="datepicker">Năm sinh</label>
+                                                <div>
+                                                    <div class="input-group">
+                                                        <input type="text" name="namsinh" class="form-control">
+                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                                    </div><!-- input-group -->
+                                                </div>
                                             </fieldset>
-
+                                            
                                         </div>
 
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
@@ -119,12 +117,21 @@
                                                     @endforeach
                                                 </select>
                                             </fieldset>
-                                            <fieldset class="form-group">
+                                            {{-- <fieldset class="form-group">
                                                 <label>Dân tộc</label>
                                                 <select name="iddantoc" class="form-control select2">
                                                     <option value="all">Tất cả</option>
                                                     @foreach($nations as $nation)
                                                     <option value="{{ $nation->id }}">{{ $nation->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </fieldset> --}}
+                                            <fieldset class="form-group">
+                                                <label>Tôn giáo</label>
+                                                <select name="idtongiao" class="form-control select2">
+                                                    <option value="all">Tất cả</option>
+                                                    @foreach($religions as $religion)
+                                                    <option value="{{ $religion->id }}">{{ $religion->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </fieldset>
@@ -187,7 +194,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row m-t-10">
+                            <div class="row">
                                 <div class="col-xs-12 col-sm-12">
                                     <button id="submitBtn" type="submit" class="btn btn-primary">Lọc kết quả</button>
                                 </div>

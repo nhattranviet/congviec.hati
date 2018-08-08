@@ -186,8 +186,8 @@ class CanboController extends Controller
             'id_iddonvi_iddoi' => 'required',
             'idchucvu' => 'required',
             'idnhomquyen' => 'required',
-            'email' => 'required|unique:coredb.users,email,' . $request->userid,
-            'username' => 'required|unique:coredb.users,username,'.$request->userid,
+            'email' => 'required|unique:users,email,' . $request->userid,
+            'username' => 'required|unique:users,username,'.$request->userid,
         ], $this->messages);
 
         if ($validator->fails()) {

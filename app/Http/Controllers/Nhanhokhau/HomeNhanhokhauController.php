@@ -30,7 +30,7 @@ class HomeNhanhokhauController extends Controller
     {
         $current_date = date('Y-m-d', time());
         $ago_14_year = date('Y-m-d', strtotime($current_date. ' - 14 years'));
-
+        
         $data['thuongtru_tongsoho'] = DB::connection('nhanhokhau')->table('tbl_hoso')->where('deleted_at', NULL)->count();
         $data_sonhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_sohokhau.idnhankhau')
@@ -72,7 +72,11 @@ class HomeNhanhokhauController extends Controller
         $data['thuongtru_hosohokhau'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
             ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
             ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
-            ->where( 'idquanhechuho', 1 )
+            ->where(array(
+                ['tbl_sohokhau.deleted_at', '=', NULL],
+                ['tbl_hoso.deleted_at', '=', NULL],
+                ['idquanhechuho', '=' ,  1]
+            ))
             ->select('hosohokhau_so', 'hokhau_so', 'hoten', 'idxa_thuongtru', 'idhoso')
             ->orderBy('idhoso', 'DESC')
             ->take(5)->get();
@@ -80,10 +84,14 @@ class HomeNhanhokhauController extends Controller
         $data['tamtru_hosohokhau'] = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id' , '=', 'tbl_tamtru.idsotamtru')
-        ->where( 'idquanhechuho', 1 )
+        ->where(array(
+                ['tbl_sotamtru.deleted_at', '=', NULL],
+                ['tbl_tamtru.deleted_at', '=', NULL],
+                ['idquanhechuho', '=' ,  1]
+            ))
         ->select('sotamtru_so', 'hoten', 'idxa_tamtru', 'idsotamtru' )
         ->orderBy('idsotamtru', 'DESC')
         ->take(5)->get();
-        return view('home', $data);
+        return view('nhankhau-layouts.home', $data);
     }
 }

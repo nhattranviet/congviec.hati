@@ -143,6 +143,20 @@
                                                             <label for="cmnd_so">Số CMND</label>
                                                             <input type="text" name="cmnd_so" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="{{old('cmnd_so')}}">
                                                         </fieldset>
+
+                                                        <fieldset class="form-group">
+                                                            <label>Giới tính <span class="text-danger">*</span></label>
+                                                            <div>
+                                                                <div class="radio gender-radio">
+                                                                    <input type="radio" name="gender" value="1" id="radio1" >
+                                                                    <label for="radio1">Nam</label>
+                                                                </div>
+                                                                <div class="radio gender-radio">
+                                                                    <input type="radio" name="gender" value="0" id="radio2" >
+                                                                    <label for="radio2">Nữ</label>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
                                                     </div>
 
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
@@ -238,40 +252,8 @@
                                                         </fieldset>
 
                                                     </div>
-
-                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                                        <fieldset class="form-group">
-                                                            <label>Giới tính <span class="text-danger">*</span></label>
-                                                            <div>
-                                                                <div class="radio gender-radio">
-                                                                    <input type="radio" name="gender" value="1" id="radio1" >
-                                                                    <label for="radio1">Nam</label>
-                                                                </div>
-                                                                <div class="radio gender-radio">
-                                                                    <input type="radio" name="gender" value="0" id="radio2" >
-                                                                    <label for="radio2">Nữ</label>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-                                                    </div>
-
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                                         <fieldset class="form-group">
-                                                            <label> &nbsp; </label>
-                                                            <div>
-                                                                <div class="checkbox checkbox-primary">
-                                                                    <input name="ngoaihuyenden" value="1" type="checkbox">
-                                                                    <label for="checkbox21">
-                                                                        Nhân khẩu ngoài huyện đến
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-                                                    </div>
-
-                                                    <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
-                                                        <fieldset class="form-group">
-                                                            <label> &nbsp; </label>
                                                             <div>
                                                                 <div class="checkbox checkbox-primary">
                                                                     <input name="moisinh" value="1" type="checkbox">

@@ -7,6 +7,36 @@
 // use Carbon\Carbon;
 use App\UserApp\UserLibrary;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+
+Route::get('/test', function(){
+    $data_canbo = DB::table('tbl_congviec')->get();
+    $a = DB::connection('catp')->table('tbl_congviec')->get();
+    // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();   print_r($a); die;
+    $data_chuanhoa = array();
+    foreach ($a as $congviec)
+    {
+        $data_cv = array(
+            'idcongviec' => $congviec->idcongviec,
+            'idcanbo_creater' => 1,
+            'id_iddonvi_iddoi_creater' => 11,
+            'sotailieu' => $congviec->sotailieu,
+            'trichyeu' => $congviec->trichyeu,
+            'hancongviec' => ($congviec->hancongviec) ? date('Y-m-d H:i:s', $congviec->hancongviec) : '',
+            'noisoanthao' => $congviec->noisoanthao,
+            'chitiet' => ($congviec->urlfile) ? '<p><a href="/'.$congviec->urlfile.'">Tài liệu đính kèm</a></p>' : '',
+            'idstatus' => $congviec->idstatus,
+            'updated_at' => ($congviec->updated) ? date('Y-m-d H:i:s', $congviec->updated) : '',
+            'created_at' => ($congviec->created) ? date('Y-m-d H:i:s', $congviec->created) : '',
+            'thoigianhoanthanh' => ($congviec->thoigianhoanthanh) ? date('Y-m-d', $congviec->thoigianhoanthanh) : '',
+            'thoigiangiao' => ($congviec->thoigiangiao) ? date('Y-m-d', $congviec->thoigiangiao) : '',
+            'data_chuyentiep' => DB::connection('catp')->table('tbl_congviec_chuyentiep')->where('idcongviec', $congviec->idcongviec)->get()->toArray()
+        );
+        $data_chuanhoa[] = $data_cv;
+    }
+    print_r($data_chuanhoa);
+    
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -102,7 +132,7 @@ Route::post('/nhan-khau/{idhosogoc}/{idhosonhap}/nhap-ho-khau', 'Nhanhokhau\Nhan
 
 Route::get('/bao-cao-nhan-khau', 'Nhanhokhau\BaocaoThongkeController@getBaocaonhankhau')->name('get-bao-cao-nhan-khau');
 // Route::get('/post-bao-cao-nhan-khau', 'Nhanhokhau\NhanKhauController@getBaocaonhankhauToResult')->name('post-bao-cao-nhan-khau');
-Route::get('/get-bao-cao-nhan-khau', 'Nhanhokhau\BaocaoThongkeController@getBaocaonhankhauToResult')->name('post-bao-cao-nhan-khau');
+Route::get('/get-bao-cao-nhan-khau-ToResult', 'Nhanhokhau\BaocaoThongkeController@getBaocaonhankhauToResult')->name('post-bao-cao-nhan-khau-ToResult');
 
 // Route::get('/thong-ke/{ngaydau?}/{ngaycuoi?}', 'Nhanhokhau\NhanKhauController@getThongke')->name('thong-ke');
 Route::get('/thong-ke', 'Nhanhokhau\BaocaoThongkeController@getThongke')->name('thong-ke');
@@ -143,6 +173,7 @@ Route::get('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@chuyentiep'
 Route::post('/cong-viec/{idcongviec}/chuyentiep', 'CongviecController@postChuyentiep')->name('post-chuyentiep-cong-viec');
 Route::get('/cong-viec/{idnodecongviec}/deleteNode', 'CongviecController@deleteNodeChuyentiep')->name('get-delte-node-chuyen-tiep');
 Route::get('/cong-viec/{idcongviec}/toggle-congviec-status', 'CongviecController@toggle_congviec_status')->name('toggle-congviec-status');
+Route::get('/cong-viec-forgetSessionCheckModal', 'CongviecController@forgetSessionCheckModal')->name('forgetSessionCheckModal');
 //-------------------END CÔNG VIỆC-----------------------
 
 //-------------------ĐƠN VỊ - ĐỘI-----------------------

@@ -436,27 +436,20 @@
 
             $("#submitBtn").on("click", function (event) {
                 event.preventDefault();
-                $(".loading").append(
-                    '<img style="position: absolute; left: 30%; top: 20%; z-index: 100000;" src="/img/loading.gif" />'
-                );
-                var idresult = $(this)
-                    .parents("form")
-                    .attr("idresult");
+                $("#wait").css("display", "block");
+                var current_form = $(this).parents("form");
+                var idresult = current_form.attr("idresult");
                 var page = 1;
                 $.ajax({
-                    url:
-                        $(this)
-                            .parents("form")
-                            .attr("action") +
-                        "?page=" +
-                        page,
+                    url: current_form.attr("action") + "?page=" + page,
                     type: "GET",
-                    data: $(this)
-                        .parents("form")
-                        .serialize(),
+                    data: current_form.serialize(),
                     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
+                        $("#wait").css("display", "none");
+                        $("#error-msg").css("display", "none");
+                        
                         if ($.isEmptyObject(data.error)) {
                             if (idresult) {
                                 $("#" + idresult).html(data.html);
@@ -471,6 +464,7 @@
                         window.scrollTo(0, 0);
                     },
                     error: function (data) {
+                        $("#wait").css("display", "none");
                         var errors = $.parseJSON(data.responseText);
                         $.each(errors, function (key, value) {
                             console.log(data.responseText);

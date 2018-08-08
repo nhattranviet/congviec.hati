@@ -3,7 +3,16 @@
 @section('js')
    <script type="text/javascript">
       $(document).ready(function(){
-         
+        @if(Session::get('showQuahanModal') == TRUE && count( $list_congviec_quahan ) > 0)
+            $('#congviecquahan_modal').modal('show');
+        @endif
+
+        $("#destroySessionCheckModal").on("click", function (event) {
+                event.preventDefault();
+                $.get("{{ route('forgetSessionCheckModal') }}")
+                $('#congviecquahan_modal').modal('hide');
+                // alert('tsb');
+        });
       })
    </script>
 @endsection
@@ -126,6 +135,47 @@
       <!-- container -->
    </div>
    <!-- content -->
+</div>
+<div class="modal fade" id="congviecquahan_modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="{{ route('forgetSessionCheckModal') }}" method="GET" role="form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Công việc quá hạn</h4>
+                </div>
+                <div class="modal-body p-20">
+                    <div class="row">
+                        <table style="margin-bottom: 20px;" class="datatable table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 200px;">Số/ký hiệu</th>
+                                    <th>Trích yếu</th>
+                                    <th>Hạn công việc</th>
+                                    <th style="width: 50px;">Tác vụ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($list_congviec_quahan as $congviec_quahan)
+                                    <tr class="text-danger">
+                                        <td>{{ $congviec_quahan->sotailieu }}</td>
+                                        <td>{{ $congviec_quahan->trichyeu }}</td>
+                                        <td>{{ ($congviec_quahan->hancongviec) ? date('d-m-Y', strtotime($congviec_quahan->hancongviec)) : NULL }}</td>
+                                        <td>
+                                            <a target="_blank" href="{{ route('get-show-cong-viec', $congviec_quahan->idcongviec) }}" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xem chi tiết công việc"> <i style="color: #387576; font-size: 1.5em" class="zmdi zmdi-eye"></i> </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="destroySessionCheckModal" type="button" class="btn btn-danger">Đóng</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection
 

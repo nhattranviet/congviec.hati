@@ -114,13 +114,13 @@ $config['accessControl'][] = array(
 
     'FOLDER_VIEW'         => true,
     'FOLDER_CREATE'       => true,
-    'FOLDER_RENAME'       => true,
+    'FOLDER_RENAME'       => FALSE,
     'FOLDER_DELETE'       => true,
 
     'FILE_VIEW'           => true,
     'FILE_CREATE'         => true,
-    'FILE_RENAME'         => true,
-    'FILE_DELETE'         => true,
+    'FILE_RENAME'         => FALSE,
+    'FILE_DELETE'         => FALSE,
 
     'IMAGE_RESIZE'        => true,
     'IMAGE_RESIZE_CUSTOM' => true

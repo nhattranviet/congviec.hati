@@ -146,18 +146,15 @@ class BaocaoThongkeController extends Controller
 
     public function getBaocaonhankhau()
     {
-        $data['countries'] = $this->quocgia->get();
-        $data['relations'] = $this->relation->get();
-        $data['religions'] = $this->religion->get();
-        $data['nations'] = $this->nation->get();
-        $data['list_tongiao'] = DB::connection('nhanhokhau')->table('tbl_tongiao')->get();
-        $data['list_quoctich'] = DB::connection('nhanhokhau')->table('tbl_quocgia')->get();
-        $data['educations'] = DB::connection('nhanhokhau')->table('tbl_trinhdohocvan')->get();
-        $data['list_dantoc'] = DB::connection('nhanhokhau')->table('tbl_dantoc')->get();
-        $data['careers'] = DB::connection('nhanhokhau')->table('tbl_nghenghiep')->get();
-        $data['list_quanhechuho'] = DB::connection('nhanhokhau')->table('tbl_moiquanhe')->where(array(['loaiquanhe', '=', 'nhanthan'], ['id', '!=', 1]))->get();
-        $data['list_xa_phuong'] = DB::connection('nhanhokhau')->table('tbl_xa_phuong_tt')->where('idhuyentx',202)->get();
-        // print_r($data['list_xa_phuong']); die;
+        $data['list_tongiao'] = NhanhokhauLibrary::getListTonGiao();
+        $data['list_dantoc'] = NhanhokhauLibrary::getListDanToc();
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
+        $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+        $data['list_xa_phuong'] = DB::connection('nhanhokhau')->table('tbl_xa_phuong_tt')->where('idhuyentx', 202)->get();
         return view('nhankhau-layouts.thuongtru.thongke', $data);
     }
 
@@ -173,6 +170,7 @@ class BaocaoThongkeController extends Controller
             return response()->json(['error' => array('Ngày sinh: từ ngày phải trước Ngày sinh: đến ngày')]);
         }
         $arrWhere = array();
+        
         if($request->hoten != NULL)
         {
             $arrWhere[] = array('hoten', 'LIKE', '%'.$request->hoten.'%');
@@ -196,6 +194,11 @@ class BaocaoThongkeController extends Controller
         if($request->ngaysinh_denngay != NULL)
         {
             $arrWhere[] = array('ngaysinh', '<=', date('Y-m-d', strtotime($request->ngaysinh_denngay)));
+        }
+
+        if($request->namsinh != NULL)
+        {
+            
         }
 
         if($request->gender != 'all')
@@ -238,19 +241,23 @@ class BaocaoThongkeController extends Controller
         {
             $arrWhere[] = array('idnghenghiep', '=', $request->idnghenghiep);
         }
-        if($request->iddantoc != 'all')
-        {
-            $arrWhere[] = array('iddantoc', '=', $request->iddantoc);
-        }
+        // if($request->iddantoc != 'all')
+        // {
+        //     $arrWhere[] = array('iddantoc', '=', $request->iddantoc);
+        // }
         
-        $data['briefs'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
+        
+        $data_temp = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
-        ->where($arrWhere)
-        ->select('tbl_nhankhau.*', 'tbl_hoso.hokhau_so', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.id as idhoso')
+        ->where($arrWhere);
+        // if($request->namsinh != NULL)
+        // {
+        //     $data_temp = $data_temp->whereYear('ngaysinh', $request->namsinh);
+        // }
+        $data['briefs'] = $data_temp->select('tbl_nhankhau.*', 'tbl_hoso.hokhau_so', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.id as idhoso')
         ->paginate(10);
         $data['total'] = $data['briefs']->total();
-        // $html = view('nhankhau-layouts.thuongtru.search_view_report', $data)->render();
         return response()->json(['html' => view('nhankhau-layouts.thuongtru.search_view_report', $data)->render()]);
     }
 
@@ -508,7 +515,11 @@ class BaocaoThongkeController extends Controller
             </style>
          ';
 
-        $html_table .= '<h5>I) CÁC LOẠI HỘ, NHÂN KHẨU</h3>
+        $html_table .= '<h5>I) HỘ, NHÂN KHẨU ĐĂNG KÝ THƯỜNG TRÚ:</h5>
+        <p>Tổng số: ...  hộ; ... nhân khẩu</p>
+        <p>Trong đó: ...  NK thành thị; NK nữ; NK từ 14 tuổi trở lên.</p>';
+
+        $html_table .= '<h5>II) CÁC LOẠI HỘ, NHÂN KHẨU</h5>
         <table border="1" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr>
@@ -646,7 +657,7 @@ class BaocaoThongkeController extends Controller
             </tbody>
         </table>
         <br>
-        <h5>II) KẾT QUẢ ĐĂNG KÝ, QUẢN LÝ CƯ TRÚ</h5>
+        <h5>III) KẾT QUẢ ĐĂNG KÝ, QUẢN LÝ CƯ TRÚ</h5>
         <table border="1" cellspacing="0" cellpadding="0">
             <tbody>
                 <tr>

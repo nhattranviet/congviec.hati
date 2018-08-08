@@ -79,10 +79,12 @@ class CongviecController extends Controller
             if( $index_role_info->keyword == 'idcanbo' )
             {
                 $data['list_congviec'] = CongviecLibrary::getCongviecOfCanbo( $request, Session::get('userinfo')->idcanbo, 3 );
+                $data['list_congviec_quahan'] = CongviecLibrary::getCongviecOfCanboQuahan( Session::get('userinfo')->idcanbo );
             }
             elseif( $index_role_info->keyword == 'id_iddonvi_iddoi' )
             {   
                 $data['list_congviec'] = $data['list_congviec'] = CongviecLibrary::getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, 3);
+                $data['list_congviec_quahan'] = CongviecLibrary::getCongviecOfDoiPhuTrachQuahan(Session::get('userinfo')->idcanbo, $arrListdoi);
             }
             else{
                 return view('errors.403');
@@ -338,6 +340,11 @@ class CongviecController extends Controller
         $data_message = array('alert_message' => ['type' => 'success', 'content' => 'Cập nhật trạng thái công việc thành công']);
         CongviecLibrary::logCongviec($request, $idcongviec, Session::get('userinfo')->username.' thay đổi trạng thái công việc '.$idcongviec. ' từ '.$current_status. ' sang '. $data_update["idstatus"] );
         return redirect()->route('cong-viec.index')->with($data_message);
+    }
+
+    public function forgetSessionCheckModal()
+    {
+        if( Session::has('showQuahanModal') ) Session::forget('showQuahanModal');
     }
 
 }

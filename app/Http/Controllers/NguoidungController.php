@@ -56,6 +56,7 @@ class NguoidungController extends Controller
             ->where('username', $data_user['username'])
             ->first();
             Session::put('userinfo', $data_user_session);
+            Session::put('showQuahanModal', TRUE);
             return redirect('/');
         }
         return redirect()->route('login');

@@ -96,6 +96,45 @@ class CongviecLibrary
         return $data;
     }
 
+    public static function getCongviecOfCanboQuahan($idcanbo )
+    {
+        $current_day = date('Y-m-d', time());
+        $data = DB::table( 'tbl_congviec' )
+            ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+            ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
+            ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+            ->where('idstatus', 1)
+            ->whereDate('hancongviec', '<=' , $current_day)
+            ->where(function ($query) use ($idcanbo) {
+                $query->where('idcanbonhan', $idcanbo)
+                ->orWhere('idcanbo_creater', $idcanbo);
+            })
+            ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
+            ->orderBy('hancongviec', 'ASC');
+            $data = $data->get();
+        return $data;
+    }
+
+    public static function getCongviecOfDoiPhuTrachQuahan($current_idcanbo, $arrListdoi)
+    {
+        $current_day = date('Y-m-d', time());
+        $data = DB::table( 'tbl_congviec' )
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_congviec.idcanbo_creater')
+        ->join('tbl_congviec_chuyentiep', 'tbl_congviec.id', '=', 'tbl_congviec_chuyentiep.idcongviec')
+        ->whereRaw('tbl_congviec_chuyentiep.id = (SELECT max(id) FROM tbl_congviec_chuyentiep WHERE tbl_congviec_chuyentiep.idcongviec = tbl_congviec.id  ) ')
+        ->where('idstatus', 1)
+        ->whereDate('hancongviec', '<=' , $current_day)
+        ->where(function($query) use ($arrListdoi, $current_idcanbo) {
+            $query->whereIn('id_iddonvi_iddoi_nhan', $arrListdoi)
+            ->orWhere('idcanbonhan', $current_idcanbo)
+            ->orWhere('idcanbo_creater', $current_idcanbo);
+        })
+        ->select( 'tbl_congviec.id as idcongviec', 'idcanbo_creater', 'sotailieu', 'trichyeu', 'chitiet', 'tbl_congviec.ghichu', 'noisoanthao', 'hancongviec', 'hanxuly', 'thoigiangiao', 'thoigianhoanthanh', 'idstatus', 'tbl_congviec.created_at' )
+        ->orderBy('hancongviec', 'ASC');
+        $data = $data->get();
+        return $data;
+    }
+
     public static function processArrWhereCongviec($request)
     {
         $arrWhere = array();
