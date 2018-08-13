@@ -100,7 +100,7 @@ class CanboLibrary
         return $data;
     }
 
-    public static function getListCanboOfDoi($id, $type = 'object')
+    public static function getListCanboOfDoi($id_iddonvi_iddoi, $type = 'object')
     {
         $data = DB::table('tbl_canbo')
         ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')

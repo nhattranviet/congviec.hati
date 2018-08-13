@@ -40,12 +40,12 @@
                     </div>
                     <div class="text-xs-center m-t-10">
                         <a href="#" style="font-size: 1.5em; color: #1bb99a; font-weight: bold">
-                            <span>CÔNG AN HUYỆN KỲ ANH <br> PHẦN MỀM QUẢN LÝ NHÂN KHẨU</span>
+                            <span>ĐĂNG NHẬP HỆ THỐNG</span>
                         </a>
                     </div>
                     <div class="m-t-30 m-b-20">
                         <div class="col-xs-12 text-xs-center">
-                            <h6 class="text-muted text-uppercase m-b-0 m-t-0">Đăng nhập hệ thống</h6>
+                            {{-- <h6 class="text-muted text-uppercase m-b-0 m-t-0">Đăng nhập hệ thống</h6> --}}
                         </div>
                         <div class="col-xs-12">
                             @if ($errors->any())
@@ -111,7 +111,7 @@
 
             <div class="m-t-20">
                 <div class="text-xs-center">
-                    <p class="text-white">Chưa có tài khoản? <a href="{{ route('register') }}" class="text-white m-l-5"><b>Đăng ký</b> </a></p>
+                    {{-- <p class="text-white">Chưa có tài khoản? <a href="{{ route('register') }}" class="text-white m-l-5"><b>Đăng ký</b> </a></p> --}}
                 </div>
             </div>
 

@@ -534,7 +534,6 @@ class NhanKhauController extends Controller
         $data['list_nhankhau'] = NhanhokhauLibrary::getListNhankhauHoso($idhoso);
         if(count($data['list_nhankhau']) <= 1)
         {
-            
             $message = array('type' => 'warning', 'content' => 'Hộ tách phải có 2 người trở lên');
             return redirect()->route('chi-tiet-ho-khau', $idhoso)->with('alert_message', $message);
         }
@@ -546,8 +545,18 @@ class NhanKhauController extends Controller
         }
         $data['str_ret'] = $str;
         $data['idhoso'] = $idhoso;
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
+        $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+        $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+
         return view('nhankhau-layouts.thuongtru.tachhokhau', $data);
     }
+
 
     public function postTachhokhau(Request $request, $id)
     {
@@ -555,27 +564,42 @@ class NhanKhauController extends Controller
             'hosohokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
             'so_dktt_so' => 'required',
             'hokhau_so' => 'required|unique:nhanhokhau.tbl_hoso',
-            'idquanhechuho.*' => 'required',
+            'idquanhe.*' => 'required',
             'id_in_sohokhau.*' => 'required',
             'nhankhautach' => 'required',
             'date_action' => 'required|date_format:d-m-Y',
+
+            'idquocgia_thuongtru' => 'required',
+            'idtinh_thuongtru' => 'required',
+            'idhuyen_thuongtru' => 'required',
+            'idxa_thuongtru' => 'required',
         ], NhanhokhauLibrary::getMessageRule());
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
 
-        $num = $this->checkexistChuho($request->idquanhechuho);
-        if($num == 0)
+        if( $request->hoten[0] != NULL )
         {
-            return response()->json(['error' => array('Chủ hộ bắt buộc phải chọn')]);
+            $validator = Validator::make($request->all(), NhanhokhauLibrary::getTachHoKhauAddNhankhauRule(), NhanhokhauLibrary::getMessageRule());
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()->all()]);
+            }
         }
-        elseif($num > 1)
+
+        $num_quanhechuho = $this->checkexistChuho($request->idquanhechuho);
+        $num_quanhe = $this->checkexistChuho($request->idquanhe);
+        $total_quanhechuho = $num_quanhechuho + $num_quanhe;
+        if( $total_quanhechuho == 0)
+        {
+            return response()->json( ['error' => array('Chủ hộ bắt buộc phải chọn')] );
+        }
+        elseif( $total_quanhechuho > 1 )
         {
             return response()->json(['error' => array('Chủ hộ chỉ được duy nhất 01 người')]);
         }
 
-//Code tách hộ khẩu
+        // return response()->json(['error' => array('OK')]);
         $data_hoso = array(
             'hosohokhau_so' => $request->hosohokhau_so,
             'hokhau_so' => $request->hokhau_so,
@@ -597,12 +621,21 @@ class NhanKhauController extends Controller
 
         for ($i=0; $i < count($request->id_in_sohokhau); $i++)
         {
-            $arrNhankhauUpdate = array(
+            $arrNhankhauSohokhauUpdate = array(
                 'idhoso' => $idhoso_inserted,
-                'idquanhechuho' => $request->idquanhechuho[$i],
+                'idquanhechuho' => $request->idquanhe[$i],
                 'ngaydangky' => date('Y-m-d', strtotime($request->date_action)),
             );
-            DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id',$request->id_in_sohokhau[$i])->update($arrNhankhauUpdate);
+            DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id',$request->id_in_sohokhau[$i])->update($arrNhankhauSohokhauUpdate);
+            // $idnhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id',$request->id_in_sohokhau[$i])->value('idnhankhau');
+            $arrNhankhauUpdate = array(
+                'idquocgia_thuongtru' => $request->idquocgia_thuongtru,
+                'idtinh_thuongtru' => $request->idtinh_thuongtru,
+                'idhuyen_thuongtru' => $request->idhuyen_thuongtru,
+                'idxa_thuongtru' => $request->idxa_thuongtru,
+                'chitiet_thuongtru' => $request->chitiet_thuongtru,
+            );
+            DB::connection('nhanhokhau')->table('tbl_nhankhau')->where('id',$request->idnhankhau[$i])->update($arrNhankhauUpdate);
             $data_log = array(
                 'idthutuccutru' => $this->thutuc_tach, 'type' => 'nhankhau', 'idhoso' => $idhoso_inserted,
                 'idnhankhau' => $request->idnhankhau[$i],
@@ -611,6 +644,22 @@ class NhanKhauController extends Controller
             NhanhokhauLibrary::logCutru( $data_log );
         }
 
+        //Insert new nhankhau
+        $num_nhankhau_add = count($request->hoten);
+        if( $num_nhankhau_add > 0 )
+        {
+            for ($j=0; $j < $num_nhankhau_add; $j++)
+            { 
+                $nhankhau_id_inserted = NhanhokhauLibrary::insertArrNhankhau($request, $j);
+                $data_log_nhankhau = array(
+                    'idthutuccutru' => $this->thutuc_dangkynhankhau,
+                    'type' => 'nhankhau', 'idnhankhau' => $nhankhau_id_inserted, 'idhoso' => $idhoso_inserted, 'date_action' => date('Y-m-d', strtotime($request->ngaydangky[$j])),
+                    'idquocgia_thuongtrutruoc' => $request->idquocgia_thuongtrutruoc[$j], 'idtinh_thuongtrutruoc' => $request->idtinh_thuongtrutruoc[$j], 'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc[$j], 'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$j], 'chitiet_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$j],
+                );
+                NhanhokhauLibrary::logCutru($data_log_nhankhau);
+                NhanhokhauLibrary::insertArrNhankhauToSohokhau($request, $j, $idhoso_inserted, $nhankhau_id_inserted, 'FALSE');
+            }
+        }
         return response()->json(['success' => 'Tách hộ khẩu thành công ', 'url' => route('nhan-khau.index')]);
     }
 

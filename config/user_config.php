@@ -27,8 +27,9 @@ return [
     ],
 
     'default_route' => [
-        '19' => 'cong-viec.index',
-        '35' => 'nhan-ho-khau-home',
+        '19' => 'cong-viec.index',  //PC44
+        '33' => 'cong-viec.index',  //TP
+        '35' => 'nhan-ho-khau-home',    //H KA
     ],
 
     'idmoiquanhechuho' => 1,

@@ -35,7 +35,8 @@ class CongviecController extends Controller
     }
 
     public function index( Request $request )
-    {
+    {   
+        // echo $_SESSION['user_path']; die;
         $current_idcanbo = Session::get('userinfo')->idcanbo;
         $current_iduser = Session::get('userinfo')->iduser;
         $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );

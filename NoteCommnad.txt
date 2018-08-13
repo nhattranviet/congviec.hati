@@ -1,0 +1,12 @@
+--COREDB--
+php artisan migrate:refresh --path="database/migrations/coredb"
+php artisan coredb:import_hanhchinh coredb
+php artisan import coredb
+
+
+
+--NHANHOKHAU--
+php artisan migrate:refresh --path="database/migrations/nhanhokhau"
+php artisan coredb:import_hanhchinh nhanhokhau
+php artisan import nhanhokhau
+php artisan nhanhokhau:import_thuongtru 100

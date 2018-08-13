@@ -134,11 +134,34 @@ class NhanhokhauLibrary
             'idhuyen_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
             'idxa_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
 
-            'idquocgia_thuongtrutruoc.*' => 'required_if:ngoaihuyenden,1',
-            'idtinh_thuongtrutruoc.*' => 'required_if:idquocgia_thuongtrutruoc.*,1',
-            'idhuyen_thuongtrutruoc.*' => 'required_if:idquocgia_thuongtrutruoc.*,1',
-            'idxa_thuongtrutruoc.*' => 'required_if:idquocgia_thuongtrutruoc.*,1',
+        ];
+    }
 
+    public static function getTachHoKhauAddNhankhauRule()
+    {
+        return [
+            'hoten.*' => 'required',
+            'idquanhechuho.*' => 'required',
+            'birthday.*' => 'required|date_format:d-m-Y',
+            'ngaydangky.*' => 'required|date_format:d-m-Y',
+            'idtongiao.*' => 'required',
+            'idquoctich.*' => 'required',
+            'gender.*' => 'required',
+
+            'idquocgia_noisinh.*' => 'required',
+            'idtinh_noisinh.*' => 'required_if:idquocgia_noisinh.*,1',
+            'idhuyen_noisinh.*' => 'required_if:idquocgia_noisinh.*,1',
+            'idxa_noisinh.*' => 'required_if:idquocgia_noisinh.*,1',
+
+            'idquocgia_nguyenquan.*' => 'required',
+            'idtinh_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+            'idhuyen_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+            'idxa_nguyenquan.*' => 'required_if:idquocgia_nguyenquan.*,1',
+
+            'idquocgia_noiohiennay.*' => 'required',
+            'idtinh_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
+            'idhuyen_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
+            'idxa_noiohiennay.*' => 'required_if:idquocgia_noiohiennay.*,1',
         ];
     }
 
@@ -165,11 +188,6 @@ class NhanhokhauLibrary
             'idtinh_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
             'idhuyen_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
             'idxa_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
-
-            'idquocgia_thuongtrutruoc' => 'required_if:ngoaihuyenden,1',
-            'idtinh_thuongtrutruoc' => 'required_if:idquocgia_thuongtrutruoc,1',
-            'idhuyen_thuongtrutruoc' => 'required_if:idquocgia_thuongtrutruoc,1',
-            'idxa_thuongtrutruoc' => 'required_if:idquocgia_thuongtrutruoc,1',
         ];
     }
 
@@ -201,11 +219,6 @@ class NhanhokhauLibrary
             'idtinh_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
             'idhuyen_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
             'idxa_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
-
-            'idquocgia_thuongtrutruoc' => 'required_if:ngoaihuyenden,1',
-            'idtinh_thuongtrutruoc' => 'required_if:idquocgia_thuongtrutruoc,1',
-            'idhuyen_thuongtrutruoc' => 'required_if:idquocgia_thuongtrutruoc,1',
-            'idxa_thuongtrutruoc' => 'required_if:idquocgia_thuongtrutruoc,1',
         ];
     }
 

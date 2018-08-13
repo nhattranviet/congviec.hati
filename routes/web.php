@@ -1,16 +1,25 @@
 <?php
-
 // use App\Http\Controllers\TaiKhoanController;
-// use App\NhanKhau;
-// use App\Hokhau;
-// use App\Brief;
 // use Carbon\Carbon;
 use App\UserApp\UserLibrary;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/test', function(){
-    $data_canbo = DB::table('tbl_congviec')->get();
+    // $data_canbo_pc44 = DB::connection('catp')->table('tbl_canbo')
+    // ->join('tbl_nguoi', 'tbl_nguoi.idnguoi', '=', 'tbl_canbo.idnguoi')
+    // ->where('iddonvi', 11)
+    // ->pluck('hoten', 'idcanbo')
+    // ->toArray();
+    // dd($data_canbo_pc44);
+
+
+    dd(UserLibrary::getListDoidonVi(2));
+
+
+
+
+
     $a = DB::connection('catp')->table('tbl_congviec')->get();
     // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();   print_r($a); die;
     $data_chuanhoa = array();
@@ -29,9 +38,10 @@ Route::get('/test', function(){
             'updated_at' => ($congviec->updated) ? date('Y-m-d H:i:s', $congviec->updated) : '',
             'created_at' => ($congviec->created) ? date('Y-m-d H:i:s', $congviec->created) : '',
             'thoigianhoanthanh' => ($congviec->thoigianhoanthanh) ? date('Y-m-d', $congviec->thoigianhoanthanh) : '',
-            'thoigiangiao' => ($congviec->thoigiangiao) ? date('Y-m-d', $congviec->thoigiangiao) : '',
-            'data_chuyentiep' => DB::connection('catp')->table('tbl_congviec_chuyentiep')->where('idcongviec', $congviec->idcongviec)->get()->toArray()
+            'thoigiangiao' => ($congviec->thoigiangiao) ? date('Y-m-d', $congviec->thoigiangiao) : ''
         );
+
+        $data_cv_chuyentiep = DB::connection('catp')->table('tbl_congviec_chuyentiep')->where('idcongviec', $congviec->idcongviec)->get()->toArray();
         $data_chuanhoa[] = $data_cv;
     }
     print_r($data_chuanhoa);
@@ -89,7 +99,7 @@ Route::post('/nguoi-dung/postLogin', 'NguoidungController@postLogin')->name('pos
 Route::get('/logout', 'NguoidungController@getLogout')->name('getLogout');
 Route::post('/change-password/', 'NguoidungController@changePassword')->name('nguoi-dung-changepassword');
 //------------------------------END NGƯỜI DÙNG ---------------------------
-Route::get('/tai-khoan', 'TaiKhoanController@index');
+// Route::get('/tai-khoan', 'TaiKhoanController@index');
 Route::resource('/nhan-khau', 'Nhanhokhau\NhanKhauController');
 Route::post('/nhan-khau/store', 'Nhanhokhau\NhanKhauController@store')->name('nhankhau.store');
 Route::get('/nhan-khau/ajax_index', 'Nhanhokhau\NhanKhauController@index')->name('nhankhau.ajax_index');

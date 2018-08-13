@@ -254,10 +254,7 @@
                         .attr("href")
                 ) {
                     // active current tab after removed
-                    var href = $(this)
-                        .parent()
-                        .prev()
-                        .find("a")
+                    var href = $(this).parent().prev().find("a")
                         .attr("href");
                     activaTab(href);
                     currentTab = href;
@@ -492,11 +489,19 @@
                 
             });
 
-            $("#iddoicongtac").on('change', function () {
+            $(document).on('change', "#iddoicongtac", function () {
+                alert('doicongtac_id');
                 var doicongtac_id = $('#iddoicongtac').val();
                 var url = bare_url + '/ajax-get-can-bo/' + doicongtac_id;
                 ajax_get_data_to_html_json(url, '.canbo');
             });
+
+            // $("#iddoicongtac").on('change', function () {
+            //     var doicongtac_id = $('#iddoicongtac').val();
+            //     alert('doicongtac_id');
+            //     var url = bare_url + '/ajax-get-can-bo/' + doicongtac_id;
+            //     ajax_get_data_to_html_json(url, '.canbo');
+            // });
 
             if ($(".datepicker_get_date_after_a_week").length > 0) {
                 var current_date = new Date();
@@ -548,6 +553,7 @@ var activaTab = function (tab) {
 };
 
 var addTab = function (tabIndexs) {
+    var current_nhankhau = tabIndexs + 1;
     var el = '<li class="nav-item">';
     el +=
         '<a class="nav-link" id="profile-tab' +
@@ -555,7 +561,7 @@ var addTab = function (tabIndexs) {
         '" data-toggle="tab" href="#profile' +
         tabIndexs +
         '" role="tab" aria-controls="profile">';
-    el += "NK " + tabIndexs;
+    el += "NK " + current_nhankhau;
     el += "</a>";
     el += '<i class="mt-close-tab fa fa-times" id="close-tab"></i>';
     el += "</li>";
@@ -566,9 +572,7 @@ var addTab = function (tabIndexs) {
         '<div role="tabpanel" class="tab-pane fade in" id="profile' +
         tabIndexs +
         '" aria-labelledby="profile-tab">';
-    el += $("#home1 div")
-        .clone()
-        .html();
+    el += $("#home1 div").clone().html();
     el += "</div>";
     $("#myTabaltContent").append(el);
 
@@ -581,9 +585,10 @@ var addTab = function (tabIndexs) {
         .remove();
 
     // add title
+    
     el =
         '<h4 class="header-title m-t-0 m-b-30">THÔNG TIN NHÂN KHẨU ' +
-        tabIndexs +
+    current_nhankhau +
         "</h4>";
     $("#profile" + tabIndexs)
         .find(".tab-header")
