@@ -262,5 +262,5 @@
     </div>
     <!-- content -->
 </div>
-@include('nhankhau-layouts.ajax_component.diachi_modal')
+@include('layouts.address_modal')
 @endsection

@@ -1,115 +1,127 @@
-  var inputs = [];
-  var el = null;
-  var isBusy = false;
-  var modal = $('#address-modal');
+var inputs = [];
+var el = null;
+var isBusy = false;
+var modal = $('#address-modal');
+$(document).on('focus', '#addressPicker', function (event) {
+  event.preventDefault();
+  el = $(this).parent();
+  modal.find('.modal-title').text($(this).attr('placeholder'));
+  modal.modal('show');
+});
 
-$(document).ready(function() {
+$('#saveChange').click(function (event) {
+  /* Act on the event */
 
-  // Address picker
-  $(document).on('focus', '#addressPicker', function(event) {
-    event.preventDefault();
-    $("#wait").css("display", "block");
-    //change title
-    modal.find('.modal-title').text($(this).attr('placeholder'));
-
-
-    // alert('Nhat oi');
-  
-
-    el = $(this).parent();
-
-    // input values
-    inputs = el.find('input[type=hidden]').toArray();
-
-    if (inputs[0].value !== "") {
-
-      // set country
-      $('#country').val(inputs[0].value).trigger("change");
-
-      // set province
-      getProvinces(inputs[0].value, inputs[1].value);
-    } 
-
-    // set district
-    if (inputs[1].value !== "") {
-      getDistricts(inputs[1].value, inputs[2].value);
-    }
-
-    // set ward
-    if (inputs[2].value !== "") {
-      getWards(inputs[2].value, inputs[3].value);
-    }
-
-    // show modal
-    $("#wait").css("display", "none");
-    modal.modal('show');
-
-  });
-
-  $(document).on('click', '#clearAddress', function(event) {
-    event.preventDefault();
-    /* Act on the event */
-
-    $(this).parent().find('#addressPicker').val('');
-
-    inputs = $(this).parent().find('input[type=hidden]').toArray();
-
-    for (var i = 0; i < inputs.length; i++) {
-      $(this).parent().find('#'+inputs[i].id).val('');
-      $(this).parent().find('#'+inputs[i].id).attr('data-addr', '');
-    }
-
-  });
-
-  $('#saveChange').click(function(event) {
-    /* Act on the event */
-
-    loadAddress(el);
-
-  });
-
-  modal.find('#country').change(function(event) {
-    /* Act on the event */
-    getProvinces($(this).val());
-    clearSelect('#district', 'Chọn Huyện');
-    clearSelect('#ward', 'Chọn Xã');
-    isBusy = false;
-  });
-
-  modal.find('#province').change(function(event) {
-    /* Act on the event */
-    getDistricts($(this).val());
-    isBusy = false;
-  });
-
-  modal.find('#district').change(function(event) {
-    /* Act on the event */
-    getWards($(this).val());
-    isBusy = false;
-  });
-
-
+  loadAddress(el);
 
 });
 
-var getDistricts = function(id, val, func) {
+modal.find('#country').change(function (event) {
+  /* Act on the event */
+  getProvinces($(this).val());
+  clearSelect('#district', 'Chọn Huyện');
+  clearSelect('#ward', 'Chọn Xã');
+  isBusy = false;
+});
+
+modal.find('#province').change(function (event) {
+  /* Act on the event */
+
+  getDistricts($(this).val());
+  clearSelect('#ward', 'Chọn Xã');
+  isBusy = false;
+});
+
+modal.find('#district').change(function (event) {
+  /* Act on the event */
+  getWards($(this).val());
+  isBusy = false;
+});
+
+
+
+
+
+var loadAddress = function (el, data = null) {
+  inputs = el.find('input[type=hidden]').toArray();
+
+  if (data != null) {
+
+    // put address name
+    el.find('#' + inputs[0].id).attr('data-addr', data.country);
+    el.find('#' + inputs[1].id).attr('data-addr', data.province);
+    el.find('#' + inputs[2].id).attr('data-addr', data.district);
+    el.find('#' + inputs[3].id).attr('data-addr', data.ward);
+    el.find('#' + inputs[4].id).attr('data-addr', data.addressDetail);
+  } else {
+    // put address
+    el.find('#' + inputs[0].id).val(modal.find('#country').val());
+    el.find('#' + inputs[1].id).val(modal.find('#province').val());
+    el.find('#' + inputs[2].id).val(modal.find('#district').val());
+    el.find('#' + inputs[3].id).val(modal.find('#ward').val());
+    el.find('#' + inputs[4].id).val(modal.find('#addressDetail').val());
+
+    // put address name
+    el.find('#' + inputs[0].id).attr('data-addr', modal.find('#country').find('option:selected').text());
+    el.find('#' + inputs[1].id).attr('data-addr', modal.find('#province').find('option:selected').text());
+    el.find('#' + inputs[2].id).attr('data-addr', modal.find('#district').find('option:selected').text());
+    el.find('#' + inputs[3].id).attr('data-addr', modal.find('#ward').find('option:selected').text());
+    el.find('#' + inputs[4].id).attr('data-addr', modal.find('#addressDetail').val());
+  }
+
+
+  var subAddr = "";
+
+  // show address detail
+  for (var i = 0; i < inputs.length; i++) {
+
+    subAddr += el.find('#' + inputs[i].id).attr('data-addr');
+
+    if (i < inputs.length - 1) {
+      var noneNull = el.find('#' + inputs[i + 1].id).attr('data-addr') || "";
+      if ($.trim(noneNull) != "") {
+        subAddr += ' - ';
+      }
+    }
+  }
+
+  el.find('#addressPicker').val(subAddr);
+}
+
+
+$(document).on('click', '#clearAddress', function (event) {
+  event.preventDefault();
+  /* Act on the event */
+
+  $(this).parent().find('#addressPicker').val('');
+
+  inputs = $(this).parent().find('input[type=hidden]').toArray();
+
+  for (var i = 0; i < inputs.length; i++) {
+    $(this).parent().find('#' + inputs[i].id).val('');
+    $(this).parent().find('#' + inputs[i].id).attr('data-addr', '');
+  }
+
+});
+
+var getDistricts = function (id, val, func) {
   if (isBusy) { return; }
   clearSelect('#district', 'Chọn Huyện');
   $.ajax({
-    url: '/nhan-khau/districts/'+id,
+    url: '/nhan-khau/districts/' + id,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       if (func == undefined) {
         for (var i = 0; i < data.length; i++) {
-          $('#district').append($('<option>', { 
+          $('#district').append($('<option>', {
             value: data[i].id,
-            text : data[i].name 
+            text: data[i].name
           })).select2();
         }
-        if (val != null) { 
+        if (val != null) {
           isBusy = true;
-          $('#district').val(val).change(); 
+          $('#district').val(val).change();
         }
       } else {
         func(data);
@@ -118,19 +130,19 @@ var getDistricts = function(id, val, func) {
   })
 }
 
-var getWards = function(id, val, func) {
+var getWards = function (id, val, func) {
   if (isBusy) { return; }
   clearSelect('#ward', 'Chọn Xã');
   $.ajax({
-    url: '/nhan-khau/wards/'+id,
+    url: '/nhan-khau/wards/' + id,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       if (func == undefined) {
         for (var i = 0; i < data.length; i++) {
-          $('#ward').append($('<option>', { 
+          $('#ward').append($('<option>', {
             value: data[i].id,
-            text : data[i].name 
+            text: data[i].name
           })).select2();
         }
         if (val != null) { $('#ward').val(val).change(); }
@@ -141,25 +153,25 @@ var getWards = function(id, val, func) {
   })
 }
 
-var getProvinces = function(id, val, func) {
+var getProvinces = function (id, val, func) {
   if (isBusy) { return; }
   clearSelect('#province', 'Chọn Tỉnh hoặc Thành Phố');
   $.ajax({
-    url: '/nhan-khau/provinces/'+id,
+    url: '/nhan-khau/provinces/' + id,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       if (func == undefined) {
         for (var i = 0; i < data.length; i++) {
-          $('#province').append($('<option>', { 
+          $('#province').append($('<option>', {
             value: data[i].id,
-            text : data[i].name 
+            text: data[i].name
           })).select2();
         }
-        if (val != null) { 
+        if (val != null) {
           isBusy = true;
-          $('#province').val(val).change(); 
-        } 
+          $('#province').val(val).change();
+        }
       } else {
         func(data);
       }
@@ -167,54 +179,8 @@ var getProvinces = function(id, val, func) {
   })
 }
 
-var loadAddress = function(el, data = null) {
-  inputs = el.find('input[type=hidden]').toArray();
-
-  if (data != null) {
-
-    // put address name
-    el.find('#'+inputs[0].id).attr('data-addr', data.country);
-    el.find('#'+inputs[1].id).attr('data-addr', data.province);
-    el.find('#'+inputs[2].id).attr('data-addr', data.district);
-    el.find('#'+inputs[3].id).attr('data-addr', data.ward);
-    el.find('#'+inputs[4].id).attr('data-addr', data.addressDetail);
-  } else {
-    // put address
-    el.find('#'+inputs[0].id).val(modal.find('#country').val());
-    el.find('#'+inputs[1].id).val(modal.find('#province').val());
-    el.find('#'+inputs[2].id).val(modal.find('#district').val());
-    el.find('#'+inputs[3].id).val(modal.find('#ward').val());
-    el.find('#'+inputs[4].id).val(modal.find('#addressDetail').val());
-
-    // put address name
-    el.find('#'+inputs[0].id).attr('data-addr', modal.find('#country').find('option:selected').text());
-    el.find('#'+inputs[1].id).attr('data-addr', modal.find('#province').find('option:selected').text());
-    el.find('#'+inputs[2].id).attr('data-addr', modal.find('#district').find('option:selected').text());
-    el.find('#'+inputs[3].id).attr('data-addr', modal.find('#ward').find('option:selected').text());
-    el.find('#'+inputs[4].id).attr('data-addr', modal.find('#addressDetail').val());
-  }
-  
-
-  var subAddr = "";
-
-  // show address detail
-  for (var i = 0; i < inputs.length; i++) {
-
-    subAddr += el.find('#'+inputs[i].id).attr('data-addr');
-
-    if (i < inputs.length - 1) {
-      var noneNull = el.find('#'+inputs[i + 1].id).attr('data-addr') || "";
-      if ($.trim(noneNull) != "") {
-        subAddr += ' - ';
-      }
-    }
-  }
-
-    el.find('#addressPicker').val(subAddr);
-  }
-
-  var clearSelect = function(el, text) {
-    $(el).empty();
-    $(el).append('<option value="">'+text+'</option>');
-    $(el).select2();
-  }
+var clearSelect = function (el, text) {
+  $(el).empty();
+  $(el).append('<option value="">' + text + '</option>');
+  $(el).select2();
+}

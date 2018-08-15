@@ -77,14 +77,18 @@ class TamtruController extends Controller
 
     public function getAddnhankhau($idsotamtru)
     {
-        $this->data['countries'] = NhanhokhauLibrary::getListQuocgia();
-        $this->data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $this->data['religions'] = NhanhokhauLibrary::getListTonGiao();
-        $this->data['nations'] = NhanhokhauLibrary::getListDanToc();
-        $this->data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
-        $this->data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHeNotChuHo();
-        $this->data['sotamtru'] = NhanhokhauLibrary::getChitietSotamtru($idsotamtru, TRUE);
-        return view('nhankhau-layouts.tamtru.addnhankhau', $this->data);
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
+
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+        $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHeNotChuHo();
+        $data['sotamtru'] = NhanhokhauLibrary::getChitietSotamtru($idsotamtru, TRUE);
+        return view('nhankhau-layouts.tamtru.addnhankhau', $data);
     }
 
     public function postAddnhankhau(Request $request, $idsotamtru)
@@ -107,14 +111,18 @@ class TamtruController extends Controller
 
     public function getSuanhankhau($idnhankhau, $idsotamtru)
     {
-        $this->data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $this->data['countries'] = NhanhokhauLibrary::getListQuocgia();
-        $this->data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $this->data['religions'] = NhanhokhauLibrary::getListTonGiao();
-        $this->data['nations'] = NhanhokhauLibrary::getListDanToc();
-        $this->data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
-        $this->data['nhankhau'] = TamtruLibrary::getChitietNhankhauTamtru($idnhankhau, $idsotamtru);
-        return view('nhankhau-layouts.tamtru.editnhankhau', $this->data);
+        $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+        $data['nhankhau'] = TamtruLibrary::getChitietNhankhauTamtru($idnhankhau, $idsotamtru);
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
+        return view('nhankhau-layouts.tamtru.editnhankhau', $data);
     }
 
     public function postSuanhankhau(Request $request, $idnhankhau, $idsotamtru)
@@ -167,14 +175,18 @@ class TamtruController extends Controller
 
     public function getAddSoTamTruCaNhan()
     {
-        $this->data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
-        $this->data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $this->data['countries'] = NhanhokhauLibrary::getListQuocgia();
-        $this->data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $this->data['religions'] = NhanhokhauLibrary::getListTonGiao();
-        $this->data['nations'] = NhanhokhauLibrary::getListDanToc();
-        $this->data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
-        return view('nhankhau-layouts.tamtru.add_sotamtrucanhan', $this->data);
+        $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
+        $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
+        return view('nhankhau-layouts.tamtru.add_sotamtrucanhan', $data);
     }
 
     public function postAddSoTamTruCaNhan(Request $request)
@@ -235,15 +247,19 @@ class TamtruController extends Controller
      */
     public function create()
     {
-        $this->data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
-        $this->data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $this->data['countries'] = NhanhokhauLibrary::getListQuocgia();
-        $this->data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $this->data['religions'] = NhanhokhauLibrary::getListTonGiao();
-        $this->data['nations'] = NhanhokhauLibrary::getListDanToc();
-        $this->data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+        $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
+        $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
 
-        return view('nhankhau-layouts.tamtru.create', $this->data);
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
+
+        return view('nhankhau-layouts.tamtru.create', $data);
     }
 
     /**

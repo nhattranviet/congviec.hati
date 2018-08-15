@@ -1,7 +1,7 @@
 @extends('layouts.masterPage')
 
 @section('js')
-    {{-- <script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script> --}}
+    <script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             var modal = $('#address-modal');
@@ -9,198 +9,6 @@
             config.entities_latin = false;
             config.tabIndex = 24;
             $('.ckeditor').ckeditor(config);
-
-
-            var inputs = [];
-            var el = null;
-            var isBusy = false;
-            var modal = $('#address-modal');
-            $(document).on('focus', '#addressPicker', function(event) {
-                event.preventDefault();
-                el = $(this).parent();
-                modal.find('.modal-title').text($(this).attr('placeholder'));
-                modal.modal('show');
-            });
-
-            $('#saveChange').click(function(event) {
-                /* Act on the event */
-
-                loadAddress(el);
-
-            });
-
-            modal.find('#country').change(function(event) {
-                /* Act on the event */
-                getProvinces($(this).val());
-                clearSelect('#district', 'Chọn Huyện');
-                clearSelect('#ward', 'Chọn Xã');
-                isBusy = false;
-            });
-
-            modal.find('#province').change(function(event) {
-                /* Act on the event */
-
-                getDistricts($(this).val());
-                clearSelect('#ward', 'Chọn Xã');
-                isBusy = false;
-            });
-
-            modal.find('#district').change(function(event) {
-                /* Act on the event */
-                getWards($(this).val());
-                isBusy = false;
-            });
-
-
-
-
-
-            var loadAddress = function(el, data = null) {
-                inputs = el.find('input[type=hidden]').toArray();
-
-                if (data != null) {
-
-                    // put address name
-                    el.find('#'+inputs[0].id).attr('data-addr', data.country);
-                    el.find('#'+inputs[1].id).attr('data-addr', data.province);
-                    el.find('#'+inputs[2].id).attr('data-addr', data.district);
-                    el.find('#'+inputs[3].id).attr('data-addr', data.ward);
-                    el.find('#'+inputs[4].id).attr('data-addr', data.addressDetail);
-                } else {
-                    // put address
-                    el.find('#'+inputs[0].id).val(modal.find('#country').val());
-                    el.find('#'+inputs[1].id).val(modal.find('#province').val());
-                    el.find('#'+inputs[2].id).val(modal.find('#district').val());
-                    el.find('#'+inputs[3].id).val(modal.find('#ward').val());
-                    el.find('#'+inputs[4].id).val(modal.find('#addressDetail').val());
-
-                    // put address name
-                    el.find('#'+inputs[0].id).attr('data-addr', modal.find('#country').find('option:selected').text());
-                    el.find('#'+inputs[1].id).attr('data-addr', modal.find('#province').find('option:selected').text());
-                    el.find('#'+inputs[2].id).attr('data-addr', modal.find('#district').find('option:selected').text());
-                    el.find('#'+inputs[3].id).attr('data-addr', modal.find('#ward').find('option:selected').text());
-                    el.find('#'+inputs[4].id).attr('data-addr', modal.find('#addressDetail').val());
-                }
-                
-
-                var subAddr = "";
-
-                // show address detail
-                for (var i = 0; i < inputs.length; i++) {
-
-                    subAddr += el.find('#'+inputs[i].id).attr('data-addr');
-
-                    if (i < inputs.length - 1) {
-                    var noneNull = el.find('#'+inputs[i + 1].id).attr('data-addr') || "";
-                    if ($.trim(noneNull) != "") {
-                        subAddr += ' - ';
-                    }
-                    }
-                }
-
-                    el.find('#addressPicker').val(subAddr);
-                }
-
-
-            $(document).on('click', '#clearAddress', function(event) {
-                event.preventDefault();
-                /* Act on the event */
-
-                $(this).parent().find('#addressPicker').val('');
-
-                inputs = $(this).parent().find('input[type=hidden]').toArray();
-
-                for (var i = 0; i < inputs.length; i++) {
-                $(this).parent().find('#'+inputs[i].id).val('');
-                $(this).parent().find('#'+inputs[i].id).attr('data-addr', '');
-                }
-
-            });
-
-            var getDistricts = function(id, val, func) {
-                if (isBusy) { return; }
-                    clearSelect('#district', 'Chọn Huyện');
-                    $.ajax({
-                        url: '/nhan-khau/districts/'+id,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                        if (func == undefined) {
-                            for (var i = 0; i < data.length; i++) {
-                            $('#district').append($('<option>', { 
-                                value: data[i].id,
-                                text : data[i].name 
-                            })).select2();
-                            }
-                            if (val != null) { 
-                            isBusy = true;
-                            $('#district').val(val).change(); 
-                            }
-                        } else {
-                            func(data);
-                        }
-                        }
-                    })
-                }
-
-                var getWards = function(id, val, func) {
-                    if (isBusy) { return; }
-                    clearSelect('#ward', 'Chọn Xã');
-                    $.ajax({
-                        url: '/nhan-khau/wards/'+id,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                        if (func == undefined) {
-                            for (var i = 0; i < data.length; i++) {
-                            $('#ward').append($('<option>', { 
-                                value: data[i].id,
-                                text : data[i].name 
-                            })).select2();
-                            }
-                            if (val != null) { $('#ward').val(val).change(); }
-                        } else {
-                            func(data);
-                        }
-                        }
-                    })
-                }
-
-                var getProvinces = function(id, val, func) {
-                    if (isBusy) { return; }
-                    clearSelect('#province', 'Chọn Tỉnh hoặc Thành Phố');
-                    $.ajax({
-                        url: '/nhan-khau/provinces/'+id,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                        if (func == undefined) {
-                            for (var i = 0; i < data.length; i++) {
-                            $('#province').append($('<option>', { 
-                                value: data[i].id,
-                                text : data[i].name 
-                            })).select2();
-                            }
-                            if (val != null) { 
-                            isBusy = true;
-                            $('#province').val(val).change(); 
-                            } 
-                        } else {
-                            func(data);
-                        }
-                        }
-                    })
-                }
-            
-                var clearSelect = function(el, text) {
-                    $(el).empty();
-                    $(el).append('<option value="">'+text+'</option>');
-                    $(el).select2();
-                }
-
-
-
-
 
 
         });
@@ -287,11 +95,11 @@
                                                             <label for="thuongtru_view">Nơi đăng ký thường trú <span class="text-danger">*</span></label>
                                                             <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control addressPickerClass" id="thuongtru_view" tabindex="6" autocomplete="off">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_thuongtru idquocgia" class="form-control" id="idquocgia_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_thuongtru idtinh" class="form-control" id="idtinh_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_thuongtru idhuyen" class="form-control" id="idhuyen_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_thuongtru idxa" class="form-control" id="idxa_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtru chitiet" class="form-control" id="chitiet_thuongtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_thuongtru" class="form-control" id="idquocgia_thuongtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_thuongtru" class="form-control" id="idtinh_thuongtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_thuongtru" class="form-control" id="idhuyen_thuongtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_thuongtru" class="form-control" id="idxa_thuongtru" value="">
+                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtru" class="form-control" id="chitiet_thuongtru" value="">
                                                         </fieldset>
                                                     </div>
                                                 </div>
@@ -605,78 +413,5 @@
     </div>
     <!-- content -->
 </div>
-<div class="modal fade" id="address-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body p-20">
-                <div class="row">
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Quốc gia</label>
-                            <select id="country" class="form-control select2">
-                                <option  value="">Chọn Quốc gia</option>
-                                @foreach($countries as $country)
-                                <option {{ (config('user_config.default_hanhchinh.country') == $country->id) ? 'selected' : NULL }} value="{{ $country->id }}">{{ $country->name }}</option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Tỉnh TP</label>
-                            <select id="province" class="form-control select2">
-                                <option value="">Chọn Tỉnh hoặc Thành Phố</option>
-                                @foreach($provinces as $province)
-                                <option {{ (config('user_config.default_hanhchinh.province') == $province->id) ? 'selected' : NULL }} value="{{ $province->id }}">{{ $province->name }}</option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Huyện</label>
-                            <select id="district" class="form-control select2">
-                                <option  value="">Chọn Huyện</option>
-                                @foreach($districts as $district)
-                                <option {{ (config('user_config.default_hanhchinh.district') == $district->id) ? 'selected' : NULL }} value="{{ $district->id }}">{{ $district->name }}</option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Xã</label>
-                            <select id="ward" class="form-control select2">
-                                <option value="">Chọn Xã</option>
-                                @foreach($wards as $ward)
-                                <option value="{{ $ward->id }}">{{ $ward->name }}</option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <fieldset class="form-group">
-                            <label class="control-label">Chi tiết địa chỉ</label>
-                            <textarea class="form-control" id="addressDetail" placeholder="Nhập chi tiét địa " rows="3"></textarea>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" id="saveChange" class="btn btn-primary" data-dismiss="modal">Chọn</button>
-            </div>
-        </div>
-    </div>
-</div>
+@include('layouts.address_modal')
 @endsection

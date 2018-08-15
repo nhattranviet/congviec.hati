@@ -156,15 +156,18 @@ class NhanKhauController extends Controller
     {
         $data['idhoso'] = $idhoso;
         $data['thongtinhoso'] = NhanhokhauLibrary::getHosoInfo($idhoso);
-
-        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
         $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
         $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
-        $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+        // $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['list_quanhechuho'] = DB::table('tbl_moiquanhe')->where(array(['loaiquanhe', '=', 'nhanthan'], ['id', '!=', 1]))->get();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
         return view('nhankhau-layouts.thuongtru.dangkythuongtru', $data);
     }
 
@@ -209,7 +212,6 @@ class NhanKhauController extends Controller
 
     public function getSuanhankhau($idnhankhau)
     {
-        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
@@ -217,6 +219,11 @@ class NhanKhauController extends Controller
         $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
         $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['nhankhau'] = NhanhokhauLibrary::getNhankhauInfo($idnhankhau);
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
         return view('nhankhau-layouts.thuongtru.editnhankhau', $data);
     }
 
@@ -273,13 +280,17 @@ class NhanKhauController extends Controller
             return redirect()->route('thay-doi-chu-ho', $data['nhankhau']->idhoso)->with('alert_message', $message);
         }
         $data['list_truonghopxoa'] = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->get();
-        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
         $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
         $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
         $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
         
         return view('nhankhau-layouts.thuongtru.xoathuongtru', $data);
     }
@@ -332,13 +343,17 @@ class NhanKhauController extends Controller
         $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso);
         $data['idhoso'] = $idhoso;
 
-        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
         // $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
         // $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
         // $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
 
         $data['list_truonghopxoa'] = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->get();
         return view('nhankhau-layouts.thuongtru.chitiethosoHGD', $data);
@@ -403,10 +418,14 @@ class NhanKhauController extends Controller
     {
         $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso);
         $data['idhoso'] = $idhoso;
-        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
         return view('nhankhau-layouts.thuongtru.chitiethosoHGD_caplai', $data);
     }
 
@@ -452,10 +471,14 @@ class NhanKhauController extends Controller
         $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso);
         $data['idhoso'] = $idhoso;
 
-        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
         return view('nhankhau-layouts.thuongtru.chitiethosoHGD_capdoi', $data);
     }
 
@@ -556,13 +579,17 @@ class NhanKhauController extends Controller
         $data['str_ret'] = $str;
         $data['idhoso'] = $idhoso;
 
-        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
         $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
         $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
         $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
 
         return view('nhankhau-layouts.thuongtru.tachhokhau', $data);
     }
