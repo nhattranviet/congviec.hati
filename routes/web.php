@@ -12,7 +12,16 @@ Route::get('/test', function(){
     // ->pluck('hoten', 'idcanbo')
     // ->toArray();
     // dd($data_canbo_pc44);
-
+    $ngaydau = '2018-09-01';
+    $ngaycuoi = '2018-09-02';
+    if( $ngaydau < $ngaycuoi )
+    {
+        echo 'ok';
+    }
+    else {
+        echo 'no ok';
+    }
+    die;
 
     dd(UserLibrary::getListDoidonVi(2));
 

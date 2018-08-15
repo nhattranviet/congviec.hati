@@ -89,7 +89,13 @@ class BaocaoThongkeController extends Controller
 
     //----------------TẠM TRÚ----------------
     public $tamtru_gioitinh_nu = 0;
+    public $tamtru_nk_better_14_total = 0;
+    public $tamtru_tongso_ho = 0;
+    public $tamtru_tongso_nhankhau = 0;
     public $tamtru_count_thanhthi = 0;
+    public $arr_id_ho_tamtru = array();
+
+
     public $tamtru_ngoaitinhden_ho = 0;
     public $tamtru_ngoaitinhden_nk = 0;
     public $tamtru_ngoaitinhden_nk_thanhthi = 0;
@@ -117,12 +123,31 @@ class BaocaoThongkeController extends Controller
     public $tamtru_giahantamtru_nk = 0;
     //--------------END TẠM TRÚ----------------
 
+    
+
     public $messages = [
         'keyword.required' => ':attribute Từ khóa tìm kiếm không được trống',
         'keyword.min' => ':attribute Từ khóa tìm kiếm dài ít nhất 3 ký tự',
         'tungay.required' => ':attribute Từ ngày không được trống',
         'denngay.required' => ':attribute Đến ngày không được trống',
-        
+
+        'khongcutru_ho.required' => 'Số hộ không cư trút tại địa phương không được để trống',
+        'khongcutru_nhankhau.required' => 'Số nhân khẩu không cư trút tại địa phương không được để trống',
+        'khongcutru_nhankhauthanhthi.required' => 'Số nhân khẩu thành thị không cư trút tại địa phương không được để trống',
+        'khongcutru_nhankhaunu.required' => 'Số nhân khẩu nữ không cư trút tại địa phương không được để trống',
+        'khongcutru_nhankhautu14.required' => 'Số nhân khẩu từ 14 tuôi không cư trút tại địa phương không được để trống',
+
+        'khongcutru_ho.integer' => 'Số hộ không cư trút tại địa phương phải là dạng số nguyên',
+        'khongcutru_nhankhau.integer' => 'Số nhân khẩu không cư trút tại địa phương phải là dạng số nguyên',
+        'khongcutru_nhankhauthanhthi.integer' => 'Số nhân khẩu thành thị không cư trút tại địa phương phải là dạng số nguyên',
+        'khongcutru_nhankhaunu.integer' => 'Số nhân khẩu nữ không cư trút tại địa phương phải là dạng số nguyên',
+        'khongcutru_nhankhautu14.integer' => 'Số nhân khẩu từ 14 tuôi không cư trút tại địa phương phải là dạng số nguyên',
+
+        'khongcutru_ho.min' => 'Số hộ không cư trút tại địa phương phải là lớn hơn :min',
+        'khongcutru_nhankhau.min' => 'Số nhân khẩu không cư trút tại địa phương phải là lớn hơn :min',
+        'khongcutru_nhankhauthanhthi.min' => 'Số nhân khẩu thành thị không cư trút tại địa phương phải là lớn hơn :min',
+        'khongcutru_nhankhaunu.min' => 'Số nhân khẩu nữ không cư trút tại địa phương phải là lớn hơn :min',
+        'khongcutru_nhankhautu14.min' => 'Số nhân khẩu từ 14 tuôi không cư trút tại địa phương phải là lớn hơn :min'
     ];
 
     public function __construct(NhanKhau $nhankhau, QuocGia $quocgia, Relation $relation, Religion $religion
@@ -241,11 +266,6 @@ class BaocaoThongkeController extends Controller
         {
             $arrWhere[] = array('idnghenghiep', '=', $request->idnghenghiep);
         }
-        // if($request->iddantoc != 'all')
-        // {
-        //     $arrWhere[] = array('iddantoc', '=', $request->iddantoc);
-        // }
-        
         
         $data_temp = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
@@ -270,8 +290,13 @@ class BaocaoThongkeController extends Controller
     public function getThongkeToResult(Request $request)
     {
         $validator = Validator::make($request->all(), [
-          'tungay' => 'required',
-          'denngay' => 'required',
+            'tungay' => 'required',
+            'denngay' => 'required',
+            // 'khongcutru_ho' => 'required|integer|min:0',
+            // 'khongcutru_nhankhau' => 'required|integer|min:0',
+            // 'khongcutru_nhankhauthanhthi' => 'required|integer|min:0',
+            // 'khongcutru_nhankhaunu' => 'required|integer|min:0',
+            // 'khongcutru_nhankhautu14' => 'required|integer|min:0',
         ], $this->messages);
 
         if ($validator->fails()) {
@@ -282,8 +307,6 @@ class BaocaoThongkeController extends Controller
         {
             return response()->json(['error' => array('Báo cáo từ ngày phải trước Báo cáo đến ngày')]);
         }
-
-        
         
         $this->ago_14_year = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 14 years'));
 
@@ -301,12 +324,14 @@ class BaocaoThongkeController extends Controller
             if( in_array($value->idxa_thuongtru, $this->current_thanhthi)  ) $thuongtru_count_thanhthi++;
             if($value->gioitinh == 0) $thuongtru_gioitinh_nu++;
         }
+
         $thuongtru_nk_better_14 = $data_sonhankhau->whereDate('ngaysinh', '<=', $this->ago_14_year)->count();
        
 
         //-----------------------------TAM TRU--------------------
 
         
+        $denngay_Y_m_d = date('Y-m-d', strtotime($request->denngay));
         $data_tamtru_chunk = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
@@ -314,11 +339,25 @@ class BaocaoThongkeController extends Controller
             ['tbl_sotamtru.deleted_at', '=', NULL],
             ['tbl_tamtru.deleted_at', '=', NULL],
         ))
+        ->whereDate('tamtru_denngay', '>=', $denngay_Y_m_d)
+        ->whereDate('tamtru_tungay', '<=', $denngay_Y_m_d)
         ->orderBy('tbl_tamtru.id')
-        ->select('idquanhechuho', 'idxa_tamtru', 'idhuyen_tamtru', 'idtinh_tamtru', 'idxa_thuongtru', 'idhuyen_thuongtru', 'idtinh_thuongtru', 'gioitinh', 'ngaysinh')->chunk(1000, function($list_nhankhau){
-            
+        ->select( 'sotamtru_so', 'tbl_sotamtru.type', 'idsotamtru', 'idquanhechuho', 'idxa_tamtru', 'idhuyen_tamtru', 'idtinh_tamtru', 'idxa_thuongtru', 'idhuyen_thuongtru', 'idtinh_thuongtru', 'gioitinh', 'ngaysinh', 'tamtru_tungay', 'tamtru_denngay')
+        ->chunk(1000, function($list_nhankhau){
             foreach($list_nhankhau as $nhankhau)
-            {   
+            {
+                $this->tamtru_tongso_nhankhau++;
+                // if( $nhankhau->type = 'hogiadinh' && ! in_array( $nhankhau->idsotamtru, $this->arr_id_ho_tamtru ) )
+                if( $nhankhau->type == 'hogiadinh' && ! in_array( $nhankhau->idsotamtru, $this->arr_id_ho_tamtru ) )
+                {
+                    $this->arr_id_ho_tamtru[] = $nhankhau->idsotamtru;
+                }
+
+                if($nhankhau->ngaysinh <= $this->ago_14_year)
+                {
+                    $this->tamtru_nk_better_14_total++;
+                }
+
                 if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->tamtru_count_thanhthi++;
                 if($nhankhau->gioitinh == 0) $this->tamtru_gioitinh_nu++;
                 if( $nhankhau->idtinh_thuongtru != $this->current_tinh )    //Ngoài tỉnh đến
@@ -359,18 +398,9 @@ class BaocaoThongkeController extends Controller
             }
         });
         
-        $tamtru_sotamtru_data = DB::connection('nhanhokhau')->table('tbl_sotamtru')->where('deleted_at', NULL);
-        $tamtru_tongso_ho = $tamtru_sotamtru_data->count();
-
-        $data_tamtru = DB::connection('nhanhokhau')->table('tbl_tamtru')
-        ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
-        ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
-        ->where(array(
-            ['tbl_sotamtru.deleted_at', '=', NULL],
-            ['tbl_tamtru.deleted_at', '=', NULL],
-        ));
-        $tamtru_tongso_nhankhau = $data_tamtru->count();
-        $tamtru_nk_better_14 = $data_tamtru->whereDate('ngaysinh', '<=', $this->ago_14_year)->count();
+        // die;
+        // dd($this->arr_id_ho_tamtru);
+        $this->tamtru_tongso_ho = count($this->arr_id_ho_tamtru);
         
         $this->list_truonghopxoa = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->pluck('id')->toArray();
         //History
@@ -592,11 +622,11 @@ class BaocaoThongkeController extends Controller
                     <td>NK</td>
                 </tr>
                 <tr>
-                    <td>'.$tamtru_tongso_ho.'</td>
-                    <td>'.$tamtru_tongso_nhankhau.'</td>
+                    <td>'.$this->tamtru_tongso_ho.'</td>
+                    <td>'.$this->tamtru_tongso_nhankhau.'</td>
                     <td>'.$this->tamtru_count_thanhthi.'</td>
                     <td>'.$this->tamtru_gioitinh_nu.'</td>
-                    <td>'.$tamtru_nk_better_14.'</td>
+                    <td>'.$this->tamtru_nk_better_14_total.'</td>
                     <td>'.$this->tamtru_ngoaitinhden_ho.'</td>
                     <td>'.$this->tamtru_ngoaitinhden_nk.'</td>
                     <td>'.$this->tamtru_ngoaitinhden_nk_thanhthi.'</td>
@@ -785,7 +815,7 @@ class BaocaoThongkeController extends Controller
             </tbody>
         </table>
         ';
-
+        echo $html_table; die;
         return response()->json(['html' => $html_table]);
     }
 }
