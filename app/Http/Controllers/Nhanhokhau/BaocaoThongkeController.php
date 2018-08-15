@@ -271,10 +271,10 @@ class BaocaoThongkeController extends Controller
         ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
         ->where($arrWhere);
-        // if($request->namsinh != NULL)
-        // {
-        //     $data_temp = $data_temp->whereYear('ngaysinh', $request->namsinh);
-        // }
+        if($request->namsinh != NULL)
+        {
+            $data_temp = $data_temp->whereYear('ngaysinh', $request->namsinh);
+        }
         $data['briefs'] = $data_temp->select('tbl_nhankhau.*', 'tbl_hoso.hokhau_so', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.id as idhoso')
         ->paginate(10);
         $data['total'] = $data['briefs']->total();
