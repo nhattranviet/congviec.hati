@@ -65,13 +65,18 @@ class NhanKhauController extends Controller
     }
 
     public function create() {
-        $this->data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $this->data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $this->data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $this->data['nations'] = NhanhokhauLibrary::getListDanToc();
         $this->data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
         $this->data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
         $this->data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+
+        $this->data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $this->data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
+        $this->data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
+        $this->data['wards'] = NhanhokhauLibrary::getListXaPhuongTT(config('user_config.default_hanhchinh.district'));
+
         return view('nhankhau-layouts.thuongtru/create', $this->data);
     }
 

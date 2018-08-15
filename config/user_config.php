@@ -33,4 +33,10 @@ return [
     ],
 
     'idmoiquanhechuho' => 1,
+
+    'default_hanhchinh' => [
+        'country' => 1,
+        'province' => 19,
+        'district' => 202,
+    ]
 ];
