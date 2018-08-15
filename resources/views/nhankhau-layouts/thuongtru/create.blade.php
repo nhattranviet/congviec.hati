@@ -4,10 +4,24 @@
     <script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
     <script type="text/javascript">
         $(document).ready(function() {
+            var modal = $('#address-modal');
             var config = {};
             config.entities_latin = false;
             config.tabIndex = 24;
             $('.ckeditor').ckeditor(config);
+
+
+
+            $(document).on('focus', '.addressPickerClass', function(event) {
+                event.preventDefault();
+                modal.modal('show');
+            });
+
+
+
+
+
+
         });
     </script>
 @endsection
@@ -90,7 +104,7 @@
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                                         <fieldset class="form-group" id="addressPickerGroup">
                                                             <label for="thuongtru_view">Nơi đăng ký thường trú <span class="text-danger">*</span></label>
-                                                            <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control" id="thuongtru_view" tabindex="6">
+                                                            <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control addressPickerClass" id="thuongtru_view" tabindex="6">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
                                                             <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_thuongtru" class="form-control" id="idquocgia_thuongtru" value="">
                                                             <input type="hidden" data-addr="" hidden="hidden" name="idtinh_thuongtru" class="form-control" id="idtinh_thuongtru" value="">

@@ -8,38 +8,41 @@ $(document).ready(function() {
   // Address picker
   $(document).on('focus', '#addressPicker', function(event) {
     event.preventDefault();
-
+    // $("#wait").css("display", "block");
     // change title
-    modal.find('.modal-title').text($(this).attr('placeholder'));
+    // modal.find('.modal-title').text($(this).attr('placeholder'));
 
+
+    // alert('Nhat oi');
   
 
-    el = $(this).parent();
+    // el = $(this).parent();
 
-    // input values
-    inputs = el.find('input[type=hidden]').toArray();
+    // // input values
+    // inputs = el.find('input[type=hidden]').toArray();
 
-    if (inputs[0].value !== "") {
+    // if (inputs[0].value !== "") {
 
-      // set country
-      $('#country').val(inputs[0].value).trigger("change");
+    //   // set country
+    //   $('#country').val(inputs[0].value).trigger("change");
 
-      // set province
-      getProvinces(inputs[0].value, inputs[1].value);
-    } 
+    //   // set province
+    //   getProvinces(inputs[0].value, inputs[1].value);
+    // } 
 
-    // set district
-    if (inputs[1].value !== "") {
-      getDistricts(inputs[1].value, inputs[2].value);
-    }
+    // // set district
+    // if (inputs[1].value !== "") {
+    //   getDistricts(inputs[1].value, inputs[2].value);
+    // }
 
-    // set ward
-    if (inputs[2].value !== "") {
-      getWards(inputs[2].value, inputs[3].value);
-    }
+    // // set ward
+    // if (inputs[2].value !== "") {
+    //   getWards(inputs[2].value, inputs[3].value);
+    // }
 
-    // show modal
-    modal.modal();
+    // // show modal
+    // // $("#wait").css("display", "none");
+    // modal.modal();
 
   });
 
