@@ -122,7 +122,7 @@ class TamtruLibrary
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
         ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
         ->where('idsotamtru', $idsotamtru)
-        ->select('tbl_tamtru.deleted_at', 'idsotamtru', 'tamtru_tungay', 'tamtru_denngay', 'tbl_nhankhau.hoten', 'tbl_sotamtru.sotamtru_so', 'tbl_tamtru.idquanhechuho', 'chitiet_tamtru', 'idxa_tamtru', 'idhuyen_tamtru', 'idtinh_tamtru', 'idquocgia_tamtru', 'idnhankhau', 'chitiet_thuongtru', 'idxa_thuongtru', 'idhuyen_thuongtru', 'idtinh_thuongtru', 'idquocgia_thuongtru');
+        ->select('tbl_tamtru.deleted_at', 'idsotamtru', 'tamtru_tungay', 'tamtru_denngay', 'tbl_nhankhau.hoten', 'tbl_nhankhau.id as idnhankhau', 'tbl_sotamtru.sotamtru_so', 'tbl_tamtru.idquanhechuho', 'tbl_tamtru.id as idtamtru', 'chitiet_tamtru', 'idxa_tamtru', 'idhuyen_tamtru', 'idtinh_tamtru', 'idquocgia_tamtru', 'idnhankhau', 'chitiet_thuongtru', 'idxa_thuongtru', 'idhuyen_thuongtru', 'idtinh_thuongtru', 'idquocgia_thuongtru');
         if( $first )
         {
             $data = $data->first();
@@ -479,5 +479,14 @@ class TamtruLibrary
 
         return DB::connection('nhanhokhau')->table('tbl_tamtru')->insert($data_tamtru);
     }
+
+    // public static function getListNhankhauSotamtru($idsotamtru)
+    // {
+    //     return DB::connection('nhanhokhau')->table('tbl_tamtru')
+    //     ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
+    //     ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
+    //     ->where('idsotamtru', $idsotamtru)
+    //     ->select('tbl_sotamtru.type', 'tbl_nhankhau.hoten', 'sotamtru_so', 'tbl_sotamtru.id as idsotamtru', 'tbl_sotamtru.idquocgia_tamtru', 'tbl_sotamtru.idtinh_tamtru', 'tbl_sotamtru.idhuyen_tamtru', 'tbl_sotamtru.idxa_tamtru', 'tbl_sotamtru.chitiet_tamtru' )->get();
+    // }
 
 }

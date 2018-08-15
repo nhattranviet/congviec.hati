@@ -326,10 +326,15 @@ class NhanKhauController extends Controller
     {
         $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso);
         $data['idhoso'] = $idhoso;
-        $data['countries'] = $this->quocgia->get();
-        $data['relations'] = $this->relation->get();
-        $data['religions'] = $this->religion->get();
-        $data['nations'] = $this->nation->get();
+
+        $data['countries'] = NhanhokhauLibrary::getListQuocgia();
+        $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        // $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
+        // $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
+        // $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+
         $data['list_truonghopxoa'] = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->get();
         return view('nhankhau-layouts.thuongtru.chitiethosoHGD', $data);
     }

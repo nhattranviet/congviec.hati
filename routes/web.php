@@ -177,6 +177,9 @@ Route::post('/tam-tru/{idnhankhau}/{idsotamtru}/post-xoa-tam-tru-nhan-khau', 'Nh
 Route::get('/tam-tru/{idnhankhau}/{idsotamtru}/get-gia-han-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@getGiaHanTamTruNhanKhau')->name('get-gia-han-tam-tru-nhan-khau');
 Route::post('/tam-tru/{idnhankhau}/{idsotamtru}/post-gia-han-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@postGiaHanTamTruNhanKhau')->name('post-gia-han-tam-tru-nhan-khau');
 
+Route::get('/tam-tru/{idsotamtru}/thay-doi-chu-ho-tam-tru', 'Nhanhokhau\TamtruController@getThaydoichuho')->name('get-thay-doi-chu-ho-tam-tru');
+Route::post('/tam-tru/{idsotamtru}/thay-doi-chu-ho-tam-tru', 'Nhanhokhau\TamtruController@postThaydoichuho')->name('post-thay-doi-chu-ho-tam-tru');
+
 Route::get('/nhan-ho-khau-home', 'Nhanhokhau\HomeNhanhokhauController@index')->name('nhan-ho-khau-home');
 
 //-------------------CÔNG VIỆC-----------------------

@@ -32,7 +32,7 @@
                                 </div>
                             </p>
                         @endif
-                        <form id="form-nhankhau" action="{{ route('thay-doi-chu-ho', $idhoso) }}" method="POST" role="form">
+                        <form id="form-nhankhau" action="{{ route('post-thay-doi-chu-ho-tam-tru', $idsotamtru) }}" method="POST" role="form">
                             @csrf
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
@@ -49,10 +49,10 @@
                                                     <select name="idquanhechuho[]" class="form-control select2 {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}">
                                                         <option value="">Chọn quan hệ</option>
                                                         @foreach($list_quanhechuho as $quanhechuho)
-                                                        <option value="{{ $quanhechuho->id }}"  {{ old('idquanhechuho[]', $nhankhau->idquanhechuho) == $quanhechuho->id ? 'selected' : '' }}>{{ $quanhechuho->name }}</option>
+                                                        <option {{ ( $quanhechuho->id == $nhankhau->idquanhechuho ) ? 'selected' : NULL }} value="{{ $quanhechuho->id }}">{{ $quanhechuho->name }}</option>
                                                         @endforeach
                                                     </select>
-                                                    <input type="hidden" name="id_in_sohokhau[]" value="{{ $nhankhau->id }}">
+                                                    <input type="hidden" name="id_in_sotamtru[]" value="{{ $nhankhau->idtamtru }}">
                                                 </fieldset>
                                             </div>
                                         @endforeach

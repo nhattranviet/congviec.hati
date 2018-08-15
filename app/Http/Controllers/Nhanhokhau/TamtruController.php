@@ -329,6 +329,11 @@ class TamtruController extends Controller
 
     public function getXoaTamTruNhanKhau($idnhankhau, $idsotamtru)
     {
+        if( DB::connection('nhanhokhau')->table('tbl_tamtru')->where( array(['idnhankhau', '=', $idnhankhau ], ['idsotamtru', '=', $idsotamtru], ['type', '=', 'hogiadinh']) )->value('idquanhechuho') == 1 )
+        {
+            $message = array('type' => 'warning', 'content' => 'Người này là chủ hộ, bạn phải thay chủ hộ trước khi xóa tạm trú');
+            return redirect()->route('get-thay-doi-chu-ho-tam-tru', $idsotamtru)->with('alert_message', $message);
+        }
         $data['nhankhau'] = TamtruLibrary::getChitietNhankhauTamtru($idnhankhau, $idsotamtru);
         $data['idnhankhau'] = $idnhankhau;
         $data['idsotamtru'] = $idsotamtru;
@@ -380,6 +385,42 @@ class TamtruController extends Controller
             DB::connection('nhanhokhau')->table('tbl_sotamtru')->where('id', $idsotamtru)->update( $delete_update );
         }
         return response()->json(['success' => 'Thành công ', 'url' => route('chi-tiet-so-tam-tru',$idsotamtru)]);
+    }
+
+    public function getThaydoichuho( $idsotamtru )
+    {
+        $data['list_nhankhau'] = TamtruLibrary::getChitietSotamtru($idsotamtru);
+        $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
+        $data['idsotamtru'] = $idsotamtru;
+        return view('nhankhau-layouts.tamtru.thaydoichuho', $data);
+    }
+
+    public function postThaydoichuho(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'idquanhechuho.*' => 'required'
+        ], TamtruLibrary::getMessageRule());
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
+
+        $num = $this->checkexistChuho($request->idquanhechuho);
+        if($num == 0)
+        {
+            return response()->json(['error' => array('Chủ hộ bắt buộc phải chọn')]);
+        }
+        elseif($num > 1)
+        {
+            return response()->json(['error' => array('Chủ hộ chỉ được duy nhất 01 người')]);
+        }
+
+        for($i = 0; $i < count($request->id_in_sotamtru); $i++)
+        {
+            DB::connection('nhanhokhau')->table('tbl_tamtru')->where('id',$request->id_in_sotamtru[$i])->update(['idquanhechuho' => $request->idquanhechuho[$i]]);
+        }
+
+        return response()->json(['success' => 'Thay đổi quan hệ chủ hộ thành công ', 'url' => route('chi-tiet-so-tam-tru', $id)]);
     }
 
     public function getGiaHanTamTruNhanKhau($idnhankhau, $idsotamtru)

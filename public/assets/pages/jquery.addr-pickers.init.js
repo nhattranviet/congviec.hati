@@ -12,8 +12,7 @@ $(document).ready(function() {
     // change title
     modal.find('.modal-title').text($(this).attr('placeholder'));
 
-    // show modal
-    modal.modal();
+  
 
     el = $(this).parent();
 
@@ -38,6 +37,10 @@ $(document).ready(function() {
     if (inputs[2].value !== "") {
       getWards(inputs[2].value, inputs[3].value);
     }
+
+    // show modal
+    modal.modal();
+
   });
 
   $(document).on('click', '#clearAddress', function(event) {

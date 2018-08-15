@@ -347,7 +347,6 @@ class BaocaoThongkeController extends Controller
             foreach($list_nhankhau as $nhankhau)
             {
                 $this->tamtru_tongso_nhankhau++;
-                // if( $nhankhau->type = 'hogiadinh' && ! in_array( $nhankhau->idsotamtru, $this->arr_id_ho_tamtru ) )
                 if( $nhankhau->type == 'hogiadinh' && ! in_array( $nhankhau->idsotamtru, $this->arr_id_ho_tamtru ) )
                 {
                     $this->arr_id_ho_tamtru[] = $nhankhau->idsotamtru;
@@ -397,7 +396,7 @@ class BaocaoThongkeController extends Controller
                 
             }
         });
-        
+
         // die;
         // dd($this->arr_id_ho_tamtru);
         $this->tamtru_tongso_ho = count($this->arr_id_ho_tamtru);
