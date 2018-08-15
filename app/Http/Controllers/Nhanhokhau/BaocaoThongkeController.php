@@ -292,11 +292,11 @@ class BaocaoThongkeController extends Controller
         $validator = Validator::make($request->all(), [
             'tungay' => 'required',
             'denngay' => 'required',
-            // 'khongcutru_ho' => 'required|integer|min:0',
-            // 'khongcutru_nhankhau' => 'required|integer|min:0',
-            // 'khongcutru_nhankhauthanhthi' => 'required|integer|min:0',
-            // 'khongcutru_nhankhaunu' => 'required|integer|min:0',
-            // 'khongcutru_nhankhautu14' => 'required|integer|min:0',
+            'khongcutru_ho' => 'required|integer|min:0',
+            'khongcutru_nhankhau' => 'required|integer|min:0',
+            'khongcutru_nhankhauthanhthi' => 'required|integer|min:0',
+            'khongcutru_nhankhaunu' => 'required|integer|min:0',
+            'khongcutru_nhankhautu14' => 'required|integer|min:0',
         ], $this->messages);
 
         if ($validator->fails()) {
@@ -545,8 +545,8 @@ class BaocaoThongkeController extends Controller
          ';
 
         $html_table .= '<h5>I) HỘ, NHÂN KHẨU ĐĂNG KÝ THƯỜNG TRÚ:</h5>
-        <p>Tổng số: ...  hộ; ... nhân khẩu</p>
-        <p>Trong đó: ...  NK thành thị; NK nữ; NK từ 14 tuổi trở lên.</p>';
+        <p>Tổng số: '.($thuongtru_tongsoho + $this->tamtru_tongso_ho - $request->khongcutru_ho).'  hộ; '.($thuongtru_tongnhankhau + $this->tamtru_tongso_nhankhau - $request->khongcutru_nhankhau).' nhân khẩu</p>
+        <p>Trong đó: '.($thuongtru_count_thanhthi + $this->tamtru_count_thanhthi - $request->khongcutru_nhankhauthanhthi).'  NK thành thị; '.( $thuongtru_gioitinh_nu + $this->tamtru_gioitinh_nu - $request->khongcutru_nhankhaunu ).' NK nữ; '.( $thuongtru_nk_better_14 + $this->tamtru_nk_better_14_total - $request->khongcutru_nhankhautu14 ).' NK từ 14 tuổi trở lên.</p>';
 
         $html_table .= '<h5>II) CÁC LOẠI HỘ, NHÂN KHẨU</h5>
         <table border="1" cellspacing="0" cellpadding="0">
@@ -580,11 +580,11 @@ class BaocaoThongkeController extends Controller
                     <td>'.$thuongtru_count_thanhthi.'</td>
                     <td>'.$thuongtru_gioitinh_nu.'</td>
                     <td>'.$thuongtru_nk_better_14.'</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>'.$request->khongcutru_ho.'</td>
+                    <td>'.$request->khongcutru_nhankhau.'</td>
+                    <td>'.$request->khongcutru_nhankhauthanhthi.'</td>
+                    <td>'.$request->khongcutru_nhankhaunu.'</td>
+                    <td>'.$request->khongcutru_nhankhautu14.'</td>
                 </tr>
             </tbody>
         </table>

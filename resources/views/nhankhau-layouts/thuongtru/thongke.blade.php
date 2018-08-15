@@ -45,7 +45,7 @@
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                             <fieldset class="form-group">
                                                 <label for="hoten">Họ tên</label>
-                                                <input type="text" name="hoten" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="hoten" value="">
+                                                <input type="text" name="hoten" parsley-trigger="change" placeholder="Nhập họ tên tìm kiếm" class="form-control" id="hoten" value="">
                                             </fieldset>
                                             <fieldset class="form-group">
                                                 <label for="datepicker">Đăng ký: từ ngày</label>
