@@ -1,7 +1,34 @@
 @extends('layouts.masterPage')
 
 @section('js')
-<script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
+    <script src="{{ asset('/js/FileSaver.js') }}"></script>
+    <script src="{{ asset('/js/jquery.wordexport.js') }}"></script>
+    <script type="text/javascript">
+        // jQuery(document).ready(function ($) {
+        //     $("a.word-export").click(function (event) {
+        //         alert('test');
+        //         $("#page-content").wordExport();
+        //     });
+            
+        // });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // var config = {};
+            // config.entities_latin = false
+            // $('.ckeditor').ckeditor(config);
+            // alert('test');
+            $(document).on("click", "#exportToWord", function(event){
+                event.preventDefault();
+                $("#page-content").wordExport();
+            })
+
+            
+
+        });
+
+    </script>
 @endsection
 
 @section('css')
@@ -9,7 +36,13 @@
         tr {
             padding: 5px;
         }
+        @page {
+                    mso-page-orientation: landscape;
+                    size: 841.95pt 595.35pt; /* EU A4 */
+                }
     </style>
+
+    
 @endsection
 
 @section('content')
@@ -27,16 +60,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                    <h4 class="header-title m-t-0 pull-left">Thống kê</h4>
-                </div>
                 <div class="col-xs-12">
                     <div class="card-box">
 
                         <form id="tim-kiem-hoso" action="{{ route('get-thong-ke-nhan-khau') }}" idresult="nhankhautable" method="GET" role="form">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
-                                    <h4 class="header-title m-t-0 pull-left">Thông tin nhân khẩu</h4>
+                                    <h4 class="header-title m-t-0 pull-left">Thống kê</h4>
                                 </div>
                                 <div class="col-md-12 col-xs-12 m-t-sm-40 m-t-20 m-b-40">
                                     <div class="row hokhau-code">
@@ -72,31 +102,31 @@
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                             <fieldset class="form-group">
                                                 <label for="khongcutru_ho">Tổng số hộ <span class="text-danger">*</span></label>
-                                                <input type="text" name="khongcutru_ho" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_ho" value="">
+                                                <input type="text" name="khongcutru_ho" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_ho" value="0">
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                             <fieldset class="form-group">
                                                 <label for="khongcutru_nhankhau">Tổng số nhân khẩu <span class="text-danger">*</span></label>
-                                                <input type="text" name="khongcutru_nhankhau" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhau" value="">
+                                                <input type="text" name="khongcutru_nhankhau" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhau" value="0">
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                             <fieldset class="form-group">
                                                 <label for="khongcutru_nhankhauthanhthi">Nhân khẩu thành thị <span class="text-danger">*</span></label>
-                                                <input type="text" name="khongcutru_nhankhauthanhthi" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhauthanhthi" value="">
+                                                <input type="text" name="khongcutru_nhankhauthanhthi" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhauthanhthi" value="0">
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                             <fieldset class="form-group">
                                                 <label for="khongcutru_nhankhaunu">Nhân khẩu nữ <span class="text-danger">*</span></label>
-                                                <input type="text" name="khongcutru_nhankhaunu" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhaunu" value="">
+                                                <input type="text" name="khongcutru_nhankhaunu" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhaunu" value="0">
                                             </fieldset>
                                         </div>
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                             <fieldset class="form-group">
                                                 <label for="khongcutru_nhankhautu14">Nhân khẩu từ 14 tuổi <span class="text-danger">*</span></label>
-                                                <input type="text" name="khongcutru_nhankhautu14" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhautu14" value="">
+                                                <input type="text" name="khongcutru_nhankhautu14" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="khongcutru_nhankhautu14" value="0">
                                             </fieldset>
                                         </div>
                                     </div>
@@ -105,6 +135,7 @@
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
                                     <button id="submitBtns" type="submit" class="btn btn-primary">Báo cáo</button>
+                                    <button id="exportToWord" class="btn btn-primary"> <i class="fa fa-file-word-o"></i> Export</button>
                                 </div>
                             </div>
                             {{ csrf_field() }}
@@ -112,7 +143,7 @@
                     </div>
                 </div>
 
-                <div id="nhankhautable" class="col-xs-12 loading">
+                <div id="nhankhautable" class="col-xs-12 loading WordSection1">
 
                 </div>
             </div>
@@ -122,8 +153,4 @@
     <!-- content -->
 </div>
 
-@endsection
-
-@section('js')
-<script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
 @endsection
