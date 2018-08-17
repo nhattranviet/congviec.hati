@@ -30,7 +30,6 @@ use PhpOffice\PhpWord\Style\TablePosition;
 
 class BaocaoThongkeController extends Controller
 {
-
     //Khai báo các thủ tục và địa giới
     public $thutuc_capmoi = 1;
     public $thutuc_caplai = 2;
@@ -60,73 +59,7 @@ class BaocaoThongkeController extends Controller
 
     public $list_truonghopxoa;
     //End khai báo các thủ tục và địa giới
-
-    //-----------THƯỜNG TRÚ------------------
-    public $thuongtru_ho_capmoi = 0;
-    public $thuongtru_ho_caplai = 0;
-    public $thuongtru_ho_capdoi = 0;
-    public $thuongtru_ho_tach = 0;
-    public $thuongtru_ho_ngoaitinh = 0;
-    public $thuongtru_ho_ngoaihuyen = 0;
-    public $thuongtru_ho_dangkynoimoi = 0;
-    public $thuongtru_ho_chuyenkhau_ngoaihuyen = 0;
-    public $thuongtru_ho_chuyenkhau_ngoaitinh = 0;
-    public $thuongtru_ho_xoa = 0;
-    
-    public $thuongtru_nk_ngoaitinh = 0;
-    public $thuongtru_nk_ngoaihuyen = 0;
-    public $thuongtru_nk_ngoainuoc = 0;
-    public $thuongtru_nk_dangky = 0;
-    public $thuongtru_nk_moisinh = 0;
-    
-    public $thuongtru_nk_xoa = 0;
-    public $thuongtru_nk_chet = 0;
-    public $thuongtru_nk_caqd = 0;
-    public $thuongtru_nk_huy = 0;
-    public $thuongtru_nk_dangkynoimoi = 0;
-
-    public $thuongtru_nk_chuyenkhau_ngoaihuyen = 0;
-    public $thuongtru_nk_chuyenkhau_ngoaitinh = 0;
-    public $thuongtru_nk_dieuchinhthaydoi = 0;
-    //-----------END THƯỜNG TRÚ------------------
-
-    //----------------TẠM TRÚ----------------
-    public $tamtru_gioitinh_nu = 0;
-    public $tamtru_nk_better_14_total = 0;
-    public $tamtru_tongso_ho = 0;
-    public $tamtru_tongso_nhankhau = 0;
-    public $tamtru_count_thanhthi = 0;
-    public $arr_id_ho_tamtru = array();
-
-
-    public $tamtru_ngoaitinhden_ho = 0;
-    public $tamtru_ngoaitinhden_nk = 0;
-    public $tamtru_ngoaitinhden_nk_thanhthi = 0;
-    public $tamtru_ngoaitinhden_nk_nu = 0;
-    public $tamtru_ngoaitinhden_nk_tren_14 = 0;
-
-    public $tamtru_ngoaitinh_tronghuyen_den_nk = 0;
-    public $tamtru_ngoaitinh_tronghuyen_den_ho = 0;
-    public $tamtru_ngoaitinh_tronghuyenden_nk_thanhthi = 0;
-    public $tamtru_ngoaitinh_tronghuyen_nk_nu = 0;
-    public $tamtru_ngoaitinh_tronghuyen_nk_tren_14 = 0;
-
-    public $tamtru_ngoaixa_trongtinh_den_nk = 0;
-    public $tamtru_ngoaixa_trongtinh_den_ho = 0;
-
-    public $tamtru_ngoaixa_trongtinh_den_nk_thanhthi = 0;
-    public $tamtru_ngoaixa_trongtinh_den_nk_nu = 0;
-    public $tamtru_ngoaixa_trongtinh_den_nk_tren_14 = 0;
-
-    public $tamtru_dangky_ho = 0;
-    public $tamtru_dangky_nk = 0;
-    public $tamtru_ngoaitinhden_dangky_ho = 0;
-    public $tamtru_ngoaitinhden_dangky_nk = 0;
-    public $tamtru_dangky_canhan_so = 0;
-    public $tamtru_giahantamtru_nk = 0;
-    //--------------END TẠM TRÚ----------------
-
-    
+    public $data;
 
     public $messages = [
         'keyword.required' => ':attribute Từ khóa tìm kiếm không được trống',
@@ -313,27 +246,58 @@ class BaocaoThongkeController extends Controller
         
         $this->ago_14_year = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 14 years'));
 
-        $thuongtru_tongsoho = DB::connection('nhanhokhau')->table('tbl_hoso')->where('deleted_at', NULL)->count();
-        $data_sonhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')
+        
+        $this->data['thuongtru_tongnhankhau'] = 0;
+        $this->data['thuongtru_count_thanhthi'] = 0;
+        $this->data['thuongtru_gioitinh_nu'] = 0;
+        $this->data['thuongtru_nk_better_14'] = 0;
+        $this->data['thuongtru_tongsoho'] = 0;
+        
+        DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id', '=', 'tbl_sohokhau.idhoso')
-        ->where('tbl_hoso.deleted_at', NULL);
-        $thuongtru_tongnhankhau = $data_sonhankhau->count();
+        ->where('tbl_hoso.deleted_at', NULL)
+        ->where('tbl_sohokhau.deleted_at', NULL)
+        ->orderBy('tbl_hoso.id')
+        ->select('tbl_hoso.id as idhoso', 'idxa_thuongtru', 'gioitinh', 'ngaysinh', 'idquanhechuho')
+        ->chunk( 1000, function($data_nhankhau) {
+            foreach ($data_nhankhau as $nhankhau) {
+                $this->data['thuongtru_tongnhankhau']++;
 
-        $thuongtru_count_thanhthi = 0;
-        $thuongtru_gioitinh_nu = 0;
-        $data_exec = $data_sonhankhau->select('idxa_thuongtru', 'gioitinh')->get();
-        foreach ($data_exec as $value) {
-            if( in_array($value->idxa_thuongtru, $this->current_thanhthi)  ) $thuongtru_count_thanhthi++;
-            if($value->gioitinh == 0) $thuongtru_gioitinh_nu++;
-        }
+                if( $nhankhau->idquanhechuho == 1 ) $this->data['thuongtru_tongsoho']++;
 
-        $thuongtru_nk_better_14 = $data_sonhankhau->whereDate('ngaysinh', '<=', $this->ago_14_year)->count();
-       
+                if( in_array($nhankhau->idxa_thuongtru, $this->current_thanhthi)  ) $this->data['thuongtru_count_thanhthi']++;
 
-        //-----------------------------TAM TRU--------------------
+                if($nhankhau->gioitinh == 0) $this->data['thuongtru_gioitinh_nu']++;
 
-        
+                if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['thuongtru_nk_better_14']++;
+            }
+        } );
+        //-----------------------------TAM TRU-------------------------
+        $this->data['tamtru_tongso_nhankhau'] = 0;
+        $this->data['tamtru_tongso_ho'] = 0;
+        $this->data['arr_id_ho_tamtru'] = array();
+        $this->data['tamtru_nk_better_14_total'] = 0;
+        $this->data['tamtru_count_thanhthi'] = 0;
+        $this->data['tamtru_gioitinh_nu'] = 0;
+
+        $this->data['tamtru_ngoaitinhden_nk'] = 0;
+        $this->data['tamtru_ngoaitinhden_ho'] = 0;
+        $this->data['tamtru_ngoaitinhden_nk_thanhthi'] = 0;
+        $this->data['tamtru_ngoaitinhden_nk_nu'] = 0;
+        $this->data['tamtru_ngoaitinhden_nk_tren_14'] = 0;
+        $this->data['tamtru_ngoaitinh_tronghuyen_den_nk'] = 0;
+        $this->data['tamtru_ngoaitinh_tronghuyen_den_ho'] = 0;
+        $this->data['tamtru_ngoaitinh_tronghuyenden_nk_thanhthi'] = 0;
+        $this->data['tamtru_ngoaitinh_tronghuyen_nk_nu'] = 0;
+        $this->data['tamtru_ngoaitinh_tronghuyen_nk_tren_14'] = 0;
+        $this->data['tamtru_ngoaixa_trongtinh_den_nk'] = 0;
+        $this->data['tamtru_ngoaixa_trongtinh_den_ho'] = 0;
+        $this->data['tamtru_ngoaixa_trongtinh_den_nk_thanhthi'] = 0;
+        $this->data['tamtru_ngoaixa_trongtinh_den_nk_nu'] = 0;
+        $this->data['tamtru_ngoaixa_trongtinh_den_nk_tren_14'] = 0;
+
+
         $denngay_Y_m_d = date('Y-m-d', strtotime($request->denngay));
         $data_tamtru_chunk = DB::connection('nhanhokhau')->table('tbl_tamtru')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
@@ -350,59 +314,47 @@ class BaocaoThongkeController extends Controller
             foreach($list_nhankhau as $nhankhau)
             {
                 $this->tamtru_tongso_nhankhau++;
-                if( $nhankhau->type == 'hogiadinh' && ! in_array( $nhankhau->idsotamtru, $this->arr_id_ho_tamtru ) )
-                {
-                    $this->arr_id_ho_tamtru[] = $nhankhau->idsotamtru;
-                }
-
-                if($nhankhau->ngaysinh <= $this->ago_14_year)
-                {
-                    $this->tamtru_nk_better_14_total++;
-                }
-
-                if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->tamtru_count_thanhthi++;
-                if($nhankhau->gioitinh == 0) $this->tamtru_gioitinh_nu++;
+                if( $nhankhau->type == 'hogiadinh' && $nhankhau->idquanhechuho == 1 ) $this->data['tamtru_tongso_ho']++;
+                if($nhankhau->ngaysinh <= $this->ago_14_year)   $this->data['tamtru_nk_better_14_total']++;
+                if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_count_thanhthi']++;
+                if($nhankhau->gioitinh == 0) $this->data['tamtru_gioitinh_nu']++;
                 if( $nhankhau->idtinh_thuongtru != $this->current_tinh )    //Ngoài tỉnh đến
                 {
-                    $this->tamtru_ngoaitinhden_nk++;
+                    $this->data['tamtru_ngoaitinhden_nk']++;
                     if( $nhankhau->idquanhechuho == 1)
                     {
-                        $this->tamtru_ngoaitinhden_ho++;
+                        $this->data['tamtru_ngoaitinhden_ho']++;
                     }
-                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->tamtru_ngoaitinhden_nk_thanhthi++;
-                    if($nhankhau->gioitinh == 0) $this->tamtru_ngoaitinhden_nk_nu++;
-                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->tamtru_ngoaitinhden_nk_tren_14++;
+                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaitinhden_nk_thanhthi']++;
+                    if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaitinhden_nk_nu']++;
+                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaitinhden_nk_tren_14']++;
                 }
                 elseif($nhankhau->idhuyen_thuongtru != $this->current_huyen)    //Ngoài huyện trong tỉnh đến
                 {
-                    $this->tamtru_ngoaitinh_tronghuyen_den_nk++;
+                    $this->data['tamtru_ngoaitinh_tronghuyen_den_nk']++;
                     if( $nhankhau->idquanhechuho == 1)
                     {
-                        $this->tamtru_ngoaitinh_tronghuyen_den_ho++;
+                        $this->data['tamtru_ngoaitinh_tronghuyen_den_ho']++;
                     }
-                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->tamtru_ngoaitinh_tronghuyenden_nk_thanhthi++;
-                    if($nhankhau->gioitinh == 0) $this->tamtru_ngoaitinh_tronghuyen_nk_nu++;
-                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->tamtru_ngoaitinh_tronghuyen_nk_tren_14++;
+                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaitinh_tronghuyenden_nk_thanhthi']++;
+                    if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaitinh_tronghuyen_nk_nu']++;
+                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaitinh_tronghuyen_nk_tren_14']++;
                 }
 
                 if( $nhankhau->idtinh_thuongtru == $this->current_tinh && $nhankhau->idxa_thuongtru != $nhankhau->idxa_tamtru ) //Ngoài xã, trong tỉnh đến
                 {
-                    $this->tamtru_ngoaixa_trongtinh_den_nk++;
+                    $this->data['tamtru_ngoaixa_trongtinh_den_nk']++;
                     if( $nhankhau->idquanhechuho == 1)
                     {
-                        $this->tamtru_ngoaixa_trongtinh_den_ho++;
+                        $this->data['tamtru_ngoaixa_trongtinh_den_ho']++;
                     }
-                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->tamtru_ngoaixa_trongtinh_den_nk_thanhthi++;
-                    if($nhankhau->gioitinh == 0) $this->tamtru_ngoaixa_trongtinh_den_nk_nu++;
-                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->tamtru_ngoaixa_trongtinh_den_nk_tren_14++;
+                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaixa_trongtinh_den_nk_thanhthi']++;
+                    if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaixa_trongtinh_den_nk_nu']++;
+                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaixa_trongtinh_den_nk_tren_14']++;
                 }
                 
             }
         });
-
-        // die;
-        // dd($this->arr_id_ho_tamtru);
-        $this->tamtru_tongso_ho = count($this->arr_id_ho_tamtru);
         
         $this->list_truonghopxoa = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->pluck('id')->toArray();
         //History
@@ -511,7 +463,6 @@ class BaocaoThongkeController extends Controller
                     //------------END Xóa thường trú---------------
                     //----------------END THƯỜNG TRÚ
 
-
                     //----------------TẠM TRÚ-----------------
                     if( $value->idthutuccutru == $this->thutuc_dangkytamtru ) $this->tamtru_dangky_nk++;
                     if( $value->idtinh_thuongtru != $this->current_tinh )   //Ngoài tỉnh đến
@@ -528,323 +479,7 @@ class BaocaoThongkeController extends Controller
             }
         });
         
-         $html_table = '
-         
-         <div id="page-content">
-            <style>
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-            
-                table.info tr {
-                    text-align: center;
-                }
-            
-                table.info tr:first-child {
-                    font-weight: bold;
-                }
-            
-                table.info tr td {
-                    padding: 5px;
-                }
-            
-                table.info, th, td {
-                    border: 1px solid black;
-                }
-
-                table.head{
-                     border: none !important;
-                }
-                
-                
-            </style>
-        ';
-
-        $html_table .= "<table class='head'>
-            <tr>
-                <td style='width: 220px; text-align:center;'>
-                    CÔNG AN TỈNH HÀ TĨNH<br>
-                    <span style='font-weight: bold'>CÔNG AN HUYỆN KỲ ANH</span>
-                </td>
-                <td style='text-align:center; padding: 5px'>
-                    <span style='font-weight: bold'>THỐNG KÊ TÌNH HÌNH, KẾT QUẢ ĐĂNG KÝ, QUẢN LÝ CƯ TRÚ</span> <br>
-                    (Từ ngày 15/07/2018 đến ngày 15/08/2018 )
-                </td>
-            </tr>
-        </table>";
-
-        $html_table .= '<h5>I) HỘ, NHÂN KHẨU ĐĂNG KÝ THƯỜNG TRÚ:</h5>
-        <p>Tổng số: '.($thuongtru_tongsoho + $this->tamtru_tongso_ho - $request->khongcutru_ho).'  hộ; '.($thuongtru_tongnhankhau + $this->tamtru_tongso_nhankhau - $request->khongcutru_nhankhau).' nhân khẩu</p>
-        <p>Trong đó: '.($thuongtru_count_thanhthi + $this->tamtru_count_thanhthi - $request->khongcutru_nhankhauthanhthi).'  NK thành thị; '.( $thuongtru_gioitinh_nu + $this->tamtru_gioitinh_nu - $request->khongcutru_nhankhaunu ).' NK nữ; '.( $thuongtru_nk_better_14 + $this->tamtru_nk_better_14_total - $request->khongcutru_nhankhautu14 ).' NK từ 14 tuổi trở lên.</p>';
-
-        $html_table .= '<h5>II) CÁC LOẠI HỘ, NHÂN KHẨU</h5>
-            <table class="info" border="1" cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr>
-                        <td colspan="10">HỘ, NHÂN KHẨU ĐĂNG KÝ THƯỜNG TRÚ</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5" rowspan="2">TỔNG SỐ</td>
-                        <td colspan="5">KHÔNG CƯ TRÚ TẠI NƠI ĐÃ ĐĂNG KÝ THƯỜNG TRÚ</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Tổng số</td>
-                        <td rowspan="2">NK Thành thị</td>
-                        <td rowspan="2">NK Nữ</td>
-                        <td rowspan="2">NK từ 14 tuổi trở lên</td>
-                    </tr>
-                    <tr>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>NK Thành thị</td>
-                        <td>NK Nữ</td>
-                        <td>NK từ 14 tuổi trở lên</td>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                    </tr>
-
-                    <tr>
-                        <td>'.$thuongtru_tongsoho.'</td>
-                        <td>'.$thuongtru_tongnhankhau.'</td>
-                        <td>'.$thuongtru_count_thanhthi.'</td>
-                        <td>'.$thuongtru_gioitinh_nu.'</td>
-                        <td>'.$thuongtru_nk_better_14.'</td>
-                        <td>'.$request->khongcutru_ho.'</td>
-                        <td>'.$request->khongcutru_nhankhau.'</td>
-                        <td>'.$request->khongcutru_nhankhauthanhthi.'</td>
-                        <td>'.$request->khongcutru_nhankhaunu.'</td>
-                        <td>'.$request->khongcutru_nhankhautu14.'</td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-            <table class="info" border="1" cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr>
-                        <td colspan="15"> HỘ, NHÂN KHẨU ĐĂNG KÝ TẠM TRÚ</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Tổng số</td>
-                        <td rowspan="3">NK Thành thị</td>
-                        <td rowspan="3">NK Nữ</td>
-                        <td rowspan="3"> NK từ 14 tuổi trởlên</td>
-                        <td colspan="5">Ngoài tỉnh đến</td>
-                        <td colspan="5"> Ngoài huyện trong tỉnh đến</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="2">Hộ</td>
-                        <td rowspan="2">NK</td>
-                        <td colspan="2">Tổng số</td>
-                        <td rowspan="2">NK Thành thị</td>
-                        <td rowspan="2">NK Nữ</td>
-                        <td rowspan="2"> NK từ 14 tuổi trởlên</td>
-                        <td colspan="2">Tổng số</td>
-                        <td rowspan="2">NK Thành thị</td>
-                        <td rowspan="2">NK Nữ</td>
-                        <td rowspan="2"> NK từ 14 tuổi trởlên</td>
-                    </tr>
-                    <tr>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                    </tr>
-                    <tr>
-                        <td>'.$this->tamtru_tongso_ho.'</td>
-                        <td>'.$this->tamtru_tongso_nhankhau.'</td>
-                        <td>'.$this->tamtru_count_thanhthi.'</td>
-                        <td>'.$this->tamtru_gioitinh_nu.'</td>
-                        <td>'.$this->tamtru_nk_better_14_total.'</td>
-                        <td>'.$this->tamtru_ngoaitinhden_ho.'</td>
-                        <td>'.$this->tamtru_ngoaitinhden_nk.'</td>
-                        <td>'.$this->tamtru_ngoaitinhden_nk_thanhthi.'</td>
-                        <td>'.$this->tamtru_ngoaitinhden_nk_nu.'</td>
-                        <td>'.$this->tamtru_ngoaitinhden_nk_tren_14.'</td>
-                        <td>'.$this->tamtru_ngoaitinh_tronghuyen_den_ho.'</td>
-                        <td>'.$this->tamtru_ngoaitinh_tronghuyen_den_nk.'</td>
-                        <td>'.$this->tamtru_ngoaitinh_tronghuyenden_nk_thanhthi.'</td>
-                        <td>'.$this->tamtru_ngoaitinh_tronghuyen_nk_nu.'</td>
-                        <td>'.$this->tamtru_ngoaitinh_tronghuyen_nk_tren_14.'</td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-
-            <table class="info" border="1" cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr>
-                        <td colspan="5">HỘ, NHÂN KHẨU ĐĂNG KÝ TẠM TRÚ</td>
-                        <td colspan="4">NHÂN KHẨU LƯU TRÚ</td>
-                        <td colspan="2">NHÂN KHẨU TẠM VẮNG</td>
-                        <td rowspan="4">ĐỐI TƯỢNG QUẢN LÝ</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">Ngoài xã trong tỉnhđến</td>
-                        <td rowspan="3">Tổng số</td>
-                        <td colspan="3">Trong đó</td>
-                        <td rowspan="3">Tổng số</td>
-                        <td rowspan="3">Nữ</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Tổng số</td>
-                        <td rowspan="2">NK Thành thị</td>
-                        <td rowspan="2">NK Nữ</td>
-                        <td rowspan="2">NK từ 14 tuổi trởlên</td>
-                        <td rowspan="2">Hộ gia đình</td>
-                        <td rowspan="2">Cơ sở cho thuê lưutrú</td>
-                        <td rowspan="2">Nữ</td>
-                    </tr>
-                    <tr>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                    </tr>
-                    <tr>
-                        <td>'.$this->tamtru_ngoaixa_trongtinh_den_ho.'</td>
-                        <td>'.$this->tamtru_ngoaixa_trongtinh_den_nk.'</td>
-                        <td>'.$this->tamtru_ngoaixa_trongtinh_den_nk_thanhthi.'</td>
-                        <td>'.$this->tamtru_ngoaixa_trongtinh_den_nk_nu.'</td>
-                        <td>'.$this->tamtru_ngoaixa_trongtinh_den_nk_tren_14.'</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-            <h5>III) KẾT QUẢ ĐĂNG KÝ, QUẢN LÝ CƯ TRÚ</h5>
-            <table class="info" border="1" cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr>
-                        <td colspan="6">ĐĂNG KÝ THƯỜNG TRÚ</td>
-                        <td colspan="7">XÓA ĐĂNG KÝ THƯỜNGTRÚ</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Tổng số</td>
-                        <td rowspan="2">NK mới sinh</td>
-                        <td colspan="2">Ngoài tỉnh đến</td>
-                        <td rowspan="2">Định cư ở nước ngoài về (NK)</td>
-                        <td colspan="2">Tổng số</td>
-                        <td colspan="5">Trong đó</td>
-                    </tr>
-                    <tr>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Chết, mất tích</td>
-                        <td>Tuyển dụng vào CA, QĐ</td>
-                        <td>Hủy kết quả đăng ký</td>
-                        <td>Định cư ở nước ngoài về</td>
-                        <td>Đăng ký thường trú nơi cư trú mới</td>
-                    </tr>
-                    <tr>
-                        <td>'.($this->thuongtru_ho_capmoi + $this->thuongtru_ho_tach).'</td>
-                        <td>'.$this->thuongtru_nk_dangky.'</td>
-                        <td>'.$this->thuongtru_nk_moisinh.'</td>
-                        <td>'.$this->thuongtru_ho_ngoaitinh.'</td>
-                        <td>'.$this->thuongtru_nk_ngoaitinh.'</td>
-                        <td>'.$this->thuongtru_nk_ngoainuoc.'</td>
-                        <td>'.$this->thuongtru_ho_xoa.'</td>
-                        <td>'.$this->thuongtru_nk_xoa.'</td>
-                        <td>'.$this->thuongtru_nk_chet.'</td>
-                        <td>'.$this->thuongtru_nk_caqd.'</td>
-                        <td>'.$this->thuongtru_nk_huy.'</td>
-                        <td>0</td>
-                        <td>'.$this->thuongtru_nk_dangkynoimoi.'</td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-            <table class="info"  border="1" cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr>
-                        <td colspan="4">CẤP GIẤY CHUYỂN HỘ KHẨU</td>
-                        <td colspan="5">CẤP MỚI, CẤP LẠI, CẤP ĐỔI, TÁCH SỔ HỘ KHẨU</td>
-                        <td rowspan="3">ĐIỀU CHỈNH THAY ĐỔI (trường hợp)</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Tổng số</td>
-                        <td colspan="2">Đi ngoài tỉnh</td>
-                        <td rowspan="2">Tổng số</td>
-                        <td colspan="4">Trong đó</td>
-                    </tr>
-                    <tr>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Cấp mới</td>
-                        <td>Cấp lại</td>
-                        <td>Cấp đổi</td>
-                        <td>Tách Sổ</td>
-                    </tr>
-                    <tr>
-                        <td>'.$this->thuongtru_ho_dangkynoimoi.'</td>
-                        <td>'.$this->thuongtru_nk_dangkynoimoi.'</td>
-                        <td>'.$this->thuongtru_ho_chuyenkhau_ngoaitinh.'</td>
-                        <td>'.$this->thuongtru_nk_chuyenkhau_ngoaitinh.'</td>
-                        <td>'.( $this->thuongtru_ho_capmoi + $this->thuongtru_ho_caplai + $this->thuongtru_ho_capdoi + $this->thuongtru_ho_tach ).'</td>
-                        <td>'.$this->thuongtru_ho_capmoi.'</td>
-                        <td>'.$this->thuongtru_ho_caplai.'</td>
-                        <td>'.$this->thuongtru_ho_capdoi.'</td>
-                        <td>'.$this->thuongtru_ho_tach.'</td>
-                        <td>'.$this->thuongtru_nk_dieuchinhthaydoi.'</td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-            <table class="info" border="1" cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr>
-                        <td colspan="6">ĐĂNG KÝ TẠM TRÚ</td>
-                        <td colspan="4">
-                            TIẾP NHẬN THÔNG BÁOLƯU TRÚ</td>
-                        <td colspan="2">KHAI BÁO TẠM VẮNG</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">Tổng số</td>
-                        <td colspan="2">Ngoài tỉnh đến</td>
-                        <td rowspan="2">Cấp Sổ tạm trú</td>
-                        <td rowspan="2">Gia hạn tạm trú</td>
-                        <td rowspan="2">Tổng số (NK)</td>
-                        <td colspan="3">Hình thức thông báo</td>
-                        <td rowspan="2">Tổng số</td>
-                        <td rowspan="2">Nữ</td>
-                    </tr>
-                    <tr>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Hộ</td>
-                        <td>NK</td>
-                        <td>Trực tiếp</td>
-                        <td>Điện thoại</td>
-                        <td>Qua mạng</td>
-                    </tr>
-                    <tr>
-                        <td>'.$this->tamtru_dangky_ho.'</td>
-                        <td>'.$this->tamtru_dangky_nk.'</td>
-                        <td>'.$this->tamtru_ngoaitinhden_dangky_ho.'</td>
-                        <td>'.$this->tamtru_ngoaitinhden_dangky_nk.'</td>
-                        <td>'.($this->tamtru_dangky_ho + $this->tamtru_dangky_canhan_so).'</td>
-                        <td>'.$this->tamtru_giahantamtru_nk.'</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        ';
+        $html_table = view('nhankhau-layouts.ajax_component.view_report', $data)->render();
 
         $str = "
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -865,8 +500,7 @@ class BaocaoThongkeController extends Controller
         ".$html_table."
         </div>
         </body>
-        </html>
-    ";
+        </html>";
     header("Content-type: application/vnd.ms-word");
     header("Content-Disposition: attachment;Filename=thong-ke.doc");
     echo $str;die;
