@@ -112,9 +112,10 @@
                             </div>
                         </p>
                         @endif
-                        <form id="form-nhankhau" action="{{ route('xoa-thuong-tru', $nhankhau->id) }}" method="POST" role="form">
+                        <form id="form-nhankhau" action="{{ route('xoa-thuong-tru', $nhankhau->id_in_sohokhau) }}" method="POST" role="form">
                             @csrf
                             <input type="hidden" name="idhoso" value="{{ $nhankhau->idhoso }}">
+                            <input type="hidden" name="idnhankhau" value="{{ $nhankhau->id }}">
                             <div style="padding: 0.7rem;" class="row">
                                 <div class="col-md-12 col-xs-12 m-t-sm-40 m-t-20 m-b-40">
                                     <div class="row hokhau-code">
@@ -166,7 +167,7 @@
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
                                     <button onclick="return confirm('Bạn có muốn xóa không?');" class="pull-left btn btn-danger"><i class="fa fa-trash"></i> Xóa thường trú</button>
-                                    <a class="pull-right btn btn-primary" href="{{ URL::to('nhan-khau',$nhankhau->id) }}/sua-nhan-khau">Quay lại</a>
+                                    <a class="pull-right btn btn-primary" href="{{ URL::to('nhan-khau') }}">Quay lại</a>
                                 </div>
                             </div>
                         </form>

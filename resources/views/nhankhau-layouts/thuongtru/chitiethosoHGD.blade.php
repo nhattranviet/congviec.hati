@@ -45,18 +45,16 @@
                            <th>Thường trú</th>
                         </tr>
                      </thead>
-
-
                       <tbody>
                         <?php $i = 1; ?>
                         @foreach($list_thongtinhokhau as $thongtinhokhau)
                             <tr>
-                                  <td>{{ $i }}</td>
-                                  <td>{{ $thongtinhokhau->hosohokhau_so }}</td>
-                                  <td>{{ $thongtinhokhau->hokhau_so }}</td>
-                                  <td>{{ $thongtinhokhau->hoten }}</td>
-                                  <td>{{ ($thongtinhokhau->idquanhechuho) ? DB::table('tbl_moiquanhe')->where('id', $thongtinhokhau->idquanhechuho)->value('name') : '' }}</td>
-                                  <td> {{ $thongtinhokhau->chitiet_thuongtru }} - {{ ($thongtinhokhau->idxa_thuongtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $thongtinhokhau->idxa_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idhuyen_thuongtru) ? DB::table('tbl_huyen_tx')->where('id', $thongtinhokhau->idhuyen_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idtinh_thuongtru) ? DB::table('tbl_tinh_tp')->where('id', $thongtinhokhau->idtinh_thuongtru)->value('name') : '' }}</td>
+                                <td>{{ $i }}</td>
+                                <td>{{ $thongtinhokhau->hosohokhau_so }}</td>
+                                <td>{{ $thongtinhokhau->hokhau_so }}</td>
+                                <td>{{ $thongtinhokhau->hoten }}</td>
+                                <td>{{ ($thongtinhokhau->idquanhechuho) ? DB::table('tbl_moiquanhe')->where('id', $thongtinhokhau->idquanhechuho)->value('name') : '' }}</td>
+                                <td> {{ $thongtinhokhau->chitiet_thuongtru }} - {{ ($thongtinhokhau->idxa_thuongtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $thongtinhokhau->idxa_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idhuyen_thuongtru) ? DB::table('tbl_huyen_tx')->where('id', $thongtinhokhau->idhuyen_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idtinh_thuongtru) ? DB::table('tbl_tinh_tp')->where('id', $thongtinhokhau->idtinh_thuongtru)->value('name') : '' }}</td>
                             </tr>
                            <?php $i++; ?>
                         @endforeach

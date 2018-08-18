@@ -47,9 +47,9 @@
                                 </div>
                             </p>
                         @endif
-                        <form id="form-nhankhau" action="{{ route('sua-nhan-khau', $nhankhau->id) }}" method="POST" role="form">
+                        <form id="form-nhankhau" action="{{ route('sua-nhan-khau', $nhankhau->id_in_sohokhau) }}" method="POST" role="form">
                             @csrf
-                            <input type="hidden" name="idsohokhau" value="{{ $nhankhau->idsohokhau }}">
+                            <input type="hidden" name="idnhankhau" value="{{ $nhankhau->id }}">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
                                     <h4 class="header-title m-t-0 pull-left">Thông tin nhân khẩu</h4>

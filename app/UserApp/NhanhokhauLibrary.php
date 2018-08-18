@@ -201,7 +201,7 @@ class NhanhokhauLibrary
             'idtongiao' => 'required',
             'idquanhechuho' => 'required',
             'gender' => 'required',
-            'idsohokhau' => 'required|integer',
+            'idnhankhau' => 'required|integer',
             'ghichu' => 'required',
             'date_action' => 'required|date_format:d-m-Y',
 
@@ -306,7 +306,8 @@ class NhanhokhauLibrary
     {
         $data = DB::connection('nhanhokhau')->table('tbl_sohokhau')
             ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
-            ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso');
+            ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
+            ->where('tbl_sohokhau.deleted_at', NULL);
         if($keyword != NULL)
         {
             $data = $data->where(array(
@@ -510,7 +511,7 @@ class NhanhokhauLibrary
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id', '=', 'tbl_sohokhau.idhoso')
         ->where('idhoso', $idhoso)
-        ->select('tbl_nhankhau.*', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.hokhau_so', 'tbl_sohokhau.idquanhechuho', 'tbl_sohokhau.ngaydangky')
+        ->select('tbl_nhankhau.*', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.hokhau_so', 'tbl_sohokhau.idquanhechuho', 'tbl_sohokhau.ngaydangky', 'tbl_sohokhau.id as id_in_sohokhau', 'tbl_sohokhau.deleted_at')
         ->get();
     }
 
@@ -521,6 +522,16 @@ class NhanhokhauLibrary
         ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
         ->where('tbl_nhankhau.id', $idnhankhau)
         ->select('tbl_nhankhau.*', 'tbl_hoso.hokhau_so', 'tbl_hoso.id as idhoso', 'tbl_hoso.hosohokhau_so', 'tbl_sohokhau.idquanhechuho')
+        ->first();
+    }
+
+    public static function getChitietNhankhauFromIdInSohokhau($id_in_sohokhau)
+    {
+        return DB::connection('nhanhokhau')->table('tbl_sohokhau')
+        ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
+        ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
+        ->where('tbl_sohokhau.id', $id_in_sohokhau)
+        ->select('tbl_nhankhau.*', 'tbl_hoso.hokhau_so', 'tbl_hoso.id as idhoso', 'tbl_hoso.hosohokhau_so', 'tbl_sohokhau.idquanhechuho', 'tbl_sohokhau.id as id_in_sohokhau', 'tbl_sohokhau.moisinh', 'tbl_sohokhau.ngaydangky', 'tbl_sohokhau.deleted_at')
         ->first();
     }
 
@@ -582,9 +593,9 @@ class NhanhokhauLibrary
         DB::connection('nhanhokhau')->table('tbl_history_cutru')->insert( $data_log );
     }
 
-    public static function deleteNhankhauSohokhau($idnhankhau)
+    public static function deleteNhankhauSohokhau($id_in_sohokhau)
     {
-        return DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('idnhankhau',$idnhankhau)->delete();
+        return DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id', $id_in_sohokhau)->update([ 'deleted_at' => Carbon::now() ]);
     }
 
     public static function getIdhosoOfNhankhau($idnhankhau)
@@ -598,6 +609,7 @@ class NhanhokhauLibrary
         ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
         ->where('tbl_hoso.id', $idhoso)
+        ->where('tbl_sohokhau.deleted_at', NULL)
         ->select('tbl_nhankhau.id as idnhankhau', 'tbl_sohokhau.id', 'hoten', 'tbl_sohokhau.idquanhechuho')
         ->get();
     }

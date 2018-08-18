@@ -60,8 +60,9 @@
                            <th>Hồ sơ số</th>
                            <th>Sổ hộ khẩu số</th>
                            <th>Họ tên</th>
-                        <th>Quan hệ với chủ hộ</th>
+                            <th>Quan hệ với chủ hộ</th>
                            <th>Thường trú</th>
+                           <th>Trạng thái</th>
                            <th style="width: 100px; text-align: center;">Hành động</th>
                         </tr>
                      </thead>
@@ -77,11 +78,14 @@
                               <td>{{ $thongtinhokhau->hoten }}</td>
                               <td>{{ ($thongtinhokhau->idquanhechuho) ? DB::table('tbl_moiquanhe')->where('id', $thongtinhokhau->idquanhechuho)->value('name') : '' }}</td>
                               <td> {{ $thongtinhokhau->chitiet_thuongtru }} - {{ ($thongtinhokhau->idxa_thuongtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $thongtinhokhau->idxa_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idhuyen_thuongtru) ? DB::table('tbl_huyen_tx')->where('id', $thongtinhokhau->idhuyen_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idtinh_thuongtru) ? DB::table('tbl_tinh_tp')->where('id', $thongtinhokhau->idtinh_thuongtru)->value('name') : '' }}</td>
+                              <td style="text-align: center;">{!! ($thongtinhokhau->deleted_at != NULL) ? '<span class="label label-danger">Đã xóa</span>'  : '<span class="label label-info">Bình thường</span>' !!}</td>
                               <td>
-                                 <div class="button-list">
-                                    <a href="/nhan-khau/{{$thongtinhokhau->id}}/chi-tiet-nhan-khau" alt="Text" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết nhân khẩu"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
-                                    <a href="/nhan-khau/{{$thongtinhokhau->id}}/sua-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhân khẩu"> <i class="zmdi zmdi-edit"></i> </a>
-                                    <a href="/nhan-khau/{{$thongtinhokhau->id}}/check-xoa-thuong-tru" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xóa thường trú nhân khẩu"> <i style="color: red;" class="fa fa-remove"></i> </a>
+                                <div class="button-list">
+                                    @if ($thongtinhokhau->deleted_at == NULL)
+                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/chi-tiet-nhan-khau" alt="Text" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết nhân khẩu"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
+                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/sua-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhân khẩu"> <i class="zmdi zmdi-edit"></i> </a>
+                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/check-xoa-thuong-tru" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xóa thường trú nhân khẩu"> <i style="color: red;" class="fa fa-remove"></i> </a>
+                                    @endif
                                 </div>
                               </td>
                            </tr>

@@ -210,7 +210,7 @@ class NhanKhauController extends Controller
         return view('nhankhau-layouts.thuongtru.chitiethoso', $data);
     }
 
-    public function getSuanhankhau($idnhankhau)
+    public function getSuanhankhau($id_in_sohokhau)
     {
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
@@ -218,7 +218,7 @@ class NhanKhauController extends Controller
         $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
         $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
         $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
-        $data['nhankhau'] = NhanhokhauLibrary::getNhankhauInfo($idnhankhau);
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
 
         $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
@@ -227,7 +227,7 @@ class NhanKhauController extends Controller
         return view('nhankhau-layouts.thuongtru.editnhankhau', $data);
     }
 
-    public function postSuanhankhau(Request $request, $idnhankhau)
+    public function postSuanhankhau(Request $request, $id_in_sohokhau)
     {
         $validator = Validator::make($request->all(), NhanhokhauLibrary::getSuaNhanKhauRule() , NhanhokhauLibrary::getMessageRule());
         if($request->idquanhechuho == 1)
@@ -237,7 +237,8 @@ class NhanKhauController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
-        NhanhokhauLibrary::updatePostSuaNhankhau($request, $idnhankhau);
+
+        NhanhokhauLibrary::updatePostSuaNhankhau($request, $request->idnhankhau);
 
         $data_sohokhau = array(
             'ngaydangky' => date('Y-m-d', strtotime( $request->ngaydangky ) ),
@@ -245,14 +246,14 @@ class NhanKhauController extends Controller
             'moisinh' => $request->moisinh,
         );
 
-        DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id',$request->idsohokhau)->update($data_sohokhau);
+        DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id',$id_in_sohokhau)->update($data_sohokhau);
 
         //--------------Ghi log cua ho so----------------------
         $data_log = array(
             'idthutuccutru' => $this->thutuc_dieuchinhthaydoi,
             'type' => 'nhankhau',
-            'idhoso' => DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id',$request->idsohokhau)->value('idhoso'),
-            'idnhankhau' => $idnhankhau,
+            'idhoso' => DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id',$id_in_sohokhau)->value('idhoso'),
+            'idnhankhau' => $request->idnhankhau,
             'date_action' => date('Y-m-d', strtotime( $request->date_action ) ),
             'moisinh' => $request->moisinh,
             'ghichu' => $request->ghichu,
@@ -265,15 +266,15 @@ class NhanKhauController extends Controller
         return response()->json(['success' => 'Đăng ký thường trú thành công ', 'url' => route('chi-tiet-ho-khau', $request->idhoso)]);
     }
 
-    public function getChitietnhankhau($idnhankhau)
+    public function getChitietnhankhau($id_in_sohokhau)
     {
-        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhau($idnhankhau);
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
         return view('nhankhau-layouts.thuongtru.chitietnhankhau', $data);
     }
 
-    public function getCheckxoathuongtru($idnhankhau)
+    public function getCheckxoathuongtru($id_in_sohokhau)
     {
-        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhau($idnhankhau);
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
         if($data['nhankhau']->idquanhechuho == 1)
         {
             $message = array('type' => 'warning', 'content' => 'Người này là chủ hộ, bạn phải thay chủ hộ trước khi xóa thường trú');
@@ -295,25 +296,21 @@ class NhanKhauController extends Controller
         return view('nhankhau-layouts.thuongtru.xoathuongtru', $data);
     }
 
-    public function xoaThuongtru(Request $request, $idnhankhau)
+    public function xoaThuongtru(Request $request, $id_in_sohokhau)
     {
         $validator = Validator::make($request->all(), [
             'idtruonghopxoa' => 'required',
             'ngayxoathuongtru' => 'required',
             'idquocgia_thuongtrumoi' => 'required_if:idtruonghopxoa,'.$this->thutuc_dangkynoimoi,
+            'idnhankhau' => 'required|integer',
             'idtinh_thuongtrumoi' => 'required_if:idquocgia_thuongtrumoi,1',
             'idhuyen_thuongtrumoi' => 'required_if:idquocgia_thuongtrumoi,1',
             'idxa_thuongtrumoi' => 'required_if:idquocgia_thuongtrumoi,1',
         ], NhanhokhauLibrary::getMessageRule());
-
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
-
-        $idhoso = NhanhokhauLibrary::getIdhosoOfNhankhau($idnhankhau);
-
-        NhanhokhauLibrary::deleteNhankhauSohokhau( $idnhankhau );
-
+        NhanhokhauLibrary::deleteNhankhauSohokhau( $id_in_sohokhau );
         if($request->idtruonghopxoa == $this->thutuc_dangkynoimoi)
         {
             $data_update = array(
@@ -322,12 +319,11 @@ class NhanKhauController extends Controller
                 'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
                 'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
                 'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
-                );
-            DB::connection('nhanhokhau')->table('tbl_nhankhau')->where('id',$idnhankhau)->update($data_update);
+            );
+            DB::connection('nhanhokhau')->table('tbl_nhankhau')->where('id', $request->idnhankhau)->update($data_update);
         }
-
         $data_log = array(
-            'idthutuccutru' => $request->idtruonghopxoa, 'type' => 'nhankhau', 'idhoso' => $idhoso, 'idnhankhau' => $idnhankhau, 'ghichu' => $request->lydoxoa, 'date_action' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
+            'idthutuccutru' => $request->idtruonghopxoa, 'type' => 'nhankhau', 'idhoso' => $request->idhoso, 'idnhankhau' => $request->idnhankhau, 'ghichu' => $request->lydoxoa, 'date_action' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
             'idquocgia_thuongtrumoi' => $request->idquocgia_thuongtrumoi,
             'idtinh_thuongtrumoi' => $request->idtinh_thuongtrumoi,
             'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
@@ -346,10 +342,6 @@ class NhanKhauController extends Controller
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
         $data['religions'] = NhanhokhauLibrary::getListTonGiao();
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
-        // $data['educations'] = NhanhokhauLibrary::getListTrinhDoHocVan();
-        // $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
-        // $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHe();
-
         $data['countries'] = NhanhokhauLibrary::getListQuocgia();
         $data['provinces'] = NhanhokhauLibrary::getListTinhTP(config('user_config.default_hanhchinh.country'));
         $data['districts'] = NhanhokhauLibrary::getListHuyenTX(config('user_config.default_hanhchinh.province'));
