@@ -245,6 +245,16 @@ class BaocaoThongkeController extends Controller
         }
         
         $this->ago_14_year = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 14 years'));
+        $this->data['tungay'] = $request->tungay;
+        $this->data['denngay'] = $request->denngay;
+
+        //Khong cu tru
+        $this->data['khongcutru_ho'] = $request->khongcutru_ho;
+        $this->data['khongcutru_nhankhau'] = $request->khongcutru_nhankhau;
+        $this->data['khongcutru_nhankhauthanhthi'] = $request->khongcutru_nhankhauthanhthi;
+        $this->data['khongcutru_nhankhaunu'] = $request->khongcutru_nhankhaunu;
+        $this->data['khongcutru_nhankhautu14'] = $request->khongcutru_nhankhautu14;
+        //End Khong cu tru
 
         
         $this->data['thuongtru_tongnhankhau'] = 0;
@@ -313,7 +323,7 @@ class BaocaoThongkeController extends Controller
         ->chunk(1000, function($list_nhankhau){
             foreach($list_nhankhau as $nhankhau)
             {
-                $this->tamtru_tongso_nhankhau++;
+                $this->data['tamtru_tongso_nhankhau']++;
                 if( $nhankhau->type == 'hogiadinh' && $nhankhau->idquanhechuho == 1 ) $this->data['tamtru_tongso_ho']++;
                 if($nhankhau->ngaysinh <= $this->ago_14_year)   $this->data['tamtru_nk_better_14_total']++;
                 if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_count_thanhthi']++;
@@ -358,8 +368,39 @@ class BaocaoThongkeController extends Controller
         
         $this->list_truonghopxoa = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->pluck('id')->toArray();
         //History
-        
-         $data_history_chunk = DB::connection('nhanhokhau')->table('tbl_history_cutru')
+
+        $this->data['thuongtru_ho_capmoi'] = 0;
+        $this->data['thuongtru_ho_caplai'] = 0;
+        $this->data['thuongtru_ho_capdoi'] = 0;
+        $this->data['thuongtru_ho_tach'] = 0;
+        $this->data['thuongtru_ho_ngoaitinh'] = 0;
+        $this->data['thuongtru_ho_ngoaihuyen'] = 0;
+        $this->data['thuongtru_ho_dieuchinhthaydoi'] = 0;
+        $this->data['thuongtru_ho_xoa'] = 0;
+        $this->data['thuongtru_ho_dangkynoimoi'] = 0;
+        $this->data['thuongtru_ho_chuyenkhau_ngoaihuyen'] = 0;
+        $this->data['thuongtru_ho_chuyenkhau_ngoaitinh'] = 0;
+        $this->data['tamtru_dangky_ho'] = 0;
+        $this->data['tamtru_ngoaitinhden_dangky_ho'] = 0;
+        $this->data['thuongtru_nk_ngoaitinh'] = 0;
+        $this->data['thuongtru_nk_ngoaihuyen'] = 0;
+        $this->data['thuongtru_nk_ngoainuoc'] = 0;
+        $this->data['thuongtru_nk_dangky'] = 0;
+        $this->data['thuongtru_nk_moisinh'] = 0;
+        $this->data['thuongtru_nk_dieuchinhthaydoi'] = 0;
+        $this->data['thuongtru_nk_xoa'] = 0;
+        $this->data['thuongtru_nk_chet'] = 0;
+        $this->data['thuongtru_nk_caqd'] = 0;
+        $this->data['thuongtru_nk_huy'] = 0;
+        $this->data['thuongtru_nk_dangkynoimoi'] = 0;
+        $this->data['thuongtru_nk_chuyenkhau_ngoaihuyen'] = 0;
+        $this->data['thuongtru_nk_chuyenkhau_ngoaitinh'] = 0;
+        $this->data['tamtru_dangky_nk'] = 0;
+        $this->data['tamtru_ngoaitinhden_dangky_nk'] = 0;
+        $this->data['tamtru_dangky_canhan_so'] = 0;
+        $this->data['tamtru_giahantamtru_nk'] = 0;
+
+        $data_history_chunk = DB::connection('nhanhokhau')->table('tbl_history_cutru')
         ->whereDate('date_action', '>=', date('Y-m-d', strtotime($request->tungay))) 
         ->whereDate('date_action', '<=', date('Y-m-d', strtotime($request->denngay)))
         ->orderBy('id')
@@ -371,29 +412,29 @@ class BaocaoThongkeController extends Controller
                 if($value->type == 'hogiadinh')
                 {
                     //----------THƯỜNG TRÚ-------------
-                    if($value->idthutuccutru == $this->thutuc_capmoi) $this->thuongtru_ho_capmoi++;
-                    if($value->idthutuccutru == $this->thutuc_caplai) $this->thuongtru_ho_caplai++;
-                    if($value->idthutuccutru == $this->thutuc_capdoi) $this->thuongtru_ho_capdoi++;
-                    if($value->idthutuccutru == $this->thutuc_tach) $this->thuongtru_ho_tach++;
+                    if($value->idthutuccutru == $this->thutuc_capmoi) $this->data['thuongtru_ho_capmoi']++;
+                    if($value->idthutuccutru == $this->thutuc_caplai) $this->data['thuongtru_ho_caplai']++;
+                    if($value->idthutuccutru == $this->thutuc_capdoi) $this->data['thuongtru_ho_capdoi']++;
+                    if($value->idthutuccutru == $this->thutuc_tach) $this->data['thuongtru_ho_tach']++;
 
-                    if( $value->idtinh_thuongtrutruoc != NULL && $value->idtinh_thuongtrutruoc != $this->current_tinh ) $this->thuongtru_ho_ngoaitinh++;
-                    if($value->idhuyen_thuongtrutruoc != NULL && $value->idhuyen_thuongtrutruoc != $this->current_huyen) $this->thuongtru_ho_ngoaihuyen++;
-                    if($value->idthutuccutru == $this->thutuc_dieuchinhthaydoi) $this->thuongtru_nk_dieuchinhthaydoi++;
+                    if( $value->idtinh_thuongtrutruoc != NULL && $value->idtinh_thuongtrutruoc != $this->current_tinh ) $this->data['thuongtru_ho_ngoaitinh']++;
+                    if($value->idhuyen_thuongtrutruoc != NULL && $value->idhuyen_thuongtrutruoc != $this->current_huyen) $this->data['thuongtru_ho_ngoaihuyen']++;
+                    if($value->idthutuccutru == $this->thutuc_dieuchinhthaydoi) $this->data['thuongtru_ho_dieuchinhthaydoi']++;
                     //------------Xóa thường trú---------------
                     if( in_array( $value->idthutuccutru, $this->list_truonghopxoa ) )
                     {
-                        $this->thuongtru_ho_xoa++;
+                        $this->data['thuongtru_ho_xoa']++;
                         if($value->idthutuccutru == $this->thutucxoa_dangkymoi)
                         {
-                            $this->thuongtru_ho_dangkynoimoi++;
+                            $this->data['thuongtru_ho_dangkynoimoi']++;
                             if($value->idhuyen_thuongtrumoi != NULL && $value->idhuyen_thuongtrumoi != $this->current_huyen )
                             {
-                                $this->thuongtru_ho_chuyenkhau_ngoaihuyen++;
+                                $this->data['thuongtru_ho_chuyenkhau_ngoaihuyen']++;
                             }
 
                             if($value->idtinh_thuongtrumoi != NULL && $value->idtinh_thuongtrumoi != $this->current_tinh )
                             {
-                                $this->thuongtru_ho_chuyenkhau_ngoaitinh++;
+                                $this->data['thuongtru_ho_chuyenkhau_ngoaitinh']++;
                             }
                         }
                     }
@@ -402,10 +443,10 @@ class BaocaoThongkeController extends Controller
 
 
                     //-------------TẠM TRÚ
-                    if( $value->idthutuccutru == $this->thutuc_capsotamtu ) $this->tamtru_dangky_ho++;
+                    if( $value->idthutuccutru == $this->thutuc_capsotamtu ) $this->data['tamtru_dangky_ho']++;
                     if( $value->idtinh_thuongtru != $this->current_tinh )   //Ngoài tỉnh đến
                     {
-                        if( $value->idthutuccutru == $this->thutuc_capsotamtu ) $this->tamtru_ngoaitinhden_dangky_ho++;
+                        if( $value->idthutuccutru == $this->thutuc_capsotamtu ) $this->data['tamtru_ngoaitinhden_dangky_ho']++;
                     }
                     //-------------END TẠM TRÚ
                 }
@@ -416,62 +457,63 @@ class BaocaoThongkeController extends Controller
                 else
                 {
                     //----------------THƯỜNG TRÚ
-                    if( $value->idtinh_thuongtrutruoc != NULL && $value->idtinh_thuongtrutruoc != $this->current_tinh ) $this->thuongtru_nk_ngoaitinh++;
-                    if($value->idhuyen_thuongtrutruoc != NULL && $value->idhuyen_thuongtrutruoc != $this->current_huyen) $this->thuongtru_nk_ngoaihuyen++;
-                    if($value->idquocgia_thuongtrutruoc != NULL && $value->idquocgia_thuongtrutruoc != $this->current_idquocgia) $this->thuongtru_nk_ngoainuoc++;
+                    if( $value->idtinh_thuongtrutruoc != NULL && $value->idtinh_thuongtrutruoc != $this->current_tinh ) $this->data['thuongtru_nk_ngoaitinh']++;
+                    if($value->idhuyen_thuongtrutruoc != NULL && $value->idhuyen_thuongtrutruoc != $this->current_huyen) $this->data['thuongtru_nk_ngoaihuyen']++;
+                    if($value->idquocgia_thuongtrutruoc != NULL && $value->idquocgia_thuongtrutruoc != $this->current_idquocgia) $this->data['thuongtru_nk_ngoainuoc']++;
 
                     if($value->idthutuccutru == $this->thutuc_dangkynhankhau)
                     {
-                        $this->thuongtru_nk_dangky++;
-                        if($value->moisinh != NULL) $this->thuongtru_nk_moisinh++;
+                        $this->data['thuongtru_nk_dangky']++;
+                        if($value->moisinh != NULL) $this->data['thuongtru_nk_moisinh']++;
                     }
-                    if($value->idthutuccutru == $this->thutuc_dieuchinhthaydoi) $this->thuongtru_nk_dieuchinhthaydoi++;
+
+                    if($value->idthutuccutru == $this->thutuc_dieuchinhthaydoi) $this->data['thuongtru_nk_dieuchinhthaydoi']++;
 
                     //------------Xóa thường trú---------------
                     if( $value->idthutuccutru == $this->thutucxoa_chet )
                     {
-                        $this->thuongtru_nk_xoa++;
-                        $this->thuongtru_nk_chet++;
+                        $this->data['thuongtru_nk_xoa']++;
+                        $this->data['thuongtru_nk_chet']++;
                     }
 
                     if( $value->idthutuccutru == $this->thutucxoa_caqd )
                     {
-                        $this->thuongtru_nk_xoa++;
-                        $this->thuongtru_nk_caqd++;
+                        $this->data['thuongtru_nk_xoa']++;
+                        $this->data['thuongtru_nk_caqd']++;
                     }
 
                     if( $value->idthutuccutru == $this->thutucxoa_huy )
                     {
-                        $this->thuongtru_nk_xoa++;
-                        $this->thuongtru_nk_huy++;
+                        $this->data['thuongtru_nk_xoa']++;
+                        $this->data['thuongtru_nk_huy']++;
                     }
 
                     if( $value->idthutuccutru == $this->thutucxoa_dangkymoi )
                     {
-                        $this->thuongtru_nk_xoa++;
-                        $this->thuongtru_nk_dangkynoimoi++;
+                        $this->data['thuongtru_nk_xoa']++;
+                        $this->data['thuongtru_nk_dangkynoimoi']++;
                         if($value->idhuyen_thuongtrumoi != NULL && $value->idhuyen_thuongtrumoi != $this->current_huyen )
                         {
-                            $this->thuongtru_nk_chuyenkhau_ngoaihuyen++;
+                            $this->data['thuongtru_nk_chuyenkhau_ngoaihuyen']++;
                         }
 
                         if($value->idtinh_thuongtrumoi != NULL && $value->idtinh_thuongtrumoi != $this->current_tinh )
                         {
-                            $this->thuongtru_nk_chuyenkhau_ngoaitinh++;
+                            $this->data['thuongtru_nk_chuyenkhau_ngoaitinh']++;
                         }
                     }
                     //------------END Xóa thường trú---------------
                     //----------------END THƯỜNG TRÚ
 
                     //----------------TẠM TRÚ-----------------
-                    if( $value->idthutuccutru == $this->thutuc_dangkytamtru ) $this->tamtru_dangky_nk++;
+                    if( $value->idthutuccutru == $this->thutuc_dangkytamtru ) $this->data['tamtru_dangky_nk']++;
                     if( $value->idtinh_thuongtru != $this->current_tinh )   //Ngoài tỉnh đến
                     {
-                        if( $value->idthutuccutru == $this->thutuc_dangkytamtru ) $this->tamtru_ngoaitinhden_dangky_nk++;
+                        if( $value->idthutuccutru == $this->thutuc_dangkytamtru ) $this->data['tamtru_ngoaitinhden_dangky_nk']++;
                     }
-                    if( $value->idthutuccutru == $this->thutuc_capsotamtu ) $this->tamtru_dangky_canhan_so++;
+                    if( $value->idthutuccutru == $this->thutuc_capsotamtu ) $this->data['tamtru_dangky_canhan_so']++;
                     
-                    if( $value->idthutuccutru == $this->thutuc_giahantamtru ) $this->tamtru_giahantamtru_nk++;
+                    if( $value->idthutuccutru == $this->thutuc_giahantamtru ) $this->data['tamtru_giahantamtru_nk']++;
                     //----------------END TẠM TRÚ-----------------
                     
                 }
@@ -479,7 +521,7 @@ class BaocaoThongkeController extends Controller
             }
         });
         
-        $html_table = view('nhankhau-layouts.ajax_component.view_report', $data)->render();
+        $html_table = view('nhankhau-layouts.ajax_component.view_report', $this->data)->render();
 
         $str = "
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
@@ -488,7 +530,7 @@ class BaocaoThongkeController extends Controller
         @page
         {
             size: 21cm 29.7cm;  /* A4 */
-            margin: 1.5cm 1.5cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
+            margin: 1cm 1.2cm 1cm 2.5cm; /* Margins: 2 cm on each side */
             mso-page-orientation: portrait;
         }
         @page Section1 { }
@@ -502,11 +544,10 @@ class BaocaoThongkeController extends Controller
         </body>
         </html>";
     header("Content-type: application/vnd.ms-word");
-    header("Content-Disposition: attachment;Filename=thong-ke.doc");
-    echo $str;die;
-        // echo $html_table;
-        // die;
-        return response()->json(['html' => $html_table]);
+    header("Content-Disposition: attachment;Filename=thong-ke-".$request->tungay." den ".$request->denngay.".doc");
+    echo $str;
+    die;
+        // return response()->json(['html' => $html_table]);
     }
 
    
