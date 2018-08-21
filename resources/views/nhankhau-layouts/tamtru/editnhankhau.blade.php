@@ -18,7 +18,14 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Sửa thông tin nhân khẩu tạm trú</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -28,9 +35,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                    <h4 class="header-title m-t-0 pull-left">Sửa thông tin nhân khẩu</h4>
-                </div>
                 <div class="col-xs-12">
                     <div class="card-box">
                         <form id="form-nhankhau" action="/tam-tru/{{ $nhankhau->idnhankhau }}/{{ $nhankhau->idsotamtru}}/sua-nhan-khau" method="POST" role="form">

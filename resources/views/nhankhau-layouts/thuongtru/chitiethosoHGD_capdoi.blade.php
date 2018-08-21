@@ -15,7 +15,14 @@
    <!-- Start content -->
    <div class="content">
       <div class="container">
-
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">Cấp đổi hộ khẩu</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
          <div class="row">
             <div class="col-xs-12">
                <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -27,11 +34,6 @@
          <div class="row">
             <div class="col-xs-12">
                <div class="card-box table-responsive">
-                  
-                  <div class="col-xs-12 col-sm-12">
-                     <h4 class="m-t-0 header-title"><b>Cấp đổi hộ khẩu</b></h4>
-                     
-                  </div>
 
                   <div class="col-xs-12 col-sm-12">
                      <table style="margin-bottom: 20px;" class="table table-striped table-bordered">

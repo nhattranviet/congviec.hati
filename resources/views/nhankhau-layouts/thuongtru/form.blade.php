@@ -10,17 +10,6 @@
                 <div class="col-xs-12">
                     <div class="page-title-box">
                         <h4 class="page-title">Thêm hồ sơ</h4>
-                        <ol class="breadcrumb p-0">
-                            <li>
-                                <a href="#">Uplon</a>
-                            </li>
-                            <li>
-                                <a href="#">Pages</a>
-                            </li>
-                            <li class="active">
-                                Thêm hồ sơ
-                            </li>
-                        </ol>
                         <div class="clearfix"></div>
                     </div>
                 </div>

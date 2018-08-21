@@ -9,15 +9,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Sửa thông tin</h4>
-                        <ol class="breadcrumb p-0">
-                            <li>
-                                <a href="/nhan-khau/">Danh sách chủ hộ</a>
-                            </li>
-                            <li class="active">
-                                Thông tin chủ hộ
-                            </li>
-                        </ol>
+                        <h4 class="page-title">Sửa hồ sơ</h4>
                         <div class="clearfix"></div>
                     </div>
                 </div>

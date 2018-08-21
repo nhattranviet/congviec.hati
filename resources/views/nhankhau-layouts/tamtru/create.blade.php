@@ -19,7 +19,14 @@
     <div class="content">
         <div class="container">
             <!-- end row -->
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Đăng ký tạm trú hộ gia đình</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -35,7 +42,6 @@
                         <form id="form-nhankhau" action="{{ route('tam-tru.store') }}" method="POST" role="form">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
-                                    <h4 class="header-title m-t-0 pull-left">Đăng ký tạm trú hộ gia đình</h4>
                                     <div class="btn-group pull-right m-t-15">
                                         <button type="button" class="btn btn-custom" id="createTab">Thêm nhân khẩu</button>
                                     </div>

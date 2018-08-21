@@ -5,7 +5,14 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
-            
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Sửa thông tin hồ sơ</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <!-- end row -->
             <div class="row">
                 <div class="col-xs-12">
@@ -17,9 +24,6 @@
             </div>
             
             <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                    <h4 class="header-title m-t-0 pull-left">Sửa thông tin hồ sơ</h4>
-                </div>
                 <div class="col-xs-12">
                     <div class="card-box">
                         @if ($errors->any())

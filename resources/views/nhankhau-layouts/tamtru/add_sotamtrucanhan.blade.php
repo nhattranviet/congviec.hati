@@ -18,8 +18,14 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
-            <!-- end row -->
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Đăng ký tạm trú cá nhân</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -34,10 +40,7 @@
 
                         <form id="form-nhankhau" action="{{ route('post-add-so-tam-tru-ca-nhan') }}" method="POST" role="form">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h4 class="header-title m-t-0 pull-left">Đăng ký tạm trú cá nhân</h4>
-                                </div>
-                                <div class="col-md-12 col-xs-12 m-t-sm-40 m-t-20 m-b-40">
+                                <div class="col-md-12 col-xs-12">
                                     <ul class="m-b-30 nav nav-tabs m-b-10" id="myTabalt" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link active" id="home-tab1" data-toggle="tab" href="#home1" role="tab" aria-controls="home" aria-expanded="true">Trang chính</a>

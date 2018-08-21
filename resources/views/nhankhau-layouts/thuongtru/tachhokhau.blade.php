@@ -36,7 +36,14 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Tách hộ khẩu</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -51,7 +58,6 @@
                         <form id="form-nhankhau" action="{{ route('post-tach-ho-khau', $idhoso) }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12">
-                                    <h4 class="header-title m-t-0 pull-left">Tách hộ khẩu</h4>
                                     <div class="btn-group pull-right m-t-15">
                                         <button type="button" class="btn btn-custom" id="createTab">Thêm nhân khẩu</button>
                                     </div>

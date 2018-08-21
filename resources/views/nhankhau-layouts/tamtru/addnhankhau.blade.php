@@ -18,7 +18,14 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Thêm nhân khẩu vào sổ tạm trú</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -37,149 +44,9 @@
                                     <h4 class="header-title m-t-0 m-b-10">Thêm nhân khẩu vào sổ tạm trú: Hộ {{ $sotamtru->hoten }} - Mã sổ {{ $sotamtru->sotamtru_so }}</h4>
                                     <p>(Tạm trú tại {{ $sotamtru->chitiet_tamtru }} - {{ ($sotamtru->idxa_tamtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $sotamtru->idxa_tamtru)->value('name') : '' }} - {{ ($sotamtru->idhuyen_tamtru) ? DB::table('tbl_huyen_tx')->where('id', $sotamtru->idhuyen_tamtru)->value('name') : '' }} - {{ ($sotamtru->idtinh_tamtru) ? DB::table('tbl_tinh_tp')->where('id', $sotamtru->idtinh_tamtru)->value('name') : '' }}) </p>
                                 </div>
+                            </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
-                                    <div class="row">
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group {{ ($errors->has('hoten')) ? 'has-danger' : '' }}">
-                                                <label for="hoten">Sổ tạm trú số <span class="text-danger">*</span> </label>
-                                                <input disabled="disabled" type="text" name="hoten" parsley-trigger="change" placeholder="Sổ tạm trú" class="form-control" id="hoten" value="{{ $sotamtru->sotamtru_so }}">
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group" >
-                                                <label>Quan hệ với chủ hộ <span class="text-danger">*</span></label>
-                                                <select name="idquanhechuho" class="form-control select2  {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}">
-                                                    <option value="">Chọn quan hệ</option>
-                                                    @foreach($list_quanhechuho as $quanhechuho)
-                                                    <option value="{{ $quanhechuho->id }}"  {{ old('idquanhechuho') == $quanhechuho->id ? 'selected' : '' }}>{{ $quanhechuho->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group {{ ($errors->has('hoten')) ? 'has-danger' : '' }}">
-                                                <label for="hoten">Họ và tên <span class="text-danger">*</span> </label>
-                                                <input type="text" name="hoten" parsley-trigger="change" placeholder="Họ và tên" class="form-control" id="hoten" value="">
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group {{ ($errors->has('tenkhac')) ? 'has-danger' : '' }}">
-                                                <label for="tenkhac">Tên gọi khác </label>
-                                                <input type="text" name="tenkhac" parsley-trigger="change" placeholder="Tên gọi khác/Biệt danh" class="form-control" id="tenkhac" value="">
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group {{ ($errors->has('birthday')) ? 'has-danger' : '' }}">
-                                                <label for="datepicker">Ngày sinh <span class="text-danger">*</span> </label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input type="text" name="birthday" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group">
-                                                <label>Giới tính <span class="text-danger">*</span></label>
-                                                <div>
-                                                    <div class="radio gender-radio">
-                                                        <input type="radio" name="gender" value="1" id="radio1">
-                                                        <label for="radio1">Nam</label>
-                                                    </div>
-                                                    <div class="radio gender-radio">
-                                                        <input type="radio" name="gender" value="0" id="radio2">
-                                                        <label for="radio2">Nữ</label>
-                                                    </div>
-                                                </div>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group {{ ($errors->has('ngaydangky')) ? 'has-danger' : '' }}">
-                                                <label for="datepicker">Ngày đăng ký tạm trú <span class="text-danger">*</span> </label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input type="text" name="ngaydangky" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group {{ ($errors->has('tamtru_tungay')) ? 'has-danger' : '' }}">
-                                                <label for="datepicker">Tạm trú từ ngày <span class="text-danger">*</span> </label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input type="text" name="tamtru_tungay" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group {{ ($errors->has('tamtru_denngay')) ? 'has-danger' : '' }}">
-                                                <label for="datepicker">Tạm trú đến ngày <span class="text-danger">*</span> </label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input type="text" name="tamtru_denngay" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group">
-                                                <label>Dân tộc</label>
-                                                <select name="iddantoc" class="form-control select2 {{ ($errors->has('iddantoc')) ? 'has-danger' : '' }}">
-                                                    <option value="">Chọn Dân tộc</option>
-                                                    @foreach($nations as $nation)
-                                                    <option value="{{ $nation->id }}">{{ $nation->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group">
-                                                <label>Nghề nghiệp</label>
-                                                <select name="idnghenghiep" class="form-control select2 {{ ($errors->has('idnghenghiep')) ? 'has-danger' : '' }}">
-                                                    <option value="">Chọn Nghề nghiệp</option>
-                                                    @foreach($careers as $career)
-                                                    <option value="{{ $career->id }}" >{{ $career->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
-                                            <fieldset class="form-group">
-                                                <label>Quốc tịch <span class="text-danger">*</span></label>
-                                                <select name="idquoctich" class="form-control select2">
-                                                    <option  value="">Chọn Quốc tịch</option>
-                                                    @foreach($countries as $country)
-                                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </fieldset>
-                                        </div>
-
-                                        
-                                    </div>
-
-                                    
-
-                                </div>
-
+                            <div class="row">
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6" id="picker">
 
                                     <fieldset class="form-group" id="addressPickerGroup">
@@ -193,6 +60,9 @@
                                         <input type="hidden" data-addr="" hidden="hidden" name="chitiet_nguyenquan" class="form-control" value="" id="chitiet_nguyenquan">
                                     </fieldset>
 
+                                </div>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6" id="picker">
+
                                     <fieldset class="form-group" id="addressPickerGroup">
                                         <label for="noilamviec_view">Nơi làm việc</label>
                                         <input value="" type="text" name="noilamviec_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ nơi làm việc" class="form-control" id="noilamviec_view">
@@ -204,6 +74,139 @@
                                         <input type="hidden" data-addr="" hidden="hidden" name="chitiet_noilamviec" class="form-control" value="" id="chitiet_noilamviec">
                                     </fieldset>
 
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group {{ ($errors->has('hoten')) ? 'has-danger' : '' }}">
+                                        <label for="hoten">Sổ tạm trú số <span class="text-danger">*</span> </label>
+                                        <input disabled="disabled" type="text" name="hoten" parsley-trigger="change" placeholder="Sổ tạm trú" class="form-control" id="hoten" value="{{ $sotamtru->sotamtru_so }}">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group" >
+                                        <label>Quan hệ với chủ hộ <span class="text-danger">*</span></label>
+                                        <select name="idquanhechuho" class="form-control  {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}">
+                                            <option value="">Chọn quan hệ</option>
+                                            @foreach($list_quanhechuho as $quanhechuho)
+                                            <option value="{{ $quanhechuho->id }}"  {{ old('idquanhechuho') == $quanhechuho->id ? 'selected' : '' }}>{{ $quanhechuho->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group {{ ($errors->has('hoten')) ? 'has-danger' : '' }}">
+                                        <label for="hoten">Họ và tên <span class="text-danger">*</span> </label>
+                                        <input type="text" name="hoten" parsley-trigger="change" placeholder="Họ và tên" class="form-control" id="hoten" value="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group {{ ($errors->has('tenkhac')) ? 'has-danger' : '' }}">
+                                        <label for="tenkhac">Tên gọi khác </label>
+                                        <input type="text" name="tenkhac" parsley-trigger="change" placeholder="Tên gọi khác/Biệt danh" class="form-control" id="tenkhac" value="">
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group {{ ($errors->has('birthday')) ? 'has-danger' : '' }}">
+                                        <label for="datepicker">Ngày sinh <span class="text-danger">*</span> </label>
+                                        <div>
+                                            <div class="input-group">
+                                                <input type="text" name="birthday" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                                <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                            </div><!-- input-group -->
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group">
+                                        <label>Giới tính <span class="text-danger">*</span></label>
+                                        <div>
+                                            <div class="radio gender-radio">
+                                                <input type="radio" name="gender" value="1" id="radio1">
+                                                <label for="radio1">Nam</label>
+                                            </div>
+                                            <div class="radio gender-radio">
+                                                <input type="radio" name="gender" value="0" id="radio2">
+                                                <label for="radio2">Nữ</label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group {{ ($errors->has('ngaydangky')) ? 'has-danger' : '' }}">
+                                        <label for="datepicker">Ngày đăng ký tạm trú <span class="text-danger">*</span> </label>
+                                        <div>
+                                            <div class="input-group">
+                                                <input type="text" name="ngaydangky" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                                <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                            </div><!-- input-group -->
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group {{ ($errors->has('tamtru_tungay')) ? 'has-danger' : '' }}">
+                                        <label for="datepicker">Tạm trú từ ngày <span class="text-danger">*</span> </label>
+                                        <div>
+                                            <div class="input-group">
+                                                <input type="text" name="tamtru_tungay" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                                <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                            </div><!-- input-group -->
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group {{ ($errors->has('tamtru_denngay')) ? 'has-danger' : '' }}">
+                                        <label for="datepicker">Tạm trú đến ngày <span class="text-danger">*</span> </label>
+                                        <div>
+                                            <div class="input-group">
+                                                <input type="text" name="tamtru_denngay" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="">
+                                                <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                            </div><!-- input-group -->
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group">
+                                        <label>Dân tộc</label>
+                                        <select name="iddantoc" class="form-control {{ ($errors->has('iddantoc')) ? 'has-danger' : '' }}">
+                                            <option value="">Chọn Dân tộc</option>
+                                            @foreach($nations as $nation)
+                                            <option value="{{ $nation->id }}">{{ $nation->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group">
+                                        <label>Nghề nghiệp</label>
+                                        <select name="idnghenghiep" class="form-control {{ ($errors->has('idnghenghiep')) ? 'has-danger' : '' }}">
+                                            <option value="">Chọn Nghề nghiệp</option>
+                                            @foreach($careers as $career)
+                                            <option value="{{ $career->id }}" >{{ $career->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                    <fieldset class="form-group">
+                                        <label>Quốc tịch <span class="text-danger">*</span></label>
+                                        <select name="idquoctich" class="form-control">
+                                            <option  value="">Chọn Quốc tịch</option>
+                                            @foreach($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </fieldset>
                                 </div>
                             </div>
                             <div class="row m-t-10">

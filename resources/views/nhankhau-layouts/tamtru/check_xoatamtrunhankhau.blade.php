@@ -17,12 +17,19 @@
 <!-- Start content -->
 <div class="content">
     <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">Xóa tạm trú nhân khẩu</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
         <!-- end row -->
         <div class="row">
             <div class="col-xs-12">
             <div class="card-box table-responsive">
                 <div class="col-xs-12 col-sm-12">
-                    <h4 class="m-t-0 header-title"><b>Thông tin chi tiết nhân khẩu</b></h4>
                     <a href="/sua-nhan-khau" class="btn btn-googleplus waves-effect waves-light pull-right"><span class="btn-label"><i class="zmdi zmdi-edit"></i></span>Sửa thông tin</a>
                 </div>
                 <div class="clearfix"></div>

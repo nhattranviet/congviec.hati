@@ -19,7 +19,14 @@
     <div class="content">
         <div class="container">
             <!-- end row -->
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Thống kê</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -29,17 +36,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                    <h4 class="header-title m-t-0 pull-left">Thống kê</h4>
-                </div>
                 <div class="col-xs-12">
                     <div class="card-box">
 
                         <form id="tim-kiem-hoso" action="{{ route('post-bao-cao-nhan-khau-ToResult') }}" idresult="nhankhautable" method="GET" role="form">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h4 class="header-title m-t-0 pull-left">Thông tin nhân khẩu</h4>
-                                </div>
                                 <div class="col-md-12 col-xs-12 m-t-sm-40 m-t-20 m-b-40">
                                     <div class="row hokhau-code">
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">

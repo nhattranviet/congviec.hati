@@ -9,7 +9,14 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Xóa thường trú hộ gia đình</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -19,14 +26,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-sm-12">
-                    <h4 class="header-title m-t-0 pull-left">Xóa thường trú hộ gia đình</h4>
-                </div>
                 <div class="col-xs-12">
                     <div class="card-box table-responsive">
-                        <div class="col-xs-12 col-sm-12">
-                            <h4 class="m-t-0 header-title"><b>Thông tin chi tiết nhân khẩu</b></h4>
-                        </div>
 
                         <div class="col-xs-12 col-sm-12 m-t-50">
                             <table style="margin-bottom: 20px;" class="table table-striped table-bordered">

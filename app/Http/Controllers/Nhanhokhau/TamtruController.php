@@ -87,7 +87,7 @@ class TamtruController extends Controller
         $data['nations'] = NhanhokhauLibrary::getListDanToc();
         $data['careers'] = NhanhokhauLibrary::getListNgheNghiep();
         $data['list_quanhechuho'] = NhanhokhauLibrary::getListMoiQuanHeNotChuHo();
-        $data['sotamtru'] = NhanhokhauLibrary::getChitietSotamtru($idsotamtru, TRUE);
+        $data['sotamtru'] = TamtruLibrary::getChitietSotamtru($idsotamtru, TRUE);
         return view('nhankhau-layouts.tamtru.addnhankhau', $data);
     }
 
@@ -97,9 +97,9 @@ class TamtruController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
-        $sotamtru_info = NhanhokhauLibrary::getChitietSotamtru($idsotamtru, TRUE);
-        $idnhankhau = NhanhokhauLibrary::insertNhankhauTamtruToNhanKhauTable($request, $sotamtru_info, TRUE);
-        NhanhokhauLibrary::insertDataTamtru($request, $idsotamtru, $idnhankhau);
+        $sotamtru_info = TamtruLibrary::getChitietSotamtru($idsotamtru, TRUE);
+        $idnhankhau = TamtruLibrary::insertNhankhauTamtruToNhanKhauTable($request, $sotamtru_info, TRUE);
+        TamtruLibrary::insertDataTamtru($request, $idsotamtru, $idnhankhau);
         $data_log = array(
             'idthutuccutru' => $this->thutuc_dangkytamtru, 'type' => 'nhankhau', 'idnhankhau' => $idnhankhau, 'idsotamtru' => $idsotamtru, 'date_action' => date('Y-m-d', strtotime($request->ngaydangky)),
             'idquocgia_thuongtru' => $sotamtru_info->idquocgia_thuongtru, 'idtinh_thuongtru' => $sotamtru_info->idtinh_thuongtru, 'idhuyen_thuongtru' => $sotamtru_info->idhuyen_thuongtru, 'idxa_thuongtru' => $sotamtru_info->idxa_thuongtru, 'chitiet_thuongtru' => $sotamtru_info->chitiet_thuongtru,
@@ -553,6 +553,20 @@ class TamtruController extends Controller
         //--------------End ghi log cua ho so----------------------
 
         return response()->json(['success' => 'Cập nhật hồ sơ thành công ', 'url' => route('tam-tru.index')]);
+    }
+
+    public function checkTamtruQuahan()
+    {
+        $current_day = date('Y-m-d', time());
+        $data['list_nhankhau'] = DB::connection('nhanhokhau')->table('tbl_tamtru')
+        ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
+        ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
+        ->where('tamtru_denngay', '<=', $current_day)
+        ->where('tbl_tamtru.deleted_at', NULL)
+        ->select('tbl_tamtru.tamtru_tungay', 'tbl_tamtru.tamtru_denngay', 'tbl_sotamtru.type', 'tbl_nhankhau.hoten', 'sotamtru_so', 'tbl_sotamtru.id as idsotamtru', 'tbl_sotamtru.idquocgia_tamtru', 'tbl_sotamtru.idtinh_tamtru', 'tbl_sotamtru.idhuyen_tamtru', 'tbl_sotamtru.idxa_tamtru', 'tbl_sotamtru.chitiet_tamtru' )
+        ->orderBy('idsotamtru', 'DESC')
+        ->get();
+        return view('nhankhau-layouts.tamtru.quahan', $data);
     }
 
     /**

@@ -6,7 +6,14 @@
     <div class="content">
         <div class="container">
             <!-- end row -->
-
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Thay đổi chủ hộ</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="alert alert-danger" id="error-msg" style="display: none">
@@ -35,11 +42,6 @@
                         <form id="form-nhankhau" action="{{ route('post-thay-doi-chu-ho-tam-tru', $idsotamtru) }}" method="POST" role="form">
                             @csrf
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h4 class="header-title m-t-0 pull-left">Thay đổi chủ hộ</h4>
-                                    <div class="btn-group pull-right m-t-15">
-                                    </div>
-                                </div>
                                 <div class="col-md-12 col-xs-12 m-t-sm-40 m-t-20 m-b-40">
                                     <div class="row m-t-20">
                                         @foreach($list_nhankhau as $nhankhau)

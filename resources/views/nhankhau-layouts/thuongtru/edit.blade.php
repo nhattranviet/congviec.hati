@@ -6,7 +6,14 @@
     <div class="content">
       <div class="container">
         <!-- end row -->
-
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">Sửa hồ sơ</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
         <div class="row">
           <div class="col-xs-12">
             <div class="alert alert-danger" id="error-msg" style="display: none">
