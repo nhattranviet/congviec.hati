@@ -522,7 +522,6 @@ class BaocaoThongkeController extends Controller
         });
         
         $html_table = view('nhankhau-layouts.ajax_component.view_report', $this->data)->render();
-
         $str = "
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head><title>Microsoft Office HTML Example</title>

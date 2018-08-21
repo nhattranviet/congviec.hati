@@ -141,7 +141,7 @@
                                     <div class="card-box tilebox-two">
                                         <i style="color:violet;" class="ion-android-book pull-xs-right text-muted"></i>
                                         <h6 class="text-primary text-uppercase m-b-15 m-t-10">SỔ TẠM TRÚ</h6>
-                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $tamtru_tongso_so }}</span></h2>
+                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $tamtru_tongso_ho }}</span></h2>
                                     </div>
                                 </div>
 
