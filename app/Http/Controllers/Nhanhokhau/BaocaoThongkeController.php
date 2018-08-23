@@ -521,17 +521,17 @@ class BaocaoThongkeController extends Controller
             }
         });
         
-        $html_table = view('nhankhau-layouts.ajax_component.view_report', $this->data)->render();
+        $html_table = view('nhankhau-layouts.ajax_component.view_report_hk15', $this->data)->render();
         $str = "
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head><title>Microsoft Office HTML Example</title>
         <style> <!-- 
-        @page
-        {
-            size: 21cm 29.7cm;  /* A4 */
-            margin: 1cm 1.2cm 1cm 2.5cm; /* Margins: 2 cm on each side */
-            mso-page-orientation: portrait;
-        }
+            @page
+            {
+                size: 29.7cm 21cm;  /* A4 */
+                margin: 0.5cm 1.2cm 0.5cm 2.5cm; /* Margins: 2 cm on each side */
+                mso-page-orientation: landscape;
+            }
         @page Section1 { }
         div.Section1 { page:Section1; }
         --></style>
@@ -545,8 +545,6 @@ class BaocaoThongkeController extends Controller
     header("Content-type: application/vnd.ms-word");
     header("Content-Disposition: attachment;Filename=thong-ke-".$request->tungay." den ".$request->denngay.".doc");
     echo $str;
-    die;
-        // return response()->json(['html' => $html_table]);
     }
 
    
