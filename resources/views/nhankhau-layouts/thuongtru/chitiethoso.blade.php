@@ -65,7 +65,7 @@
                             <th>Quan hệ với chủ hộ</th>
                            <th>Thường trú</th>
                            <th>Trạng thái</th>
-                           <th style="width: 100px; text-align: center;">Hành động</th>
+                           <th style="width: 120px; text-align: center;">Hành động</th>
                         </tr>
                      </thead>
 
@@ -87,6 +87,7 @@
                                         <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/chi-tiet-nhan-khau" alt="Text" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết nhân khẩu"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
                                         <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/sua-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhân khẩu"> <i class="zmdi zmdi-edit"></i> </a>
                                         <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/check-xoa-thuong-tru" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xóa thường trú nhân khẩu"> <i style="color: red;" class="fa fa-remove"></i> </a>
+                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/get-hk-01" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xuất thông tin mẫu HK01"> <i style="color: blue;" class="fa fa-file-word-o"></i> </a>
                                     @endif
                                 </div>
                               </td>

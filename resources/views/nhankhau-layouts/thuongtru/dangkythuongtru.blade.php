@@ -308,7 +308,7 @@
                                                             <label for="exampleTextarea">Tóm tắt bản thân (Từ đủ 14 tuổi trở lên đến nay ở đâu, làm gì:) </label>
                                                             <textarea class="form-control ckeditor" name="description" rows="3">@if(isset($nhankhau)){{$nhankhau->tomtatbanthan}}
                                                                 @else
-                                                                    <table align="center" border="1" cellpadding="1" cellspacing="0" style="width:100%">
+                                                                    <table align="center" border="1" cellspacing="0" cellpadding="0" style="width:100%; border-collapse: collapse;">
                                                                         <tbody>
                                                                             <tr>
                                                                                 <th style="text-align: center; vertical-align: middle; width: 20%;">
@@ -340,7 +340,7 @@
                                                             <label for="exampleTextarea">Tóm tắt gia đình</label>
                                                             <textarea class="form-control ckeditor" name="descriptionFamily" rows="3">@if(isset($nhankhau)){{$nhankhau->tomtatgiadinh}} 
                                                                 @else
-                                                                    <table align="center" border="1" cellpadding="0" cellspacing="0" style="width:100%" summary="Tóm lược">
+                                                                    <table align="center" border="1" cellpadding="0" cellspacing="0" style="width:100%; border-collapse: collapse;" summary="Tóm lược">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th style="text-align: center; vertical-align: middle; width: 5%;" scope="col">STT</th>

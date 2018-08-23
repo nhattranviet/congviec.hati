@@ -42,12 +42,7 @@
 
                         <form id="form-nhankhau" action="{{ route('nhankhau.store') }}" method="POST" role="form" autocomplete="on">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <div class="btn-group pull-right m-t-15">
-                                        <button type="button" class="btn btn-custom" id="createTab">Thêm nhân khẩu</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-xs-12 m-t-sm-40 m-t-20 m-b-40">
+                                <div class="col-md-12 col-xs-12 m-b-40">
                                     <ul class="m-b-30 nav nav-tabs m-b-10" id="myTabalt" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link active" id="home-tab1" data-toggle="tab" href="#home1" role="tab" aria-controls="home" aria-expanded="true">Trang chính</a>
@@ -99,7 +94,7 @@
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                                         <fieldset class="form-group" id="addressPickerGroup">
                                                             <label for="thuongtru_view">Nơi đăng ký thường trú <span class="text-danger">*</span></label>
-                                                            <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control addressPickerClass" id="thuongtru_view" tabindex="6" autocomplete="off">
+                                                            <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control addressPickerClass" id="thuongtru_view" autocomplete="off" tabindex="6">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
                                                             <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_thuongtru" class="form-control" id="idquocgia_thuongtru" value="">
                                                             <input type="hidden" data-addr="" hidden="hidden" name="idtinh_thuongtru" class="form-control" id="idtinh_thuongtru" value="">
@@ -120,7 +115,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group" >
                                                                     <label>Quan hệ với chủ hộ <span class="text-danger">*</span></label>
-                                                                    <select name="idquanhechuho[]" class="form-control  {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}" tabindex="7">
+                                                                    <select tabindex="7" name="idquanhechuho[]" class="form-control  {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}">
                                                                         <option value="">Chọn quan hệ</option>
                                                                         @foreach($list_quanhechuho as $quanhechuho)
                                                                         <option value="{{ $quanhechuho->id }}"  {{ old('idquanhechuho') == $quanhechuho->id ? 'selected' : '' }}>{{ $quanhechuho->name }}</option>
@@ -132,13 +127,13 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label for="hoten">Họ và tên <span class="text-danger">*</span></label>
-                                                                    <input type="text" name="hoten[]" parsley-trigger="change" placeholder="Họ và tên" class="form-control" id="hoten" value="" tabindex="9">
+                                                                    <input type="text" name="hoten[]" parsley-trigger="change" placeholder="Họ và tên" class="form-control" id="hoten" value=""  tabindex="8">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label for="tenkhac">Tên gọi khác</label>
-                                                                    <input type="text" name="tenkhac[]" parsley-trigger="change" placeholder="Tên gọi khác/Biệt danh" class="form-control" id="tenkhac" value="" tabindex="10">
+                                                                    <input type="text" name="tenkhac[]" parsley-trigger="change" placeholder="Tên gọi khác/Biệt danh" class="form-control" id="tenkhac" value="" tabindex="9">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
@@ -158,11 +153,11 @@
                                                                     <div>
                                                                         <input class="gender" type="hidden" name="gender[]" value="">
                                                                         <div class="radio gender-radio">
-                                                                            <input type="radio" name="gender0" value="1" id="radio1" tabindex="12">
+                                                                            <input type="radio" name="gender0" value="1" id="radio1">
                                                                             <label for="radio1">Nam</label>
                                                                         </div>
                                                                         <div class="radio gender-radio">
-                                                                            <input type="radio" name="gender0" value="0" id="radio2" tabindex="12">
+                                                                            <input type="radio" name="gender0" value="0" id="radio2">
                                                                             <label for="radio2">Nữ</label>
                                                                         </div>
                                                                     </div>
@@ -171,7 +166,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Học vấn</label>
-                                                                    <select name="idtrinhdohocvan[]" class="form-control" tabindex="13">
+                                                                    <select name="idtrinhdohocvan[]" class="form-control">
                                                                         <option value="">Chọn Học vấn</option>
                                                                         @foreach($educations as $education)
                                                                         <option value="{{ $education->id }}">{{ $education->name }}</option>
@@ -182,7 +177,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Nghề nghiệp</label>
-                                                                    <select name="idnghenghiep[]" class="form-control" tabindex="14">
+                                                                    <select name="idnghenghiep[]" class="form-control">
                                                                         <option value="">Chọn Nghề nghiệp</option>
                                                                         @foreach($careers as $career)
                                                                         <option value="{{ $career->id }}">{{ $career->name }}</option>
@@ -193,7 +188,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Dân tộc</label>
-                                                                    <select name="iddantoc[]" class="form-control" tabindex="15">
+                                                                    <select name="iddantoc[]" class="form-control">
                                                                         <option value="">Chọn Dân tộc</option>
                                                                         @foreach($nations as $nation)
                                                                         <option value="{{ $nation->id }}">{{ $nation->name }}</option>
@@ -204,26 +199,26 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label for="cmnd_so">Số CMND</label>
-                                                                    <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="" tabindex="16">
+                                                                    <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="">
                                                                 </fieldset>
                                                             </div>
                                                             
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label for="trinhdochuyenmon">Trình độ chuyên môn</label>
-                                                                    <input type="text" name="trinhdochuyenmon[]" parsley-trigger="change" placeholder="Trình độ chuyên môn" class="form-control" value="" id="trinhdochuyenmon" tabindex="18">
+                                                                    <input type="text" name="trinhdochuyenmon[]" parsley-trigger="change" placeholder="Trình độ chuyên môn" class="form-control" value="" id="trinhdochuyenmon">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label for="trinhdongoaingu">Trình độ ngoại ngữ</label>
-                                                                    <input type="text" name="trinhdongoaingu[]" parsley-trigger="change" placeholder="Trình độ ngoại ngữ" class="form-control" value="" id="trinhdongoaingu" tabindex="19">
+                                                                    <input type="text" name="trinhdongoaingu[]" parsley-trigger="change" placeholder="Trình độ ngoại ngữ" class="form-control" value="" id="trinhdongoaingu">
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Tôn giáo <span class="text-danger">*</span></label>
-                                                                    <select name="idtongiao[]" class="form-control"  tabindex="20">
+                                                                    <select name="idtongiao[]" class="form-control" >
                                                                         <option value="">Chọn Tôn giáo</option>
                                                                         @foreach($religions as $religion)
                                                                         <option value="{{ $religion->id }}">{{ $religion->name }}</option>
@@ -234,7 +229,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Quốc tịch <span class="text-danger">*</span></label>
-                                                                    <select name="idquoctich[]" class="form-control"  tabindex="21">
+                                                                    <select name="idquoctich[]" class="form-control" >
                                                                         <option  value="">Chọn Quốc tịch</option>
                                                                         @foreach($countries as $country)
                                                                         <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -245,7 +240,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label for="biettiengdantoc">Biết tiếng dân tộc</label>
-                                                                    <input type="text" name="biettiengdantoc[]" parsley-trigger="change" placeholder="Biết tiếng dân tộc" class="form-control" value="" id="biettiengdantoc"  tabindex="22">
+                                                                    <input type="text" name="biettiengdantoc[]" parsley-trigger="change" placeholder="Biết tiếng dân tộc" class="form-control" value="" id="biettiengdantoc" >
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
@@ -253,7 +248,7 @@
                                                                     <label for="datepicker">Ngày ĐKTT <span class="text-danger">*</span></label>
                                                                     <div>
                                                                         <div class="input-group">
-                                                                            <input type="text" name="ngaydangky[]" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value=""  tabindex="23">
+                                                                            <input type="text" name="ngaydangky[]" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="" >
                                                                             <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                                                         </div><!-- input-group -->
                                                                     </div>
@@ -267,7 +262,7 @@
 
                                                         <fieldset class="form-group" id="addressPickerGroup">
                                                             <label for="noisinh_view">Nơi sinh <span class="text-danger">*</span></label>
-                                                            <input type="text" name="noisinh_view" onload="test();" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ nơi sinh" class="form-control" id="noisinh_view" tabindex="6">
+                                                            <input type="text" name="noisinh_view" onload="test();" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ nơi sinh" class="form-control" id="noisinh_view"  tabindex="10">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
                                                             <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_noisinh[]" class="form-control" value="" id="idquocgia_noisinh">
                                                             <input type="hidden" data-addr="" hidden="hidden" name="idtinh_noisinh[]" class="form-control" value="" id="idtinh_noisinh">
@@ -326,7 +321,7 @@
                                                         <fieldset class="form-group">
                                                             <label for="exampleTextarea">Tóm tắt bản thân (Từ đủ 14 tuổi trở lên đến nay ở đâu, làm gì:) </label>
                                                             <textarea class="form-control ckeditor" name="description[]" rows="3">
-                                                                <table align="center" border="1" cellpadding="1" cellspacing="0" style="width:100%">
+                                                                <table align="center" border="1" cellpadding="0" cellspacing="0" style="width:100%; border-collapse: collapse;">
                                                                     <tbody>
                                                                         <tr>
                                                                             <th style="text-align: center; vertical-align: middle; width: 20%;">
@@ -356,7 +351,7 @@
                                                         <fieldset class="form-group">
                                                             <label for="exampleTextarea">Tóm tắt gia đình</label>
                                                             <textarea class="form-control ckeditor" name="descriptionFamily[]" rows="3">
-                                                                <table align="center" border="1" cellpadding="0" cellspacing="0" style="width:100%" summary="Tóm lược">
+                                                                <table align="center" border="1" cellpadding="0" cellspacing="0" style="width:100%; border-collapse: collapse;" summary="Tóm lược">
                                                                     <thead>
                                                                         <tr>
                                                                             <th style="text-align: center; vertical-align: middle; width: 5%;" scope="col">STT</th>
@@ -407,6 +402,7 @@
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
                                     <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Thêm hồ sơ</button>
+                                    <button type="button" class="btn btn-danger pull-right" id="createTab"><i class="fa fa-user"></i> Thêm nhân khẩu</button>
                                 </div>
                             </div>
                             {{ csrf_field() }}

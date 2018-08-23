@@ -70,7 +70,7 @@
 	<!-- End Right content here -->
 	<!-- ============================================================== -->
 	<!-- Right Sidebar -->
-	@include('commons.rightBar')
+	{{-- @include('commons.rightBar') --}}
 	<!-- /Right-bar -->
 	<footer class="footer text-right">
 		@php

@@ -35,6 +35,9 @@
             <span class="daumuc">THỐNG KÊ TÌNH HÌNH, KẾT QUẢ ĐĂNG KÝ, QUẢN LÝ CƯ TRÚ</span><br>
             <span class="italic">(từ ngày {{ $tungay }} đến ngày {{ $denngay }} )</span>
         </td>
+        <td class="center" style="width: 170px" valign="top" >
+            Mẫu HK15 ban hành theo TT số 36/2014/TT-BCA ngày 09/9/2014
+        </td>
     </tr>
 </table>
 <br>

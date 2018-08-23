@@ -23,9 +23,8 @@ use App\District;
 use App\Ward;
 use App\Brief;
 use App\Hokhau;
-
-use PhpOffice\PhpWord\Shared\Converter;
-use PhpOffice\PhpWord\Style\TablePosition;
+// use PhpOffice\PhpWord\Shared\Converter;
+// use PhpOffice\PhpWord\Style\TablePosition;
 
 
 class BaocaoThongkeController extends Controller
@@ -542,9 +541,38 @@ class BaocaoThongkeController extends Controller
         </div>
         </body>
         </html>";
-    header("Content-type: application/vnd.ms-word");
-    header("Content-Disposition: attachment;Filename=thong-ke-".$request->tungay." den ".$request->denngay.".doc");
-    echo $str;
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=thong-ke-".$request->tungay." den ".$request->denngay.".doc");
+        echo $str;
+    }
+
+    public function getHK01($id_in_sohokhau)
+    {
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
+        $html_table = view('nhankhau-layouts.ajax_component.view_report_hk01', $data)->render();
+        $str = "
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><title>Microsoft Office HTML Example</title>
+        <style> <!-- 
+            @page
+            {
+                size: 21cm 29.7cm;  /* A4 */
+                margin: 1.5cm 1.1cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
+                mso-page-orientation: portrait;
+            }
+        @page Section1 { }
+        div.Section1 { page:Section1; }
+        --></style>
+        </head>
+        <body>
+        <div class=Section1>
+        ".$html_table."
+        </div>
+        </body>
+        </html>";
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=mau-hk-01.doc");
+        echo $str;
     }
 
    

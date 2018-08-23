@@ -235,6 +235,7 @@
 
                 // set tab active
                 activaTab("#profile" + tabIndexs);
+                window.scrollTo(0, 0);
             });
 
             $(document).on("click", ".nav-link", function (event) {

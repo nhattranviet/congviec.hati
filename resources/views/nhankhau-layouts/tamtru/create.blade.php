@@ -41,12 +41,7 @@
 
                         <form id="form-nhankhau" action="{{ route('tam-tru.store') }}" method="POST" role="form">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <div class="btn-group pull-right m-t-15">
-                                        <button type="button" class="btn btn-custom" id="createTab">Thêm nhân khẩu</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-xs-12 m-t-sm-40 m-t-20 m-b-40">
+                                <div class="col-md-12 col-xs-12">
                                     <ul class="m-b-30 nav nav-tabs m-b-10" id="myTabalt" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link active" id="home-tab1" data-toggle="tab" href="#home1" role="tab" aria-controls="home" aria-expanded="true">Trang chính</a>
@@ -266,7 +261,8 @@
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
                                     <button type="submit" class="btn btn-primary">Thêm hồ sơ</button>
-                                    <a href="{{ route('tam-tru.index') }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
+                                    <button type="button" class="btn btn-custom" id="createTab">Thêm nhân khẩu</button>
+                                    {{-- <a href="{{ route('tam-tru.index') }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a> --}}
                                 </div>
                             </div>
                             {{ csrf_field() }}
