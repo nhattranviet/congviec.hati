@@ -45,12 +45,13 @@ class CanboController extends Controller
     public function index(Request $request)
     {
         $arrWhere = CanboLibrary::processArrWhere($request);
+        $arrWhere[] = array('iddonvi', '=', Session::get('userinfo')->iddonvi);
         $data['list_canbo'] = CanboLibrary::getListCanbo($arrWhere);
         if( $request->ajax() )
         {
             return response()->json(['html' => view('cahtcore.canbo.canbo_table', $data)->render()]);
         }
-        $data['list_donvi'] = CanboLibrary::getListDonvi();
+        $data['list_donvi'] = CanboLibrary::getListDonvi(array(['id', '=', Session::get('userinfo')->iddonvi]));
         return view('cahtcore.canbo.index', $data );
     }
 
@@ -321,6 +322,58 @@ class CanboController extends Controller
         $data['list_canbo'] = CanboLibrary::getListCanboOfDoi( $id_iddonvi_iddoi );
         return response()->json(['html' => view('cahtcore.canbo.option_select_canbo', $data)->render()]);
 
+    }
+
+    public function exportListCanBo($iddonvi)
+    {
+        $arrWhere = array();
+        $arrWhere[] = array('iddonvi', '=', $iddonvi);
+        $list_canbo = CanboLibrary::getAllListCanbo($arrWhere);
+        $str_canbo = "<table width='100%' style='border-collapse: collapse;' border='1' cellspacing='0' cellpadding='0'  >
+        <tr align='center'>
+            <td>STT</td>
+            <td>Họ tên</td>
+            <td>Đội</td>
+            <td>Username</td>
+            <td>Mật khẩu</td>
+        </tr>";
+        $i = 1;
+        foreach ($list_canbo as $canbo)
+        {
+            $str_canbo .= "<tr>
+            <td align='center'>".$i."</td>
+            <td>".$canbo->hoten."</td>
+            <td>".$canbo->tendoi."</td>
+            <td>".$canbo->username."</td>
+            <td>123456</td>
+        </tr>";
+        $i++;
+        }
+        $str_canbo .= "</table>";
+
+        $str = "
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><title>Microsoft Office HTML Example</title>
+        <style> <!-- 
+            @page
+            {
+                size: 21cm 29.7cm;  /* A4 */
+                margin: 1.5cm 1.1cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
+                mso-page-orientation: portrait;
+            }
+        @page Section1 { }
+        div.Section1 { page:Section1; }
+        --></style>
+        </head>
+        <body>
+        <div class=Section1>
+        ".$str_canbo."
+        </div>
+        </body>
+        </html>";
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=mau-hk-01.doc");
+        echo $str;
     }
 
     public function add_old_data()

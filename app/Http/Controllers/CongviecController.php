@@ -105,7 +105,6 @@ class CongviecController extends Controller
     public function store(Request $request) {
         $validator = Validator::make($request->all(), [
             'sotailieu' => 'required',
-            'sotailieu' => 'required',
             'trichyeu' => 'required',
             'idcanbonhan' => 'required',
             'hancongviec' => 'required',
@@ -171,7 +170,6 @@ class CongviecController extends Controller
         }
          $validator = Validator::make($request->all(), [
             'sotailieu' => 'required',
-            'sotailieu' => 'required',
             'trichyeu' => 'required',
             'idcanbonhan' => 'required',
             'hancongviec' => 'required',
@@ -206,7 +204,6 @@ class CongviecController extends Controller
 
         $dataCongViecChuyentiep_update = array(
             'idcanbonhan' => $request->idcanbonhan,
-            'timechuyentiep' => Carbon::now(),
             'updated_at' => Carbon::now(),
         );
         DB::table('tbl_congviec_chuyentiep')->where(array(
@@ -227,7 +224,7 @@ class CongviecController extends Controller
 
         $data['page_name'] = "Chi tiết công việc";
         $data['congviec_info'] = CongviecLibrary::getCongviecInfo( $idcongviec );
-        $data['congviec_chuyentiep_info'] = CongviecLibrary::getCongviecChuyentiepInfo( $idcongviec );
+        $data['congviec_chuyentiep_info'] = CongviecLibrary::getCongviecChuyentiepInfo( $idcongviec ); dd($data['congviec_chuyentiep_info']);
         $data['maxNodeCongViec'] = CongviecLibrary::getMaxNode( $idcongviec );
         return view('congviec.show', $data);
     }

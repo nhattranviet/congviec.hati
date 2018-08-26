@@ -491,7 +491,6 @@
             });
 
             $(document).on('change', "#iddoicongtac", function () {
-                alert('doicongtac_id');
                 var doicongtac_id = $('#iddoicongtac').val();
                 var url = bare_url + '/ajax-get-can-bo/' + doicongtac_id;
                 ajax_get_data_to_html_json(url, '.canbo');
