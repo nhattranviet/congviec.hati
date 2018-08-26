@@ -95,7 +95,7 @@ class CongviecController extends Controller
     }
     
     public function create()
-    {   
+    {
         $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo );
         $data['page_name'] = "Thêm mới công việc";
         $data['list_lanhdao'] = UserLibrary::getListLanhDaoOfDonVi( $current_iddonvi );

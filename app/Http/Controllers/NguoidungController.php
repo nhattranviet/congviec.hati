@@ -58,7 +58,10 @@ class NguoidungController extends Controller
             ->first();
             Session::put('userinfo', $data_user_session);
             Session::put('showQuahanModal', TRUE);
-            // $_SESSION['user_path'] = '/uploads/'.$data_user_session->iddonvi.'/'.$data_user_session->id_iddonvi_iddoi.'/'.$data_user_session->idcanbo;// echo $_SESSION['user_path']; die;
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            $_SESSION["current_url"] = $data_user_session->iddonvi.'/'.$data_user_session->id_iddonvi_iddoi.'/'.$data_user_session->idcanbo ;
             return redirect('/');
         }
         return redirect()->route('login');

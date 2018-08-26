@@ -1,5 +1,7 @@
 <?php
-
+if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 /*
  * CKFinder Configuration File
  *
@@ -66,7 +68,7 @@ $config['images'] = array(
 /*=================================== Backends ========================================*/
 
 // https://docs.ckeditor.com/ckfinder/ckfinder3-php/configuration.html#configuration_options_backends
-$root_folder = '/uploads/';
+$root_folder = '/uploads/'.$_SESSION["current_url"];
 // if(! is_dir($root_folder)) mkdir($root_folder);
 $config['backends'][] = array(
     'name'         => 'default',
