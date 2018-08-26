@@ -9,8 +9,6 @@
             config.entities_latin = false;
             config.tabIndex = 24;
             $('.ckeditor').ckeditor(config);
-
-
         });
     </script>
 @endsection
@@ -123,7 +121,6 @@
                                                                     </select>
                                                                 </fieldset>
                                                             </div>
-
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label for="hoten">Họ và tên <span class="text-danger">*</span></label>

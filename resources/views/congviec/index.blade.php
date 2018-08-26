@@ -141,8 +141,8 @@
         <div class="modal-content">
             <form action="{{ route('forgetSessionCheckModal') }}" method="GET" role="form">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Công việc quá hạn</h4>
+                    {{-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> --}}
+                    <h4 class="modal-title">Danh sách công việc quá hạn</h4>
                 </div>
                 <div class="modal-body p-20">
                     <div class="row">

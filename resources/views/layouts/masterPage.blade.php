@@ -75,7 +75,7 @@
 	<footer class="footer text-right">
 		@php
 			echo date('Y', time());
-		@endphp © Công an huyện Kỳ Anh.
+		@endphp © {{ Session::get('userinfo')->tendonvi }}
 	</footer>
 	</div>
 	<!-- END wrapper -->

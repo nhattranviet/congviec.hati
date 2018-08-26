@@ -6,35 +6,83 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/test', function(){
+    $a = DB::connection('test')->table('tbl_congviec')->get();
+    // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();
+    $canbo_list_id = [
+        '279' => '1',
+        '280' => '1',
+        '281' => '2',
+        '282' => '3',
+        '283' => '4',
+        '284' => '11',
+        '285' => '5',
+        '286' => '6',
+        '287' => '8',
+        '288' => '16',
+        '289' => '12',
+        '290' => '24',
+        '291' => '10',
+        '292' => '13',
+        '293' => '4',
+        '294' => '15',
+        '295' => '9',
+        '296' => '18',
+        '297' => '23',
+        '298' => '19',
+        '299' => '17',
+        '300' => '7',
+        '301' => '20',
+        '302' => '22',
+        '303' => '21',
+        '304' => '14',
+        '305' => '1'
+    ];
 
-    
-    die;
-    $a = DB::connection('catp')->table('tbl_congviec')->get();
-    // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();   print_r($a); die;
+    $list_doi = [
+        '1' => '11',
+        '2' => '12',
+        '23' => '12',
+        '24' => '13',
+        '25' => '14',
+        '26' => '12',
+    ];
     $data_chuanhoa = array();
+    
     foreach ($a as $congviec)
     {
         $data_cv = array(
-            'idcongviec' => $congviec->idcongviec,
             'idcanbo_creater' => 1,
-            'id_iddonvi_iddoi_creater' => 11,
+            'id_iddonvi_iddoi_creater' => 12,
             'sotailieu' => $congviec->sotailieu,
             'trichyeu' => $congviec->trichyeu,
-            'hancongviec' => ($congviec->hancongviec) ? date('Y-m-d H:i:s', $congviec->hancongviec) : '',
+            'hancongviec' => ($congviec->hancongviec) ? date('Y-m-d', $congviec->hancongviec) : NULL,
             'noisoanthao' => $congviec->noisoanthao,
-            'chitiet' => ($congviec->urlfile) ? '<p><a href="/'.$congviec->urlfile.'">Tài liệu đính kèm</a></p>' : '',
+            'chitiet' => ($congviec->urlfile) ? '<p><a href="/'.$congviec->urlfile.'">Tài liệu đính kèm</a></p>' : NULL,
             'idstatus' => $congviec->idstatus,
-            'updated_at' => ($congviec->updated) ? date('Y-m-d H:i:s', $congviec->updated) : '',
-            'created_at' => ($congviec->created) ? date('Y-m-d H:i:s', $congviec->created) : '',
-            'thoigianhoanthanh' => ($congviec->thoigianhoanthanh) ? date('Y-m-d', $congviec->thoigianhoanthanh) : '',
-            'thoigiangiao' => ($congviec->thoigiangiao) ? date('Y-m-d', $congviec->thoigiangiao) : ''
+            'thoigianhoanthanh' => ($congviec->thoigianhoanthanh) ? date('Y-m-d', $congviec->thoigianhoanthanh) : NULL,
+            'thoigiangiao' => ($congviec->thoigiangiao) ? date('Y-m-d', $congviec->thoigiangiao) : NULL,
+            'created_at' => ($congviec->created) ? date('Y-m-d H:i:s', $congviec->created) : NULL,
         );
-
-        $data_cv_chuyentiep = DB::connection('catp')->table('tbl_congviec_chuyentiep')->where('idcongviec', $congviec->idcongviec)->get()->toArray();
-        $data_chuanhoa[] = $data_cv;
+        $idcongviec = DB::table('tbl_congviec')->insertGetId( $data_cv );
+        $data_cv_chuyentiep = DB::connection('test')->table('tbl_congviec_chuyentiep')->where('idcongviec', $congviec->idcongviec)->get()->toArray();
+        $data_cv_chuyentiep_chuanhoa = [];
+        foreach ($data_cv_chuyentiep as $congviec)
+        {
+            $congviec_chuyentiep = [
+                'idcongviec' => $idcongviec,
+                'idcanbonhan' => ($congviec->idnguoinhan) ? $canbo_list_id[$congviec->idnguoinhan] : NULL,
+                'ghichu' => $congviec->ghichu,
+                'timechuyentiep' => ($congviec->timechuyentiep) ? date('Y-m-d H:i:s', $congviec->timechuyentiep) : NULL,
+                'order' => ($congviec->order) ? $congviec->order : NULL,
+                'id_iddonvi_iddoi_nhan' => ($congviec->iddoinhan) ? $list_doi[$congviec->iddoinhan] : NULL,
+                'created_at' => ($congviec->timechuyentiep) ? date('Y-m-d H:i:s', $congviec->timechuyentiep) : NULL,
+            ];
+            $data_cv_chuyentiep_chuanhoa[] = $congviec_chuyentiep ;
+        }
+        DB::table('tbl_congviec_chuyentiep')->insert( $data_cv_chuyentiep_chuanhoa );
     }
-    print_r($data_chuanhoa);
-    
+    // print_r($data_cv_chuyentiep_chuanhoa);
+
 });
 /*
 |--------------------------------------------------------------------------

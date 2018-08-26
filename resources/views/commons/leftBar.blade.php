@@ -2,7 +2,7 @@
     <div class="sidebar-inner slimscrollleft">
         <!--- Sidemenu -->
         <div id="sidebar-menu">
-            <ul>
+            {{-- <ul>
                 <li class="text-muted menu-title">Navigation</li>
 
                 <li class="has_sub">
@@ -51,7 +51,7 @@
                     </ul>
                 </li>
 
-            </ul>
+            </ul> --}}
             <div class="clearfix"></div>
         </div>
         <!-- Sidebar -->

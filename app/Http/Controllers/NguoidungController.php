@@ -51,8 +51,9 @@ class NguoidungController extends Controller
             ->join('users', 'users.idcanbo', '=', 'tbl_canbo.id')
             ->join('tbl_connguoi', 'tbl_canbo.idconnguoi', '=', 'tbl_connguoi.id')
             ->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', 'tbl_donvi_doi.id')
+            ->join('tbl_donvi', 'tbl_donvi.id', 'tbl_donvi_doi.iddonvi')
             ->join('tbl_nhomquyen', 'users.idnhomquyen', 'tbl_nhomquyen.id')
-            ->select('users.id as iduser', 'idcanbo', 'idnhomquyen', 'email', 'username', 'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddonvi_iddoi', 'iddonvi', 'tbl_nhomquyen.name as tennhomquyen', 'hoten')
+            ->select('users.id as iduser', 'idcanbo', 'idnhomquyen', 'email', 'username', 'idconnguoi', 'idcapbac', 'idchucvu', 'id_iddonvi_iddoi', 'iddonvi', 'tbl_donvi.name as tendonvi', 'tbl_nhomquyen.name as tennhomquyen', 'hoten')
             ->where('username', $data_user['username'])
             ->first();
             Session::put('userinfo', $data_user_session);
