@@ -224,7 +224,7 @@ class CongviecController extends Controller
 
         $data['page_name'] = "Chi tiết công việc";
         $data['congviec_info'] = CongviecLibrary::getCongviecInfo( $idcongviec );
-        $data['congviec_chuyentiep_info'] = CongviecLibrary::getCongviecChuyentiepInfo( $idcongviec ); dd($data['congviec_chuyentiep_info']);
+        $data['congviec_chuyentiep_info'] = CongviecLibrary::getCongviecChuyentiepInfo( $idcongviec );
         $data['maxNodeCongViec'] = CongviecLibrary::getMaxNode( $idcongviec );
         return view('congviec.show', $data);
     }

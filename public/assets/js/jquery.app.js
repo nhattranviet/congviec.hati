@@ -503,6 +503,15 @@
             //     ajax_get_data_to_html_json(url, '.canbo');
             // });
 
+            if ($(".app-datepicker").length > 0) {
+                $('.datepicker').datepicker({
+                    autoclose: true,
+                    format: 'dd-mm-yyyy',
+                    language: 'vi',
+                    todayHighlight: true
+                });
+            }
+
             if ($(".datepicker_get_date_after_a_week").length > 0) {
                 var current_date = new Date();
                 current_date.setDate(current_date.getDate() + 7);

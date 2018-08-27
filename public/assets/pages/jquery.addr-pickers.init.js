@@ -1,10 +1,14 @@
 var inputs = [];
 var el = null;
+var current_address_input = null;
 var isBusy = false;
 var modal = $('#address-modal');
 $(document).on('focus', '#addressPicker', function (event) {
   event.preventDefault();
+  // alert($(this).attr('tabindex'));
+  // var current_tabindex = $(this).attr('tabindex');
   el = $(this).parent();
+  current_address_input = $(this);
   modal.find('.modal-title').text($(this).attr('placeholder'));
   modal.modal('show');
 });
@@ -13,7 +17,9 @@ $('#saveChange').click(function (event) {
   /* Act on the event */
 
   loadAddress(el);
-
+  var current_tabindex = current_address_input.attr('tabindex');
+  current_tabindex++;
+  $('[tabindex=' + current_tabindex + ']').focus();
 });
 
 modal.find('#country').change(function (event) {

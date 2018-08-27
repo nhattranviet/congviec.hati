@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Thống kê</h4>
+                        <h4 class="page-title">Thống kê nhân khẩu</h4>
                         <div class="clearfix"></div>
                     </div>
                 </div>

@@ -43,6 +43,8 @@ $(document).ready(function () {
         event.preventDefault();
         $(this).datepicker({
             format: "dd-mm-yyyy",
+            // autoclose: true,
+            todayHighlight: true
         });
     });
     jQuery('#datepicker-autoclose').datepicker({

@@ -4,7 +4,7 @@
         <a href="{{ URL::to('/') }}" class="logo">
         {{-- <i class="zmdi zmdi-group-work icon-c-logo"></i> --}}
         <img src="{{ asset('img/mini_logo.png') }}">
-        <span>CAH KỲ ANH</span>
+        <span>CA HÀ TĨNH</span>
         </a>
     </div>
     <nav class="navbar navbar-custom">

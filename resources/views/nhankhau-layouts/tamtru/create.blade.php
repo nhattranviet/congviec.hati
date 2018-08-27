@@ -60,30 +60,30 @@
                                                             <label for="thuongtru_view">Nơi thường trú <span class="text-danger">*</span></label>
                                                             <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control" id="thuongtru_view">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_thuongtru" class="form-control" id="idquocgia_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_thuongtru" class="form-control" id="idtinh_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_thuongtru" class="form-control" id="idhuyen_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_thuongtru" class="form-control" id="idxa_thuongtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtru" class="form-control" id="chitiet_thuongtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idquocgia_thuongtru" class="form-control" id="idquocgia_thuongtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idtinh_thuongtru" class="form-control" id="idtinh_thuongtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idhuyen_thuongtru" class="form-control" id="idhuyen_thuongtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idxa_thuongtru" class="form-control" id="idxa_thuongtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="chitiet_thuongtru" class="form-control" id="chitiet_thuongtru" value="">
                                                         </fieldset>
                                                     </div>
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
                                                         <fieldset class="form-group" id="addressPickerGroup">
-                                                            <label for="thuongtru_view">Nơi đăng ký tạm trú <span class="text-danger">*</span></label>
-                                                            <input type="text" name="thuongtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ tạm trú" class="form-control" id="thuongtru_view">
+                                                            <label for="tamtru_view">Nơi đăng ký tạm trú <span class="text-danger">*</span></label>
+                                                            <input type="text" name="tamtru_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ tạm trú" class="form-control" id="tamtru_view" tabindex="1">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_tamtru" class="form-control" id="idquocgia_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_tamtru" class="form-control" id="idtinh_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_tamtru" class="form-control" id="idhuyen_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_tamtru" class="form-control" id="idxa_tamtru" value="">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_tamtru" class="form-control" id="chitiet_tamtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idquocgia_tamtru" class="form-control" id="idquocgia_tamtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idtinh_tamtru" class="form-control" id="idtinh_tamtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idhuyen_tamtru" class="form-control" id="idhuyen_tamtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idxa_tamtru" class="form-control" id="idxa_tamtru" value="">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="chitiet_tamtru" class="form-control" id="chitiet_tamtru" value="">
                                                         </fieldset>
                                                     </div>
 
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
                                                         <fieldset class="form-group">
                                                             <label for="sotamtru_so">Sổ tạm trú số <span class="text-danger">*</span></label>
-                                                            <input type="text" name="sotamtru_so" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="sotamtru_so" value="">
+                                                            <input type="text" name="sotamtru_so" parsley-trigger="change" placeholder="Nhập số" class="form-control" id="sotamtru_so" value="" tabindex="2">
                                                         </fieldset>
                                                     </div>
                                                     
@@ -212,7 +212,7 @@
                                                                 <fieldset class="form-group">
                                                                     <label>Giới tính <span class="text-danger">*</span></label>
                                                                     <div>
-                                                                        <input class="gender" type="hidden" name="gender[]" value="">
+                                                                        <input class="gender" type="hidden" tabindex="-1" name="gender[]" value="">
                                                                         <div class="radio gender-radio">
                                                                             <input type="radio" name="gender0" value="1" id="radio1" >
                                                                             <label for="radio1">Nam</label>
@@ -233,22 +233,22 @@
                                                             <label for="noisinh_view">Nguyên quán <span class="text-danger">*</span></label>
                                                             <input type="text" name="nguyenquan_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ nguyên quán" class="form-control" id="nguyenquan_view">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_nguyenquan[]" class="form-control" id="idquocgia_nguyenquan">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_nguyenquan[]" class="form-control" id="idtinh_nguyenquan">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_nguyenquan[]" class="form-control" id="idhuyen_nguyenquan">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_nguyenquan[]" class="form-control" id="idxa_nguyenquan">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_nguyenquan[]" class="form-control" id="chitiet_nguyenquan">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idquocgia_nguyenquan[]" class="form-control" id="idquocgia_nguyenquan">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idtinh_nguyenquan[]" class="form-control" id="idtinh_nguyenquan">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idhuyen_nguyenquan[]" class="form-control" id="idhuyen_nguyenquan">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idxa_nguyenquan[]" class="form-control" id="idxa_nguyenquan">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="chitiet_nguyenquan[]" class="form-control" id="chitiet_nguyenquan">
                                                         </fieldset>
 
                                                         <fieldset class="form-group" id="addressPickerGroup">
                                                             <label for="noilamviec_view">Nơi làm việc</label>
                                                             <input type="text" name="noilamviec_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ nơi làm việc" class="form-control" id="noilamviec_view">
                                                             <span id="clearAddress"><i class="fa fa-times-circle"></i></span>
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idquocgia_noilamviec[]" class="form-control" id="idquocgia_noilamviec">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idtinh_noilamviec[]" class="form-control" id="idtinh_noilamviec">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idhuyen_noilamviec[]" class="form-control" id="idhuyen_noilamviec">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="idxa_noilamviec[]" class="form-control" id="idxa_noilamviec">
-                                                            <input type="hidden" data-addr="" hidden="hidden" name="chitiet_noilamviec[]" class="form-control" id="chitiet_noilamviec">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idquocgia_noilamviec[]" class="form-control" id="idquocgia_noilamviec">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idtinh_noilamviec[]" class="form-control" id="idtinh_noilamviec">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idhuyen_noilamviec[]" class="form-control" id="idhuyen_noilamviec">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="idxa_noilamviec[]" class="form-control" id="idxa_noilamviec">
+                                                            <input type="hidden" tabindex="-1" data-addr="" hidden="hidden" name="chitiet_noilamviec[]" class="form-control" id="chitiet_noilamviec">
                                                         </fieldset>
                                                     </div>
                                                 </div>
