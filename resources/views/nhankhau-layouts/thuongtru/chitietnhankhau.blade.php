@@ -91,7 +91,7 @@
                                <td>{{ DB::table('tbl_quocgia')->where('id', $nhankhau->idquoctich)->value('name') }}</td>
                             </tr>
                             <tr>
-                               <td>CMND số</td>
+                               <td>CMND/Hộ chiếu số</td>
                                <td>{{ ($nhankhau->cmnd_so)}}</td>
                             </tr>
                             <tr>

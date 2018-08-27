@@ -137,8 +137,8 @@
                         </fieldset>
 
                         <fieldset class="form-group">
-                            <label for="cmnd_so">Số CMND<span class="text-danger">*</span></label>
-                            <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="@if(isset($nhankhau)){{$nhankhau->cmnd_so}}@endif">
+                            <label for="cmnd_so">Số CMND/Hộ chiếu<span class="text-danger">*</span></label>
+                            <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND/Hộ chiếu" class="form-control" id="cmnd_so" value="@if(isset($nhankhau)){{$nhankhau->cmnd_so}}@endif">
                         </fieldset>
 
                         

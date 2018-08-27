@@ -6,7 +6,6 @@
             var modal = $('#address-modal');
             var config = {};
             config.entities_latin = false;
-            config.tabIndex = 27;
             $('.ckeditor').ckeditor(config);
         });
     </script>
@@ -160,12 +159,10 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label for="datepicker">Ngày sinh <span class="text-danger">*</span></label>
-                                                                    <div>
                                                                         <div class="input-group">
                                                                             <input type="text" name="birthday[]" class="form-control" placeholder="dd-mm-yyyy" id="datepicker" value="" tabindex="11">
                                                                             <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                                                         </div><!-- input-group -->
-                                                                    </div>
                                                                 </fieldset>
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
@@ -235,8 +232,8 @@
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
-                                                                    <label for="cmnd_so">Số CMND</label>
-                                                                    <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="" tabindex="17">
+                                                                    <label for="cmnd_so">Số CMND/Hộ chiếu</label>
+                                                                    <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND/Hộ chiếu" class="form-control" id="cmnd_so" value="" tabindex="17">
                                                                 </fieldset>
                                                             </div>
 
@@ -337,15 +334,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    
-
-                                                    
 
                                                     <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                                         <fieldset class="form-group">
                                                             <label for="exampleTextarea">Tóm tắt bản thân (Từ đủ 14 tuổi trở lên đến nay ở đâu, làm gì:) </label>
                                                             <textarea class="form-control ckeditor" name="description[]" rows="3" tabindex="27">
-                                                                <table align="center" border="1" cellpadding="0" cellspacing="0" style="width:100%; border-collapse: collapse;">
+                                                                <table align="center" border="1" cellpadding="0" cellspacing="0" style="width:100%;">
                                                                     <tbody>
                                                                         <tr>
                                                                             <th style="text-align: center; vertical-align: middle; width: 20%;">

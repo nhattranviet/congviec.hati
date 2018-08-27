@@ -2,7 +2,7 @@
     <div class="sidebar-inner slimscrollleft">
         <!--- Sidemenu -->
         <div id="sidebar-menu">
-            {{-- <ul>
+            <ul>
                 <li class="text-muted menu-title">Navigation</li>
 
                 <li class="has_sub">
@@ -26,9 +26,12 @@
                         <li>
                             <a href="{{ route('nhan-khau.create') }}">Nhập hồ sơ</a>
                         </li>
+                        <li>
+                            <a href="{{ route('thong-ke') }}">Báo cáo</a>
+                        </li>
 
                         <li>
-                            <a href="{{ route('get-bao-cao-nhan-khau') }}">Thống kê</a>
+                            <a href="{{ route('get-bao-cao-nhan-khau') }}">Tìm kiếm và tra cứu</a>
                         </li>
                         
                     </ul>
@@ -42,16 +45,22 @@
                     </a>
                     <ul class="list-unstyled">
                         <li>
-                            <a href="">Quản lý hồ sơ</a>
+                            <a href="{{ route('tam-tru.index') }}">Quản lý hồ sơ</a>
                         </li>
                         <li>
-                            <a href="">Nhập hồ sơ</a>
+                            <a href="{{ route('tam-tru.create') }}">Nhập sổ tạm trú hộ gia đình</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('get-add-so-tam-tru-ca-nhan') }}">Nhập sổ tạm trú cá nhân</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('check-qua-han') }}">Kiểm tra quá hạn tạm trú</a>
                         </li>
                         
                     </ul>
                 </li>
 
-            </ul> --}}
+            </ul>
             <div class="clearfix"></div>
         </div>
         <!-- Sidebar -->

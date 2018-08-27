@@ -146,8 +146,8 @@
                                                         </fieldset>
 
                                                         <fieldset class="form-group {{ ($errors->has('cmnd_so')) ? 'has-danger' : '' }}">
-                                                            <label for="cmnd_so">Số CMND</label>
-                                                            <input type="text" name="cmnd_so" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="{{old('cmnd_so', $nhankhau->cmnd_so)}}">
+                                                            <label for="cmnd_so">Số CMND/Hộ chiếu</label>
+                                                            <input type="text" name="cmnd_so" parsley-trigger="change" placeholder="Nhập số CMND/Hộ chiếu" class="form-control" id="cmnd_so" value="{{old('cmnd_so', $nhankhau->cmnd_so)}}">
                                                         </fieldset>
 
                                                         <fieldset class="form-group">

@@ -557,7 +557,7 @@ class BaocaoThongkeController extends Controller
             @page
             {
                 size: 21cm 29.7cm;  /* A4 */
-                margin: 1.5cm 1.1cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
+                margin: 1.5cm 1.5cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
                 mso-page-orientation: portrait;
             }
         @page Section1 { }

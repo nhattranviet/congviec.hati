@@ -8,13 +8,13 @@
     }
 
     table tr td{
-        padding: 0px 2px;
+        padding: 2px 2px !important;
         text-align: center;
         font-size: 12pt;
     }
 
-    table.info{
-        border-collapse: collapse;
+    .tomtat table{
+        border-collapse: collapse !important;
     }
     
     .bold{
@@ -63,10 +63,10 @@
     <span class="bold">16.</span> Biết tiếng dân tộc: {{ $nhankhau->biettiengdantoc }}  &nbsp; &nbsp; &nbsp; &nbsp;   <span class="bold">17.</span> Trình độ ngoại ngữ: {{ $nhankhau->trinhdongoaingu }} <br>
     <span class="bold">18.</span> Nghề nghiệp, nơi làm việc: {{ DB::table('tbl_nghenghiep')->where('id', $nhankhau->idnghenghiep)->value('name') }}, {{ $nhankhau->chitiet_noilamviec }} - {{ ($nhankhau->idxa_noilamviec) ? DB::table('tbl_xa_phuong_tt')->where('id', $nhankhau->idxa_noilamviec)->value('name') : '' }} - {{ ($nhankhau->idhuyen_noilamviec) ? DB::table('tbl_huyen_tx')->where('id', $nhankhau->idhuyen_noilamviec)->value('name') : '' }} - {{ ($nhankhau->idtinh_noilamviec) ? DB::table('tbl_tinh_tp')->where('id', $nhankhau->idtinh_noilamviec)->value('name') : '' }} <br>
     <span class="bold">19.</span> Tóm tắt về bản thân (Từ đủ 14 tuổi trở lên đến nay ở đâu, làm gì): <br>
-    {!! $nhankhau->tomtatbanthan !!}
+    <span class="tomtat">{!! $nhankhau->tomtatbanthan !!}</span>
     <span class="bold">20.</span> Tiền án (Tội danh, hình phạt, theo bản án số, ngày, tháng, năm của Tòa án): {{ $nhankhau->tienan_tiensu }} <br>
     <span class="bold">21.</span> Tóm tắt gia đình (Bố, mẹ; vợ/chồng; con; anh, chị, em ruột): <br>
-    {!! $nhankhau->tomtatgiadinh !!}
+    <span class="tomtat">{!! $nhankhau->tomtatgiadinh !!}</span>
 </p>
 <p>
     Tôi cam đoan những lời khai trên đây là đúng sự thật và chịu trách nhiệm trước pháp luật về cam đoan của mình./.

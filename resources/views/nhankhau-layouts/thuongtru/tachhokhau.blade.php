@@ -251,8 +251,8 @@
                                                             </div>
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
-                                                                    <label for="cmnd_so">Số CMND</label>
-                                                                    <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND" class="form-control" id="cmnd_so" value="" tabindex="16">
+                                                                    <label for="cmnd_so">Số CMND/Hộ chiếu</label>
+                                                                    <input type="text" name="cmnd_so[]" parsley-trigger="change" placeholder="Nhập số CMND/Hộ chiếu" class="form-control" id="cmnd_so" value="" tabindex="16">
                                                                 </fieldset>
                                                             </div>
                                                             
