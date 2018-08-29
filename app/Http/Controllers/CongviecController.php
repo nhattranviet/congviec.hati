@@ -64,11 +64,11 @@ class CongviecController extends Controller
 
             if( $index_role_info->keyword == 'idcanbo' )    //Get job for canbo role
             {
-                $data['list_congviec'] = CongviecLibrary::getCongviecOfCanbo( $request, Session::get('userinfo')->idcanbo, 3, $arrWhere );
+                $data['list_congviec'] = CongviecLibrary::getCongviecOfCanbo( $request, Session::get('userinfo')->idcanbo, 20, $arrWhere );
             }
             elseif( $index_role_info->keyword == 'id_iddonvi_iddoi' )   //Get job for id_iddonvi_iddoi role
             {   
-                $data['list_congviec'] = $data['list_congviec'] = CongviecLibrary::getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, 3, $arrWhere);
+                $data['list_congviec'] = $data['list_congviec'] = CongviecLibrary::getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, 20, $arrWhere);
             }
             else{
                 return view('errors.403');
@@ -79,12 +79,12 @@ class CongviecController extends Controller
         {
             if( $index_role_info->keyword == 'idcanbo' )
             {
-                $data['list_congviec'] = CongviecLibrary::getCongviecOfCanbo( $request, Session::get('userinfo')->idcanbo, 3 );
+                $data['list_congviec'] = CongviecLibrary::getCongviecOfCanbo( $request, Session::get('userinfo')->idcanbo, 20 );
                 $data['list_congviec_quahan'] = CongviecLibrary::getCongviecOfCanboQuahan( Session::get('userinfo')->idcanbo );
             }
             elseif( $index_role_info->keyword == 'id_iddonvi_iddoi' )
             {   
-                $data['list_congviec'] = $data['list_congviec'] = CongviecLibrary::getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, 3);
+                $data['list_congviec'] = $data['list_congviec'] = CongviecLibrary::getCongviecOfDoiPhuTrach($request, $current_idcanbo, $arrListdoi, 20);
                 $data['list_congviec_quahan'] = CongviecLibrary::getCongviecOfDoiPhuTrachQuahan(Session::get('userinfo')->idcanbo, $arrListdoi);
             }
             else{

@@ -47,7 +47,8 @@ $(document).ready(function () {
             todayHighlight: true
         });
     });
-    jQuery('#datepicker-autoclose').datepicker({
+    jQuery('.datepicker-autoclose').datepicker({
+        format: "dd-mm-yyyy",
         autoclose: true,
         todayHighlight: true
     });

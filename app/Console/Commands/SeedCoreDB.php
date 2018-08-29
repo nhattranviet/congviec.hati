@@ -55,19 +55,19 @@ class SeedCoreDB extends Command
     
     
     public $data_chucnang = array(
-			["idmodule" => 1, 'name' => 'Quản lý', 'method' => 'index'],
-			["idmodule" => 1, 'name' => 'Thêm mới', 'method' => 'create'],
-			["idmodule" => 1, 'name' => 'Thêm mới (post)', 'method' => 'store'],
-			["idmodule" => 1, 'name' => 'Sửa việc', 'method' => 'edit'],
-			["idmodule" => 1, 'name' => 'Sửa việc (post)', 'method' => 'update'],
-			["idmodule" => 1, 'name' => 'Xem việc', 'method' => 'show'],
-			["idmodule" => 1, 'name' => 'Chuyển tiếp', 'method' => 'chuyentiep'],
-			["idmodule" => 1, 'name' => 'Chuyển tiếp (post)', 'method' => 'postChuyentiep'],
-			["idmodule" => 1, 'name' => 'Xóa việc', 'method' => 'delete'],
-			["idmodule" => 1, 'name' => 'Xóa việc (post)', 'method' => 'destroy'],
-			["idmodule" => 1, 'name' => 'Xóa node việc', 'method' => 'deleteNodeChuyentiep'],
-			["idmodule" => 1, 'name' => 'Thay đổi trạng thái', 'method' => 'toggle_congviec_status'],
-        );
+		["idmodule" => 1, 'name' => 'Quản lý', 'method' => 'index'],
+		["idmodule" => 1, 'name' => 'Thêm mới', 'method' => 'create'],
+		["idmodule" => 1, 'name' => 'Thêm mới (post)', 'method' => 'store'],
+		["idmodule" => 1, 'name' => 'Sửa việc', 'method' => 'edit'],
+		["idmodule" => 1, 'name' => 'Sửa việc (post)', 'method' => 'update'],
+		["idmodule" => 1, 'name' => 'Xem việc', 'method' => 'show'],
+		["idmodule" => 1, 'name' => 'Chuyển tiếp', 'method' => 'chuyentiep'],
+		["idmodule" => 1, 'name' => 'Chuyển tiếp (post)', 'method' => 'postChuyentiep'],
+		["idmodule" => 1, 'name' => 'Xóa việc', 'method' => 'delete'],
+		["idmodule" => 1, 'name' => 'Xóa việc (post)', 'method' => 'destroy'],
+		["idmodule" => 1, 'name' => 'Xóa node việc', 'method' => 'deleteNodeChuyentiep'],
+		["idmodule" => 1, 'name' => 'Thay đổi trạng thái', 'method' => 'toggle_congviec_status'],
+	);
     
     public $data_moiquanhe = array(
 			["name" => "Chủ hộ", 'loaiquanhe' => 'nhanthan'],

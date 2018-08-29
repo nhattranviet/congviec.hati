@@ -240,7 +240,7 @@ class CongviecLibrary
             return TRUE;
         }
         else
-        {   
+        {
             $current_role = UserLibrary::getCanboRole($idcanbo);
             $own_congviec = CongviecLibrary::getCongviecOwner( $idcongviec );
             if( $data->keyword == 'idcanbo' )
@@ -262,7 +262,6 @@ class CongviecLibrary
                     return TRUE;
                 }
             }
-
         }
         return FALSE;
     }

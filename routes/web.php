@@ -254,6 +254,12 @@ Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->
 
 //-------------------END CÁN BỘ-----------------------
 
+//-------------------NHẬT KÝ CÔNG TÁC-----------------
+Route::get('/nhat-ky-cong-tac', 'NhatkycongtacController@index')->name('nhat-ky-cong-tac.index');
+Route::get('/nhat-ky-cong-tac/create/{ngay?}', 'NhatkycongtacController@create')->name('nhat-ky-cong-tac.create');
+Route::post('/nhat-ky-cong-tac/store', 'NhatkycongtacController@store')->name('nhat-ky-cong-tac.store');
+//-------------------END NHẬT KÝ CÔNG TÁC-------------
+
 //-------------------PERMISSION-----------------------
 Route::get('/permission', 'Permission\RolePermissionController@index');
 Route::post('/permission/set-role', 'Permission\RolePermissionController@setRole')->name('permission-set-role');
