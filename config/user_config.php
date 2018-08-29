@@ -27,7 +27,7 @@ return [
     ],
 
     'default_route' => [
-        '2' => 'nhat-ky-cong-tac.index',  //PC44
+        '2' => 'nhat-ky-cong-tac-cb.index',  //PC44
         '19' => 'cong-viec.index',  //PC44
         '33' => 'cong-viec.index',  //TP
         '35' => 'nhan-ho-khau-home',    //H KA

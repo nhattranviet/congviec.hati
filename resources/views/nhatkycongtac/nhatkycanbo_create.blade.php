@@ -39,7 +39,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhau" action="{{ route('nhat-ky-cong-tac.store') }}" method="POST" role="form" autocomplete="off">
+                        <form id="form-nhankhau" action="{{ route('nhat-ky-cong-tac-cb.store') }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 <div class="col-md-2 m-t-sm-40 m-t-20 m-b-40"></div>
                                 <div class="col-md-8">

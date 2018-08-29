@@ -255,9 +255,9 @@ Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->
 //-------------------END CÁN BỘ-----------------------
 
 //-------------------NHẬT KÝ CÔNG TÁC-----------------
-Route::get('/nhat-ky-cong-tac', 'NhatkycongtacController@index')->name('nhat-ky-cong-tac.index');
-Route::get('/nhat-ky-cong-tac/create/{ngay?}', 'NhatkycongtacController@create')->name('nhat-ky-cong-tac.create');
-Route::post('/nhat-ky-cong-tac/store', 'NhatkycongtacController@store')->name('nhat-ky-cong-tac.store');
+Route::get('/nhat-ky-cong-tac-cb', 'NhatkycongtacController@nhatkycanbo_index')->name('nhat-ky-cong-tac-cb.index');
+Route::get('/nhat-ky-cong-tac-cb/create/{ngay?}', 'NhatkycongtacController@nhatkycanbo_create')->name('nhat-ky-cong-tac-cb.create');
+Route::post('/nhat-ky-cong-tac-cb/store', 'NhatkycongtacController@nhatkycanbo_store')->name('nhat-ky-cong-tac-cb.store');
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
 //-------------------PERMISSION-----------------------

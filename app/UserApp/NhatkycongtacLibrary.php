@@ -26,6 +26,46 @@ class NhatkycongtacLibrary
         ];
     }
 
+    public static function processArrWhereIndex($request)
+    {
+        $arrWhere = array();
+        if($request->tungay != NULL)
+        {
+            $arrWhere[] = array('tbl_nhatkycanbo.ngay', '>=', date('Y-m-d', strtotime($request->tungay)));
+        }
+
+        if($request->denngay != NULL)
+        {
+            $arrWhere[] = array('tbl_nhatkycanbo.ngay', '<=', date('Y-m-d', strtotime($request->denngay)));
+        }
+
+        if($request->nhatky_status != NULL)
+        {
+            $arrWhere[] = array('nhatky_status', '=', $request->nhatky_status );
+        }
+
+        if($request->noidungdukien != NULL)
+        {
+            $arrWhere[] = array('noidungdukien', 'LIKE', '%'.$request->noidungdukien.'%' );
+        }
+
+        if($request->ketquathuchien != NULL)
+        {
+            $arrWhere[] = array('ketquathuchien', 'LIKE', '%'.$request->ketquathuchien.'%' );
+        }
+        return $arrWhere;
+    }
+
+    public static function getListNhatkycanbo( $idcanbo, $arrWhere = array(), $paginage = 10 )
+    {
+        return DB::table('tbl_nhatkycanbo')
+        ->where('idcanbo', $idcanbo)
+        ->where($arrWhere)
+        ->orderBy('ngay', 'DESC')
+        ->select('tbl_nhatkycanbo.*')
+        ->paginate($paginage);
+    }
+
     public static function checkMyDateDmY($date)
     {
         $tempDate = explode('-', $date);

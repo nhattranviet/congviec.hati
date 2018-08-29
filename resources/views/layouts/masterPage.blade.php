@@ -32,6 +32,10 @@
 			width: 250px;
 		}
 
+		.center{
+			text-align: center;
+		}
+
 		select{
 			padding: 0.5em !important;
 		}

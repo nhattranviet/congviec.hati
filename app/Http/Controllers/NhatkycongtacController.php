@@ -16,20 +16,35 @@ use Illuminate\Support\Facades\Redirect;
 
 class NhatkycongtacController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        echo 1;
+        $idcanbo = Session::get('userinfo')->idcanbo;
+        $current_iddonvi =  UserLibrary::getIdDonViOfCanBo( Session::get('userinfo')->idcanbo );
+        $data['list_doicongtac'] = UserLibrary::getListDoidonVi($current_iddonvi, 'object');
+        if( $request->ajax() )
+        {
+            $arrWhere = NhatkycongtacLibrary::processArrWhereIndex( $request );
+            $data['list_nhatky'] = NhatkycongtacLibrary::getListNhatkycanbo( $idcanbo, $arrWhere, 3);
+            return response()->json(['html' => view('nhatkycongtac.nhatkycanbo_table', $data)->render()]);
+        }
+        else
+        {
+            $data['list_nhatky'] = NhatkycongtacLibrary::getListNhatkycanbo( $idcanbo, array(), 3);
+        }
+
+
+
+        return view('nhatkycongtac.index', $data);
     }
 
-    public function create($ngaynhatky = NULL)
+    public function nhatkycanbo_create($ngaynhatky = NULL)
     {
         $data['page_name'] = 'Thêm nhật ký công tác cán bộ';
-        
         if( $ngaynhatky != NULL && NhatkycongtacLibrary::checkMyDateDmY($ngaynhatky) ) $data['ngay'] = $ngaynhatky;
-        return view('nhatkycongtac.nhatkycanbo', $data);
+        return view('nhatkycongtac.nhatkycanbo_create', $data);
     }
 
-    public function store(Request $request)
+    public function nhatkycanbo_store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'ngay' => 'required|date_format:d-m-Y|',
