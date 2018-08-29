@@ -86,8 +86,15 @@ $(document).ready(function () {
     $('.input-daterange-datepicker').daterangepicker({
         buttonClasses: ['btn', 'btn-sm'],
         applyClass: 'btn-custom',
-        cancelClass: 'btn-secondary'
+        cancelClass: 'btn-secondary',
+        locale: {
+            format: 'DD-MM-YYYY',
+            applyLabel: "Chọn tuần",
+            firstDay: 1,
+            separator: " - ",
+        }
     });
+
     $('.input-daterange-timepicker').daterangepicker({
         timePicker: true,
         format: 'MM/DD/YYYY h:mm A',

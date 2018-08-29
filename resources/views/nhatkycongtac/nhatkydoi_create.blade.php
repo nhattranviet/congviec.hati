@@ -1,7 +1,6 @@
 @extends('layouts.masterPage')
 
 @section('js')
-    <script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             var config = {};
@@ -19,6 +18,10 @@
             );
         });
     </script>
+@endsection
+
+@section('css')
+    <link href="{{asset('assets/plugins/bootstrap-daterangepicker/daterangepicker.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -39,7 +42,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhau" action="{{ route('nhat-ky-cong-tac-cb.update', $idnhatky) }}" method="POST" role="form" autocomplete="off">
+                        <form id="form-nhankhau" action="{{ route('nhat-ky-cong-tac-cb.store') }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 <div class="col-md-2 m-t-sm-40 m-t-20 m-b-40"></div>
                                 <div class="col-md-8">
@@ -52,9 +55,9 @@
                                     <div class="row">
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                             <fieldset class="form-group">
-                                                <label for="datepicker">Ngày dự kiến<span class="text-danger">*</span></label>
+                                                <label for="datepicker">Tuần dự kiến<span class="text-danger">*</span></label>
                                                     <div class="input-group">
-                                                        <input disabled="disabled" type="text" name="ngay" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="{{ ($nhatky_info->ngay != NULL)  ? date('d-m-Y', strtotime($nhatky_info->ngay)) : NULL }}">
+                                                        <input type="text" name="tuan" class="form-control input-daterange-datepicker" placeholder="dd-mm-yyyy" value="">
                                                         <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                                     </div><!-- input-group -->
                                             </fieldset>
@@ -63,13 +66,7 @@
                                         <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                             <fieldset class="form-group">
                                                 <label for="exampleTextarea">Nội dung dự kiến</label>
-                                                <textarea class="form-control ckeditor" name="noidungdukien">{{ $nhatky_info->noidungdukien }}</textarea>
-                                            </fieldset>
-                                        </div>
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
-                                            <fieldset class="form-group">
-                                                <label for="exampleTextarea">Kết quả thực hiện</label>
-                                                <textarea class="form-control ckeditor" name="ketquathuchien">{{ $nhatky_info->ketquathuchien }}</textarea>
+                                                <textarea class="form-control ckeditor" name="noidungdukien"></textarea>
                                             </fieldset>
                                         </div>
 

@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <button type="submit" name="submit" class="btn btn-primary" value="save"> <i class="fa fa-save"></i> Lưu</button>
-                                    <a href="{{ route('cong-viec.index') }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
+                                    <a href="{{ route('nhat-ky-cong-tac-cb.index') }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
                                 </div>
                             </div>
                             {{ csrf_field() }}

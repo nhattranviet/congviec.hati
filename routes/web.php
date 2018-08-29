@@ -258,6 +258,16 @@ Route::get('/ajax-get-can-bo/{id_iddonvi_iddoi?}', 'CanboController@getCanbo')->
 Route::get('/nhat-ky-cong-tac-cb', 'NhatkycongtacController@nhatkycanbo_index')->name('nhat-ky-cong-tac-cb.index');
 Route::get('/nhat-ky-cong-tac-cb/create/{ngay?}', 'NhatkycongtacController@nhatkycanbo_create')->name('nhat-ky-cong-tac-cb.create');
 Route::post('/nhat-ky-cong-tac-cb/store', 'NhatkycongtacController@nhatkycanbo_store')->name('nhat-ky-cong-tac-cb.store');
+Route::get('/nhat-ky-cong-tac-cb/{idnhatky}/edit', 'NhatkycongtacController@nhatkycanbo_edit')->name('nhat-ky-cong-tac-cb.edit');
+Route::post('/nhat-ky-cong-tac-cb/{idnhatky}/update', 'NhatkycongtacController@nhatkycanbo_update')->name('nhat-ky-cong-tac-cb.update');
+Route::get('/nhat-ky-cong-tac-cb/{idnhatky}/delete', 'NhatkycongtacController@nhatkycanbo_delete')->name('nhat-ky-cong-tac-cb.delete');
+
+Route::get('/nhat-ky-cong-tac-doi', 'NhatkycongtacController@nhatkydoi_index')->name('nhat-ky-cong-tac-doi.index');
+Route::get('/nhat-ky-cong-tac-doi/create/{ngay?}', 'NhatkycongtacController@nhatkydoi_create')->name('nhat-ky-cong-tac-doi.create');
+Route::post('/nhat-ky-cong-tac-doi/store', 'NhatkycongtacController@nhatkydoi_store')->name('nhat-ky-cong-tac-doi.store');
+Route::get('/nhat-ky-cong-tac-doi/{idnhatky}/edit', 'NhatkycongtacController@nhatkydoi_edit')->name('nhat-ky-cong-tac-doi.edit');
+Route::post('/nhat-ky-cong-tac-doi/{idnhatky}/update', 'NhatkycongtacController@nhatkydoi_update')->name('nhat-ky-cong-tac-doi.update');
+Route::get('/nhat-ky-cong-tac-doi/{idnhatky}/delete', 'NhatkycongtacController@nhatkydoi_delete')->name('nhat-ky-cong-tac-doi.delete');
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
 //-------------------PERMISSION-----------------------

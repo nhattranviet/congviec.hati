@@ -66,6 +66,11 @@ class NhatkycongtacLibrary
         ->paginate($paginage);
     }
 
+    public static function getNhatkyCBInfo($idnhatky)
+    {
+        return DB::table('tbl_nhatkycanbo')->where('id', $idnhatky)->first();
+    }
+
     public static function checkMyDateDmY($date)
     {
         $tempDate = explode('-', $date);
