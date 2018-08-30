@@ -216,11 +216,11 @@ class NhatkycongtacController extends Controller
 
     public function theodoinhatky(Request $request)
     {
+        // dd($request->nhatkytuan);
         $data['tungay'] = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 1 months'));
         $data['denngay'] = date('Y-m-d', strtotime(date('Y-m-d', time())));
         $data['page_name'] = 'Theo dõi nhật ký';
         $arrWhere = NhatkycongtacLibrary::processArrWhereTheodoinhatky( $data['tungay'], $data['denngay'], $request );
-
         $current_idcanbo = Session::get('userinfo')->idcanbo;
         $current_iduser = Session::get('userinfo')->iduser;
         $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
@@ -232,16 +232,40 @@ class NhatkycongtacController extends Controller
         {
             $data['list_doicongtac'] = UserLibrary::getListDoiCanBo($current_idcanbo, 'object');
         }
-        $arrWhere['nhatkycanbo'] = [];
         $data['default_id_iddonvi_iddoi'] = ($request->id_iddonvi_iddoi != NULL) ? $request->id_iddonvi_iddoi : $data['list_doicongtac'][0]->id;
         $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkydoi'] );
         $data['list_canbo_nhatky'] = NhatkycongtacLibrary::formatNhatkycanboInDoi( NhatkycongtacLibrary::getFullListNhatkycanboInDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkycanbo'] ) ) ;
-        // dd($data['list_canbo_nhatky']);
         if( $request->ajax() )
         {
             return response()->json(['html' => view('nhatkycongtac.theodoinhatky_content', $data)->render()]);
         }
          
         return view('nhatkycongtac.theodoinhatky', $data);
+    }
+
+    public function multiDuyetNhatky(Request $request)
+    {
+        $list_nhatkytuan = $request->nhatkytuan;
+        $list_nhatkycanbo = $request->nhatkycanbo;
+        $id_status = $request->id_status;
+        if($id_status == NULL) return response()->json(['error' => array('Trạng thái phải được chọn')]);
+        if($list_nhatkytuan == NULL && $list_nhatkycanbo == NULL) return response()->json(['error' => array('Nhật ký cán bộ hoặc Nhật ký tuần phải được chọn')]);
+        
+        // if( $list_nhatkytuan != NULL )
+        // {
+        //     foreach ($list_nhatkytuan as $value)
+        //     {
+                DB::table( 'tbl_nhatkydoi' )->where('id', $list_nhatkytuan)->update( ['nhatky_status' => $id_status] );
+        //     }
+        // }
+
+        // if( $list_nhatkycanbo != NULL )
+        // {
+        //     foreach ($list_nhatkycanbo as $value)
+        //     {
+        //         DB::table( 'tbl_nhatkycanbo' )->where('id', $value)->update( ['nhatky_status' => $id_status] );
+        //     }
+        // }
+        return response()->json(['success' => 'Thao tác thành công ']);
     }
 }

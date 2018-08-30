@@ -23,43 +23,43 @@
             $('.nhatky_' + current).prop('checked', this.checked);
         });
 
-        $(document).on("click", "#quickDuyet", function (event) {
+        $(document).on("click", "#multiDuyet", function (event) {
             event.preventDefault();
             $("#wait").css("display", "block");
             var current_form = $(this).parents("form");
             var idresult = current_form.attr("idresult");
-            var page = 1;
-            // $.ajax({
-            //     url: current_form.attr("action") + "?page=" + page,
-            //     type: "GET",
-            //     data: current_form.serialize(),
-            //     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            //     dataType: "json",
-            //     success: function (data) {
-            //         $("#wait").css("display", "none");
-            //         $("#error-msg").css("display", "none");
+            console.log(current_form.serialize());
+            $.ajax({
+                url: "{{ route('nhat-ky-cong-tac.multi-Duyet-Nhat-ky') }}",
+                type: "POST",
+                data: current_form.serialize(),
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#wait").css("display", "none");
+                    $("#error-msg").css("display", "none");
 
-            //         if ($.isEmptyObject(data.error)) {
-            //             if (idresult) {
-            //                 $("#" + idresult).html(data.html);
-            //             }
+                    if ($.isEmptyObject(data.error)) {
+                        if (idresult) {
+                            $("#" + idresult).html(data.html);
+                        }
 
-            //             if (data.url) {
-            //                 window.location.href = data.url;
-            //             }
-            //         } else {
-            //             printMsg("#error-msg", data.error[0]);
-            //         }
-            //         window.scrollTo(0, 0);
-            //     },
-            //     error: function (data) {
-            //         $("#wait").css("display", "none");
-            //         var errors = $.parseJSON(data.responseText);
-            //         $.each(errors, function (key, value) {
-            //             console.log(data.responseText);
-            //         });
-            //     }
-            // });
+                        if (data.url) {
+                            window.location.href = data.url;
+                        }
+                    } else {
+                        printMsg("#error-msg", data.error[0]);
+                    }
+                    window.scrollTo(0, 0);
+                },
+                error: function (data) {
+                    $("#wait").css("display", "none");
+                    var errors = $.parseJSON(data.responseText);
+                    $.each(errors, function (key, value) {
+                        console.log(data.responseText);
+                    });
+                }
+            });
         });
 
         $('.datatable').DataTable({
@@ -138,15 +138,13 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
-                        {{-- <a href="{{ route('nhat-ky-cong-tac-cb.create') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a> --}}
                         <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
                             <div class="row">
                                 @csrf
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Từ ngày</label>
-                                        <input type="text" name="tungay" parsley-trigger="change" placeholder="Nhập từ ngày để lọc"
-                                            class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="{{ date('d-m-Y', strtotime($tungay) ) }}">
+                                        <input type="text" name="tungay" parsley-trigger="change" placeholder="Nhập từ ngày để lọc" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="{{ date('d-m-Y', strtotime($tungay) ) }}">
                                     </fieldset>
                                 </div>
 
@@ -191,17 +189,28 @@
 
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="alert alert-danger" id="error-msg" style="display: none">
-                        </div>
-                        <div class="alert alert-success" id="success-msg" style="display: none">
-                        </div>
+                        <div class="alert alert-danger" id="error-msg" style="display: none"></div>
+                        <div class="alert alert-success" id="success-msg" style="display: none"></div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12" id="html_return">
-                        
                         @include('nhatkycongtac.theodoinhatky_content')
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <fieldset class="form-group">
+                            <select id="id_status" name="id_status" class="form-control app_select2">
+                                <option value="">Lựa chọn</option>
+                                <option value="1">Duyệt</option>
+                                <option value="2">Hủy duyệt</option>
+                            </select>
+                        </fieldset>
+                    </div>
 
+                    <div class="col-md-2">
+                        <button id="multiDuyet" type="submit" class="btn btn-danger"> <i class="fa fa-rocket"></i> Thực hiện</button>
                     </div>
                 </div>
             </form>

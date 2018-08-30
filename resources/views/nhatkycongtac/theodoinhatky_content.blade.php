@@ -7,12 +7,11 @@
             <table class="table table-bordered table-striped datatable">
                 <thead>
                     <tr>
-                        <th class="center"><input id="checkAll_nhatkytuan" current="nhatkytuan" class="checkAllCls" type="checkbox"></th>
-                        <th class="center" width="70px;">STT</th>
-                        <th class="center" width="100px;">Tuần</th>
+                        <th class="center" width="20px;"><input id="checkAll_nhatkytuan" current="nhatkytuan" class="checkAllCls" type="checkbox"></th>
+                        <th class="center" width="20px;">STT</th>
+                        <th class="center" width="90px;">Tuần</th>
                         <th class="center" width="450px;">Nội dung dự kiến</th>
-                        <th class="center" width="250px;">Kết quả thực hiện</th>
-                        <th class="center">Ghi chú duyệt</th>
+                        <th class="center">Kết quả thực hiện</th>
                         <th class="center" width="70px;">Trạng thái</th>
                     </tr>
                 </thead>
@@ -22,12 +21,11 @@
                     @endphp
                     @foreach ($list_nhatkydoi as $nhatky)
                     <tr>
-                        <td class="center"><input name="nhatkyngay" value="{{ $nhatky->id }}" class="nhatky_nhatkytuan" type="checkbox"></td>
+                        <td class="center"><input name="nhatkytuan[]" value="{{ $nhatky->id }}" class="nhatky_nhatkytuan" type="checkbox"></td>
                         <td class="center">{{ $i }}</td>
                         <td>{{ date('d-m-Y', strtotime($nhatky->ngaydautuan)) .' -> '. date('d-m-Y', strtotime($nhatky->ngaycuoituan)) }}</td>
                         <td>{!! $nhatky->noidungdukien !!}</td>
                         <td>{!! $nhatky->ketquathuchien !!}</td>
-                        <td>{!! $nhatky->ghichuduyet !!}</td>
                         <td class="center"> {!! ($nhatky->nhatky_status == 2) ? '<i style="color:darkgreen" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Đã duyệt"></i>' : '<i style="color:crimson" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Chưa duyệt"></i>' !!} </td>
                     </tr>
                     @php
@@ -61,23 +59,21 @@
                                     <table style="margin-bottom: 20px;" class="datatable table table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                                <th class="center"><input id="checkAll_{{ $i }}" current="{{ $i }}" class="checkAllCls" type="checkbox"></th>
-                                                <th class="center">Ngày</th>
-                                                <th class="center">Nội dung dự kiến</th>
+                                                <th class="center" width="20px;"><input id="checkAll_{{ $i }}" current="{{ $i }}" class="checkAllCls" type="checkbox"></th>
+                                                <th class="center" width="60px;">Ngày</th>
+                                                <th class="center" width="450px;">Nội dung dự kiến</th>
                                                 <th class="center">Kết quả thực hiện</th>
-                                                <th class="center">Ghi chú của Lãnh đạo</th>
-                                                <th class="center" style="width: 100px;">Trạng thái</th>
+                                                <th class="center" style="width: 70px;">Trạng thái</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($canbo_nhatky as $nhatky)
                                                 @if ($nhatky->id != NULL)
                                                     <tr>
-                                                        <td class="center"><input name="nhatkyngay" value="{{ $nhatky->id }}" class="nhatky_{{ $i }}" type="checkbox"></td>
+                                                        <td class="center"><input name="nhatkycanbo[]" value="{{ $nhatky->id }}" class="nhatky_{{ $i }}" type="checkbox"></td>
                                                         <td>{{ date('d-m-Y', strtotime($nhatky->ngay)) }}</td>
                                                         <td>{!! $nhatky->noidungdukien !!}</td>
                                                         <td>{!! $nhatky->ketquathuchien !!}</td>
-                                                        <td>{!! $nhatky->ghichuduyet !!}</td>
                                                         <td class="center"> {!! ($nhatky->nhatky_status == 2) ? '<i style="color:darkgreen" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Đã duyệt"></i>' : '<i style="color:crimson" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Chưa duyệt"></i>' !!} </td>
                                                     </tr>
                                                 @endif
@@ -85,19 +81,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-2">
-                                    <fieldset class="form-group">
-                                        <select id="nhatky_status" name="nhatky_status" class="form-control app_select2">
-                                            <option value="">Lựa chọn</option>
-                                            <option value="1">Duyệt</option>
-                                            <option value="2">Hủy duyệt</option>
-                                        </select>
-                                    </fieldset>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <button type="submit" class="btn btn-danger"> <i class="fa fa-rocket"></i> Thực hiện</button>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>

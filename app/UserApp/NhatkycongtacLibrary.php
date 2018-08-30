@@ -94,44 +94,28 @@ class NhatkycongtacLibrary
         if($request->tungay != NULL)
         {
             $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '>=', date('Y-m-d', strtotime($request->tungay)));
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '>=', date('Y-m-d', strtotime($request->tungay)));
         }
         else
         {
             $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '>=', $tungay_default );
-        }
-
-        if($request->denngay != NULL)
-        {
-            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '<=', date('Y-m-d', strtotime($request->denngay)));
-        }
-        else
-        {
-            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '<=', $denngay_default );
-        }
-
-        if($request->nhatky_status != NULL)
-        {
-            $arrWhere['nhatkydoi'][] = array('nhatky_status', '=', $request->nhatky_status );
-        }
-        //----------------------------------CANBO------------------------------
-        if($request->tungay != NULL)
-        {
-            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '>=', date('Y-m-d', strtotime($request->tungay)));
-        }
-        else{
             $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '>=', $tungay_default );
         }
 
         if($request->denngay != NULL)
         {
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '<=', date('Y-m-d', strtotime($request->denngay)));
             $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '<=', date('Y-m-d', strtotime($request->denngay)));
         }
-        else{
+        else
+        {
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '<=', $denngay_default );
             $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '<=', $denngay_default );
         }
 
         if($request->nhatky_status != NULL)
         {
+            $arrWhere['nhatkydoi'][] = array('nhatky_status', '=', $request->nhatky_status );
             $arrWhere['nhatkycanbo'][] = array('nhatky_status', '=', $request->nhatky_status );
         }
         return $arrWhere;
@@ -167,7 +151,7 @@ class NhatkycongtacLibrary
         ->where($arrWhere)
         ->orderBy('tbl_connguoi.order', 'ASC')
         ->orderBy('tbl_nhatkycanbo.ngay', 'DESC')
-        ->select('tbl_nhatkycanbo.*', 'hoten') // 
+        ->select('tbl_nhatkycanbo.*', 'hoten')
         ->get();
     }
 
