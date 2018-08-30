@@ -22,11 +22,12 @@ class NhatkycongtacLibrary
         return [
             'ngay.required' => 'Ngày dự kiến không được để trống',
             'ngay.date_format' => 'Ngày dự kiến phải đúng định dạng ngày-tháng-năm',
+            'tuan.required' => 'Tuần dự kiến không được để trống',
             'noidungdukien.required' => 'Nội dung dự kiến không được để trống',
         ];
     }
 
-    public static function processArrWhereIndex($request)
+    public static function processArrWhereNhatkycanboIndex($request)
     {
         $arrWhere = array();
         if($request->tungay != NULL)
@@ -56,6 +57,36 @@ class NhatkycongtacLibrary
         return $arrWhere;
     }
 
+    public static function processArrWhereNhatkyDoiIndex($request)
+    {
+        $arrWhere = array();
+        if($request->tungay != NULL)
+        {
+            $arrWhere[] = array('tbl_nhatkydoi.ngaydautuan', '>=', date('Y-m-d', strtotime($request->tungay)));
+        }
+
+        if($request->denngay != NULL)
+        {
+            $arrWhere[] = array('tbl_nhatkydoi.ngaycuoituan', '<=', date('Y-m-d', strtotime($request->denngay)));
+        }
+
+        if($request->nhatky_status != NULL)
+        {
+            $arrWhere[] = array('nhatky_status', '=', $request->nhatky_status );
+        }
+
+        if($request->noidungdukien != NULL)
+        {
+            $arrWhere[] = array('noidungdukien', 'LIKE', '%'.$request->noidungdukien.'%' );
+        }
+
+        if($request->ketquathuchien != NULL)
+        {
+            $arrWhere[] = array('ketquathuchien', 'LIKE', '%'.$request->ketquathuchien.'%' );
+        }
+        return $arrWhere;
+    }
+
     public static function getListNhatkycanbo( $idcanbo, $arrWhere = array(), $paginage = 10 )
     {
         return DB::table('tbl_nhatkycanbo')
@@ -66,9 +97,24 @@ class NhatkycongtacLibrary
         ->paginate($paginage);
     }
 
+    public static function getListNhatkyDoi( $id_iddonvi_iddoi, $arrWhere = array(), $paginage = 10 )
+    {
+        return DB::table('tbl_nhatkydoi')
+        ->where('id_iddonvi_iddoi', $id_iddonvi_iddoi)
+        ->where($arrWhere)
+        ->orderBy('ngaydautuan', 'DESC')
+        ->select('tbl_nhatkydoi.*')
+        ->paginate($paginage);
+    }
+
     public static function getNhatkyCBInfo($idnhatky)
     {
         return DB::table('tbl_nhatkycanbo')->where('id', $idnhatky)->first();
+    }
+
+    public static function getNhatkyDoiInfo($idnhatky)
+    {
+        return DB::table('tbl_nhatkydoi')->where('id', $idnhatky)->first();
     }
 
     public static function checkMyDateDmY($date)
@@ -80,6 +126,18 @@ class NhatkycongtacLibrary
     public static function checkNhatkycanboExist( $idcanbo, $ngay )
     {
         if( DB::table('tbl_nhatkycanbo')->where(array( ['idcanbo', '=', $idcanbo ], ['ngay', '=', $ngay ] ))->count() > 0 )
+        {
+            return TRUE;
+        }
+        else {
+            return FALSE;
+        }
+        
+    }
+
+    public static function checkNhatkyDoiExist( $id_iddonvi_iddoi, $ngaydautuan )
+    {
+        if( DB::table('tbl_nhatkydoi')->where( array( ['id_iddonvi_iddoi', '=', $id_iddonvi_iddoi ], ['ngaydautuan', '=', $ngaydautuan ] ) )->count() > 0 )
         {
             return TRUE;
         }

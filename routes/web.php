@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/test', function(){
+    echo date('w', 1535302800);
+    die;
     $a = DB::connection('test')->table('tbl_congviec')->get();
     // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();
     $canbo_list_id = [
