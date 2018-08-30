@@ -87,6 +87,54 @@ class NhatkycongtacLibrary
         return $arrWhere;
     }
 
+    public static function processArrWhereTheodoinhatky($tungay_default, $denngay_default, $request)
+    {
+        $arrWhere = ['nhatkycanbo' => array(), 'nhatkydoi' => array() ];
+        //----------------------------------NHATKYDOI------------------------------
+        if($request->tungay != NULL)
+        {
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '>=', date('Y-m-d', strtotime($request->tungay)));
+        }
+        else{
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '>=', $tungay_default );
+        }
+
+        if($request->denngay != NULL)
+        {
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '<=', date('Y-m-d', strtotime($request->denngay)));
+        }
+        else{
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '<=', $denngay_default );
+        }
+
+        if($request->nhatky_status != NULL)
+        {
+            $arrWhere['nhatkydoi'][] = array('nhatky_status', '=', $request->nhatky_status );
+        }
+        //----------------------------------CANBO------------------------------
+        if($request->tungay != NULL)
+        {
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaydautuan', '>=', date('Y-m-d', strtotime($request->tungay)));
+        }
+        else{
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaydautuan', '>=', $tungay_default );
+        }
+
+        if($request->denngay != NULL)
+        {
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaycuoituan', '<=', date('Y-m-d', strtotime($request->denngay)));
+        }
+        else{
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaycuoituan', '<=', $denngay_default );
+        }
+
+        if($request->nhatky_status != NULL)
+        {
+            $arrWhere['nhatkycanbo'][] = array('nhatky_status', '=', $request->nhatky_status );
+        }
+        return $arrWhere;
+    }
+
     public static function getListNhatkycanbo( $idcanbo, $arrWhere = array(), $paginage = 10 )
     {
         return DB::table('tbl_nhatkycanbo')
@@ -97,6 +145,16 @@ class NhatkycongtacLibrary
         ->paginate($paginage);
     }
 
+    public static function getFullListNhatkycanbo( $idcanbo, $arrWhere = array() )
+    {
+        return DB::table('tbl_nhatkycanbo')
+        ->where('idcanbo', $idcanbo)
+        ->where($arrWhere)
+        ->orderBy('ngay', 'DESC')
+        ->select('tbl_nhatkycanbo.*')
+        ->get();
+    }
+
     public static function getListNhatkyDoi( $id_iddonvi_iddoi, $arrWhere = array(), $paginage = 10 )
     {
         return DB::table('tbl_nhatkydoi')
@@ -105,6 +163,16 @@ class NhatkycongtacLibrary
         ->orderBy('ngaydautuan', 'DESC')
         ->select('tbl_nhatkydoi.*')
         ->paginate($paginage);
+    }
+
+    public static function getFullListNhatkyDoi( $id_iddonvi_iddoi, $arrWhere = array())
+    {
+        return DB::table('tbl_nhatkydoi')
+        ->where('id_iddonvi_iddoi', $id_iddonvi_iddoi)
+        ->where($arrWhere)
+        ->orderBy('ngaydautuan', 'DESC')
+        ->select('tbl_nhatkydoi.*')
+        ->get();
     }
 
     public static function getNhatkyCBInfo($idnhatky)

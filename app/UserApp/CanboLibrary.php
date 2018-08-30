@@ -51,7 +51,7 @@ class CanboLibrary
         ->where( $arrWhere )
         ->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu', 'email', 'tbl_donvi.name as tendonvi', 'tbl_doicongtac.name as tendoi', 'tbl_nhomquyen.name as tennhomquyen', 'users.active', 'users.id as iduser', 'username')
         ->orderBy('tbl_canbo.id', 'desc')
-        ->paginate(10);
+        ->paginate(15);
     }
 
     public static function getAllListCanbo($arrWhere = array())

@@ -174,7 +174,7 @@ class NhatkycongtacController extends Controller
             'updated_at' => Carbon::now()
         );
 
-        DB::table('tbl_nhatkydoi')->insert( $data_nhatkydoi );
+        DB::table('tbl_nhatkydoi')->insert( $data_nhatkydoi ); die;
         return response()->json(['success' => 'Thêm nhật ký đội thành công ', 'url' => route('nhat-ky-cong-tac-doi.index')]);
     }
 
@@ -214,5 +214,35 @@ class NhatkycongtacController extends Controller
 
     //-----------------------------THEO DÕI NHẬT KÝ------------------------------------
 
-    
+    public function theodoinhatky(Request $request)
+    {
+        $data['tungay'] = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 2 months'));
+        $data['denngay'] = date('Y-m-d', strtotime(date('Y-m-d', time())));
+        $data['page_name'] = 'Theo dõi nhật ký';
+        $arrWhere = NhatkycongtacLibrary::processArrWhereTheodoinhatky( $data['tungay'], $data['denngay'], $request );
+
+        $current_idcanbo = Session::get('userinfo')->idcanbo;
+        $current_iduser = Session::get('userinfo')->iduser;
+        $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
+        if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
+        {
+            $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly($current_idcanbo, 'object');
+        }
+        elseif( $current_idrole == config('user_config.idnhomquyen_doitruong') )
+        {
+            $data['list_doicongtac'] = UserLibrary::getListDoiCanBo($current_idcanbo, 'object');
+        }
+        $data['default_id_iddonvi_iddoi'] = $data['list_doicongtac'][0]->id;
+
+        if( $request->ajax() )
+        {
+
+        }
+        else
+        {
+            $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], array() );
+        }
+        // dd($data['list_nhatkydoi']);
+        return view('nhatkycongtac.theodoinhatky', $data);
+    }
 }

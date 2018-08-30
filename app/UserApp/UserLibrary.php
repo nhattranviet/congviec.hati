@@ -39,7 +39,24 @@ class UserLibrary
             ->where('idcanbo', $idcanbo_lanhdao);
             if( $type == 'array')
             {
-                $data = $data->select('tbl_donvi_doi.id')->pluck('tbl_donvi_doi.id')->toArray();
+                $data = $data->pluck('tbl_donvi_doi.id')->toArray();
+            }
+            else{
+                $data = $data->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')->get();
+            }
+            return $data;
+    }
+
+    // Lấy danh sách đội thuộc quản lý của id lãnh đạo nào đó, trả về dạng mảng 1 chiều hoặc object
+    public static function getListDoiCanBo( $idcanbo, $type = 'array' )
+    {
+        $data = DB::table('tbl_canbo')
+            ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+            ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+            ->where('tbl_canbo.id', $idcanbo);
+            if( $type == 'array')
+            {
+                $data = $data->pluck('tbl_donvi_doi.id')->toArray();
             }
             else{
                 $data = $data->select('tbl_donvi_doi.id', 'tbl_doicongtac.name')->get();

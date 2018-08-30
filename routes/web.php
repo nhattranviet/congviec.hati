@@ -270,6 +270,8 @@ Route::post('/nhat-ky-cong-tac-doi/store', 'NhatkycongtacController@nhatkydoi_st
 Route::get('/nhat-ky-cong-tac-doi/{idnhatky}/edit', 'NhatkycongtacController@nhatkydoi_edit')->name('nhat-ky-cong-tac-doi.edit');
 Route::post('/nhat-ky-cong-tac-doi/{idnhatky}/update', 'NhatkycongtacController@nhatkydoi_update')->name('nhat-ky-cong-tac-doi.update');
 Route::get('/nhat-ky-cong-tac-doi/{idnhatky}/delete', 'NhatkycongtacController@nhatkydoi_delete')->name('nhat-ky-cong-tac-doi.delete');
+
+Route::get('/nhat-ky-cong-tac/theo-doi-nhat-ky', 'NhatkycongtacController@theodoinhatky')->name('nhat-ky-cong-tac-doi.theodoinhatky');
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
 //-------------------PERMISSION-----------------------
