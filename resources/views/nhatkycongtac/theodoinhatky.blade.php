@@ -121,6 +121,11 @@
     .panel-body {
         padding: 10px;
     }
+
+    .panel-title a {
+        font-size: 16px;
+        color: crimson !important;
+    }
 </style>
 @endsection
 
@@ -129,12 +134,11 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
-            <form id="tim-kiem-hoso" action="{{ route('nhat-ky-cong-tac-cb.index') }}" method="GET" role="form"
-                idresult="ajax_table">
+            <form id="tim-kiem-hoso" action="{{ route('nhat-ky-cong-tac-doi.theodoinhatky') }}" method="GET" role="form" idresult="html_return">
                 <div class="row">
                     <div class="col-xs-12">
                         <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
-                        <a href="{{ route('nhat-ky-cong-tac-cb.create') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
+                        {{-- <a href="{{ route('nhat-ky-cong-tac-cb.create') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a> --}}
                         <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
                             <div class="row">
                                 @csrf
@@ -157,7 +161,7 @@
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                     <fieldset class="form-group">
                                         <label>Lọc theo đội</label>
-                                        <select id="nhatky_status" name="nhatky_status" class="form-control app_select2">
+                                        <select id="id_iddonvi_iddoi" name="id_iddonvi_iddoi" class="form-control app_select2">
                                             @foreach ($list_doicongtac as $doicongtac)
                                             <option value="{{ $doicongtac->id }}">{{ $doicongtac->name }}</option>
                                             @endforeach
@@ -177,9 +181,7 @@
                                 </div>
 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1" style="margin-top: 2em;">
-                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip"
-                                        data-placement="top" title="Lọc nhật ký cán bộ"> <i class="fa fa-search"></i>
-                                        Tìm</button>
+                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc nhật ký cán bộ"> <i class="fa fa-search"></i> Tìm</button>
                                 </div>
                             </div>
 
@@ -196,120 +198,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div class="card-box table-responsive">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h5>Nhật ký công tác đội</h5>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 loading" id="ajax_table" style="position: relative;">
-                                    <table class="table table-bordered table-striped datatable">
-                                        <thead>
-                                            <tr>
-                                                <th class="center"><input id="checkAll_nhatkytuan" current="nhatkytuan"
-                                                        class="checkAllCls" type="checkbox"></th>
-                                                <th class="center" width="70px;">STT</th>
-                                                <th class="center" width="100px;">Tuần</th>
-                                                <th class="center" width="450px;">Nội dung dự kiến</th>
-                                                <th class="center" width="250px;">Kết quả thực hiện</th>
-                                                <th class="center">Ghi chú duyệt</th>
-                                                <th class="center" width="70px;">Trạng thái</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                            $i = 1;
-                                            @endphp
-                                            @foreach ($list_nhatkydoi as $nhatky)
-                                            <tr>
-                                                <td class="center"><input name="nhatkyngay" value="{{ $nhatky->id }}"
-                                                        class="nhatky_nhatkytuan" type="checkbox"></td>
-                                                <td class="center">{{ $i }}</td>
-                                                <td>{{ date('d-m-Y', strtotime($nhatky->ngaydautuan)) .' -> '.
-                                                    date('d-m-Y', strtotime($nhatky->ngaycuoituan)) }}</td>
-                                                <td>{!! $nhatky->noidungdukien !!}</td>
-                                                <td>{!! $nhatky->ketquathuchien !!}</td>
-                                                <td>{!! $nhatky->ghichuduyet !!}</td>
-                                                <td class="center"> {!! ($nhatky->nhatky_status == 2) ? '<i style="color:darkgreen" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Đã duyệt"></i>' : '<i style="color:crimson" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Chưa duyệt"></i>' !!} </td>
-                                            </tr>
-                                            @php
-                                            $i++;
-                                            @endphp
-                                            @endforeach
+                    <div class="col-xs-12" id="html_return">
+                        
+                        @include('nhatkycongtac.theodoinhatky_content')
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="row m-t-20">
-                                <div class="col-xs-12 col-sm-12">
-                                    <h5>Nhật ký công tác cán bộ</h5>
-                                </div>
-                                <div class="col-xs-12 col-sm-12">
-                                    <div class="panel-group" id="accordion">
-                                        @php
-                                        $i=1;
-                                        @endphp
-                                        @foreach ($list_canbo_nhatky as $hoten => $canbo_nhatky)
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h5 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{ $i }}"> <i class="fa fa-user"></i> {{ $hoten }}</a> </h5>
-                                            </div>
-                                            <div id="collapse_{{ $i }}" class="panel-collapse collapse">
-                                                <div class="panel-body">
-                                                <div class="row">
-                                                        <div class="col-md-12">
-                                                            <table style="margin-bottom: 20px;" class="datatable table table-striped table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="center"><input id="checkAll_{{ $i }}" current="{{ $i }}" class="checkAllCls" type="checkbox"></th>
-                                                                        <th class="center">Ngày</th>
-                                                                        <th class="center">Nội dung dự kiến</th>
-                                                                        <th class="center">Kết quả thực hiện</th>
-                                                                        <th class="center">Ghi chú của Lãnh đạo</th>
-                                                                        <th class="center" style="width: 100px;">Trạng thái</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach($canbo_nhatky as $nhatky)
-                                                                    <tr>
-                                                                        <td class="center"><input name="nhatkyngay" value="{{ $nhatky->id }}" class="nhatky_{{ $i }}" type="checkbox"></td>
-                                                                        <td>{{ date('d-m-Y', strtotime($nhatky->ngay)) }}</td>
-                                                                        <td>{!! $nhatky->noidungdukien !!}</td>
-                                                                        <td>{!! $nhatky->ketquathuchien !!}</td>
-                                                                        <td>{!! $nhatky->ghichuduyet !!}</td>
-                                                                        <td class="center"> {!! ($nhatky->nhatky_status == 2) ? '<i style="color:darkgreen" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Đã duyệt"></i>' : '<i style="color:crimson" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Chưa duyệt"></i>' !!} </td>
-                                                                    </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <fieldset class="form-group">
-                                                                <select id="nhatky_status" name="nhatky_status" class="form-control app_select2">
-                                                                    <option value="">Lựa chọn</option>
-                                                                    <option value="1">Duyệt</option>
-                                                                    <option value="2">Hủy duyệt</option>
-                                                                </select>
-                                                            </fieldset>
-                                                        </div>
-
-                                                        <div class="col-md-2">
-                                                            <button type="submit" class="btn btn-danger"> <i class="fa fa-rocket"></i> Thực hiện</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @php
-                                        $i++;
-                                        @endphp
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </form>

@@ -161,13 +161,13 @@ class NhatkycongtacLibrary
     {
         return DB::table('tbl_canbo')
         ->join('tbl_connguoi', 'tbl_canbo.idconnguoi', '=', 'tbl_connguoi.id')
-        ->join('tbl_nhatkycanbo', 'tbl_nhatkycanbo.idcanbo', '=', 'tbl_canbo.id')
+        ->leftJoin('tbl_nhatkycanbo', 'tbl_nhatkycanbo.idcanbo', '=', 'tbl_canbo.id')
         ->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')
         ->where('tbl_donvi_doi.id', $id_iddonvi_iddoi)
         ->where($arrWhere)
         ->orderBy('tbl_connguoi.order', 'ASC')
         ->orderBy('tbl_nhatkycanbo.ngay', 'DESC')
-        ->select('tbl_nhatkycanbo.*', 'hoten')
+        ->select('tbl_nhatkycanbo.*', 'hoten') // 
         ->get();
     }
 

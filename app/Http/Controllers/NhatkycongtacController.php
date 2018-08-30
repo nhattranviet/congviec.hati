@@ -232,18 +232,16 @@ class NhatkycongtacController extends Controller
         {
             $data['list_doicongtac'] = UserLibrary::getListDoiCanBo($current_idcanbo, 'object');
         }
-        $data['default_id_iddonvi_iddoi'] = $data['list_doicongtac'][0]->id;
-
+        $arrWhere['nhatkycanbo'] = [];
+        $data['default_id_iddonvi_iddoi'] = ($request->id_iddonvi_iddoi != NULL) ? $request->id_iddonvi_iddoi : $data['list_doicongtac'][0]->id;
+        $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkydoi'] );
+        $data['list_canbo_nhatky'] = NhatkycongtacLibrary::formatNhatkycanboInDoi( NhatkycongtacLibrary::getFullListNhatkycanboInDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkycanbo'] ) ) ;
+        // dd($data['list_canbo_nhatky']);
         if( $request->ajax() )
         {
-
+            return response()->json(['html' => view('nhatkycongtac.theodoinhatky_content', $data)->render()]);
         }
-        else
-        {
-            $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkydoi'] );
-            $data['list_canbo_nhatky'] = NhatkycongtacLibrary::formatNhatkycanboInDoi( NhatkycongtacLibrary::getFullListNhatkycanboInDoi( $data['default_id_iddonvi_iddoi'] ) ) ;
-        }
-        // dd($data['list_nhatkydoi']);
+         
         return view('nhatkycongtac.theodoinhatky', $data);
     }
 }
