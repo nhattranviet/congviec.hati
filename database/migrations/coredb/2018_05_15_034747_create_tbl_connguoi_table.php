@@ -76,6 +76,7 @@ class CreateTblConnguoiTable extends Migration
             $table->text('tomtatbanthan')->nullable();
             $table->text('tomtatgiadinh')->nullable();
             $table->text('tienan_tiensu')->nullable();
+            $table->smallInteger('order')->default(1);
 
             $table->foreign('idnghenghiep')->references('id')->on('tbl_nghenghiep');
             $table->foreign('iddantoc')->references('id')->on('tbl_dantoc');

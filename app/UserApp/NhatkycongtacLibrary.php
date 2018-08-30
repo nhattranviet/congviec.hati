@@ -62,12 +62,12 @@ class NhatkycongtacLibrary
         $arrWhere = array();
         if($request->tungay != NULL)
         {
-            $arrWhere[] = array('tbl_nhatkydoi.ngaydautuan', '>=', date('Y-m-d', strtotime($request->tungay)));
+            $arrWhere[] = array('tbl_nhatkydoi.ngaycuoituan', '>=', date('Y-m-d', strtotime($request->tungay)));
         }
 
         if($request->denngay != NULL)
         {
-            $arrWhere[] = array('tbl_nhatkydoi.ngaycuoituan', '<=', date('Y-m-d', strtotime($request->denngay)));
+            $arrWhere[] = array('tbl_nhatkydoi.ngaydautuan', '<=', date('Y-m-d', strtotime($request->denngay)));
         }
 
         if($request->nhatky_status != NULL)
@@ -93,18 +93,20 @@ class NhatkycongtacLibrary
         //----------------------------------NHATKYDOI------------------------------
         if($request->tungay != NULL)
         {
-            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '>=', date('Y-m-d', strtotime($request->tungay)));
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '>=', date('Y-m-d', strtotime($request->tungay)));
         }
-        else{
-            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '>=', $tungay_default );
+        else
+        {
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '>=', $tungay_default );
         }
 
         if($request->denngay != NULL)
         {
-            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '<=', date('Y-m-d', strtotime($request->denngay)));
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '<=', date('Y-m-d', strtotime($request->denngay)));
         }
-        else{
-            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaycuoituan', '<=', $denngay_default );
+        else
+        {
+            $arrWhere['nhatkydoi'][] = array('tbl_nhatkydoi.ngaydautuan', '<=', $denngay_default );
         }
 
         if($request->nhatky_status != NULL)
@@ -114,18 +116,18 @@ class NhatkycongtacLibrary
         //----------------------------------CANBO------------------------------
         if($request->tungay != NULL)
         {
-            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaydautuan', '>=', date('Y-m-d', strtotime($request->tungay)));
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '>=', date('Y-m-d', strtotime($request->tungay)));
         }
         else{
-            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaydautuan', '>=', $tungay_default );
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '>=', $tungay_default );
         }
 
         if($request->denngay != NULL)
         {
-            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaycuoituan', '<=', date('Y-m-d', strtotime($request->denngay)));
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '<=', date('Y-m-d', strtotime($request->denngay)));
         }
         else{
-            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngaycuoituan', '<=', $denngay_default );
+            $arrWhere['nhatkycanbo'][] = array('tbl_nhatkycanbo.ngay', '<=', $denngay_default );
         }
 
         if($request->nhatky_status != NULL)
@@ -152,6 +154,20 @@ class NhatkycongtacLibrary
         ->where($arrWhere)
         ->orderBy('ngay', 'DESC')
         ->select('tbl_nhatkycanbo.*')
+        ->get();
+    }
+
+    public static function getFullListNhatkycanboInDoi( $id_iddonvi_iddoi, $arrWhere = array() )
+    {
+        return DB::table('tbl_canbo')
+        ->join('tbl_connguoi', 'tbl_canbo.idconnguoi', '=', 'tbl_connguoi.id')
+        ->join('tbl_nhatkycanbo', 'tbl_nhatkycanbo.idcanbo', '=', 'tbl_canbo.id')
+        ->join('tbl_donvi_doi', 'tbl_canbo.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')
+        ->where('tbl_donvi_doi.id', $id_iddonvi_iddoi)
+        ->where($arrWhere)
+        ->orderBy('tbl_connguoi.order', 'ASC')
+        ->orderBy('tbl_nhatkycanbo.ngay', 'DESC')
+        ->select('tbl_nhatkycanbo.*', 'hoten')
         ->get();
     }
 
@@ -189,6 +205,16 @@ class NhatkycongtacLibrary
     {
         $tempDate = explode('-', $date);
         return checkdate($tempDate[1], $tempDate[0], $tempDate[2]); // checkdate(month, day, year)
+    }
+
+    public static function formatNhatkycanboInDoi($list_canbo_nhatky)
+    {
+        $ret = [];
+        foreach ($list_canbo_nhatky as $canbo_nhatky)
+        {
+            $ret[$canbo_nhatky->hoten][] = $canbo_nhatky;
+        }
+        return $ret;
     }
 
     public static function checkNhatkycanboExist( $idcanbo, $ngay )

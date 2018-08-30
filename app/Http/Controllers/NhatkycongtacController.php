@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
 use Session;
-// use App\UserApp\CongviecLibrary;
+use App\UserApp\CanboLibrary;
 use App\UserApp\UserLibrary;
 use App\UserApp\NhatkycongtacLibrary;
 use Illuminate\Support\Facades\Redirect;
@@ -70,7 +70,7 @@ class NhatkycongtacController extends Controller
             'updated_at' => Carbon::now()
         );
         DB::table('tbl_nhatkycanbo')->insert( $data_nhatkycb );
-        return response()->json(['success' => 'Thêm nhật ký cán bộ thành công ', 'url' => route('nhat-ky-cong-tac.index')]);
+        return response()->json(['success' => 'Thêm nhật ký cán bộ thành công ', 'url' => route('nhat-ky-cong-tac-cb.index')]);
     }
 
     public function nhatkycanbo_edit($idnhatky)
@@ -216,7 +216,7 @@ class NhatkycongtacController extends Controller
 
     public function theodoinhatky(Request $request)
     {
-        $data['tungay'] = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 2 months'));
+        $data['tungay'] = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 1 months'));
         $data['denngay'] = date('Y-m-d', strtotime(date('Y-m-d', time())));
         $data['page_name'] = 'Theo dõi nhật ký';
         $arrWhere = NhatkycongtacLibrary::processArrWhereTheodoinhatky( $data['tungay'], $data['denngay'], $request );
@@ -240,7 +240,8 @@ class NhatkycongtacController extends Controller
         }
         else
         {
-            $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], array() );
+            $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkydoi'] );
+            $data['list_canbo_nhatky'] = NhatkycongtacLibrary::formatNhatkycanboInDoi( NhatkycongtacLibrary::getFullListNhatkycanboInDoi( $data['default_id_iddonvi_iddoi'] ) ) ;
         }
         // dd($data['list_nhatkydoi']);
         return view('nhatkycongtac.theodoinhatky', $data);
