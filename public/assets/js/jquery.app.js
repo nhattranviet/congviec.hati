@@ -438,6 +438,7 @@
                 var current_form = $(this).parents("form");
                 var idresult = current_form.attr("idresult");
                 var page = 1;
+                console.log(current_form.serialize());
                 $.ajax({
                     url: current_form.attr("action") + "?page=" + page,
                     type: "GET",

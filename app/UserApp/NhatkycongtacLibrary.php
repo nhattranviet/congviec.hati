@@ -24,6 +24,8 @@ class NhatkycongtacLibrary
             'ngay.date_format' => 'Ngày dự kiến phải đúng định dạng ngày-tháng-năm',
             'tuan.required' => 'Tuần dự kiến không được để trống',
             'noidungdukien.required' => 'Nội dung dự kiến không được để trống',
+            'tungay.required' => 'Từ ngày không được để trống',
+            'denngay.required' => 'Đến ngày không được để trống',
         ];
     }
 
@@ -87,7 +89,7 @@ class NhatkycongtacLibrary
         return $arrWhere;
     }
 
-    public static function processArrWhereTheodoinhatky($tungay_default, $denngay_default, $request)
+    public static function processArrWhereTheodoinhatky($tungay_default = NULL, $denngay_default = NULL, $request)
     {
         $arrWhere = ['nhatkycanbo' => array(), 'nhatkydoi' => array() ];
         //----------------------------------NHATKYDOI------------------------------

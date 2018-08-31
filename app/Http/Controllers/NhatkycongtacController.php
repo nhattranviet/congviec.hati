@@ -31,7 +31,7 @@ class NhatkycongtacController extends Controller
         }
 
 
-
+        $data['page_name'] = 'Quản lý nhật ký cán bộ';
         return view('nhatkycongtac.nhatkycanbo_index', $data);
     }
 
@@ -216,7 +216,6 @@ class NhatkycongtacController extends Controller
 
     public function theodoinhatky(Request $request)
     {
-        // dd($request->nhatkytuan);
         $data['tungay'] = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 1 months'));
         $data['denngay'] = date('Y-m-d', strtotime(date('Y-m-d', time())));
         $data['page_name'] = 'Theo dõi nhật ký';
@@ -245,27 +244,77 @@ class NhatkycongtacController extends Controller
 
     public function multiDuyetNhatky(Request $request)
     {
-        $list_nhatkytuan = $request->nhatkytuan;
+        $list_nhatkydoi = $request->nhatkydoi;
         $list_nhatkycanbo = $request->nhatkycanbo;
         $id_status = $request->id_status;
         if($id_status == NULL) return response()->json(['error' => array('Trạng thái phải được chọn')]);
-        if($list_nhatkytuan == NULL && $list_nhatkycanbo == NULL) return response()->json(['error' => array('Nhật ký cán bộ hoặc Nhật ký tuần phải được chọn')]);
+        if($list_nhatkydoi == NULL && $list_nhatkycanbo == NULL) return response()->json([ 'error' => array( 'Nhật ký cán bộ hoặc Nhật ký đội phải được chọn' ) ]);
         
-        // if( $list_nhatkytuan != NULL )
-        // {
-        //     foreach ($list_nhatkytuan as $value)
-        //     {
-                DB::table( 'tbl_nhatkydoi' )->where('id', $list_nhatkytuan)->update( ['nhatky_status' => $id_status] );
-        //     }
-        // }
+        if( $list_nhatkydoi != NULL )
+        {
+            foreach ($list_nhatkydoi as $value)
+            {
+                $data_update = array(
+                    'nhatky_status' => $id_status
+                );
+                DB::table('tbl_nhatkydoi')->where('id', $value)->update( $data_update );
+            }
+        }
 
-        // if( $list_nhatkycanbo != NULL )
-        // {
-        //     foreach ($list_nhatkycanbo as $value)
-        //     {
-        //         DB::table( 'tbl_nhatkycanbo' )->where('id', $value)->update( ['nhatky_status' => $id_status] );
-        //     }
-        // }
-        return response()->json(['success' => 'Thao tác thành công ']);
+        if( $list_nhatkycanbo != NULL )
+        {
+            foreach ($list_nhatkycanbo as $value)
+            {
+                DB::table('tbl_nhatkycanbo')->where('id', $value)->update( ['nhatky_status' => $id_status] );
+            }
+        }
+        $arrWhere = NhatkycongtacLibrary::processArrWhereTheodoinhatky( NULL, NULL, $request );
+        $data['default_id_iddonvi_iddoi'] = $request->id_iddonvi_iddoi;
+        $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkydoi'] );
+        $data['list_canbo_nhatky'] = NhatkycongtacLibrary::formatNhatkycanboInDoi( NhatkycongtacLibrary::getFullListNhatkycanboInDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkycanbo'] ) ) ;
+        return response()->json(['html' => view('nhatkycongtac.theodoinhatky_content', $data)->render()]);
+    }
+
+    //-----------------------------REPORT---------------------------------------------
+    public function report_nhatkycanbo_check(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tungay' => 'required',
+            'denngay' => 'required',
+        ], NhatkycongtacLibrary::getNhatkycongtacMessage() );
+
+        if ($validator->fails()) {
+            return response()->json([ 'error' => $validator->errors()->all() ]);
+        }
+        return response()->json(['success' => 'Thêm nhật ký cán bộ thành công ', 'url' => '/get-data/1/1/1']);
+        // return redirect('/get-data/1/1/1');
+    }
+
+    public function report_nhatkycanbo_getdata($idcanbo, $tungay, $denngay)
+    {
+        $html_table = view('nhatkycongtac.view_report_nhatkycanbo')->render();
+        $str = "
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><title>Microsoft Office HTML Example</title>
+        <style> <!-- 
+            @page
+            {
+                size: 21cm 29.7cm;  /* A4 */
+                margin: 1.5cm 1.5cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
+                mso-page-orientation: portrait;
+            }
+        @page Section1 { }
+        div.Section1 { page:Section1; }
+        --></style>
+        </head>
+        <body>
+        <div class=Section1>
+        ".$html_table."
+        </div>
+        </body>
+        </html>";
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=mau-hk-01.doc");
+        echo $str;
     }
 }

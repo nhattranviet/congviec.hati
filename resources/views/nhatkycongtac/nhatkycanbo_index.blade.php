@@ -6,6 +6,46 @@
         $(document).on("click", "#checkAll", function(){
             $('.nhatky').prop('checked', this.checked);
         });
+
+        $(document).on("click", ".exportBtn", function (event) {
+            event.preventDefault();
+            $("#wait").css("display", "block");
+            var current_form = $(this).parents("form");
+            var idresult = current_form.attr("idresult");
+            var URL = $(this).attr('ajax_action');
+            $.ajax({
+                url: URL,
+                type: "GET",
+                data: current_form.serialize(),
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#wait").css("display", "none");
+                    $("#error-msg").css("display", "none");
+
+                    if ($.isEmptyObject(data.error)) {
+                        if (idresult) {
+                            $("#" + idresult).html(data.html);
+                        }
+
+                        if (data.url) {
+                            window.location.href = data.url;
+                        }
+                        Command: toastr["success"]("Thao tác thành công}")
+                    } else {
+                        printMsg("#error-msg", data.error[0]);
+                    }
+                    window.scrollTo(0, 0);
+                },
+                error: function (data) {
+                    $("#wait").css("display", "none");
+                    var errors = $.parseJSON(data.responseText);
+                    $.each(errors, function (key, value) {
+                        console.log(data.responseText);
+                    });
+                }
+            });
+        });
         
       })
    </script>
@@ -33,13 +73,20 @@
    <!-- Start content -->
    <div class="content">
       <div class="container">
-
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">{{ $page_name }}</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12">
                 <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
-                <a href="{{ route('nhat-ky-cong-tac-cb.create') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
+                <a href="{{ route('nhat-ky-cong-tac-cb.create') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm nhật ký</a>
                 <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
-                        <form id="tim-kiem-hoso" action="{{ route('nhat-ky-cong-tac-cb.index') }}" method="GET" role="form" idresult="ajax_table">
+                        <form id="tim-kiem-hoso" action="{{ route('nhat-ky-cong-tac-cb.index') }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
                             <div class="row">
                                 @csrf
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
@@ -56,17 +103,17 @@
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-3">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Nội dung dự kiến</label>
-                                        <input type="text" name="noidungdukien" parsley-trigger="change" placeholder="Nhập Nội dung dự kiến để lọc" class="form-control" value="">
+                                        <input type="text" name="noidungdukien" parsley-trigger="change" placeholder="Nhập nội dung dự kiến để lọc" class="form-control" value="">
                                     </fieldset>
                                 </div>
 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Kết quả thực hiện</label>
-                                        <input type="text" name="ketquathuchien" parsley-trigger="change" placeholder="Nhập Nội dung dự kiến để lọc" class="form-control" value="">
+                                        <input type="text" name="ketquathuchien" parsley-trigger="change" placeholder="Nhập kết quả thực hiện để lọc" class="form-control" value="">
                                     </fieldset>
                                 </div>
 
@@ -81,8 +128,10 @@
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1" style="margin-top: 2em;">
-                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc nhật ký cán bộ"> <i class="fa fa-search"></i> Tìm</button>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
+                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc theo yêu cầu"> <i style="font-size: 1.2em;" class="fa fa-filter"></i></button>
+                                    <button id="exportBtnsss" class="btn btn-warning waves-effect" href="#" data-toggle="tooltip" data-placement="top" title="Báo cáo thống kê"> <i style="font-size: 1.2em;" class="fa fa-area-chart"></i> </button>
+                                    <button class="btn btn-info waves-effect exportBtn" ajax_action="{{ route('nhat-ky-cong-tac.report-canbo') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích xuất nhật ký"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
                                 </div>
                             </div>
                         </form>

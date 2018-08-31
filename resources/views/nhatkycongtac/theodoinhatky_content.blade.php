@@ -7,7 +7,7 @@
             <table class="table table-bordered table-striped datatable">
                 <thead>
                     <tr>
-                        <th class="center" width="20px;"><input id="checkAll_nhatkytuan" current="nhatkytuan" class="checkAllCls" type="checkbox"></th>
+                        <th class="center" width="20px;"><input id="checkAll_nhatkydoi" current="nhatkydoi" class="checkAllCls" type="checkbox"></th>
                         <th class="center" width="20px;">STT</th>
                         <th class="center" width="90px;">Tuần</th>
                         <th class="center" width="450px;">Nội dung dự kiến</th>
@@ -21,7 +21,7 @@
                     @endphp
                     @foreach ($list_nhatkydoi as $nhatky)
                     <tr>
-                        <td class="center"><input name="nhatkytuan[]" value="{{ $nhatky->id }}" class="nhatky_nhatkytuan" type="checkbox"></td>
+                        <td class="center"><input name="nhatkydoi[]" value="{{ $nhatky->id }}" class="nhatky_nhatkydoi" type="checkbox"></td>
                         <td class="center">{{ $i }}</td>
                         <td>{{ date('d-m-Y', strtotime($nhatky->ngaydautuan)) .' -> '. date('d-m-Y', strtotime($nhatky->ngaycuoituan)) }}</td>
                         <td>{!! $nhatky->noidungdukien !!}</td>

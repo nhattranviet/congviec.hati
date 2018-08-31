@@ -28,10 +28,9 @@
             $("#wait").css("display", "block");
             var current_form = $(this).parents("form");
             var idresult = current_form.attr("idresult");
-            console.log(current_form.serialize());
             $.ajax({
                 url: "{{ route('nhat-ky-cong-tac.multi-Duyet-Nhat-ky') }}",
-                type: "POST",
+                type: "GET",
                 data: current_form.serialize(),
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 dataType: "json",
@@ -47,6 +46,7 @@
                         if (data.url) {
                             window.location.href = data.url;
                         }
+                        Command: toastr["success"]("Thao tác thành công}")
                     } else {
                         printMsg("#error-msg", data.error[0]);
                     }
@@ -203,8 +203,8 @@
                         <fieldset class="form-group">
                             <select id="id_status" name="id_status" class="form-control app_select2">
                                 <option value="">Lựa chọn</option>
-                                <option value="1">Duyệt</option>
-                                <option value="2">Hủy duyệt</option>
+                                <option value="2">Duyệt</option>
+                                <option value="1">Hủy duyệt</option>
                             </select>
                         </fieldset>
                     </div>

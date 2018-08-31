@@ -271,8 +271,12 @@ Route::get('/nhat-ky-cong-tac-doi/{idnhatky}/edit', 'NhatkycongtacController@nha
 Route::post('/nhat-ky-cong-tac-doi/{idnhatky}/update', 'NhatkycongtacController@nhatkydoi_update')->name('nhat-ky-cong-tac-doi.update');
 Route::get('/nhat-ky-cong-tac-doi/{idnhatky}/delete', 'NhatkycongtacController@nhatkydoi_delete')->name('nhat-ky-cong-tac-doi.delete');
 
-Route::post('/nhat-ky-cong-tac/multi-Duyet-Nhat-ky', 'NhatkycongtacController@multiDuyetNhatky')->name('nhat-ky-cong-tac.multi-Duyet-Nhat-ky');
+Route::get('/nhat-ky-cong-tac/multi-Duyet-Nhat-ky', 'NhatkycongtacController@multiDuyetNhatky')->name('nhat-ky-cong-tac.multi-Duyet-Nhat-ky');
 Route::get('/nhat-ky-cong-tac/theo-doi-nhat-ky', 'NhatkycongtacController@theodoinhatky')->name('nhat-ky-cong-tac-doi.theodoinhatky');
+
+Route::get('/nhat-ky-cong-tac/report-canbo/', 'NhatkycongtacController@report_nhatkycanbo_check')->name('nhat-ky-cong-tac.report-canbo');
+Route::get('/get-data/{idcanbo}/{tungay}/{denngay}', 'NhatkycongtacController@report_nhatkycanbo_getdata');
+
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
 //-------------------PERMISSION-----------------------
