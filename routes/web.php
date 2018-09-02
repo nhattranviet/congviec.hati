@@ -6,7 +6,26 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/test', function(){
-    echo date('w', 1535302800);
+    $period = new DatePeriod(
+        new DateTime('2018-8-01'),
+        new DateInterval('P1D'),
+        new DateTime('2019-10-15')
+    );
+    $list_day = [];
+    foreach ($period as $dt) {
+        $list_day[] = $dt->format("d-m-Y");
+    }
+    dd($list_day);
+    // $a = '2018-09-11';
+    
+    // echo date('Y-m-d', strtotime($a .' + 1 months'));
+    // echo date('w', strtotime('02-9-2018')); die;
+    // $current_day_in_week = date('w');
+    // $week_start_day = date('m-d-Y', strtotime('-'.$current_day_in_week.' days + 1 days' )); //type m-d-Y
+    // $week_end_day = date('m-d-Y', strtotime('+'.(6-$current_day_in_week).' days + 1 days')); //type m-d-Y
+    // $ngaydau = strtotime(str_replace('-', '/', $week_start_day));
+    // $ngaycuoi = strtotime(str_replace('-', '/', $week_end_day));
+    // echo date('Y-m-d', $ngaydau).'---'.date('Y-m-d', $ngaycuoi);
     die;
     $a = DB::connection('test')->table('tbl_congviec')->get();
     // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();

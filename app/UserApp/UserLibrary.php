@@ -4,6 +4,9 @@ namespace App\UserApp;
 
 use Illuminate\Support\Facades\DB;
 use Session;
+use DateTime;
+use DatePeriod;
+use DateInterval;
 
 class UserLibrary
 {
@@ -274,6 +277,76 @@ class UserLibrary
                 $str = preg_replace("/($uni)/i", $nonUnicode, $str);
         }
             return strtolower($str);
+    }
+
+    public static function getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($date)
+    {
+        $ngay_return = [];
+        $current_day_int = date('w', strtotime($date));
+        $ngay_return['ngaydautuan'] = date('Y-m-d', strtotime($date .' - '.($current_day_int).' days + 1 days '));
+        $ngay_return['ngaycuoituan'] = date('Y-m-d', strtotime($date .' + '.(7 - $current_day_int).' days '));
+        return $ngay_return;
+    }
+
+    public static function getListDayBettwenTwoDay_Y_m_d($star, $end)
+    {
+        $end = date('Y-m-d', strtotime($end .'+1 days'));
+        $period = new DatePeriod(
+            new DateTime($star),
+            new DateInterval('P1D'),
+            new DateTime($end)
+        );
+        $list_day = [];
+        foreach ($period as $dt) {
+            $list_day[] = $dt->format("Y-m-d");
+        }
+        return $list_day;
+    }
+
+    public static function create_docfile_portrait($html)
+    {
+        return "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><title>Microsoft Office HTML Example</title>
+        <style> <!-- 
+            @page
+            {
+                size: 21cm 29.7cm;  /* A4 */
+                margin: 1.5cm 1.5cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
+                mso-page-orientation: portrait;
+            }
+        @page Section1 { }
+        div.Section1 { page:Section1; }
+        --></style>
+        </head>
+        <body>
+        <div class=Section1>
+        ".$html."
+        </div>
+        </body>
+        </html>";
+    }
+
+    public static function create_docfile_landscape($html)
+    {
+        return "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><title>Microsoft Office HTML Example</title>
+        <style> <!-- 
+            @page
+            {
+                size: 29.7cm 21cm;  /* A4 */
+                margin: 0.5cm 1.2cm 0.5cm 2.5cm; /* Margins: 2 cm on each side */
+                mso-page-orientation: landscape;
+            }
+        @page Section1 { }
+        div.Section1 { page:Section1; }
+        --></style>
+        </head>
+        <body>
+        <div class=Section1>
+        ".$html."
+        </div>
+        </body>
+        </html>";
     }
 
 

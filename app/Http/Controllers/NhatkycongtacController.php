@@ -286,35 +286,32 @@ class NhatkycongtacController extends Controller
         if ($validator->fails()) {
             return response()->json([ 'error' => $validator->errors()->all() ]);
         }
-        return response()->json(['success' => 'Thêm nhật ký cán bộ thành công ', 'url' => '/get-data/1/1/1']);
-        // return redirect('/get-data/1/1/1');
+        $idcanbo = Session::get('userinfo')->idcanbo;
+        $tungay = date('Y-m-d', strtotime($request->tungay));
+        $denngay = date('Y-m-d', strtotime($request->denngay));
+        return response()->json(['url' => '/get-data/'.$idcanbo.'/'.$tungay.'/'.$denngay]);
     }
 
     public function report_nhatkycanbo_getdata($idcanbo, $tungay, $denngay)
     {
-        $html_table = view('nhatkycongtac.view_report_nhatkycanbo')->render();
-        $str = "
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head><title>Microsoft Office HTML Example</title>
-        <style> <!-- 
-            @page
-            {
-                size: 21cm 29.7cm;  /* A4 */
-                margin: 1.5cm 1.5cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
-                mso-page-orientation: portrait;
-            }
-        @page Section1 { }
-        div.Section1 { page:Section1; }
-        --></style>
-        </head>
-        <body>
-        <div class=Section1>
-        ".$html_table."
-        </div>
-        </body>
-        </html>";
+        $data['day_name'] = array( '1' => 'Thứ hai', '2' => 'Thứ ba', '3' => 'Thứ tư', '4' => 'Thứ năm', '5' => 'Thứ sáu', '6' => 'Thứ bảy', '0' => 'Chủ nhật');
+        $data['tungay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($tungay);
+        $data['denngay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($denngay);
+        $nhatky_info = DB::table('tbl_nhatkycanbo')->where('idcanbo', $idcanbo)->whereDate('ngay', '>=', $data['tungay_ngaydautuan_cuoituan']['ngaydautuan'])->whereDate('ngay', '<=', $data['denngay_ngaydautuan_cuoituan']['ngaycuoituan'])->orderBy('ngay', 'ASC')->get();
+        $data['nhatky_chuanhoa'] = [];
+        foreach ($nhatky_info as $nhatky)
+        {
+            $data['nhatky_chuanhoa'][$nhatky->ngay] = $nhatky;
+        }
+        $list_ngay = UserLibrary::getListDayBettwenTwoDay_Y_m_d($data['tungay_ngaydautuan_cuoituan']['ngaydautuan'], $data['denngay_ngaydautuan_cuoituan']['ngaycuoituan']);
+        $data['list_tuan'] = array_chunk($list_ngay, 7);
+        $hoten = Session::get('userinfo')->hoten;
+        $tungay_d_m_Y = date('d-m-Y', strtotime($tungay));
+        $denngay_d_m_Y = date('d-m-Y', strtotime($denngay));
+        $html_table = view('nhatkycongtac.view_report_nhatkycanbo', $data)->render();
+        $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=mau-hk-01.doc");
-        echo $str;
+        header("Content-Disposition: attachment;Filename=nhat-ky-can-bo ".$hoten." tu ".$tungay_d_m_Y." den ".$denngay_d_m_Y.".doc");
+        echo $str_for_doc;
     }
 }
