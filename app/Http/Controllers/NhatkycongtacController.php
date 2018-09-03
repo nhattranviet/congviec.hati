@@ -369,7 +369,7 @@ class NhatkycongtacController extends Controller
         $data['tendoi'] = DB::table('tbl_doicongtac')->join('tbl_donvi_doi', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id' )->where('tbl_donvi_doi.id',$id_iddonvi_iddoi)->value('name');
         $data['tungay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($tungay);
         $data['denngay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($denngay);
-        $nhatky_info = DB::table('tbl_nhatkydoi')->where(array(['id_iddonvi_iddoi', '=', $id_iddonvi_iddoi], ['noidungdukien', '!=', NULL], ['ketquathuchien', '!=', NULL]))->whereDate('ngaydautuan', '>=', $data['tungay_ngaydautuan_cuoituan']['ngaydautuan'])->whereDate('ngaydautuan', '<=', $data['denngay_ngaydautuan_cuoituan']['ngaydautuan'])->orderBy('ngaydautuan', 'ASC')->get();
+        $nhatky_info = DB::table('tbl_nhatkydoi')->where(array(['id_iddonvi_iddoi', '=', $id_iddonvi_iddoi], ['noidungdukien', '!=', NULL], ['ketquathuchien', '!=', NULL]))->whereDate('ngaydautuan', '>=', $data['tungay_ngaydautuan_cuoituan']['ngaydautuan'])->whereDate('ngaydautuan', '<=', $data['denngay_ngaydautuan_cuoituan']['ngaydautuan'])->pluck('ngaydautuan')->toArray();
         $data['nhatky_chuanhoa'] = [];
         foreach ($nhatky_info as $nhatky)
         {
