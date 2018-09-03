@@ -471,6 +471,50 @@
                     }
                 });
             });
+
+            $(document).on("click", ".exportNhatkyBtn", function (event) {
+                event.preventDefault();
+                $("#wait").css("display", "block");
+                var redirect_type = $(this).attr('redirect_type');
+                var current_form = $(this).parents("form");
+                var idresult = current_form.attr("idresult");
+                var URL = $(this).attr('ajax_action');
+                $.ajax({
+                    url: URL,
+                    type: "GET",
+                    data: current_form.serialize() + '&redirect_type=' + redirect_type,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#wait").css("display", "none");
+                        $("#error-msg").css("display", "none");
+
+                        if ($.isEmptyObject(data.error)) {
+                            if (idresult) {
+                                $("#" + idresult).html(data.html);
+                            }
+
+                            if (data.url) {
+                                window.location.href = data.url;
+                            }
+                            if (data.show_alert) {
+                                Command: toastr[data.type](data.message)
+                            }
+
+                        } else {
+                            printMsg("#error-msg", data.error[0]);
+                        }
+                        window.scrollTo(0, 0);
+                    },
+                    error: function (data) {
+                        $("#wait").css("display", "none");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function (key, value) {
+                            console.log(data.responseText);
+                        });
+                    }
+                });
+            });
             
             $("#donvi").on('change', function () {
                 var donvi = $('#donvi').val();

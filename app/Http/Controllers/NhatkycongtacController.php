@@ -152,18 +152,17 @@ class NhatkycongtacController extends Controller
         $Y_m_d_ngaydautuan = date( 'Y-m-d', $int_ngaydautuan );
         $Y_m_d_ngaycuoituan = date( 'Y-m-d', $int_ngaycuoituan );
 
-        if ( date('w', $int_ngaydautuan) != 1 && ( $int_ngaycuoituan - $int_ngaydautuan ) != 518400)    //  Từ thứ 2 đến CN có 6 bước nhảy 518400 = 6*86400
+        if ( date('w', $int_ngaydautuan) != 1 || ( $int_ngaycuoituan - $int_ngaydautuan ) != 518400)    //  Từ thứ 2 đến CN có 6 bước nhảy 518400 = 6*86400
         {
-            return response()->json(['error' => array('Chọn ngày đầu tuần (Thứ 2), ngày cuối tuần (Chủ nhật) và chỉ được chọn 01 tuần')]);
+            return response()->json(['error' => array('Chọn ngày đầu tuần (Thứ 2), ngày cuối tuần (Chủ nhật) và mỗi lần được chọn 01 tuần')]);
         }
         $idcanbo = Session::get('userinfo')->idcanbo;
         $id_iddonvi_iddoi = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo, 'value' );
-        
         if(NhatkycongtacLibrary::checkNhatkyDoiExist( $id_iddonvi_iddoi, $Y_m_d_ngaydautuan) == TRUE )
         {
             return response()->json(['error' => array('Nhật ký tuần từ '.$ngaudautuan_cuoituan[0].' đến '.$ngaudautuan_cuoituan[1].' của bạn đã tồn tại trong hệ thống. Chọn sửa thay vì thêm mới!')]);
         }
-
+        
         $data_nhatkydoi = array(
             'idcanbo_creater' => $idcanbo,
             'id_iddonvi_iddoi' => $id_iddonvi_iddoi,
@@ -174,7 +173,7 @@ class NhatkycongtacController extends Controller
             'updated_at' => Carbon::now()
         );
 
-        DB::table('tbl_nhatkydoi')->insert( $data_nhatkydoi ); die;
+        DB::table('tbl_nhatkydoi')->insert( $data_nhatkydoi );
         return response()->json(['success' => 'Thêm nhật ký đội thành công ', 'url' => route('nhat-ky-cong-tac-doi.index')]);
     }
 
@@ -276,7 +275,7 @@ class NhatkycongtacController extends Controller
     }
 
     //-----------------------------REPORT---------------------------------------------
-    public function report_nhatkycanbo_check(Request $request)
+    public function report_nhatkycanbo_gate_check(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'tungay' => 'required',
@@ -289,12 +288,60 @@ class NhatkycongtacController extends Controller
         $idcanbo = Session::get('userinfo')->idcanbo;
         $tungay = date('Y-m-d', strtotime($request->tungay));
         $denngay = date('Y-m-d', strtotime($request->denngay));
-        return response()->json(['url' => '/get-data/'.$idcanbo.'/'.$tungay.'/'.$denngay]);
+        
+        if($request->redirect_type == 'report_nhatkycanbo')
+        {
+            return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/report-nhat-ky-canbo/'.$idcanbo.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
+        }
+        elseif($request->redirect_type == 'thongke_nhatkycanbo'){
+            return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/thong-ke-nhat-ky-canbo/'.$idcanbo.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
+        }
+        
     }
 
-    public function report_nhatkycanbo_getdata($idcanbo, $tungay, $denngay)
+    public function report_nhatkycanbo($idcanbo, $tungay, $denngay)
     {
         $data['day_name'] = array( '1' => 'Thứ hai', '2' => 'Thứ ba', '3' => 'Thứ tư', '4' => 'Thứ năm', '5' => 'Thứ sáu', '6' => 'Thứ bảy', '0' => 'Chủ nhật');
+        $data['tungay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($tungay);
+        $data['denngay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($denngay);
+        $nhatky_info = DB::table('tbl_nhatkycanbo')->where('idcanbo', $idcanbo)->whereDate('ngay', '>=', $data['tungay_ngaydautuan_cuoituan']['ngaydautuan'])->whereDate('ngay', '<=', $data['denngay_ngaydautuan_cuoituan']['ngaycuoituan'])->orderBy('ngay', 'ASC')->get();
+        $data['nhatky_chuanhoa'] = [];
+        foreach ($nhatky_info as $nhatky)
+        {
+            $data['nhatky_chuanhoa'][$nhatky->ngay] = $nhatky;
+        }
+        $list_ngay = UserLibrary::getListDayBettwenTwoDay_Y_m_d($data['tungay_ngaydautuan_cuoituan']['ngaydautuan'], $data['denngay_ngaydautuan_cuoituan']['ngaycuoituan']);
+        $data['list_tuan'] = array_chunk($list_ngay, 7);
+        $hoten = Session::get('userinfo')->hoten;
+        $tungay_d_m_Y = date('d-m-Y', strtotime($tungay));
+        $denngay_d_m_Y = date('d-m-Y', strtotime($denngay));
+        $html_table = view('nhatkycongtac.view_report_nhatkycanbo', $data)->render();
+        $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=nhat-ky-can-bo ".$hoten." tu ".$tungay_d_m_Y." den ".$denngay_d_m_Y.".doc");
+        echo $str_for_doc;
+    }
+
+    public function thongke_nhatkycanbo($idcanbo, $tungay, $denngay)
+    {
+        $data['list_ngay_not_cuoituan'] = UserLibrary::getListDayBettwenTwoDay_Y_m_d($tungay, $denngay, FALSE);
+        $data['list_ngay_full_nhatky_info'] = DB::table('tbl_nhatkycanbo')->where(array(['idcanbo', '=', $idcanbo], ['noidungdukien', '!=', NULL], ['ketquathuchien', '!=', NULL]))->whereDate('ngay', '>=', $tungay)->whereDate('ngay', '<=', $denngay)->pluck('ngay')->toArray();
+        $data['ngaychuacapnhat'] = array_diff( $data['list_ngay_not_cuoituan'], $data['list_ngay_full_nhatky_info'] );
+        
+        $data['hoten'] = Session::get('userinfo')->hoten;
+        $data['tungay_d_m_Y'] = date('d-m-Y', strtotime($tungay));
+        $data['denngay_d_m_Y'] = date('d-m-Y', strtotime($denngay));
+        $html_table = view('nhatkycongtac.thongke_nhatkycanbo', $data)->render();
+        $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-can-bo ".$data['hoten']." tu ".$data['tungay_d_m_Y']." den ".$data['denngay_d_m_Y'].".doc");
+        echo $str_for_doc;
+    }
+
+    public function report_nhatkytuan($id_iddonvi_iddoi, $tungay, $denngay)
+    {
+        array('tbl_nhatkydoi.ngaycuoituan', '>=', date('Y-m-d', strtotime($request->tungay)));
+        array('tbl_nhatkydoi.ngaydautuan', '<=', date('Y-m-d', strtotime($request->denngay)));
         $data['tungay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($tungay);
         $data['denngay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($denngay);
         $nhatky_info = DB::table('tbl_nhatkycanbo')->where('idcanbo', $idcanbo)->whereDate('ngay', '>=', $data['tungay_ngaydautuan_cuoituan']['ngaydautuan'])->whereDate('ngay', '<=', $data['denngay_ngaydautuan_cuoituan']['ngaycuoituan'])->orderBy('ngay', 'ASC')->get();

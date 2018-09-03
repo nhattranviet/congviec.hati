@@ -288,7 +288,7 @@ class UserLibrary
         return $ngay_return;
     }
 
-    public static function getListDayBettwenTwoDay_Y_m_d($star, $end)
+    public static function getListDayBettwenTwoDay_Y_m_d($star, $end, $get_cuoituan = TRUE)
     {
         $end = date('Y-m-d', strtotime($end .'+1 days'));
         $period = new DatePeriod(
@@ -298,7 +298,18 @@ class UserLibrary
         );
         $list_day = [];
         foreach ($period as $dt) {
-            $list_day[] = $dt->format("Y-m-d");
+            $day = $dt->format("Y-m-d");
+            if($get_cuoituan == TRUE)
+            {
+                $list_day[] = $day;
+            }
+            else{
+                $int_day = date( 'w', strtotime($day) );
+                if( $int_day != 0 &&  $int_day != 6)
+                {
+                    $list_day[] = $day;
+                }
+            }
         }
         return $list_day;
     }

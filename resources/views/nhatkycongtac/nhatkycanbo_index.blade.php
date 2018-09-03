@@ -6,46 +6,6 @@
         $(document).on("click", "#checkAll", function(){
             $('.nhatky').prop('checked', this.checked);
         });
-
-        $(document).on("click", ".exportBtn", function (event) {
-            event.preventDefault();
-            $("#wait").css("display", "block");
-            var current_form = $(this).parents("form");
-            var idresult = current_form.attr("idresult");
-            var URL = $(this).attr('ajax_action');
-            $.ajax({
-                url: URL,
-                type: "GET",
-                data: current_form.serialize(),
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                dataType: "json",
-                success: function (data) {
-                    $("#wait").css("display", "none");
-                    $("#error-msg").css("display", "none");
-
-                    if ($.isEmptyObject(data.error)) {
-                        if (idresult) {
-                            $("#" + idresult).html(data.html);
-                        }
-
-                        if (data.url) {
-                            window.location.href = data.url;
-                        }
-                        Command: toastr["success"]("Thao tác thành công}")
-                    } else {
-                        printMsg("#error-msg", data.error[0]);
-                    }
-                    window.scrollTo(0, 0);
-                },
-                error: function (data) {
-                    $("#wait").css("display", "none");
-                    var errors = $.parseJSON(data.responseText);
-                    $.each(errors, function (key, value) {
-                        console.log(data.responseText);
-                    });
-                }
-            });
-        });
         
       })
    </script>
@@ -127,11 +87,12 @@
                                         </select>
                                     </fieldset>
                                 </div>
-
+                                
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
+                                    <input hidden="hidden" type="text" name="type_report" value="canbo">
                                     <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc theo yêu cầu"> <i style="font-size: 1.2em;" class="fa fa-filter"></i></button>
-                                    <button id="exportBtnsss" class="btn btn-warning waves-effect" href="#" data-toggle="tooltip" data-placement="top" title="Báo cáo thống kê"> <i style="font-size: 1.2em;" class="fa fa-area-chart"></i> </button>
-                                    <button class="btn btn-info waves-effect exportBtn" ajax_action="{{ route('nhat-ky-cong-tac.report-canbo') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích xuất nhật ký"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
+                                    <button class="btn btn-warning waves-effect exportNhatkyBtn" redirect_type="thongke_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê nhật ký cán bộ"> <i style="font-size: 1.2em;" class="fa fa-area-chart"></i> </button>
+                                    <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="report_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích xuất nhật ký"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
                                 </div>
                             </div>
                         </form>
