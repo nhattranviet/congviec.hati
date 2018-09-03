@@ -282,9 +282,15 @@ class UserLibrary
     public static function getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($date)
     {
         $ngay_return = [];
-        $current_day_int = date('w', strtotime($date));
-        $ngay_return['ngaydautuan'] = date('Y-m-d', strtotime($date .' - '.($current_day_int).' days + 1 days '));
-        $ngay_return['ngaycuoituan'] = date('Y-m-d', strtotime($date .' + '.(7 - $current_day_int).' days '));
+        $int_date = strtotime($date);
+        $day_int_w = date('w', $int_date);
+        if($day_int_w == 0)
+        {
+            $day_int_w = 6;
+            $date = date('Y-m-d', ($int_date - 86400)); //date back to one day
+        }
+        $ngay_return['ngaydautuan'] = date('Y-m-d', strtotime($date .' - '.($day_int_w).' days + 1 days '));
+        $ngay_return['ngaycuoituan'] = date('Y-m-d', strtotime($date .' + '.(7 - $day_int_w).' days '));
         return $ngay_return;
     }
 
@@ -313,6 +319,7 @@ class UserLibrary
         }
         return $list_day;
     }
+
 
     public static function create_docfile_portrait($html)
     {

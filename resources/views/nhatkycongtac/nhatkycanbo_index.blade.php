@@ -89,7 +89,6 @@
                                 </div>
                                 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
-                                    <input hidden="hidden" type="text" name="type_report" value="canbo">
                                     <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc theo yêu cầu"> <i style="font-size: 1.2em;" class="fa fa-filter"></i></button>
                                     <button class="btn btn-warning waves-effect exportNhatkyBtn" redirect_type="thongke_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê nhật ký cán bộ"> <i style="font-size: 1.2em;" class="fa fa-area-chart"></i> </button>
                                     <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="report_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích xuất nhật ký"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>

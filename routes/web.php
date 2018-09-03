@@ -296,6 +296,7 @@ Route::get('/nhat-ky-cong-tac/theo-doi-nhat-ky', 'NhatkycongtacController@theodo
 Route::get('/nhat-ky-cong-tac/report-gate-check/', 'NhatkycongtacController@report_nhatkycanbo_gate_check')->name('nhat-ky-cong-tac.report-gate-check');
 Route::get('/nhat-ky-cong-tac/report-nhat-ky-canbo/{idcanbo}/{tungay}/{denngay}', 'NhatkycongtacController@report_nhatkycanbo')->name('report_nhatkycanbo');
 Route::get('/nhat-ky-cong-tac/thong-ke-nhat-ky-canbo/{idcanbo}/{tungay}/{denngay}', 'NhatkycongtacController@thongke_nhatkycanbo')->name('thongke_nhatkycanbo');
+Route::get('/nhat-ky-cong-tac/report-nhat-ky-doi/{id_iddonvi_iddoi}/{tungay}/{denngay}', 'NhatkycongtacController@report_nhatkytuan')->name('report_nhatkytuan');
 
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 

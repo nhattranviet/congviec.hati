@@ -3,8 +3,8 @@
     <thead>
         <tr>
             <th class="center"><input id="checkAll" type="checkbox"></th>
-            <th class="center">Tuần</th>
-            <th class="center">Nội dung dự kiến</th>
+            <th class="center" style="width: 120px;">Tuần</th>
+            <th class="center" style="width: 400px;">Nội dung dự kiến</th>
             <th class="center">Kết quả thực hiện</th>
             <th class="center">Ghi chú của Lãnh đạo</th>
             <th class="center" style="width: 100px;">Trạng thái</th>
@@ -17,7 +17,7 @@
         @foreach($list_nhatkydoi as $nhatky)
         <tr>
             <th class="center"><input class="nhatky" type="checkbox"></th>
-            <td>{{ date('d-m-Y', strtotime($nhatky->ngaydautuan)) .' -> '. date('d-m-Y', strtotime($nhatky->ngaycuoituan)) }}</td>
+            <td>{!! date('d-m-Y', strtotime($nhatky->ngaydautuan)) .' -><br>'. date('d-m-Y', strtotime($nhatky->ngaycuoituan)) !!}</td>
             <td>{!! $nhatky->noidungdukien !!}</td>
             <td>{!! $nhatky->ketquathuchien !!}</td>
             <td>{!! $nhatky->ghichuduyet !!}</td>
