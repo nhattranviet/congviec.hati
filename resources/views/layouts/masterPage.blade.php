@@ -146,12 +146,6 @@
 			}
 			Command: toastr["{{ session('alert_message')['type'] }}"]("{{ session('alert_message')['content'] }}")
 		@endif
-
-		$('.app_select2').select2(
-			{
-    			// placeholder: "Chọn",
-			}
-		);
 	});
 	</script>
 </body>

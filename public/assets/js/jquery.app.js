@@ -666,9 +666,7 @@ var addTab = function (tabIndexs) {
         .remove();
     var config = {};
     config.entities_latin = false;
-    $("#profile" + tabIndexs)
-        .find(".ckeditor")
-        .ckeditor(config);
+    $("#profile" + tabIndexs).find(".ckeditor").ckeditor(config);
     // $(".gender").val('');
 };
 

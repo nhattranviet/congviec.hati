@@ -2,58 +2,66 @@
 
 @section('js')
    <script type="text/javascript">
+        var modal = $('#nhatkycanbo-modal');
       $(document).ready(function(){
-
         $(document).on("click", "#checkAll", function(){
             $('.nhatky').prop('checked', this.checked);
         });
 
-        // $(document).on("click", ".editNhatkyCB", function (event) {
-        //         event.preventDefault();
-        //         // $("#wait").css("display", "block");
-        //         // var modal = $('#nhatkycanbo-modal');
-        //         // var idnhatky = $(this).attr('nhatky_id');
-        //         // var idresult = current_form.attr("idresult");
-        //         // var URL = "{{ route('ajax-get-nhat-ky-cb-info) }}";
-        //         // $.ajax({
-        //         //     url: "{{ route('ajax-get-nhat-ky-cb-info), ${idnhatky} }}",
-        //         //     type: "POST",
-        //         //     data: {idnhatky:idnhatky},
-        //         //     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        //         //     dataType: "json",
-        //         //     success: function (data) {
-        //         //         $("#wait").css("display", "none");
-        //         //         $("#error-msg").css("display", "none");
+        var config = {};
+            config.entities_latin = false;
+            $('.ckeditor').ckeditor(config);
+        
+        $(document).on("click", ".editNhatkyCB", function (event) {
+                event.preventDefault();
+                $("#wait").css("display", "block");
+                var idnhatky = $(this).attr('nhatky_id');
+                var ngay = $("tr[tr_id="+idnhatky+"] td.ngay").text();
+                CKEDITOR.instances.noidungdukien.setData( $("tr[tr_id="+idnhatky+"] td.noidung").html() );
+                CKEDITOR.instances.ketquathuchien.setData( $("tr[tr_id="+idnhatky+"] td.ketqua").html() );
+                $("#ngay").val(ngay);
+                $('h4.modal-title').text('Sửa nhật ký cán bộ');
+                $("#idnhatky_hidden").val(idnhatky);
+                $("#wait").css("display", "none");
+                modal.modal('show');
 
-        //         //         if ($.isEmptyObject(data.error)) {
-        //         //             if (idresult) {
-        //         //                 $("#" + idresult).html(data.html);
-        //         //             }
+            });
 
-        //         //             if (data.url) {
-        //         //                 window.location.href = data.url;
-        //         //             }
-        //         //             if (data.show_alert) {
-        //         //                 Command: toastr[data.type](data.message)
-        //         //             }
-
-        //         //         } else {
-        //         //             printMsg("#error-msg", data.error[0]);
-        //         //         }
-        //         //         window.scrollTo(0, 0);
-        //         //     },
-        //         //     error: function (data) {
-        //         //         $("#wait").css("display", "none");
-        //         //         var errors = $.parseJSON(data.responseText);
-        //         //         $.each(errors, function (key, value) {
-        //         //             console.log(data.responseText);
-        //         //         });
-        //         //     }
-        //         // });
-
-
-        //         // $('#nhatkycanbo-modal').modal('show');
-        //     });
+            $("#submitBtnUpdateCB").on("click", function (event) {
+                event.preventDefault();
+                $("#wait").css("display", "block");
+                var current_form = $(this).parents("form");
+                var idnhatky = $("#idnhatky_hidden").val()
+                var data_send = {idnhatky:idnhatky, noidungdukien: CKEDITOR.instances.noidungdukien.getData(), ketquathuchien: CKEDITOR.instances.ketquathuchien.getData()};
+                $.ajax({
+                    url: current_form.attr("action"),
+                    type: "GET",
+                    data: data_send,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#wait").css("display", "none");
+                        $("#error-msg").css("display", "none");
+                        
+                        if ($.isEmptyObject(data.error)) {
+                            $("tr[tr_id="+idnhatky+"] td.noidung").html(data_send.noidungdukien);
+                            $("tr[tr_id="+idnhatky+"] td.ketqua").html(data_send.ketquathuchien);
+                            modal.modal('hide');
+                            Command: toastr["success"](data.success);
+                        } else {
+                            printMsg("#error-msg", data.error[0]);
+                        }
+                        
+                    },
+                    error: function (data) {
+                        $("#wait").css("display", "none");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function (key, value) {
+                            console.log(data.responseText);
+                        });
+                    }
+                });
+            });
         
       })
    </script>
@@ -171,7 +179,55 @@
    </div>
    <!-- content -->
 </div>
-@include('nhatkycongtac.nhatkycanbo_modal')
+
+<form id="" action="{{ route('ajaxUpdateNhatkyCB') }}" method="POST" role="form" autocomplete="off">
+    @csrf
+    <div class="modal fade" id="nhatkycanbo-modal" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Nhật ký cán bộ</h4>
+                </div>
+                <div class="modal-body p-20">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label for="datepicker">Ngày dự kiến<span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input disabled="disabled" type="text" id="ngay" name="ngay" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="">
+                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                    </div><!-- input-group -->
+                            </fieldset>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label for="exampleTextarea">Nội dung dự kiến</label>
+                                <textarea id="noidungdukien" class="form-control ckeditor" name="noidungdukien"></textarea>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label for="exampleTextarea">Kết quả thực hiện</label>
+                                <textarea id="ketquathuchien" class="form-control ckeditor" name="ketquathuchien"></textarea>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="idnhatky" id="idnhatky_hidden" value="">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" id="submitBtnUpdateCB" class="btn btn-primary">Lưu lại</button>
+                    {{-- <button type="button" id="saveChange" class="btn btn-primary" data-dismiss="modal">Lưu lại</button> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 @endsection
 
 @section('js')

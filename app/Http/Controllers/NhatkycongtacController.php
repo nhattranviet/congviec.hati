@@ -393,6 +393,19 @@ class NhatkycongtacController extends Controller
         return response()->json($nhatky_info);
     }
 
+    public function ajaxUpdateNhatkyCB(Request $request)
+    {
+        $idnhatky = $request->idnhatky;
+        $dataUpdate = [
+            'noidungdukien' => $request->noidungdukien,
+            'ketquathuchien' => $request->ketquathuchien,
+        ];
+        $noidungdukien = $request->noidungdukien;
+        $ketquathuchien = $request->ketquathuchien;
+        DB::table('tbl_nhatkycanbo')->where('id', $idnhatky)->update($dataUpdate);
+        return response()->json(['success' => 'Cập nhật thành công ']);
+    }
+
 
 
 }
