@@ -300,7 +300,8 @@ Route::get('/nhat-ky-cong-tac/report-nhat-ky-doi/{id_iddonvi_iddoi}/{tungay}/{de
 Route::get('/nhat-ky-cong-tac/thong-ke-nhat-ky-doi/{id_iddonvi_iddoi}/{tungay}/{denngay}', 'NhatkycongtacController@thongke_nhatkytuan')->name('thongke_nhatkytuan');
 
 Route::get('/nhat-ky-cong-tac/ajax-get-nhat-ky-cb-info/{idnhatky}', 'NhatkycongtacController@ajaxGetNhatkyCB')->name('ajax-get-nhat-ky-cb-info');
-Route::get('/nhat-ky-cong-tac/ajax-post-nhat-ky-cb-info', 'NhatkycongtacController@ajaxUpdateNhatkyCB')->name('ajaxUpdateNhatkyCB');
+Route::get('/nhat-ky-cong-tac/ajax-update-nhat-ky-cb', 'NhatkycongtacController@ajaxUpdateNhatkyCB')->name('ajaxUpdateNhatkyCB');
+Route::get('/nhat-ky-cong-tac/ajax-delete-nhat-ky-cb', 'NhatkycongtacController@ajaxDeleteNhatkyCB')->name('ajaxDeleteNhatkyCB');
 
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 

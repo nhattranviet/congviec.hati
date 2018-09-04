@@ -406,6 +406,13 @@ class NhatkycongtacController extends Controller
         return response()->json(['success' => 'Cập nhật thành công ']);
     }
 
+    public function ajaxDeleteNhatkyCB(Request $request)
+    {
+        $idnhatky = $request->idnhatky;
+        DB::table('tbl_nhatkycanbo')->where('id', $idnhatky)->delete();
+        return response()->json(['success' => 'Xóa thành công ']);
+    }
+
 
 
 }

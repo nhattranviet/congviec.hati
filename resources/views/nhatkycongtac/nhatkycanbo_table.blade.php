@@ -25,7 +25,7 @@
             <td>
                 <div class="button-list" style="max-width: 50px; margin: auto;">
                     <a class="btn btn-link editNhatkyCB" nhatky_id="{{$nhatky->id}}" ajax_url="{{ route('ajax-get-nhat-ky-cb-info', $nhatky->id) }}" data-toggle="tooltip" data-placement="top" title="Sửa nhật ký"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
-                    <a href="/nhat-ky-cong-tac-cb/{{$nhatky->id}}/delete" onclick="return confirm('Bạn có muốn xóa nhật ký ngày này không?')" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xóa nhật ký"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
+                    <a class="btn btn-link deleteNhatkyCB" nhatky_id="{{$nhatky->id}}" ajax_url="{{ route('ajaxDeleteNhatkyCB', $nhatky->id) }}"  data-toggle="tooltip" data-placement="top" title="Xóa nhật ký"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
                 </div>
             </td>
         </tr>

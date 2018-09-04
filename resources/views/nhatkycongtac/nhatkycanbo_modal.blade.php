@@ -1,4 +1,4 @@
-<form action="{{ route('ajaxPostNhatkyCB') }}" method="POST" role="form" autocomplete="off">
+<form id="" action="{{ route('ajaxUpdateNhatkyCB') }}" method="POST" role="form" autocomplete="off">
     @csrf
     <div class="modal fade" id="nhatkycanbo-modal" data-backdrop="static">
         <div class="modal-dialog modal-lg">
@@ -13,7 +13,7 @@
                             <fieldset class="form-group">
                                 <label for="datepicker">Ngày dự kiến<span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <input disabled="disabled" type="text" name="ngay" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="">
+                                        <input disabled="disabled" type="text" id="ngay" name="ngay" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="">
                                         <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                     </div><!-- input-group -->
                             </fieldset>
@@ -37,9 +37,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input hidden="hidden" id="idnhatky_hidden" type="text" name="idnhatky" value="k">
+                    <input type="hidden" name="idnhatky" id="idnhatky_hidden" value="">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" id="saveChangesss" class="btn btn-primary">Lưu lại</button>
+                    <button type="submit" id="submitBtnUpdateCB" class="btn btn-primary">Lưu lại</button>
                     {{-- <button type="button" id="saveChange" class="btn btn-primary" data-dismiss="modal">Lưu lại</button> --}}
                 </div>
             </div>
