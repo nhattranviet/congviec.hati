@@ -3,9 +3,57 @@
 @section('js')
    <script type="text/javascript">
       $(document).ready(function(){
+
         $(document).on("click", "#checkAll", function(){
             $('.nhatky').prop('checked', this.checked);
         });
+
+        // $(document).on("click", ".editNhatkyCB", function (event) {
+        //         event.preventDefault();
+        //         // $("#wait").css("display", "block");
+        //         // var modal = $('#nhatkycanbo-modal');
+        //         // var idnhatky = $(this).attr('nhatky_id');
+        //         // var idresult = current_form.attr("idresult");
+        //         // var URL = "{{ route('ajax-get-nhat-ky-cb-info) }}";
+        //         // $.ajax({
+        //         //     url: "{{ route('ajax-get-nhat-ky-cb-info), ${idnhatky} }}",
+        //         //     type: "POST",
+        //         //     data: {idnhatky:idnhatky},
+        //         //     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        //         //     dataType: "json",
+        //         //     success: function (data) {
+        //         //         $("#wait").css("display", "none");
+        //         //         $("#error-msg").css("display", "none");
+
+        //         //         if ($.isEmptyObject(data.error)) {
+        //         //             if (idresult) {
+        //         //                 $("#" + idresult).html(data.html);
+        //         //             }
+
+        //         //             if (data.url) {
+        //         //                 window.location.href = data.url;
+        //         //             }
+        //         //             if (data.show_alert) {
+        //         //                 Command: toastr[data.type](data.message)
+        //         //             }
+
+        //         //         } else {
+        //         //             printMsg("#error-msg", data.error[0]);
+        //         //         }
+        //         //         window.scrollTo(0, 0);
+        //         //     },
+        //         //     error: function (data) {
+        //         //         $("#wait").css("display", "none");
+        //         //         var errors = $.parseJSON(data.responseText);
+        //         //         $.each(errors, function (key, value) {
+        //         //             console.log(data.responseText);
+        //         //         });
+        //         //     }
+        //         // });
+
+
+        //         // $('#nhatkycanbo-modal').modal('show');
+        //     });
         
       })
    </script>
@@ -123,6 +171,7 @@
    </div>
    <!-- content -->
 </div>
+@include('nhatkycongtac.nhatkycanbo_modal')
 @endsection
 
 @section('js')

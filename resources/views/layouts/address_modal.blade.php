@@ -18,6 +18,7 @@
                             </select>
                         </fieldset>
                     </div>
+                    
                     <div class="col-md-6">
                         <fieldset class="form-group">
                             <label class="control-label">Tỉnh TP</label>

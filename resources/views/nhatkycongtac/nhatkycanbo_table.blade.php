@@ -15,7 +15,7 @@
 
     <tbody>
         @foreach($list_nhatky as $nhatky)
-        <tr>
+        <tr tr_id="{{$nhatky->id}}">
             <th class="center"><input class="nhatky" type="checkbox"></th>
             <td>{{ date('d-m-Y', strtotime($nhatky->ngay)) }}</td>
             <td>{!! $nhatky->noidungdukien !!}</td>
@@ -24,8 +24,8 @@
             <td class="center"> {!! ($nhatky->nhatky_status == 2) ? '<i style="color:darkgreen" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Đã duyệt"></i>' : '<i style="color:crimson" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Chưa duyệt"></i>' !!}  </td>
             <td>
                 <div class="button-list" style="max-width: 50px; margin: auto;">
-                    <a href="/nhat-ky-cong-tac-cb/{{$nhatky->id}}/edit" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhật ký"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
-                    <a href="/nhat-ky-cong-tac-cb/{{$nhatky->id}}/delete" onclick="return confirm('Bạn có muốn xóa nhật ký ngày này không?')" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Xóa nhật ký"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
+                    <a class="btn btn-link editNhatkyCB" nhatky_id="{{$nhatky->id}}" data-toggle="tooltip" data-placement="top" title="Sửa nhật ký"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
+                    <a href="/nhat-ky-cong-tac-cb/{{$nhatky->id}}/delete" onclick="return confirm('Bạn có muốn xóa nhật ký ngày này không?')" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Xóa nhật ký"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
                 </div>
             </td>
         </tr>

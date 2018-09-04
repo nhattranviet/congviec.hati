@@ -82,7 +82,7 @@
                                 </div>
 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
-                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc nhật ký cán bộ"> <i class="fa fa-search"></i> Tìm</button>
+                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc nhật ký cán bộ"> <i class="fa fa-search"></i></button>
                                     <button class="btn btn-warning waves-effect exportNhatkyBtn" redirect_type="thongke_nhatkydoi" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê nhật ký đội"> <i style="font-size: 1.2em;" class="fa fa-area-chart"></i> </button>
                                     <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="report_nhatkydoi" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích xuất nhật đội"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
                                 </div>

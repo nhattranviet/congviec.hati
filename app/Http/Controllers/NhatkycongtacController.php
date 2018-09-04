@@ -288,6 +288,7 @@ class NhatkycongtacController extends Controller
         $idcanbo = Session::get('userinfo')->idcanbo;
         $tungay = date('Y-m-d', strtotime($request->tungay));
         $denngay = date('Y-m-d', strtotime($request->denngay));
+        $id_iddonvi_iddoi = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo, 'value' );
         
         if($request->redirect_type == 'report_nhatkycanbo')
         {
@@ -297,9 +298,12 @@ class NhatkycongtacController extends Controller
             return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/thong-ke-nhat-ky-canbo/'.$idcanbo.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
         }
         elseif($request->redirect_type == 'report_nhatkydoi'){
-            $id_iddonvi_iddoi = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo, 'value' );
             return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/report-nhat-ky-doi/'.$id_iddonvi_iddoi.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
         }
+        elseif($request->redirect_type == 'thongke_nhatkydoi'){
+            return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/thong-ke-nhat-ky-doi/'.$id_iddonvi_iddoi.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
+        }
+        
         
     }
 
@@ -369,22 +373,26 @@ class NhatkycongtacController extends Controller
         $data['tendoi'] = DB::table('tbl_doicongtac')->join('tbl_donvi_doi', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id' )->where('tbl_donvi_doi.id',$id_iddonvi_iddoi)->value('name');
         $data['tungay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($tungay);
         $data['denngay_ngaydautuan_cuoituan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d($denngay);
-        $nhatky_info = DB::table('tbl_nhatkydoi')->where(array(['id_iddonvi_iddoi', '=', $id_iddonvi_iddoi], ['noidungdukien', '!=', NULL], ['ketquathuchien', '!=', NULL]))->whereDate('ngaydautuan', '>=', $data['tungay_ngaydautuan_cuoituan']['ngaydautuan'])->whereDate('ngaydautuan', '<=', $data['denngay_ngaydautuan_cuoituan']['ngaydautuan'])->pluck('ngaydautuan')->toArray();
-        $data['nhatky_chuanhoa'] = [];
-        foreach ($nhatky_info as $nhatky)
-        {
-            $data['nhatky_chuanhoa'][$nhatky->ngaydautuan] = $nhatky;
-        }
+        $data['list_day_full_nhatky_info'] = DB::table('tbl_nhatkydoi')->where(array(['id_iddonvi_iddoi', '=', $id_iddonvi_iddoi], ['noidungdukien', '!=', NULL], ['ketquathuchien', '!=', NULL]))->whereDate('ngaydautuan', '>=', $data['tungay_ngaydautuan_cuoituan']['ngaydautuan'])->whereDate('ngaydautuan', '<=', $data['denngay_ngaydautuan_cuoituan']['ngaydautuan'])->pluck('ngaydautuan')->toArray();
         $list_ngay = UserLibrary::getListDayBettwenTwoDay_Y_m_d($data['tungay_ngaydautuan_cuoituan']['ngaydautuan'], $data['denngay_ngaydautuan_cuoituan']['ngaycuoituan']);
-        $data['list_tuan'] = array_chunk($list_ngay, 7);
+        $data['list_Moday'] = UserLibrary::getDayInListDay_Y_m_d($list_ngay, 1);    //1 is value with attr w int of Monday
+        $data['tuanchuacapnhat'] = array_diff($data['list_Moday'], $data['list_day_full_nhatky_info']);
         $tungay_d_m_Y = date('d-m-Y', strtotime($tungay));
         $denngay_d_m_Y = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.view_report_nhatkydoi', $data)->render();
+        $html_table = view('nhatkycongtac.thongke_nhatkydoi', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=nhat-ky-doi ".$data['tendoi']." tu ".$tungay_d_m_Y." den ".$denngay_d_m_Y.".doc");
+        header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-doi ".$data['tendoi']." tu ".$tungay_d_m_Y." den ".$denngay_d_m_Y.".doc");
         echo $str_for_doc;
     }
 
-    
+    //------------------------------AJAX-------------------------------
+    public function ajaxGetNhatkyCB($idnhatky)
+    {
+        $nhatky_info = DB::table('tbl_nhatkycanbo')->where('id', $idnhatky)->first();
+        return response()->json($nhatky_info);
+    }
+
+
+
 }

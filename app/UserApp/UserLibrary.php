@@ -320,6 +320,19 @@ class UserLibrary
         return $list_day;
     }
 
+    public static function getDayInListDay_Y_m_d($arrDay, $int_day)
+    {
+        $listDay = [];
+        foreach ($arrDay as $day)
+        {
+            if(date('w', strtotime($day)) == 1)
+            {
+                $listDay[] = $day;
+            }
+        }
+        return $listDay;
+    }
+
 
     public static function create_docfile_portrait($html)
     {
