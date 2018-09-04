@@ -9,7 +9,7 @@ $(document).ready(function () {
 
     'use-strict';
 
-    var modal = $('#nhatkycanbo-modal');
+    var nhatkycanbo_modal = $('#nhatkycanbo-modal');
     $(document).on("click", "#checkAll", function () {
         $('.nhatky').prop('checked', this.checked);
     });
@@ -25,7 +25,7 @@ $(document).ready(function () {
         $('h4.modal-title').text('Sửa nhật ký cán bộ');
         $("#idnhatky_hidden").val(idnhatky);
         $("#wait").css("display", "none");
-        modal.modal('show');
+        nhatkycanbo_modal.modal('show');
 
     });
 
@@ -52,7 +52,7 @@ $(document).ready(function () {
                 if ($.isEmptyObject(data.error)) {
                     $("tr[tr_id=" + idnhatky + "] td.noidung").html(data_send.noidungdukien);
                     $("tr[tr_id=" + idnhatky + "] td.ketqua").html(data_send.ketquathuchien);
-                    modal.modal('hide');
+                    nhatkycanbo_modal.modal('hide');
                     Command: toastr["success"](data.success);
                 } else {
                     printMsg("#error-msg", data.error[0]);
@@ -68,4 +68,46 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(document).ready(function () {
+        $(document).on("click", ".deleteNhatkyCB", function (event) {
+            event.preventDefault();
+            var reply = confirm("Bạn có muốn xóa nhật ký này không");
+            if (reply) {
+                $("#wait").css("display", "block");
+                var idnhatky = $(this).attr('nhatky_id');
+                var URL = $(this).attr('ajax_url');
+                var data_send = {
+                    idnhatky: idnhatky
+                };
+                $.ajax({
+                    url: URL,
+                    type: "GET",
+                    data: data_send,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        $("#wait").css("display", "none");
+                        $("#error-msg").css("display", "none");
+
+                        if ($.isEmptyObject(data.error)) {
+                            $("tr[tr_id=" + idnhatky + "]").remove();
+                            Command: toastr["success"](data.success);
+                        } else {
+                            printMsg("#error-msg", data.error[0]);
+                        }
+                    },
+                    error: function (data) {
+                        $("#wait").css("display", "none");
+                        var errors = $.parseJSON(data.responseText);
+                        $.each(errors, function (key, value) {
+                            console.log(data.responseText);
+                        });
+                    }
+                });
+            }
+
+        });
+    })
 });

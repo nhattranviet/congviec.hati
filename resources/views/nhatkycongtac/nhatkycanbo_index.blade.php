@@ -2,52 +2,7 @@
 
 @section('js')
     <script src="{{ asset('/assets/pages/nhatkycongtac.js') }}"></script>
-    <script type="text/javascript">
-    var modal = $('#nhatkycanbo-modal');
-    $(document).ready(function(){
-        $(document).on("click", ".deleteNhatkyCB", function (event) {
-            event.preventDefault();
-            var reply = confirm("Bạn có muốn xóa nhật ký này không");
-            if(reply)
-            {
-                $("#wait").css("display", "block");
-                var idnhatky = $(this).attr('nhatky_id');
-                var URL = $(this).attr('ajax_url');
-                var data_send = {idnhatky: idnhatky};
-                $.ajax({
-                    url: URL,
-                    type: "GET",
-                    data: data_send,
-                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                    dataType: "json",
-                    success: function (data) {
-                        console.log(data);
-                        $("#wait").css("display", "none");
-                        $("#error-msg").css("display", "none");
-
-                        if ($.isEmptyObject(data.error)) {
-                            $("tr[tr_id=" + idnhatky + "]").remove();
-                            Command: toastr["success"](data.success);
-                        } else {
-                            printMsg("#error-msg", data.error[0]);
-                        }
-                    },
-                    error: function (data) {
-                        $("#wait").css("display", "none");
-                        var errors = $.parseJSON(data.responseText);
-                        $.each(errors, function (key, value) {
-                            console.log(data.responseText);
-                        });
-                    }
-                });
-            }
-            // $("#wait").css("display", "block");
-            
-                
-            
-        });
-    })
-   </script>
+    
 @endsection
 
 @section('css')
@@ -121,8 +76,8 @@
                                         <label>Lọc theo trạng thái</label>
                                         <select id="nhatky_status" name="nhatky_status" class="form-control app_select2">
                                             <option value="">Tất cả</option>
-                                            <option value="1">Đang xử lý</option>
-                                            <option value="2">Hoàn thành</option>
+                                            <option value="1">Chưa duyệt</option>
+                                            <option value="2">Đã duyệt</option>
                                         </select>
                                     </fieldset>
                                 </div>
