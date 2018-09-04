@@ -1,17 +1,11 @@
 @extends('layouts.masterPage')
 
 @section('js')
-   <script type="text/javascript">
-        var modal = $('#nhatkycanbo-modal');
+    <script src="{{ asset('/assets/pages/nhatkycongtac.js') }}"></script>
+    <script type="text/javascript">
+    var modal = $('#nhatkycanbo-modal');
       $(document).ready(function(){
-        $(document).on("click", "#checkAll", function(){
-            $('.nhatky').prop('checked', this.checked);
-        });
-
-        var config = {};
-            config.entities_latin = false;
-            $('.ckeditor').ckeditor(config);
-        
+          
         $(document).on("click", ".editNhatkyCB", function (event) {
                 event.preventDefault();
                 $("#wait").css("display", "block");

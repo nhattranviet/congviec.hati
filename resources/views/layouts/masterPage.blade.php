@@ -124,7 +124,20 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function(){
-		
+		var config = {};
+		config.entities_latin = false
+		$('.ckeditor').ckeditor(
+			{
+				height: 100,
+				entities_latin: false,
+				enterMode: CKEDITOR.ENTER_BR,
+				filebrowserBrowseUrl: "{{ route('ckfinder-get-view') }}",
+				filebrowserImageBrowseUrl: "{{ route('ckfinder-get-view') }}?type=Images",
+				filebrowserFlashBrowseUrl: "{{ route('ckfinder-get-view') }}?type=ImaFlashges",
+				filebrowserUploadUrl: "{{ route('ckfinder-get-connector') }}?command=QuickUpload&type=Files",
+				filebrowserImageUploadUrl: "{{ route('ckfinder-get-connector') }}?command=QuickUpload&type=Images",
+			}
+		);
 		
 		@if(session('alert_message'))
 			toastr.options = {

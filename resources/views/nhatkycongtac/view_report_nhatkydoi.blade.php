@@ -82,5 +82,5 @@
                 <span class="daumuc-10" style="font-weight: bold;">NHẬN XÉT, ĐÁNH GIÁ CỦA <br>LÃNH ĐẠO TRỰC TIẾP PHỤ TRÁCH</span><br>
             </td>
         </tr>
-    </table>
+    </table> 
 @endforeach

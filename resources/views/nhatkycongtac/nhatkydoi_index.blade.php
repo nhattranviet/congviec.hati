@@ -1,14 +1,7 @@
 @extends('layouts.masterPage')
 
 @section('js')
-   <script type="text/javascript">
-      $(document).ready(function(){
-        $(document).on("click", "#checkAll", function(){
-            $('.nhatky').prop('checked', this.checked);
-        });
-        
-      })
-   </script>
+    <script src="{{ asset('/assets/pages/nhatkycanbo.js') }}"></script>
 @endsection
 
 @section('css')
