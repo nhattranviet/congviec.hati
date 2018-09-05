@@ -134,10 +134,20 @@
     <!-- Start content -->
     <div class="content">
         <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">{{ (isset($page_name)) ? $page_name : '' }}</h4>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
             <form id="tim-kiem-hoso" action="{{ route('nhat-ky-cong-tac-doi.theodoinhatky') }}" method="GET" role="form" idresult="html_return">
                 <div class="row">
                     <div class="col-xs-12">
                         <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
+                        <a href="{{ route('nhat-ky-cong-tac-cb.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký cán bộ" style="margin: 0 5px;"> <i class="fa fa-user"> </i> Nhật ký cán bộ</a>
+                        <a href="{{ route('nhat-ky-cong-tac-doi.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-users"> </i> Nhật ký đội</a>
                         <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
                             <div class="row">
                                 @csrf
@@ -178,8 +188,9 @@
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-1" style="margin-top: 2em;">
-                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc nhật ký cán bộ"> <i class="fa fa-search"></i> Tìm</button>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
+                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc, tìm kiếm theo Đội"> <i class="fa fa-search"></i></button>
+                                    <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="thongketheodoi_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê nhật ký cán bộ theo Đội"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
                                 </div>
                             </div>
 

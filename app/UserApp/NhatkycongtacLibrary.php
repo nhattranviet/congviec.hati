@@ -227,4 +227,14 @@ class NhatkycongtacLibrary
         
     }
 
+    public static function chuanhoaNhatkycanbo($data)
+    {
+        $data_ret = [];
+        foreach ($data as $value)
+        {
+            $data_ret[$value->idcanbo][] = $value->ngay;
+        }
+        return $data_ret;
+    }
+
 }

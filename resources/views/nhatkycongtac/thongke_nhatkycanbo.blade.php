@@ -56,7 +56,7 @@
     <div class="center" style="page-break-before: always; font-weight: bold;">THỐNG KÊ NHẬT KÝ CÁN BỘ</div>
     <div class="center">Đ/c {{ $hoten }} từ ngày {{ $tungay_d_m_Y }} đến {{ $denngay_d_m_Y }}</div>
     <br>
-    <p>Tổng số ngày cần cập nhật: {{ count($list_ngay_not_cuoituan) }}.</p>
+    <p>Tổng số ngày cần cập nhật: {{ count($list_ngay_not_cuoituan) }}. (không tính thứ 7, Chủ nhật)</p>
     <p>Tổng số ngày cập nhật đủ: {{ count($list_ngay_full_nhatky_info) }}.</p>
     <p>Tổng số ngày cập nhật thiếu hoặc không cập nhật: {{ $a = count($ngaychuacapnhat) }}. 
         @if ($a > 0)

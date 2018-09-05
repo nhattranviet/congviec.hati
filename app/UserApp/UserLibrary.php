@@ -309,7 +309,7 @@ class UserLibrary
             {
                 $list_day[] = $day;
             }
-            else{
+            else {
                 $int_day = date( 'w', strtotime($day) );
                 if( $int_day != 0 &&  $int_day != 6)
                 {

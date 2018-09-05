@@ -128,7 +128,7 @@
 		config.entities_latin = false
 		$('.ckeditor').ckeditor(
 			{
-				height: 100,
+				height: 150,
 				entities_latin: false,
 				enterMode: CKEDITOR.ENTER_BR,
 				filebrowserBrowseUrl: "{{ route('ckfinder-get-view') }}",
