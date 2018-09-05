@@ -177,6 +177,17 @@ class NhatkycongtacLibrary
         ->get();
     }
 
+    public static function getListNhatkyCanboOfDonvi($iddonvi, $tungay, $denngay)
+    {
+        return DB::table('tbl_canbo')
+        ->join('tbl_nhatkycanbo', 'tbl_nhatkycanbo.idcanbo', '=', 'tbl_canbo.id')
+        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+        ->where( array(['tbl_donvi_doi.iddonvi', '=', $iddonvi], ['noidungdukien', '!=', NULL], ['ketquathuchien', '!=', NULL]) )
+        ->whereDate('ngay', '>=', $tungay)->whereDate('ngay', '<=', $denngay)
+        ->select('idcanbo', 'ngay', 'iddonvi', 'tbl_canbo.id_iddonvi_iddoi', 'tbl_doicongtac.name as tendoi')->get();
+    }
+
     public static function getNhatkyCBInfo($idnhatky)
     {
         return DB::table('tbl_nhatkycanbo')->where('id', $idnhatky)->first();
@@ -233,6 +244,26 @@ class NhatkycongtacLibrary
         foreach ($data as $value)
         {
             $data_ret[$value->idcanbo][] = $value->ngay;
+        }
+        return $data_ret;
+    }
+
+    public static function chuanhoaNhatkycanboGroupByDoi($data)
+    {
+        $data_ret = [];
+        foreach ($data as $value)
+        {
+            $data_ret[$value->id_iddonvi_iddoi][$value->idcanbo][] = $value->ngay;
+        }
+        return $data_ret;
+    }
+
+    public static function chuanhoaCanboGroupByDoi($data)
+    {
+        $data_ret = [];
+        foreach ($data as $value)
+        {
+            $data_ret[$value->tendoi][] = $value;
         }
         return $data_ret;
     }

@@ -287,6 +287,7 @@ class NhatkycongtacController extends Controller
             return response()->json([ 'error' => $validator->errors()->all() ]);
         }
         $idcanbo = Session::get('userinfo')->idcanbo;
+        $iddonvi = Session::get('userinfo')->iddonvi;
         $tungay = date('Y-m-d', strtotime($request->tungay));
         $denngay = date('Y-m-d', strtotime($request->denngay));
         $id_iddonvi_iddoi = ($request->id_iddonvi_iddoi) ? $request->id_iddonvi_iddoi : UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo, 'value' );
@@ -306,6 +307,9 @@ class NhatkycongtacController extends Controller
         }
         elseif($request->redirect_type == 'thongketheodoi_nhatkycanbo'){
             return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/thong-ke-theo-Doi-nhat-ky-canbo/'.$id_iddonvi_iddoi.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
+        }
+        elseif($request->redirect_type == 'thongketheodonvi_nhatkycanbo'){
+            return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/thong-ke-theo-Donvi-nhat-ky-canbo/'.$iddonvi.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
         }
         
         
@@ -366,19 +370,19 @@ class NhatkycongtacController extends Controller
         echo $str_for_doc;
     }
 
-    public function thongketheoDonvi_nhatkycanbo($id_iddonvi_iddoi, $tungay, $denngay)
+    public function thongketheoDonvi_nhatkycanbo($iddonvi, $tungay, $denngay)
     {
-        $data['list_canbo'] = CanboLibrary::getListCanboOfDoi($id_iddonvi_iddoi);
+        $data['tendonvi'] = DB::table('tbl_donvi')->where('id',$iddonvi)->value('name');
+        $data['list_canbo_group_by_doi'] = NhatkycongtacLibrary::chuanhoaCanboGroupByDoi( CanboLibrary::getListCanboOfDonvi( $iddonvi, 'object', array(['tbl_donvi_doi.iddoi', '!=', config('user_config.id_doi_lanhdaodonvi')]) )); 
         $data['list_ngay_not_cuoituan'] = UserLibrary::getListDayBettwenTwoDay_Y_m_d($tungay, $denngay, FALSE);
-        $data['list_ngay_full_nhatky'] = DB::table('tbl_nhatkycanbo')->where(array(['id_iddonvi_iddoi', '=', $id_iddonvi_iddoi], ['noidungdukien', '!=', NULL], ['ketquathuchien', '!=', NULL]))->whereDate('ngay', '>=', $tungay)->whereDate('ngay', '<=', $denngay)->select('idcanbo', 'ngay')->get();
+        $data['list_ngay_full_nhatky'] = NhatkycongtacLibrary::getListNhatkyCanboOfDonvi($iddonvi, $tungay, $denngay);
         $data['canbo_nhatky_chuanhoa'] = NhatkycongtacLibrary::chuanhoaNhatkycanbo($data['list_ngay_full_nhatky']);
-        $data['tendoi'] = DB::table('tbl_doicongtac')->join('tbl_donvi_doi', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id' )->where('tbl_donvi_doi.id',$id_iddonvi_iddoi)->value('name');
         $data['tungay_d_m_Y'] = date('d-m-Y', strtotime($tungay));
         $data['denngay_d_m_Y'] = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.thongketheodoi_nhatkycanbo', $data)->render();
+        $html_table = view('nhatkycongtac.thongketheodonvi_nhatkycanbo', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-can-bo-doi ".$data['tendoi']." tu ".$data['tungay_d_m_Y']." den ".$data['denngay_d_m_Y'].".doc");
+        header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-can-bo-doi ".$data['tendonvi']." tu ".$data['tungay_d_m_Y']." den ".$data['denngay_d_m_Y'].".doc");
         echo $str_for_doc;
     }
 

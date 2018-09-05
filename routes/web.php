@@ -298,6 +298,7 @@ Route::get('/nhat-ky-cong-tac/report-nhat-ky-canbo/{idcanbo}/{tungay}/{denngay}'
 Route::get('/nhat-ky-cong-tac/thong-ke-nhat-ky-canbo/{idcanbo}/{tungay}/{denngay}', 'NhatkycongtacController@thongke_nhatkycanbo')->name('thongke_nhatkycanbo');
 
 Route::get('/nhat-ky-cong-tac/thong-ke-theo-Doi-nhat-ky-canbo/{id_iddonvi_iddoi}/{tungay}/{denngay}', 'NhatkycongtacController@thongketheoDoi_nhatkycanbo')->name('thongketheoDoi_nhatkycanbo');
+Route::get('/nhat-ky-cong-tac/thong-ke-theo-Donvi-nhat-ky-canbo/{iddonvi}/{tungay}/{denngay}', 'NhatkycongtacController@thongketheoDonvi_nhatkycanbo')->name('thongketheoDonvi_nhatkycanbo');
 
 Route::get('/nhat-ky-cong-tac/report-nhat-ky-doi/{id_iddonvi_iddoi}/{tungay}/{denngay}', 'NhatkycongtacController@report_nhatkytuan')->name('report_nhatkytuan');
 Route::get('/nhat-ky-cong-tac/thong-ke-nhat-ky-doi/{id_iddonvi_iddoi}/{tungay}/{denngay}', 'NhatkycongtacController@thongke_nhatkytuan')->name('thongke_nhatkytuan');

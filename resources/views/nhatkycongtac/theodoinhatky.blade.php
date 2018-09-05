@@ -190,7 +190,8 @@
 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
                                     <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc, tìm kiếm theo Đội"> <i class="fa fa-search"></i></button>
-                                    <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="thongketheodoi_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê nhật ký cán bộ theo Đội"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
+                                    <button class="btn btn-warning waves-effect exportNhatkyBtn" redirect_type="thongketheodoi_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê nhật ký cán bộ theo Đội"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
+                                    <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="thongketheodonvi_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê toàn đơn vị"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
                                 </div>
                             </div>
 

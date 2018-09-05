@@ -63,7 +63,7 @@
                 $ngaydacapnhat = ( isset($canbo_nhatky_chuanhoa[$canbo->id]) ) ? $canbo_nhatky_chuanhoa[$canbo->id] : array();
                 $ngaychuacapnhat = array_diff($list_ngay_not_cuoituan, $ngaydacapnhat);
             @endphp
-            <div><b>{{ $canbo->hoten }}:</b></div>
+            <div><b>Đ/c {{ $canbo->hoten }}:</b></div>
             <div>Tổng số ngày cập nhật đủ: {{ count($ngaydacapnhat) }}.</div>
             <div>Tổng số ngày cập nhật thiếu hoặc không cập nhật: {{ $a = count($ngaychuacapnhat) }}. 
                 @if ($a > 0)

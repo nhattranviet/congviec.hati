@@ -125,7 +125,29 @@ class CanboLibrary
         ->where('id_iddonvi_iddoi', $id_iddonvi_iddoi);
         if($type = 'object')
         {
-            $data = $data->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu')->get()->toArray();
+            $data = $data->select('tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu')->get();
+        }
+        else{
+            $data = $data->pluck('tbl_canbo.id');
+        }
+        return $data;
+    }
+
+    public static function getListCanboOfDonvi($iddonvi, $type = 'object', $where = NULL)
+    {
+        $data = DB::table('tbl_canbo')
+        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+        ->join('tbl_doicongtac', 'tbl_doicongtac.id', '=', 'tbl_donvi_doi.iddoi')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
+        ->where('tbl_donvi_doi.iddonvi', $iddonvi);
+        if($where != NULL)
+        {
+            $data = $data->where($where);
+        }
+        if($type = 'object')
+        {
+            $data = $data->select('id_iddonvi_iddoi', 'tbl_canbo.id', 'hoten', 'tbl_chucvu.name as tenchucvu', 'tbl_doicongtac.name as tendoi')->get();
         }
         else{
             $data = $data->pluck('tbl_canbo.id');
