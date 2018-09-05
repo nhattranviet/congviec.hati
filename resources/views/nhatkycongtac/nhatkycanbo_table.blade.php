@@ -24,7 +24,7 @@
             <td class="center"> {!! ($nhatky->nhatky_status == 2) ? '<i style="color:darkgreen" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Đã duyệt"></i>' : '<i style="color:crimson" class="zmdi zmdi-badge-check" data-toggle="tooltip" data-placement="top" title="Chưa duyệt"></i>' !!}  </td>
             <td>
                 <div class="button-list" style="max-width: 50px; margin: auto;">
-                    <a class="btn btn-link editNhatkyCB" nhatky_id="{{$nhatky->id}}" ajax_url="{{ route('ajax-get-nhat-ky-cb-info', $nhatky->id) }}" data-toggle="tooltip" data-placement="top" title="Sửa nhật ký"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
+                    <a class="btn btn-link editNhatkyCB"  modal_use="nhatkycanbo-modal" nhatky_id="{{$nhatky->id}}" ajax_url="{{ route('ajax-get-nhat-ky-cb-info', $nhatky->id) }}" data-toggle="tooltip" data-placement="top" title="Sửa nhật ký"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
                     <a class="btn btn-link deleteNhatkyCB" nhatky_id="{{$nhatky->id}}" ajax_url="{{ route('ajaxDeleteNhatkyCB', $nhatky->id) }}"  data-toggle="tooltip" data-placement="top" title="Xóa nhật ký"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
                 </div>
             </td>

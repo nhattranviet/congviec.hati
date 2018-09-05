@@ -312,7 +312,6 @@ class NhatkycongtacController extends Controller
             return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/nhat-ky-cong-tac/thong-ke-theo-Donvi-nhat-ky-canbo/'.$iddonvi.'/'.$tungay.'/'.$denngay, 'type' => 'info', 'show_alert' => TRUE]);
         }
         
-        
     }
 
     public function report_nhatkycanbo($idcanbo, $tungay, $denngay)
@@ -450,6 +449,26 @@ class NhatkycongtacController extends Controller
     {
         $idnhatky = $request->idnhatky;
         DB::table('tbl_nhatkycanbo')->where('id', $idnhatky)->delete();
+        return response()->json(['success' => 'Xóa thành công ']);
+    }
+
+    public function ajaxUpdateNhatkyDoi(Request $request)
+    {
+        $idnhatky = $request->idnhatky;
+        $dataUpdate = [
+            'noidungdukien' => $request->noidungdukien,
+            'ketquathuchien' => $request->ketquathuchien,
+        ];
+        $noidungdukien = $request->noidungdukien;
+        $ketquathuchien = $request->ketquathuchien;
+        DB::table('tbl_nhatkydoi')->where('id', $idnhatky)->update($dataUpdate);
+        return response()->json(['success' => 'Cập nhật thành công ']);
+    }
+
+    public function ajaxDeleteNhatkyDoi(Request $request)
+    {
+        $idnhatky = $request->idnhatky;
+        DB::table('tbl_nhatkydoi')->where('id', $idnhatky)->delete();
         return response()->json(['success' => 'Xóa thành công ']);
     }
 

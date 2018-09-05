@@ -2,7 +2,6 @@
 
 @section('js')
     <script src="{{ asset('/assets/pages/nhatkycongtac.js') }}"></script>
-    
 @endsection
 
 @section('css')

@@ -3,22 +3,10 @@
 @section('js')
     <script src="{{ asset('/js/FileSaver.js') }}"></script>
     <script src="{{ asset('/js/jquery.wordexport.js') }}"></script>
-    <script type="text/javascript">
-        // jQuery(document).ready(function ($) {
-        //     $("a.word-export").click(function (event) {
-        //         alert('test');
-        //         $("#page-content").wordExport();
-        //     });
-            
-        // });
-    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
-            // var config = {};
-            // config.entities_latin = false
-            // $('.ckeditor').ckeditor(config);
-            // alert('test');
+            
             $(document).on("click", "#exportToWord", function(event){
                 event.preventDefault();
                 $("#page-content").wordExport();

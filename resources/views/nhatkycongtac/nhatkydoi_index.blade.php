@@ -1,7 +1,13 @@
 @extends('layouts.masterPage')
 
 @section('js')
-    <script src="{{ asset('/assets/pages/nhatkycanbo.js') }}"></script>
+    <script src="{{ asset('/assets/pages/nhatkycongtac.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // var nhatkydoi_modal = $('#nhatkydoi-modal');
+            // nhatkydoi_modal.modal('show');
+        });
+    </script>
 @endsection
 
 @section('css')
@@ -118,6 +124,7 @@
    </div>
    <!-- content -->
 </div>
+@include('nhatkycongtac.nhatkydoi_modal');
 @endsection
 
 @section('js')

@@ -4,20 +4,6 @@
     <script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            var config = {};
-            config.entities_latin = false
-            $('.ckeditor').ckeditor(
-                {
-                    height: 100,
-                    entities_latin: false,
-                    filebrowserBrowseUrl: '{{ asset('/assets/ckfinder/ckfinder.html') }}',
-                    filebrowserImageBrowseUrl: '{{ asset('/assets/ckfinder/ckfinder.html?type=Images') }}',
-                    filebrowserFlashBrowseUrl: '{{ asset('/assets/ckfinder/ckfinder.html?type=Flash') }}',
-                    filebrowserUploadUrl: '{{ asset('/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
-                    filebrowserImageUploadUrl: '{{ asset('/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
-                    filebrowserFlashUploadUrl: '{{ asset('/assets/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
-                }
-            );
 
             if($(".datepicker_get_date_after_a_week").length > 0)
             {

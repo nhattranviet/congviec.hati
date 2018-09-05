@@ -307,6 +307,9 @@ Route::get('/nhat-ky-cong-tac/ajax-get-nhat-ky-cb-info/{idnhatky}', 'Nhatkycongt
 Route::get('/nhat-ky-cong-tac/ajax-update-nhat-ky-cb', 'NhatkycongtacController@ajaxUpdateNhatkyCB')->name('ajaxUpdateNhatkyCB');
 Route::get('/nhat-ky-cong-tac/ajax-delete-nhat-ky-cb', 'NhatkycongtacController@ajaxDeleteNhatkyCB')->name('ajaxDeleteNhatkyCB');
 
+Route::get('/nhat-ky-cong-tac/ajax-update-nhat-ky-doi', 'NhatkycongtacController@ajaxUpdateNhatkyDoi')->name('ajaxUpdateNhatkyDoi');
+Route::get('/nhat-ky-cong-tac/ajax-delete-nhat-ky-doi', 'NhatkycongtacController@ajaxDeleteNhatkyDoi')->name('ajaxDeleteNhatkyDoi');
+
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
 //-------------------PERMISSION-----------------------

@@ -1,14 +1,6 @@
 @extends('layouts.masterPage')
 @section('js')
     <script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var modal = $('#address-modal');
-            var config = {};
-            config.entities_latin = false;
-            $('.ckeditor').ckeditor(config);
-        });
-    </script>
 @endsection
 
 @section('css')
