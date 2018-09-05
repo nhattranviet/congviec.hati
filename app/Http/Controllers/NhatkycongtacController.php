@@ -110,6 +110,11 @@ class NhatkycongtacController extends Controller
     //---------------------NHẬT KÝ ĐỘI-----------------------------------
     public function nhatkydoi_index(Request $request)
     {
+        if(Session::get('userinfo')->idnhomquyen == config('user_config.idnhomquyen_canbo'))
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('nhat-ky-cong-tac-cb.index')->with('alert_message', $message);
+        }
         $idcanbo = Session::get('userinfo')->idcanbo;
         $id_iddonvi_iddoi = UserLibrary::getIdDonviIdDoiOfCanBo( $idcanbo, 'value' );
         if( $request->ajax() )
@@ -216,6 +221,11 @@ class NhatkycongtacController extends Controller
 
     public function theodoinhatky(Request $request)
     {
+        if(Session::get('userinfo')->idnhomquyen == config('user_config.idnhomquyen_canbo'))
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn không có quyền ở đây');
+            return redirect()->route('nhat-ky-cong-tac-cb.index')->with('alert_message', $message);
+        }
         $data['tungay'] = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 1 months'));
         $data['denngay'] = date('Y-m-d', strtotime(date('Y-m-d', time())));
         $data['page_name'] = 'Theo dõi nhật ký';
@@ -223,6 +233,7 @@ class NhatkycongtacController extends Controller
         $current_idcanbo = Session::get('userinfo')->idcanbo;
         $current_iduser = Session::get('userinfo')->iduser;
         $current_idrole = UserLibrary::getIdRoleUser( $current_iduser );
+        $data['list_doicongtac'] = [];
         if( $current_idrole == config('user_config.idnhomquyen_capphodonvi') || $current_idrole == config('user_config.idnhomquyen_captruongdonvi') )   // lãnh đạo đơn vị
         {
             $data['list_doicongtac'] = UserLibrary::getListDoiLanhdaoQuanly($current_idcanbo, 'object');
@@ -230,6 +241,11 @@ class NhatkycongtacController extends Controller
         elseif( $current_idrole == config('user_config.idnhomquyen_doitruong') )
         {
             $data['list_doicongtac'] = UserLibrary::getListDoiCanBo($current_idcanbo, 'object');
+        }
+        if(count($data['list_doicongtac']) == 0)
+        {
+            $message = array('type' => 'error', 'content' => 'Bạn là Lãnh đạo đơn vị nhưng chưa được thiết lập trong phần mềm phụ trách đội nào, liên hệ quản trị viên');
+            return redirect()->route('nhat-ky-cong-tac-cb.index')->with('alert_message', $message);
         }
         $data['default_id_iddonvi_iddoi'] = ($request->id_iddonvi_iddoi != NULL) ? $request->id_iddonvi_iddoi : $data['list_doicongtac'][0]->id;
         $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkydoi'] );

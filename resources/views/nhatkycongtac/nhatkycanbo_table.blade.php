@@ -4,8 +4,8 @@
         <tr>
             <th style="width: 20px;" class="center"><input id="checkAll" type="checkbox"></th>
             <th style="width: 100px;" class="center">Ngày</th>
-            <th style="width: 400px;" class="center">Nội dung dự kiến</th>
-            <th style="width: 400px;" class="center">Kết quả thực hiện</th>
+            <th style="width: 30%;" class="center">Nội dung dự kiến</th>
+            <th style="width: 30%;" class="center">Kết quả thực hiện</th>
             <th class="center">Ghi chú của Lãnh đạo</th>
             <th class="center" style="width: 100px;">Trạng thái</th>
             <th class="center" style="width: 100px;">Tác vụ</th>
