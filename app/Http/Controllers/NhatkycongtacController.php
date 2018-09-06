@@ -23,7 +23,7 @@ class NhatkycongtacController extends Controller
         {
             $arrWhere = NhatkycongtacLibrary::processArrWhereNhatkycanboIndex( $request );
             $data['list_nhatky'] = NhatkycongtacLibrary::getListNhatkycanbo( $idcanbo, $arrWhere, 15);
-            return response()->json(['html' => view('nhatkycongtac.nhatkycanbo_table', $data)->render()]);
+            return response()->json(['html' => view('cahtcore.nhatkycongtac.nhatkycanbo_table', $data)->render()]);
         }
         else
         {
@@ -32,14 +32,14 @@ class NhatkycongtacController extends Controller
 
 
         $data['page_name'] = 'Quản lý nhật ký cán bộ';
-        return view('nhatkycongtac.nhatkycanbo_index', $data);
+        return view('cahtcore.nhatkycongtac.nhatkycanbo_index', $data);
     }
 
     public function nhatkycanbo_create($ngaynhatky = NULL)
     {
         $data['page_name'] = 'Thêm nhật ký công tác cán bộ';
         if( $ngaynhatky != NULL && NhatkycongtacLibrary::checkMyDateDmY($ngaynhatky) ) $data['ngay'] = $ngaynhatky;
-        return view('nhatkycongtac.nhatkycanbo_create', $data);
+        return view('cahtcore.nhatkycongtac.nhatkycanbo_create', $data);
     }
 
     public function nhatkycanbo_store(Request $request)
@@ -78,7 +78,7 @@ class NhatkycongtacController extends Controller
         $data['page_name'] = 'Sửa nhật ký cán bộ';
         $data['nhatky_info'] = NhatkycongtacLibrary::getNhatkyCBInfo($idnhatky);
         $data['idnhatky'] = $idnhatky;
-        return view('nhatkycongtac.nhatkycanbo_edit', $data);
+        return view('cahtcore.nhatkycongtac.nhatkycanbo_edit', $data);
     }
 
     public function nhatkycanbo_update(Request $request, $idnhatky)
@@ -121,20 +121,20 @@ class NhatkycongtacController extends Controller
         {
             $arrWhere = NhatkycongtacLibrary::processArrWhereNhatkyDoiIndex( $request );
             $data['list_nhatkydoi'] = NhatkycongtacLibrary::getListNhatkyDoi( $id_iddonvi_iddoi, $arrWhere, 15 );
-            return response()->json(['html' => view('nhatkycongtac.nhatkydoi_table', $data)->render()]);
+            return response()->json(['html' => view('cahtcore.nhatkycongtac.nhatkydoi_table', $data)->render()]);
         }
         else
         {
             $data['list_nhatkydoi'] = NhatkycongtacLibrary::getListNhatkyDoi( $id_iddonvi_iddoi, array(), 15 );
         }
         $data['page_name'] = 'Quản lý nhật ký đội';
-        return view('nhatkycongtac.nhatkydoi_index', $data);
+        return view('cahtcore.nhatkycongtac.nhatkydoi_index', $data);
     }
 
     public function nhatkydoi_create($ngaynhatky = NULL)
     {
         $data['page_name'] = 'Thêm nhật ký công tác đội';
-        return view('nhatkycongtac.nhatkydoi_create', $data);
+        return view('cahtcore.nhatkycongtac.nhatkydoi_create', $data);
     }
 
     public function nhatkydoi_store(Request $request)
@@ -188,7 +188,7 @@ class NhatkycongtacController extends Controller
         $data['page_name'] = 'Sửa nhật ký đội';
         $data['nhatkydoi_info'] = NhatkycongtacLibrary::getNhatkyDoiInfo($idnhatkydoi);
         $data['idnhatkydoi'] = $idnhatkydoi;
-        return view('nhatkycongtac.nhatkydoi_edit', $data);
+        return view('cahtcore.nhatkycongtac.nhatkydoi_edit', $data);
     }
 
     public function nhatkydoi_update(Request $request, $idnhatkydoi)
@@ -252,10 +252,10 @@ class NhatkycongtacController extends Controller
         $data['list_canbo_nhatky'] = NhatkycongtacLibrary::formatNhatkycanboInDoi( NhatkycongtacLibrary::getFullListNhatkycanboInDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkycanbo'] ) ) ;
         if( $request->ajax() )
         {
-            return response()->json(['html' => view('nhatkycongtac.theodoinhatky_content', $data)->render()]);
+            return response()->json(['html' => view('cahtcore.nhatkycongtac.theodoinhatky_content', $data)->render()]);
         }
          
-        return view('nhatkycongtac.theodoinhatky', $data);
+        return view('cahtcore.nhatkycongtac.theodoinhatky', $data);
     }
 
     public function multiDuyetNhatky(Request $request)
@@ -288,7 +288,7 @@ class NhatkycongtacController extends Controller
         $data['default_id_iddonvi_iddoi'] = $request->id_iddonvi_iddoi;
         $data['list_nhatkydoi'] = NhatkycongtacLibrary::getFullListNhatkyDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkydoi'] );
         $data['list_canbo_nhatky'] = NhatkycongtacLibrary::formatNhatkycanboInDoi( NhatkycongtacLibrary::getFullListNhatkycanboInDoi( $data['default_id_iddonvi_iddoi'], $arrWhere['nhatkycanbo'] ) ) ;
-        return response()->json(['html' => view('nhatkycongtac.theodoinhatky_content', $data)->render()]);
+        return response()->json(['html' => view('cahtcore.nhatkycongtac.theodoinhatky_content', $data)->render()]);
     }
 
     //-----------------------------REPORT---------------------------------------------
@@ -346,7 +346,7 @@ class NhatkycongtacController extends Controller
         $data['hoten'] = Session::get('userinfo')->hoten;
         $tungay_d_m_Y = date('d-m-Y', strtotime($tungay));
         $denngay_d_m_Y = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.view_report_nhatkycanbo', $data)->render();
+        $html_table = view('cahtcore.nhatkycongtac.view_report_nhatkycanbo', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=nhat-ky-can-bo ".$data['hoten']." tu ".$tungay_d_m_Y." den ".$denngay_d_m_Y.".doc");
@@ -362,7 +362,7 @@ class NhatkycongtacController extends Controller
         $data['hoten'] = Session::get('userinfo')->hoten;
         $data['tungay_d_m_Y'] = date('d-m-Y', strtotime($tungay));
         $data['denngay_d_m_Y'] = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.thongke_nhatkycanbo', $data)->render();
+        $html_table = view('cahtcore.nhatkycongtac.thongke_nhatkycanbo', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-can-bo ".$data['hoten']." tu ".$data['tungay_d_m_Y']." den ".$data['denngay_d_m_Y'].".doc");
@@ -378,7 +378,7 @@ class NhatkycongtacController extends Controller
         $data['tendoi'] = DB::table('tbl_doicongtac')->join('tbl_donvi_doi', 'tbl_donvi_doi.iddoi', '=', 'tbl_doicongtac.id' )->where('tbl_donvi_doi.id',$id_iddonvi_iddoi)->value('name');
         $data['tungay_d_m_Y'] = date('d-m-Y', strtotime($tungay));
         $data['denngay_d_m_Y'] = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.thongketheodoi_nhatkycanbo', $data)->render();
+        $html_table = view('cahtcore.nhatkycongtac.thongketheodoi_nhatkycanbo', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-can-bo-doi ".$data['tendoi']." tu ".$data['tungay_d_m_Y']." den ".$data['denngay_d_m_Y'].".doc");
@@ -394,7 +394,7 @@ class NhatkycongtacController extends Controller
         $data['canbo_nhatky_chuanhoa'] = NhatkycongtacLibrary::chuanhoaNhatkycanbo($data['list_ngay_full_nhatky']);
         $data['tungay_d_m_Y'] = date('d-m-Y', strtotime($tungay));
         $data['denngay_d_m_Y'] = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.thongketheodonvi_nhatkycanbo', $data)->render();
+        $html_table = view('cahtcore.nhatkycongtac.thongketheodonvi_nhatkycanbo', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-can-bo-doi ".$data['tendonvi']." tu ".$data['tungay_d_m_Y']." den ".$data['denngay_d_m_Y'].".doc");
@@ -416,7 +416,7 @@ class NhatkycongtacController extends Controller
         $data['list_tuan'] = array_chunk($list_ngay, 7);
         $tungay_d_m_Y = date('d-m-Y', strtotime($tungay));
         $denngay_d_m_Y = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.view_report_nhatkydoi', $data)->render();
+        $html_table = view('cahtcore.nhatkycongtac.view_report_nhatkydoi', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=nhat-ky-doi ".$data['tendoi']." tu ".$tungay_d_m_Y." den ".$denngay_d_m_Y.".doc");
@@ -434,7 +434,7 @@ class NhatkycongtacController extends Controller
         $data['tuanchuacapnhat'] = array_diff($data['list_Moday'], $data['list_day_full_nhatky_info']);
         $tungay_d_m_Y = date('d-m-Y', strtotime($tungay));
         $denngay_d_m_Y = date('d-m-Y', strtotime($denngay));
-        $html_table = view('nhatkycongtac.thongke_nhatkydoi', $data)->render();
+        $html_table = view('cahtcore.nhatkycongtac.thongke_nhatkydoi', $data)->render();
         $str_for_doc = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=thong-ke-nhat-ky-doi ".$data['tendoi']." tu ".$tungay_d_m_Y." den ".$denngay_d_m_Y.".doc");

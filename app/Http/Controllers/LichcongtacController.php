@@ -10,4 +10,10 @@ class LichcongtacController extends Controller
     {
         echo 1;
     }
+
+    public function create()
+    {
+        $data['page_name'] = 'Thêm lịch công tác';
+        return view('cahtcore.lichcongtac.create', $data);
+    }
 }

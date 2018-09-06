@@ -4,6 +4,7 @@ php artisan coredb:import_hanhchinh coredb
 php artisan import coredb
 
 //Warning: After you refresh your database, you must run the permission default
+// AND insert old data
 
 
 

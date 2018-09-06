@@ -314,6 +314,8 @@ Route::get('/nhat-ky-cong-tac/ajax-delete-nhat-ky-doi', 'NhatkycongtacController
 
 //-------------------BEIN LỊCH CÔNG TÁC-------------
 Route::get('/lich-cong-tac', 'LichcongtacController@index')->name('lich-cong-tac.index');
+Route::get('/lich-cong-tac/create', 'LichcongtacController@create')->name('lich-cong-tac.create');
+Route::post('/lich-cong-tac/store', 'LichcongtacController@store')->name('lich-cong-tac.store');
 //-------------------END LỊCH CÔNG TÁC-------------
 
 //-------------------PERMISSION-----------------------
