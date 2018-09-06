@@ -21,7 +21,7 @@
             <td>
                 <div class="button-list" style="max-width: 50px; margin: auto;">
                     <a href="{{ route('lich-cong-tac.edit', $congviec->id) }}" class="btn btn-link"  modal_use="congvieccanbo-modal"  data-toggle="tooltip" data-placement="top" title="Sửa công việc"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
-                    <a class="btn btn-link deletecongviecCB" congviec_id="{{$congviec->id}}"  data-toggle="tooltip" data-placement="top" title="Xóa công việc"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
+                    <a href="{{ route('lich-cong-tac.delete', $congviec->id) }}" onclick="confirm('Bạn có muốn xóa công việc này không?')" class="btn btn-link"  data-toggle="tooltip" data-placement="top" title="Xóa công việc"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
                 </div>
             </td>
         </tr>

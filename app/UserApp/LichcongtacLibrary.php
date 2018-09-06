@@ -91,16 +91,22 @@ class LichcongtacLibrary
         ->select('tbl_lichcongtac.*')
         ->paginate($paginate);
         return $data;
-        // $data = DB::table('tbl_lichcongtac')
-        // ->join('tbl_donvi_doi', 'tbl_lichcongtac.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')
-        // // ->where('iddonvi', $iddonvi)
-        // // ;
-        // // // if($request != NULL && $request->tungay != NULL) $data = $data->whereDate('ngay', '>=', date('Y-m-d', strtotime($request->tungay)));
-        // // // if($request != NULL && $request->denngay != NULL) $data = $data->whereDate('ngay', '<=', date('Y-m-d', strtotime($request->denngay)));
-        // // // if($request != NULL && $request->noidungcongviec != NULL) $data = $data->where('noidungcongviec', 'LIKE', '%'.$request->noidungcongviec.'%' );
-        // // $data = $data->orderBy('ngay', 'DESC')
-        // ->select('tbl_lichcongtac.*')
-        // ->paginate($paginate);
+    }
+
+    public static function getCongviecInfo($idcongviec)
+    {
+        return DB::table('tbl_lichcongtac_lanhdao')
+        ->join('tbl_lichcongtac', 'tbl_lichcongtac.id', '=', 'tbl_lichcongtac_lanhdao.idcongviec')
+        ->join('tbl_canbo', 'tbl_canbo.id', '=', 'tbl_lichcongtac_lanhdao.idlanhdao')
+        ->join('tbl_donvi_doi', 'tbl_donvi_doi.id', '=', 'tbl_canbo.id_iddonvi_iddoi')
+        ->where('idcongviec',$idcongviec)
+        ->select('tbl_lichcongtac.*', 'idlanhdao', 'iddonvi')
+        ->get()->toArray();
+    }
+
+    public static function getCongviecLanhdao($idcongviec)
+    {
+        return DB::table('tbl_lichcongtac_lanhdao')->where('id',$idcongviec)->select('idlanhdao')->get();
     }
 
     

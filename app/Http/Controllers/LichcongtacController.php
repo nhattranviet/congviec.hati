@@ -47,7 +47,7 @@ class LichcongtacController extends Controller
             }
         }
         $tendonvi = DB::table('tbl_donvi')->where('id',$iddonvi)->value('name');
-        $data['page_name'] = 'Quản lý lịch công tác '.$tendonvi;
+        $data['page_name'] = 'Quản lý lịch công tác lãnh đạo '.$tendonvi;
         return view('cahtcore.lichcongtac.index', $data);
     }
 
@@ -56,7 +56,7 @@ class LichcongtacController extends Controller
         $current_donvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
         $tendonvi = DB::table('tbl_donvi')->where('id',$current_donvi)->value('name');
         $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $current_donvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) );
-        $data['page_name'] = 'Thêm lịch công tác của '.$tendonvi;
+        $data['page_name'] = 'Thêm lịch công tác của lãnh đạo '.$tendonvi;
         $data['iddonvi'] = $current_donvi;
         return view('cahtcore.lichcongtac.create', $data);
     }
@@ -106,8 +106,81 @@ class LichcongtacController extends Controller
         {
             return redirect()->route('lich-cong-tac.create', $iddonvi)->with('alert_message', $message);
         }
-        
-        // 
+    }
 
+    public function edit($idcongviec)
+    {
+        $data['congviec_info'] = LichcongtacLibrary::getCongviecInfo($idcongviec);
+        $data['arrLanhdao'] = [];
+        foreach($data['congviec_info'] as $congviec)
+        {
+            $data['arrLanhdao'][] =  $congviec->idlanhdao;
+        }
+        $tendonvi = DB::table('tbl_donvi')->where('id',$data['congviec_info'][0]->iddonvi)->value('name');
+        $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $data['congviec_info'][0]->iddonvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) );
+        $data['page_name'] = 'Sửa lịch công tác của '.$tendonvi;
+        $data['iddonvi'] = $data['congviec_info'][0]->iddonvi;
+        $data['idcongviec'] = $idcongviec;
+        return view('cahtcore.lichcongtac.edit', $data);
+    }
+
+    public function update(Request $request, $idcongviec)
+    {
+        $validator = Validator::make($request->all(), [
+            'ngay' => 'required|date_format:d-m-Y',
+            'gio' => 'required',
+            'lanhdaothamdu' => 'required',
+            'noidungcongviec' => 'required',
+
+        ], LichcongtacLibrary::getLichcongtacMessage() );
+
+        if ($validator->fails()) {
+            return response()->json([ 'error' => $validator->errors()->all() ]);
+        }
+
+        $data_update = [
+            'ngay' => date('Y-m-d', strtotime($request->ngay)).' ' .$request->gio.':00',
+            'noidungcongviec' => $request->noidungcongviec,
+            'diadiem' => ($request->diadiem_select != NULL) ? $request->diadiem_select : $request->diadiemkhac ,
+            'donvichutri' => $request->donvichutri,
+            'updated_at' => Carbon::now()
+        ];
+        DB::table('tbl_lichcongtac')->where('id', $idcongviec)->update($data_update);
+        
+        $congviec_info = LichcongtacLibrary::getCongviecInfo($idcongviec);
+        $arrLanhdaoDB = [];
+        foreach($congviec_info as $congviec)
+        {
+            $arrLanhdaoDB[] =  $congviec->idlanhdao;
+        }
+
+        $lanhdao_add = array_diff($request->lanhdaothamdu, $arrLanhdaoDB);
+        $lanhdao_diff = array_diff($arrLanhdaoDB, $request->lanhdaothamdu);
+        if(count($lanhdao_add) > 0)
+        {
+            $arr_add = [];
+            foreach($lanhdao_add as $lanhdao)
+            {
+                $arr_add[] = ['idcongviec' => $idcongviec, 'idlanhdao' => $lanhdao];
+            }
+            DB::table('tbl_lichcongtac_lanhdao')->insert($arr_add);
+        }
+
+        if(count($lanhdao_diff) > 0)
+        {
+            DB::table('tbl_lichcongtac_lanhdao')->where('idcongviec', $idcongviec)->whereIn('idlanhdao', $lanhdao_diff)->delete();            
+        }
+        
+        $message = array('type' => 'success', 'content' => 'Sửa công việc thành công');
+        return redirect()->route('lich-cong-tac.index', $congviec_info[0]->iddonvi)->with('alert_message', $message);
+    }
+
+    public function delete($idcongviec)
+    {
+        $congviec_info = LichcongtacLibrary::getCongviecInfo($idcongviec);
+        DB::table('tbl_lichcongtac_lanhdao')->where('idcongviec',$idcongviec)->delete();
+        DB::table('tbl_lichcongtac')->where('id',$idcongviec)->delete();
+        $message = array('type' => 'success', 'content' => 'Xóa công việc thành công');
+        return redirect()->route('lich-cong-tac.index', $congviec_info[0]->iddonvi)->with('alert_message', $message);
     }
 }

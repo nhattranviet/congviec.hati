@@ -27,7 +27,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhaus" action="{{ route('lich-cong-tac.store',$iddonvi) }}" method="POST" role="form" autocomplete="off">
+                        <form id="form-nhankhaus" action="{{ route('lich-cong-tac.update',$idcongviec) }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 
                                 <div class="col-md-12">
@@ -41,14 +41,14 @@
                                             <fieldset class="form-group">
                                                 <label for="datepicker">Giờ<span class="text-danger">*</span></label>
                                                 <div class="input-group">
-                                                    <input  id="timepicker2" type="text" name="gio" class="form-control" placeholder="Nhập giờ của công việc" value="7:00">
+                                                    <input  id="timepicker2" type="text" name="gio" class="form-control" placeholder="Nhập giờ của công việc" value="{{ date('H:i', strtotime($congviec_info[0]->ngay)) }}">
                                                     <span class="input-group-addon"><i class="zmdi zmdi-time"></i></span>
                                                 </div>
                                             </fieldset>
                                             <fieldset class="form-group">
                                                 <label for="datepicker">Ngày<span class="text-danger">*</span></label>
                                                     <div class="input-group">
-                                                        <input type="text" name="ngay" class="form-control datepicker-autoclose" placeholder="Chọn ngày của công việc" value=""  autocomplete="off">
+                                                        <input type="text" name="ngay" class="form-control datepicker-autoclose" placeholder="Chọn ngày của công việc" value="{{ date('d-m-Y', strtotime($congviec_info[0]->ngay)) }}" autocomplete="off">
                                                         <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                                     </div><!-- input-group -->
                                             </fieldset>
@@ -57,7 +57,7 @@
                                                     <div class="input-group">
                                                         <select multiple="multiple" name="lanhdaothamdu[]" class="form-control select2" style="width: 100%;">
                                                             @foreach ($list_lanhdao as $lanhdao)
-                                                                <option value="{{ $lanhdao->id }}"> {{ $lanhdao->hoten.' ('.$lanhdao->tenchucvu.')' }} </option>
+                                                                <option {{ (in_array($lanhdao->id, $arrLanhdao)) ? 'selected' : NULL }} value="{{ $lanhdao->id }}"> {{ $lanhdao->hoten.' ('.$lanhdao->tenchucvu.')' }} </option>
                                                             @endforeach
                                                         </select>
                                                     </div><!-- input-group -->
@@ -73,7 +73,7 @@
                                             <fieldset class="form-group">
                                                 <label for="datepicker">Đơn vị chủ trì<span class="text-danger">*</span></label>
                                                     <div class="input-group">
-                                                        <input type="text" name="donvichutri" class="form-control" placeholder="Nhập đơn vị chủ trì công việc" value="">
+                                                        <input type="text" name="donvichutri" class="form-control" placeholder="Nhập đơn vị chủ trì công việc" value="{{ $congviec_info[0]->donvichutri }}">
                                                         <span class="input-group-addon bg-custom b-0"><i class="fa fa-home"></i></span>
                                                     </div><!-- input-group -->
                                             </fieldset>
@@ -94,7 +94,7 @@
                                             <fieldset class="form-group">
                                                 <label for="datepicker">Địa điểm khác<span class="text-danger">*</span></label>
                                                     <div class="input-group">
-                                                        <input type="text" name="diadiemkhac" class="form-control" placeholder="Nhập địa điểm khác nếu không có ở trên" value="">
+                                                        <input type="text" name="diadiemkhac" class="form-control" placeholder="Nhập địa điểm khác nếu không có ở trên" value="{{ $congviec_info[0]->diadiem }}">
                                                         <span class="input-group-addon bg-custom b-0"><i class="fa fa-clock-o"></i></span>
                                                     </div><!-- input-group -->
                                             </fieldset>
@@ -106,7 +106,7 @@
                                 <div class="col-md-12 m-t-sm-40 m-t-10 m-b-40">
                                     <fieldset class="form-group">
                                         <label for="exampleTextarea">Nội dung công việc</label>
-                                        <textarea class="form-control ckeditor" name="noidungcongviec"></textarea>
+                                        <textarea class="form-control ckeditor" name="noidungcongviec">{{ $congviec_info[0]->noidungcongviec }}</textarea>
                                     </fieldset>
                                 </div>
                                 
@@ -114,7 +114,6 @@
                             <div class="row m-t-10">
                                 <div class="col-md-12">
                                     <button type="submit" name="submit" class="btn btn-primary" value="save"> <i class="fa fa-save"></i> Lưu</button>
-                                    <button type="submit" name="submit" class="btn btn-warning" value="saveandnew"> <i class="fa fa-save"></i> Lưu và Thêm</button>
                                     <a href="{{ route('lich-cong-tac.index', $iddonvi) }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
                                 </div>
                             </div>

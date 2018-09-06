@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
-                <a href="{{ route('nhat-ky-cong-tac-cb.create') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm nhật ký</a>
+                <a href="{{ route('lich-cong-tac.create', $iddonvi) }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
                 <a href="{{ route('nhat-ky-cong-tac-doi.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-users"> </i> Nhật ký đội</a>
                 <a href="{{ route('nhat-ky-cong-tac-doi.theodoinhatky') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-calendar"> </i> Theo dõi nhật ký</a>
                 <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
