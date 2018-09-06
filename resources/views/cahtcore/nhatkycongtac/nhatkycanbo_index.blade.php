@@ -107,7 +107,7 @@
                <div class="card-box table-responsive">
                    <div class="row">
                         <div class="col-xs-12 col-sm-12 loading" id="ajax_table" style="position: relative;">
-                            @include('nhatkycongtac.nhatkycanbo_table')
+                            @include('cahtcore.nhatkycongtac.nhatkycanbo_table')
                         </div>
                     </div>
                </div>
@@ -119,7 +119,7 @@
    <!-- content -->
 </div>
 
-@include('nhatkycongtac.nhatkycanbo_modal');
+@include('cahtcore.nhatkycongtac.nhatkycanbo_modal');
 @endsection
 
 @section('js')

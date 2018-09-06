@@ -16,7 +16,8 @@ class CreateTblLichcongtacTable extends Migration
         Schema::create('tbl_lichcongtac', function (Blueprint $table) {
             $table->increments('id');
             $table->string('gio')->nullable();
-            $table->date('ngay');
+            $table->datetime('ngay');
+            $table->text('noidungcongviec');
             $table->string('diadiem')->nullable();
             $table->string('donvichutri')->nullable();
             $table->unsignedInteger('idcanbo_creater');

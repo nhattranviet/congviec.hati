@@ -41,52 +41,34 @@
                 <a href="{{ route('nhat-ky-cong-tac-doi.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-users"> </i> Nhật ký đội</a>
                 <a href="{{ route('nhat-ky-cong-tac-doi.theodoinhatky') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-calendar"> </i> Theo dõi nhật ký</a>
                 <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
-                        <form id="tim-kiem-hoso" action="{{ route('nhat-ky-cong-tac-cb.index') }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
+                        <form id="tim-kiem-hoso" action="{{ route('lich-cong-tac.index', $iddonvi) }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
                             <div class="row">
                                 @csrf
+
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Từ ngày</label>
-                                        <input type="text" name="tungay" parsley-trigger="change" placeholder="Nhập từ ngày để lọc" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="">
+                                        <input type="text" name="tungay" parsley-trigger="change" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="">
                                     </fieldset>
                                 </div>
 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Đến ngày</label>
-                                        <input type="text" name="denngay" parsley-trigger="change" placeholder="Nhập đến ngày để lọc" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="">
+                                        <input type="text" name="denngay" parsley-trigger="change" class="form-control datepicker-autoclose" placeholder="dd-mm-yyyy" value="">
                                     </fieldset>
                                 </div>
 
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
                                     <fieldset class="form-group">
                                         <label for="Trích yếu">Nội dung dự kiến</label>
-                                        <input type="text" name="noidungdukien" parsley-trigger="change" placeholder="Nhập nội dung dự kiến để lọc" class="form-control" value="">
-                                    </fieldset>
-                                </div>
-
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                    <fieldset class="form-group">
-                                        <label for="Trích yếu">Kết quả thực hiện</label>
-                                        <input type="text" name="ketquathuchien" parsley-trigger="change" placeholder="Nhập kết quả thực hiện để lọc" class="form-control" value="">
-                                    </fieldset>
-                                </div>
-
-                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                    <fieldset class="form-group">
-                                        <label>Lọc theo trạng thái</label>
-                                        <select id="nhatky_status" name="nhatky_status" class="form-control app_select2">
-                                            <option value="">Tất cả</option>
-                                            <option value="1">Chưa duyệt</option>
-                                            <option value="2">Đã duyệt</option>
-                                        </select>
+                                        <input type="text" name="noidungcongviec" parsley-trigger="change" placeholder="Nhập nội dung dự kiến để lọc" class="form-control" value="">
                                     </fieldset>
                                 </div>
                                 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
-                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc theo yêu cầu"> <i style="font-size: 1.2em;" class="fa fa-filter"></i></button>
-                                    <button class="btn btn-warning waves-effect exportNhatkyBtn" redirect_type="thongke_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Thống kê nhật ký cán bộ"> <i style="font-size: 1.2em;" class="fa fa-area-chart"></i> </button>
-                                    <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="report_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích xuất nhật ký"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
+                                    <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc, tìm kiếm"> <i style="font-size: 1.2em;" class="fa fa-filter"></i></button>
+                                    <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="report_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích lịch làm việc"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
                                 </div>
                             </div>
                         </form>
@@ -107,7 +89,7 @@
                <div class="card-box table-responsive">
                    <div class="row">
                         <div class="col-xs-12 col-sm-12 loading" id="ajax_table" style="position: relative;">
-                            @include('nhatkycongtac.nhatkycanbo_table')
+                            @include('cahtcore.lichcongtac.lichcongtac_table')
                         </div>
                     </div>
                </div>
@@ -119,7 +101,7 @@
    <!-- content -->
 </div>
 
-@include('nhatkycongtac.nhatkycanbo_modal');
+{{-- @include('nhatkycongtac.nhatkycanbo_modal'); --}}
 @endsection
 
 @section('js')

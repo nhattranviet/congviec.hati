@@ -29,7 +29,7 @@ class NhatkycongtacController extends Controller
         {
             $data['list_nhatky'] = NhatkycongtacLibrary::getListNhatkycanbo( $idcanbo, array(), 15);
         }
-
+        
 
         $data['page_name'] = 'Quản lý nhật ký cán bộ';
         return view('cahtcore.nhatkycongtac.nhatkycanbo_index', $data);
