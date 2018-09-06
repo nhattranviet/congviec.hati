@@ -31,7 +31,6 @@ class CreateTblCongviecTable extends Migration
             $table->smallInteger('chatluong')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('idcanbo_creater')->references('id')->on('tbl_canbo');
         });
     }
 

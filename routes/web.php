@@ -312,6 +312,10 @@ Route::get('/nhat-ky-cong-tac/ajax-delete-nhat-ky-doi', 'NhatkycongtacController
 
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
+//-------------------BEIN LỊCH CÔNG TÁC-------------
+Route::get('/lich-cong-tac', 'LichcongtacController@index')->name('lich-cong-tac.index');
+//-------------------END LỊCH CÔNG TÁC-------------
+
 //-------------------PERMISSION-----------------------
 Route::get('/permission', 'Permission\RolePermissionController@index');
 Route::post('/permission/set-role', 'Permission\RolePermissionController@setRole')->name('permission-set-role');
