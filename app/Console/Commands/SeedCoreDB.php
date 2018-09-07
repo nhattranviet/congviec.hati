@@ -391,6 +391,7 @@ class SeedCoreDB extends Command
 			['iddonvi' => 33, 'iddoi' => 11],
 			['iddonvi' => 33, 'iddoi' => 12],
 			['iddonvi' => 33, 'iddoi' => 13],
+			['iddonvi' => 1, 'iddoi' => 2],
 		];
 
     public function __construct()

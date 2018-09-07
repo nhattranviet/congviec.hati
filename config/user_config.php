@@ -28,6 +28,7 @@ return [
     ],
 
     'default_route' => [
+        '1' => 'lich-cong-tac.index',  //BGĐ
         '2' => 'nhat-ky-cong-tac-cb.index',  //PC44
         '19' => 'cong-viec.index',  //PC44
         '33' => 'cong-viec.index',  //TP

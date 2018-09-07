@@ -25,7 +25,8 @@ class LichcongtacLibrary
             'ngay.required' => 'Ngày công việc được để trống',
             'ngay.date_format' => 'Ngày phải đúng định dạng ngày-tháng-năm',
             'noidungcongviec.required' => 'Nội dung công việc không được để trống',
-            'lanhdaothamdu.required' => 'Lãnh đạo tham dự không được để trống'
+            'lanhdaothamdu.required' => 'Lãnh đạo tham dự không được để trống',
+            'idlanhdaotruc.required' => 'Lãnh đạo trực không được để trống'
         ];
     }
 

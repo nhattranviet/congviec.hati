@@ -10,6 +10,7 @@ use Auth;
 use Session;
 use App\User;
 use App\Canbo;
+use App\UserApp\NhatkycongtacLibrary;
 use App\UserApp\LichcongtacLibrary;
 use App\UserApp\UserLibrary;
 use App\UserApp\CanboLibrary;
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\Redirect;
 class LichcongtacController extends Controller
 {
     public function index(Request $request, $iddonvi = NULL)
-    {
+    {   //echo 1; die;
+        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
         $idcanbo = Session::get('userinfo')->idcanbo;
         $data['iddonvi'] = $iddonvi;
         if( $request->ajax() )
@@ -182,5 +184,120 @@ class LichcongtacController extends Controller
         DB::table('tbl_lichcongtac')->where('id',$idcongviec)->delete();
         $message = array('type' => 'success', 'content' => 'Xóa công việc thành công');
         return redirect()->route('lich-cong-tac.index', $congviec_info[0]->iddonvi)->with('alert_message', $message);
+    }
+
+    public function create_lanhdaotructuan($iddonvi = NULL)
+    {
+        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $tendonvi = DB::table('tbl_donvi')->where('id',$iddonvi)->value('name');
+        $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $iddonvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) );
+        $data['page_name'] = 'Thêm lịch công tác của lãnh đạo '.$tendonvi;
+        $data['iddonvi'] = $iddonvi;
+        return view('cahtcore.lichcongtac.create_lanhdaotructuan', $data);
+    }
+
+    public function store_lanhdaotructuan (Request $request, $iddonvi)
+    {
+        $validator = Validator::make($request->all(), [
+            'tuan' => 'required',
+            'idlanhdaotruc' => 'required',
+        ], NhatkycongtacLibrary::getNhatkycongtacMessage() );
+
+        if ($validator->fails()) {
+            return response()->json([ 'error' => $validator->errors()->all() ]);
+        }
+
+        $ngaudautuan_cuoituan = explode(' - ', $request->tuan);
+        if( $ngaudautuan_cuoituan[0] == 'Invalid date' || $ngaudautuan_cuoituan[1] == 'Invalid date' || NhatkycongtacLibrary::checkMyDateDmY($ngaudautuan_cuoituan[0]) == FALSE || NhatkycongtacLibrary::checkMyDateDmY($ngaudautuan_cuoituan[1]) == FALSE )
+        {
+            return response()->json(['error' => array('Định dạng ngày đầu tuần hoặc cuối tuần sai, kiểm tra lại')]);
+        }
+        $int_ngaydautuan = strtotime( $ngaudautuan_cuoituan[0] );
+        $int_ngaycuoituan = strtotime( $ngaudautuan_cuoituan[1] );
+        $Y_m_d_ngaydautuan = date( 'Y-m-d', $int_ngaydautuan );
+        $Y_m_d_ngaycuoituan = date( 'Y-m-d', $int_ngaycuoituan );
+
+        if ( date('w', $int_ngaydautuan) != 1 || ( $int_ngaycuoituan - $int_ngaydautuan ) != 518400)    //  Từ thứ 2 đến CN có 6 bước nhảy 518400 = 6*86400
+        {
+            return response()->json(['error' => array('Chọn ngày đầu tuần (Thứ 2), ngày cuối tuần (Chủ nhật) và mỗi lần được chọn 01 tuần')]);
+        }
+        $idcanbo = Session::get('userinfo')->idcanbo;
+        if( DB::table('tbl_lanhdao_tructuan')->where(array(['iddonvi', '=', $iddonvi], ['ngaydautuan', '=', $Y_m_d_ngaydautuan], ['ngaycuoituan', '=', $Y_m_d_ngaycuoituan]))->count() > 0 )
+        {
+            return response()->json(['error' => array('Tuần từ '.$ngaudautuan_cuoituan[0].' đến '.$ngaudautuan_cuoituan[1].' của đơn vị bạn đã có lãnh đạo trực. Chọn sửa thay vì thêm mới!')]);
+        }
+        
+        $data = array(
+            'idcanbo_creater' => $idcanbo,
+            'iddonvi' => $iddonvi,
+            'idlanhdao' => $request->idlanhdaotruc,
+            'ngaydautuan' => $Y_m_d_ngaydautuan,
+            'ngaycuoituan' => $Y_m_d_ngaycuoituan,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+
+        DB::table('tbl_lanhdao_tructuan')->insert( $data );
+        return response()->json(['success' => 'Thêm lãnh đạo trực thành công ', 'url' => route('lich-cong-tac.index_lanhdaotructuan', $iddonvi)]);
+    }
+
+    public function edit_lanhdaotructuan($id = NULL)
+    {
+        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $tendonvi = DB::table('tbl_donvi')->where('id',$iddonvi)->value('name');
+        $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $iddonvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) );
+        $data['page_name'] = 'Thêm lịch công tác của lãnh đạo '.$tendonvi;
+        $data['iddonvi'] = $iddonvi;
+        return view('cahtcore.lichcongtac.create_lanhdaotructuan', $data);
+    }
+
+    public function update_lanhdaotructuan (Request $request, $iddonvi)
+    {
+        $validator = Validator::make($request->all(), [
+            'tuan' => 'required',
+            'idlanhdaotruc' => 'required',
+        ], NhatkycongtacLibrary::getNhatkycongtacMessage() );
+
+        if ($validator->fails()) {
+            return response()->json([ 'error' => $validator->errors()->all() ]);
+        }
+
+        $ngaudautuan_cuoituan = explode(' - ', $request->tuan);
+        if( $ngaudautuan_cuoituan[0] == 'Invalid date' || $ngaudautuan_cuoituan[1] == 'Invalid date' || NhatkycongtacLibrary::checkMyDateDmY($ngaudautuan_cuoituan[0]) == FALSE || NhatkycongtacLibrary::checkMyDateDmY($ngaudautuan_cuoituan[1]) == FALSE )
+        {
+            return response()->json(['error' => array('Định dạng ngày đầu tuần hoặc cuối tuần sai, kiểm tra lại')]);
+        }
+        $int_ngaydautuan = strtotime( $ngaudautuan_cuoituan[0] );
+        $int_ngaycuoituan = strtotime( $ngaudautuan_cuoituan[1] );
+        $Y_m_d_ngaydautuan = date( 'Y-m-d', $int_ngaydautuan );
+        $Y_m_d_ngaycuoituan = date( 'Y-m-d', $int_ngaycuoituan );
+
+        if ( date('w', $int_ngaydautuan) != 1 || ( $int_ngaycuoituan - $int_ngaydautuan ) != 518400)    //  Từ thứ 2 đến CN có 6 bước nhảy 518400 = 6*86400
+        {
+            return response()->json(['error' => array('Chọn ngày đầu tuần (Thứ 2), ngày cuối tuần (Chủ nhật) và mỗi lần được chọn 01 tuần')]);
+        }
+        $idcanbo = Session::get('userinfo')->idcanbo;
+        if( DB::table('tbl_lanhdao_tructuan')->where(array(['iddonvi', '=', $iddonvi], ['ngaydautuan', '=', $Y_m_d_ngaydautuan], ['ngaycuoituan', '=', $Y_m_d_ngaycuoituan]))->count() > 0 )
+        {
+            return response()->json(['error' => array('Tuần từ '.$ngaudautuan_cuoituan[0].' đến '.$ngaudautuan_cuoituan[1].' của đơn vị bạn đã có lãnh đạo trực. Chọn sửa thay vì thêm mới!')]);
+        }
+        
+        $data = array(
+            'idcanbo_creater' => $idcanbo,
+            'iddonvi' => $iddonvi,
+            'idlanhdao' => $request->idlanhdaotruc,
+            'ngaydautuan' => $Y_m_d_ngaydautuan,
+            'ngaycuoituan' => $Y_m_d_ngaycuoituan,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        );
+
+        DB::table('tbl_lanhdao_tructuan')->insert( $data );
+        return response()->json(['success' => 'Thêm lãnh đạo trực thành công ', 'url' => route('lich-cong-tac.index_lanhdaotructuan', $iddonvi)]);
+    }
+
+    public function index_lanhdaotructuan(Request $request, $iddonvi = NULL)
+    {
+        echo 'index_lanhdaotructuan ';
     }
 }

@@ -313,9 +313,13 @@ Route::get('/nhat-ky-cong-tac/ajax-delete-nhat-ky-doi', 'NhatkycongtacController
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
 //-------------------BEGIN LỊCH CÔNG TÁC-------------
-Route::get('/lich-cong-tac/{iddonvi}', 'LichcongtacController@index')->name('lich-cong-tac.index');
+Route::get('/lich-cong-tac/{iddonvi?}', 'LichcongtacController@index')->name('lich-cong-tac.index');
 Route::get('/lich-cong-tac/create/{iddonvi}', 'LichcongtacController@create')->name('lich-cong-tac.create');
 Route::post('/lich-cong-tac/store/{iddonvi}', 'LichcongtacController@store')->name('lich-cong-tac.store');
+
+Route::get('/lich-cong-tac/lanh-dao-truc-tuan{iddonvi?}', 'LichcongtacController@index_lanhdaotructuan')->name('lich-cong-tac.index_lanhdaotructuan');
+Route::get('/lich-cong-tac/create_lanhdaotructuan/{iddonvi}', 'LichcongtacController@create_lanhdaotructuan')->name('lich-cong-tac.create_lanhdaotructuan');
+Route::post('/lich-cong-tac/store_lanhdaotructuan/{iddonvi}', 'LichcongtacController@store_lanhdaotructuan')->name('lich-cong-tac.store_lanhdaotructuan');
 
 Route::get('/lich-cong-tac/{idcongviec}/edit', 'LichcongtacController@edit')->name('lich-cong-tac.edit');
 Route::post('/lich-cong-tac/{idcongviec}/update', 'LichcongtacController@update')->name('lich-cong-tac.update');

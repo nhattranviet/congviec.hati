@@ -377,7 +377,8 @@ class CanboController extends Controller
     }
 
     public function add_old_data()
-    {
+    {   
+        //Họ ten, cap bac, chuc vu, id_iddonvi_iddoi
         $data = [
             //PC44--------------------
             "Trần Hải Trung,10,4,11",
@@ -646,10 +647,18 @@ class CanboController extends Controller
             "Phan Duy Cường,4,13,4",
             "Nguyễn Huy Trung,5,13,4",
             "Nguyễn Hữu Mạnh,5,13,4",
+            //BGD
+            "Lê Văn Sao,11,12,27",
+            "Nguyễn Hoài Sơn,11,11,27",
+            "Nguyễn Thanh Liêm,11,11,27",
+            "Nguyễn Tiến Nam,11,11,27",
+            "Nguyễn Văn An,11,11,27",
+            "Võ Trọng Hùng,11,11,27",
+            "Nguyễn Đình Thừa,11,11,27",
         ];
 
         $arr_chucvu_nhomquyen = ['1' => 2, '2' => 3, '3' => 4, '4' => 5, '5' => 4,'6' => 5, '7' => 4, '8' => 5, '9' => 4, '10' => 5, '11' => 4, '12' => 5, '13' => 1, '14' => 6];
-        //Họ ten, cap bac, chuc vu, id_iddonvi_iddoi
+        
         $date = date('Y-m-d', time());
         foreach ($data as $value)
         {
