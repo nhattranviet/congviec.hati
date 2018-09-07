@@ -313,6 +313,7 @@ Route::get('/nhat-ky-cong-tac/ajax-delete-nhat-ky-doi', 'NhatkycongtacController
 //-------------------END NHẬT KÝ CÔNG TÁC-------------
 
 //-------------------BEGIN LỊCH CÔNG TÁC-------------
+Route::get('/lich-cong-tac/show/{iddonvi?}', 'LichcongtacController@show')->name('lich-cong-tac.show');
 Route::get('/lich-cong-tac/{iddonvi?}', 'LichcongtacController@index')->name('lich-cong-tac.index');
 Route::get('/lich-cong-tac/create/{iddonvi}', 'LichcongtacController@create')->name('lich-cong-tac.create');
 Route::post('/lich-cong-tac/store/{iddonvi}', 'LichcongtacController@store')->name('lich-cong-tac.store');

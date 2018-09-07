@@ -18,6 +18,13 @@ use Illuminate\Support\Facades\Redirect;
 
 class LichcongtacController extends Controller
 {
+
+    public function show($iddonvi = NULL)
+    {
+        $data['test'] = 1;
+        $data['app_url'] = 'http://congviec.hati/lich-cong-tac/show';
+        return view('cahtcore.lichcongtac.show', $data);
+    }
     public function index(Request $request, $iddonvi = NULL)
     {
         $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;

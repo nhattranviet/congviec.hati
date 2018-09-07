@@ -1,0 +1,268 @@
+<html><head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="refresh" content="<?php echo '300; url='.$app_url ?>">
+	<link rel="shortcut icon" href="{{asset('/assets/images/favicon.ico')}}">
+	<title>Công an Hà Tĩnh | Lịch công tác</title>
+	{{-- <script src="{{ asset('/assets/js/lich_jquery.min.js') }}"></script> --}}
+	<script src="{{ asset('/assets/js/jquery.min.js') }}"></script>
+	<script src="{{ asset('/assets/js/anphalbootstrap.min.js') }}"></script>
+	<script src="{{asset('/assets/js/modernizr.min.js')}}"></script>
+	<link href="{{asset('/assets/plugins/switchery/switchery.min.css')}}" rel="stylesheet" />
+	<link href="{{asset('/assets/css/bootstrapanphal.min.css')}}" rel="stylesheet" />
+	<link href="{{asset('/assets/css/lich_show.css')}}" rel="stylesheet" />
+	<style>
+		body{
+			background-color: #FF5733;
+		}
+		.trip_viectrongngay, .trip_viectrongtuan{
+			display: none;
+		}
+
+		.trip_viectrongtuan p, .trip_viectrongngay p, .tripStatic p{
+			color: #FFFF24;
+			font-size: 150%;
+			text-shadow: 1.5px 1.5px rgba(0,0,0,0.5);
+		}
+
+		.trip_viectrongtuan strong, .trip_viectrongngay strong, .tripStatic strong{
+			color: #ff0036;
+		}
+		.leftHead{
+			width: 35%;
+			text-align: center;
+			font-size: 150%;
+		}
+
+		.rightHead{
+			text-align: center;
+			font-size: 180%;
+			font-weight: bold;
+		}
+		.lanhdaotructuan{
+			text-align: center;
+			font-size: 130%;
+		}
+
+		.lanhdaotructuan_title{
+			text-shadow: 1.5px 1.5px rgba(0,0,0,0.5);
+		}
+
+		.lanhdaotructuan_name{
+			color: #FFFF00;
+		}
+
+		.leftHead_tendonvi{
+			font-size: 120%; font-weight: bold;
+		}
+
+		.rightHead_tendonvi{
+			font-size: 120%;
+			font-weight: bold;
+		}
+
+		.lich-center{
+			text-align: center;
+		}
+
+		.lichcontent{
+			height: 600px	;
+		}
+
+		.footer{
+			position:fixed;
+			height:50px;
+			background-color:#FF5733;
+			bottom:0px;
+			left:0px;
+			right:0px;
+			line-height: 50px;
+			margin-bottom:0px;
+		}
+
+		.firstRow, .lich_title, .lanhdaotructuan_title, .ngaytrongtuan, .ngayhientai{
+			color: #FFFF00;
+		}
+
+		.firstRow td {
+			text-shadow: 1.5px 1.5px rgba(0,0,0,0.5);
+		}
+
+		td{
+			border-radius: 15px 15px 15px 15px;
+			-moz-border-radius: 15px 15px 15px 15px;
+			-webkit-border-radius: 15px 15px 15px 15px;
+			border: 2px solid #f5f5f5;
+		}
+
+		.lich_title{
+			font-weight: bold;
+			font-size: 150%;
+			text-shadow: 1.5px 1.5px rgba(0,0,0,0.5);
+		}
+
+		.ngaytrongtuan{
+			font-size: 100% !important;
+		}
+
+		.ngaytrongtuan, .ngayhientai{
+			text-shadow: 1.5px 1.5px rgba(0,0,0,0.5);
+			font-size: 120%;
+		}
+
+		.footerLeft{
+			text-align: right;
+			font-size: 120%;
+			font-weight: bold;
+			text-transform: uppercase;
+			padding-right: 0px !important;
+		}
+
+		.footerRight{
+			font-size: 120%;
+			font-weight: bold;
+			text-transform: uppercase;
+			padding: 0px !important;
+			color: #FFFF24;
+		}
+
+		.marquee{
+		padding: 0px !important;
+		}
+
+		.footer{
+			border-top: 2px solid #f5f5f5;
+		}
+
+		.leftHead_tendonvi{
+			text-transform: uppercase;
+		}
+
+	</style>
+	
+	<script type="text/javascript">//<![CDATA[
+		$(document).ready( function () {
+			var $elem = $('.trip_viectrongngay'),
+			    l = $elem.length,
+			    i = 0;
+
+			function go() {
+			    $elem.eq(i % l).fadeIn(700, function () {
+			        $elem.eq(i % l).delay(15000).fadeOut(700, go);
+			        i++;
+			    })
+			}
+			
+			var $elem1 = $('.trip_viectrongtuan'),
+			    l1 = $elem1.length,
+			    i1 = 0;
+			function goes() {
+			    $elem1.eq(i1 % l1).fadeIn(700, function () {
+			        $elem1.eq(i1 % l1).delay(15000).fadeOut(700, goes);
+			        i1++;
+			    })
+			}
+			go();
+			goes();
+		});
+		//]]>
+	</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row header">
+			<table class="table">
+		      <tr class="firstRow">
+		        <td valign="middle" style="background-image:url({{ asset('/assets/images/logo_cand.png') }}); background-repeat:no-repeat; background-position: center; background-size: 23% 100%;" class="align-middle leftHead"><?php echo (($currentDonvi = 3) == 3) ? '<span>BỘ CÔNG AN</span> <br /><span class="leftHead_tendonvi">CÔNG AN HÀ TĨNH</span>' : '<span>CÔNG AN HÀ TĨNH</span> <br /><span class="leftHead_tendonvi">'.'PHÒNG THAM MƯU'.'</span>'; ?></td>
+		        <td class="align-middle rightHead"><?php echo (($currentDonvi = 3) == 3) ? 'LỊCH CÔNG TÁC CỦA BAN GIÁM ĐỐC' : 'LỊCH CÔNG TÁC CỦA LÃNH ĐẠO'; ?></td>
+		      </tr>
+		      <tr>
+		      	<td colspan="2" class="lanhdaotructuan"><span class="lanhdaotructuan_title">Lãnh đạo trực tuần:<i class="fa fa-spin fa-spinner" style="width: auto;margin-right: 10px;"></i> </span><span class="lanhdaotructuan_name"><b>Đ/c Nguyễn Thanh Liêm - Phó Giám đốc</b></span></td>
+		      </tr>
+		      <tr>
+		        <td class="align-middle lich-center"><div class="lich_title">LỊCH TRONG TUẦN</div><div class="ngaytrongtuan"> Từ ngày 12/12/2018 đến 12/12/2018</div></td>
+		        <td class="align-middle lich-center"><div class="lich_title">LỊCH TRONG NGÀY</div><div class="ngayhientai"> (Thứ 6, ngày 12/12/2018) </div></td>
+		      </tr>
+		      <tr class="lichcontent">
+		      	<td class="align-top">
+		      		<?php 
+		      			if(isset($data_tuan) && $data_tuan != NULL)
+		      			{
+		      				foreach ($data_tuan as $key => $value)
+		      				{
+		      					$arrCVTuan[] = "<strong>Ngày ".date("d/m",$value['Ngay']).":</strong> ".$value['NoiDung'];
+		      				}
+		      				$num_arrCVTuan = count($arrCVTuan);
+		      				$i = 0;
+							if($num_arrCVTuan == 1)
+							{
+								echo "<div class='tripStatic'><div><p>".$arrCVTuan[0]."</p></div></div>";
+							}
+							elseif($num_arrCVTuan == 2)
+							{
+								echo "<div class='tripStatic'><div><p>".$arrCVTuan[0]."</p></div> <div><p>".$arrCVTuan[1]."</p></div></div>";
+							}
+							elseif($num_arrCVTuan % 2 == 0)
+							{
+								while ( $i < $num_arrCVTuan)
+									{
+										echo "<div class='trip_viectrongtuan'><div><p>".$arrCVTuan[$i]."</p></div> <div><p>".$arrCVTuan[$i+1]."</p></div></div>";
+										$i = $i +2;
+									}
+							}
+							elseif($num_arrCVTuan % 2 == 1)
+							{
+								while ($i < $num_arrCVTuan - 1)
+								{
+									echo "<div class='trip_viectrongtuan'><div><p>".$arrCVTuan[$i]."</p></div> <div><p>".$arrCVTuan[$i+1]."</p></div></div>";
+									$i = $i +2;
+								}
+									echo "<div class='trip_viectrongtuan'><div><p>".$arrCVTuan[$i]."</p></div></div>";
+							}
+		      			}else{
+		      				echo '<div style="text-align: center;" class="tripStatic"><p>Đang cập nhật nội dung</p> <p> <img src='.asset('/assets/images/loading.gif').' /></p></div>';
+		      			}
+		      		?>			    
+					
+				</td>
+		        <td class="align-top">
+		        	<?php 
+		        		if(isset($data_ngay) && $data_ngay != FALSE)
+		        		{
+		        			foreach ($data_ngay as $key => $value)
+		        			{
+		        				echo '<div class="trip_viectrongngay"><p><strong>Nội dung: </strong>'.$value['NoiDung'].'</p><p><strong>Thời gian: </strong>'.$value['Gio'].'</p><p><strong>Đơn vị chủ trì: </strong>'.$value['ChuTri'].'</p><p><strong>Lãnh đạo tham dự: </strong>'.$this->lich_model->getLanhDaoCongViec($value['ID_CongViec']).'</p><p><strong>Địa điểm: </strong>'.$value['DiaDiem'].'</p></div>';
+		        			}
+		        		}else{
+		        			echo '<div style="text-align: center;" class="tripStatic"><p>Đang cập nhật nội dung</p><p> <img src='.asset('/assets/images/loading.gif').' /></p></div>';
+		        		}
+					?>
+		        </td>
+		      </tr>
+		  </table>
+		</div>
+
+		<div class="row footer">
+			<div class="col-md-1 footerLeft">
+				
+			</div>
+
+			<div class="col-md-11 footerRight">
+				<marquee><span style="font-size: 20px">CHỦ ĐỘNG - ĐỔI MỚI - KỶ CƯƠNG - TRÁCH NHIỆM - HIỆU QUẢ</span></marquee>
+			</div>
+		</div>
+	</div>
+	<script src="{{ asset('/assets/js/jquery.min.js') }}"></script>
+	<script src="{{ asset('/assets/js/tether.min.js') }}"></script>
+	<!-- Tether for Bootstrap -->
+	<script src="{{ asset('/assets/js/bootstrap.min.js') }}"></script>
+	<script src="{{ asset('/assets/js/detect.js') }}"></script>
+	<script src="{{ asset('/assets/js/fastclick.js') }}"></script>
+	<script src="{{ asset('/assets/js/jquery.blockUI.js') }}"></script>
+	<script src="{{ asset('/assets/js/waves.js') }}"></script>
+	<script src="{{ asset('/assets/js/jquery.nicescroll.js') }}"></script>
+	<script src="{{ asset('/assets/js/jquery.scrollTo.min.js') }}"></script>
+	<script src="{{ asset('/assets/js/jquery.slimscroll.js') }}"></script>
+	<script src="{{ asset('/assets/plugins/switchery/switchery.min.js') }}"></script>
+<script src="{{ asset('/assets/js/jquery.core.js') }}"></script>
+</body>
+</html>
