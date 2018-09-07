@@ -21,7 +21,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhaus" action="{{ route('lich-cong-tac.update_lanhdaotructuan',$iddonvi) }}" method="POST" role="form" autocomplete="off">
+                        <form id="form-nhankhaus" action="{{ route('lich-cong-tac.update_lanhdaotructuan',$id) }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 
                                 <div class="col-md-12">
@@ -33,7 +33,7 @@
                                     <fieldset class="form-group">
                                         <label for="datepicker">Chọn tuần<span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <input type="text" name="tuan" class="form-control input-daterange-datepicker" placeholder="dd-mm-yyyy" value="">
+                                                <input disabled="disabled" type="text" name="tuan" class="form-control input-daterange-datepicker" placeholder="dd-mm-yyyy" value="{{ date('d-m-Y', strtotime($tructuan_info->ngaydautuan)).' - '.date('d-m-Y', strtotime($tructuan_info->ngaycuoituan)) }}">
                                                 <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
                                             </div><!-- input-group -->
                                     </fieldset>
@@ -43,7 +43,7 @@
                                                 <select name="idlanhdaotruc" class="form-control select2" style="width: 100%;">
                                                     <option value=""> Chọn lãnh đạo trực </option>
                                                     @foreach ($list_lanhdao as $lanhdao)
-                                                        <option value="{{ $lanhdao->id }}"> {{ $lanhdao->hoten.' ('.$lanhdao->tenchucvu.')' }} </option>
+                                                        <option  {{ ($tructuan_info->idlanhdao == $lanhdao->id) ? 'selected' : NULL }} value="{{ $lanhdao->id }}"> {{ $lanhdao->hoten.' ('.$lanhdao->tenchucvu.')' }} </option>
                                                     @endforeach
                                                 </select>
                                             </div><!-- input-group -->
@@ -54,7 +54,7 @@
                             <div class="row m-t-10">
                                 <div class="col-md-12">
                                     <button type="submit" name="submit" class="btn btn-primary" value="save"> <i class="fa fa-save"></i> Lưu</button>
-                                    <a href="{{ route('lich-cong-tac.index', $iddonvi) }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
+                                    <a href="{{ route('lich-cong-tac.index_lanhdaotructuan', $iddonvi) }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
                                 </div>
                             </div>
                             {{ csrf_field() }}

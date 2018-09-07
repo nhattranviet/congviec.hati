@@ -84,7 +84,6 @@ class LichcongtacLibrary
         $data = DB::table('tbl_lichcongtac')
         ->join('tbl_donvi_doi', 'tbl_lichcongtac.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')
         ->where('iddonvi', $iddonvi);
-        // ->where($arrWhere)
         if($request != NULL && $request->tungay != NULL) $data = $data->whereDate('ngay', '>=', date('Y-m-d', strtotime($request->tungay)));
         if($request != NULL && $request->denngay != NULL) $data = $data->whereDate('ngay', '<=', date('Y-m-d', strtotime($request->denngay)));
         if($request != NULL && $request->noidungcongviec != NULL) $data = $data->where('noidungcongviec', 'LIKE', '%'.$request->noidungcongviec.'%' );
@@ -109,6 +108,23 @@ class LichcongtacLibrary
     {
         return DB::table('tbl_lichcongtac_lanhdao')->where('id',$idcongviec)->select('idlanhdao')->get();
     }
+
+    public static function getListLanhdaotructuan( $iddonvi, $request, $paginate = 10)
+    {
+        $data = DB::table('tbl_canbo')
+        ->join('tbl_lanhdao_tructuan', 'tbl_lanhdao_tructuan.idlanhdao', '=', 'tbl_canbo.id')
+        ->join('tbl_chucvu', 'tbl_chucvu.id', '=', 'tbl_canbo.idchucvu')
+        ->join('tbl_connguoi', 'tbl_connguoi.id', '=', 'tbl_canbo.idconnguoi')
+        ->where('tbl_lanhdao_tructuan.iddonvi', $iddonvi);
+        if($request != NULL && $request->tungay != NULL) $data = $data->whereDate('ngaycuoituan', '>=', date('Y-m-d', strtotime($request->tungay)));
+        if($request != NULL && $request->denngay != NULL) $data = $data->whereDate('ngaydautuan', '<=', date('Y-m-d', strtotime($request->denngay)));
+        if($request != NULL && $request->idlanhdaotruc != NULL) $data = $data->where('idlanhdao', '=', $request->idlanhdaotruc );
+        $data = $data->orderBy('ngaydautuan', 'DESC')
+        ->select('tbl_lanhdao_tructuan.id', 'hoten', 'ngaydautuan', 'ngaycuoituan')
+        ->paginate($paginate);
+        return $data;
+    }
+
 
     
 
