@@ -176,23 +176,24 @@
 		        <td class="align-middle rightHead"><?php echo (($currentDonvi = 3) == 3) ? 'LỊCH CÔNG TÁC CỦA BAN GIÁM ĐỐC' : 'LỊCH CÔNG TÁC CỦA LÃNH ĐẠO'; ?></td>
 		      </tr>
 		      <tr>
-		      	<td colspan="2" class="lanhdaotructuan"><span class="lanhdaotructuan_title">Lãnh đạo trực tuần:<i class="fa fa-spin fa-spinner" style="width: auto;margin-right: 10px;"></i> </span><span class="lanhdaotructuan_name"><b>Đ/c Nguyễn Thanh Liêm - Phó Giám đốc</b></span></td>
+		      	<td colspan="2" class="lanhdaotructuan"><span class="lanhdaotructuan_title">Lãnh đạo trực tuần:<i class="fa fa-spin fa-spinner" style="width: auto;margin-right: 10px;"></i> </span><span class="lanhdaotructuan_name"> {!! ($tructuan) ? '<b>Đ/c '.$tructuan->hoten.' - '.$tructuan->tenchucvu.'</b>' : 'Đang cập nhật <img src="'.asset('/assets/images/loading_mini.gif').'" /> ' !!} </span></td>
 		      </tr>
 		      <tr>
-		        <td class="align-middle lich-center"><div class="lich_title">LỊCH TRONG TUẦN</div><div class="ngaytrongtuan"> Từ ngày 12/12/2018 đến 12/12/2018</div></td>
-		        <td class="align-middle lich-center"><div class="lich_title">LỊCH TRONG NGÀY</div><div class="ngayhientai"> (Thứ 6, ngày 12/12/2018) </div></td>
+		        <td class="align-middle lich-center"><div class="lich_title">LỊCH TRONG TUẦN</div><div class="ngaytrongtuan"> Từ ngày {{ date('d-m-Y', strtotime($tuan['ngaydautuan'])) }} đến {{ date('d-m-Y', strtotime($tuan['ngaycuoituan'])) }}</div></td>
+		        <td class="align-middle lich-center"><div class="lich_title">LỊCH TRONG NGÀY</div><div class="ngayhientai"> ({{ $current_day_name }}) </div></td>
 		      </tr>
 		      <tr class="lichcontent">
 		      	<td class="align-top">
-		      		<?php 
-		      			if(isset($data_tuan) && $data_tuan != NULL)
-		      			{
-		      				foreach ($data_tuan as $key => $value)
-		      				{
-		      					$arrCVTuan[] = "<strong>Ngày ".date("d/m",$value['Ngay']).":</strong> ".$value['NoiDung'];
-		      				}
-		      				$num_arrCVTuan = count($arrCVTuan);
-		      				$i = 0;
+
+					@php
+						if($data_tuan != NULL)
+						{
+							foreach ($data_tuan as $data)
+							{
+								$arrCVTuan[] = "<strong>Ngày ".date("d/m", strtotime($data->ngay)).":</strong> ".$data->noidungcongviec;
+							}
+							$num_arrCVTuan = count($arrCVTuan);
+							$i = 0;
 							if($num_arrCVTuan == 1)
 							{
 								echo "<div class='tripStatic'><div><p>".$arrCVTuan[0]."</p></div></div>";
@@ -218,19 +219,20 @@
 								}
 									echo "<div class='trip_viectrongtuan'><div><p>".$arrCVTuan[$i]."</p></div></div>";
 							}
-		      			}else{
-		      				echo '<div style="text-align: center;" class="tripStatic"><p>Đang cập nhật nội dung</p> <p> <img src='.asset('/assets/images/loading.gif').' /></p></div>';
-		      			}
-		      		?>			    
+						}
+						else {
+							echo '<div style="text-align: center;" class="tripStatic"><p>Đang cập nhật nội dung</p> <p> <img src='.asset('/assets/images/loading.gif').' /></p></div>';
+						}
+					@endphp  
 					
 				</td>
 		        <td class="align-top">
 		        	<?php 
-		        		if(isset($data_ngay) && $data_ngay != FALSE)
+		        		if(isset($data_ngay) && $data_ngay != NULL)
 		        		{
-		        			foreach ($data_ngay as $key => $value)
+		        			foreach ($data_ngay as $ngay)
 		        			{
-		        				echo '<div class="trip_viectrongngay"><p><strong>Nội dung: </strong>'.$value['NoiDung'].'</p><p><strong>Thời gian: </strong>'.$value['Gio'].'</p><p><strong>Đơn vị chủ trì: </strong>'.$value['ChuTri'].'</p><p><strong>Lãnh đạo tham dự: </strong>'.$this->lich_model->getLanhDaoCongViec($value['ID_CongViec']).'</p><p><strong>Địa điểm: </strong>'.$value['DiaDiem'].'</p></div>';
+		        				echo '<div class="trip_viectrongngay"><p><strong>Nội dung: </strong>'.$ngay->noidungcongviec.'</p><p><strong>Thời gian: </strong>'.date('H:i', strtotime($ngay->ngay)).'</p><p><strong>Đơn vị chủ trì: </strong>'.$ngay->donvichutri.'</p><p><strong>Lãnh đạo tham dự: </strong>'.( ( isset($congviec_lanhdao[$ngay->id]) ) ? $congviec_lanhdao[$ngay->id] : '' ).'</p><p><strong>Địa điểm: </strong>'.$ngay->diadiem.'</p></div>';
 		        			}
 		        		}else{
 		        			echo '<div style="text-align: center;" class="tripStatic"><p>Đang cập nhật nội dung</p><p> <img src='.asset('/assets/images/loading.gif').' /></p></div>';
@@ -247,7 +249,7 @@
 			</div>
 
 			<div class="col-md-11 footerRight">
-				<marquee><span style="font-size: 20px">CHỦ ĐỘNG - ĐỔI MỚI - KỶ CƯƠNG - TRÁCH NHIỆM - HIỆU QUẢ</span></marquee>
+				<marquee><span style="font-size: 20px">CHỦ ĐỘNG - ĐỔI MỚI - KỶ CƯƠNG - TRÁCH NHIỆM - HIỆU QUẢ | CÔNG AN HÀ TĨNH HỌC TẬP, LÀM THEO 6 ĐIỀU BÁC HỒ DẠY</span></marquee>
 			</div>
 		</div>
 	</div>

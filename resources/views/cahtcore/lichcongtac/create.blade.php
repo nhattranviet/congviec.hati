@@ -27,7 +27,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhau" action="{{ route('lich-cong-tac.store',$iddonvi) }}" method="POST" role="form" autocomplete="off">
+                        <form id="form-nhankhaus" action="{{ route('lich-cong-tac.store',$iddonvi) }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 
                                 <div class="col-md-12">
