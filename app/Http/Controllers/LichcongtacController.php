@@ -22,6 +22,7 @@ class LichcongtacController extends Controller
     public function show($iddonvi = NULL)
     {
         $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $data['tendonvi'] = 'PHÒNG '. DB::table('tbl_donvi')->where('id',$iddonvi)->value('kyhieu');
         $current_day = date('Y-m-d', time());
         $day_name = array( '1' => 'Thứ hai', '2' => 'Thứ ba', '3' => 'Thứ tư', '4' => 'Thứ năm', '5' => 'Thứ sáu', '6' => 'Thứ bảy', '0' => 'Chủ nhật');
         $data['tuan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d( $current_day );
@@ -39,7 +40,7 @@ class LichcongtacController extends Controller
             }
             
         }
-
+        $data['iddonvi'] = $iddonvi;
         $data['app_url'] = 'http://congviec.hati/lich-cong-tac/show';
         
         return view('cahtcore.lichcongtac.show', $data);

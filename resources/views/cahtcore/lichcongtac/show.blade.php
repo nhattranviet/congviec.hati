@@ -172,8 +172,14 @@
 		<div class="row header">
 			<table class="table">
 		      <tr class="firstRow">
-		        <td valign="middle" style="background-image:url({{ asset('/assets/images/logo_cand.png') }}); background-repeat:no-repeat; background-position: center; background-size: 23% 100%;" class="align-middle leftHead"><?php echo (($currentDonvi = 3) == 3) ? '<span>BỘ CÔNG AN</span> <br /><span class="leftHead_tendonvi">CÔNG AN HÀ TĨNH</span>' : '<span>CÔNG AN HÀ TĨNH</span> <br /><span class="leftHead_tendonvi">'.'PHÒNG THAM MƯU'.'</span>'; ?></td>
-		        <td class="align-middle rightHead"><?php echo (($currentDonvi = 3) == 3) ? 'LỊCH CÔNG TÁC CỦA BAN GIÁM ĐỐC' : 'LỊCH CÔNG TÁC CỦA LÃNH ĐẠO'; ?></td>
+				  @if ( $iddonvi == config('user_config.iddonvi_bangiamdoc') )
+					<td valign="middle" style="background-image:url({{ asset('/assets/images/logo_cand.png') }}); background-repeat:no-repeat; background-position: center; background-size: 23% 100%;" class="align-middle leftHead"><span>BỘ CÔNG AN</span> <br /><span class="leftHead_tendonvi">CÔNG AN HÀ TĨNH</span></td>
+		        	<td class="align-middle rightHead">LỊCH CÔNG TÁC BAN GIÁM ĐỐC</td>
+				  @else
+				  	<td valign="middle" style="background-image:url({{ asset('/assets/images/logo_cand.png') }}); background-repeat:no-repeat; background-position: center; background-size: 23% 100%;" class="align-middle leftHead"><span>CÔNG AN HÀ TĨNH</span> <br /><span class="leftHead_tendonvi">{{ $tendonvi }}</td>
+		        	<td class="align-middle rightHead">LỊCH CÔNG TÁC LÃNH ĐẠO ĐƠN VỊ</td>
+				  @endif
+		        
 		      </tr>
 		      <tr>
 		      	<td colspan="2" class="lanhdaotructuan"><span class="lanhdaotructuan_title">Lãnh đạo trực tuần:<i class="fa fa-spin fa-spinner" style="width: auto;margin-right: 10px;"></i> </span><span class="lanhdaotructuan_name"> {!! ($tructuan) ? '<b>Đ/c '.$tructuan->hoten.' - '.$tructuan->tenchucvu.'</b>' : 'Đang cập nhật <img src="'.asset('/assets/images/loading_mini.gif').'" /> ' !!} </span></td>
