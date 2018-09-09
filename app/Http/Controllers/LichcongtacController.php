@@ -19,32 +19,6 @@ use Illuminate\Support\Facades\Redirect;
 class LichcongtacController extends Controller
 {
 
-    public function show($iddonvi = NULL)
-    {
-        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
-        $data['tendonvi'] = 'PHÒNG '. DB::table('tbl_donvi')->where('id',$iddonvi)->value('kyhieu');
-        $current_day = date('Y-m-d', time());
-        $day_name = array( '1' => 'Thứ hai', '2' => 'Thứ ba', '3' => 'Thứ tư', '4' => 'Thứ năm', '5' => 'Thứ sáu', '6' => 'Thứ bảy', '0' => 'Chủ nhật');
-        $data['tuan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d( $current_day );
-        $w = date('w', time());
-        $data['current_day_name'] = $day_name[$w].' ngày '. date('d-m-Y', time()); 
-        $data['tructuan'] = LichcongtacLibrary::getLanhdaotructuan( $iddonvi, $data['tuan']['ngaydautuan']);
-        $data['data_tuan'] = LichcongtacLibrary::getListLichcongtacInTuanToShow( $iddonvi, $data['tuan']['ngaydautuan'], $data['tuan']['ngaycuoituan']);
-        $data['data_ngay'] = LichcongtacLibrary::getListLichcongtacInNgayToShow( $iddonvi, $current_day);
-        $data['congviec_lanhdao'] = [];
-        if( $data['data_ngay'] != NULL )
-        {
-            foreach ($data['data_ngay'] as $congviec)
-            {
-                $data['congviec_lanhdao'][$congviec->id] = LichcongtacLibrary::getLanhdaoCongviec($congviec->id);
-            }
-            
-        }
-        $data['iddonvi'] = $iddonvi;
-        $data['app_url'] = 'http://congviec.hati/lich-cong-tac/show';
-        
-        return view('cahtcore.lichcongtac.show', $data);
-    }
     public function index(Request $request, $iddonvi = NULL)
     {
         $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
@@ -125,7 +99,7 @@ class LichcongtacController extends Controller
             ];
         }
         DB::table('tbl_lichcongtac_lanhdao')->insert($data_lanhdao_congviec);
-        $message = array('type' => 'success', 'content' => 'Thêm công việc thành công');
+        $message = array('type' => 'success', 'content' => 'Thêm công việc thành công'); die;
         if($request->submit == 'save')
         {
             return redirect()->route('lich-cong-tac.index', $iddonvi)->with('alert_message', $message);
@@ -322,5 +296,46 @@ class LichcongtacController extends Controller
         DB::table('tbl_lanhdao_tructuan')->where('id', $idtructuan)->delete();
         $message = array('type' => 'success', 'content' => 'Xóa thành công');
         return redirect()->route('lich-cong-tac.index_lanhdaotructuan', $data['tructuan_info']->iddonvi)->with('alert_message', $message);
+    }
+
+    public function show($iddonvi = NULL)
+    {
+        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $data['tendonvi'] = 'PHÒNG '. DB::table('tbl_donvi')->where('id',$iddonvi)->value('kyhieu');
+        $current_day = date('Y-m-d', time());
+        $day_name = array( '1' => 'Thứ hai', '2' => 'Thứ ba', '3' => 'Thứ tư', '4' => 'Thứ năm', '5' => 'Thứ sáu', '6' => 'Thứ bảy', '0' => 'Chủ nhật');
+        $data['tuan'] = UserLibrary::getNgayDauTuan_Cuoituan_Of_a_Day_Y_m_d( $current_day );
+        $w = date('w', time());
+        $data['current_day_name'] = $day_name[$w].' ngày '. date('d-m-Y', time()); 
+        $data['tructuan'] = LichcongtacLibrary::getLanhdaotructuan( $iddonvi, $data['tuan']['ngaydautuan']);
+        $data['data_tuan'] = LichcongtacLibrary::getListLichcongtacInTuanToShow( $iddonvi, $data['tuan']['ngaydautuan'], $data['tuan']['ngaycuoituan']);
+        $data['data_ngay'] = LichcongtacLibrary::getListLichcongtacInNgayToShow( $iddonvi, $current_day);
+        $data['congviec_lanhdao'] = [];
+        if( $data['data_ngay'] != NULL )
+        {
+            foreach ($data['data_ngay'] as $congviec)
+            {
+                $data['congviec_lanhdao'][$congviec->id] = LichcongtacLibrary::getLanhdaoCongviec($congviec->id);
+            }
+            
+        }
+        $data['iddonvi'] = $iddonvi;
+        $data['app_url'] = 'http://congviec.hati/lich-cong-tac/show';
+        
+        return view('cahtcore.lichcongtac.show', $data);
+    }
+
+    public function export($iddonvi, $tungay, $denngay)
+    {
+        $data['data_tuan'] = LichcongtacLibrary::getListLichcongtacInTuanToShow( $iddonvi, $tungay, $denngay);
+        $data['congviec_lanhdao'] = [];
+        if( count($data['data_tuan']) > 0 )
+        {
+            foreach($data['data_tuan'] as $congviec)
+            {
+                $data['congviec_lanhdao'][$congviec->id] = LichcongtacLibrary::getLanhdaoCongviec($congviec->id);
+            }
+        }
+        dd($data['data_tuan']);
     }
 }

@@ -1,30 +1,4 @@
-<style>
-    table{
-        width: 100%;
-    }
-    .center{
-        text-align: center;
-    }
-    table tr td{
-        padding: 0px 2px;
-        text-align: center;
-        font-size: 12pt;
-    }
-
-    table.info{
-        border-collapse: collapse;
-    }
-    .bold{
-        font-weight: bold;
-    }
-    .italic{
-        font-style: italic;
-    }
-    .daumuc{
-        font-size: 11pt;
-        font-weight: bold;
-    }
-</style>
+@include('commons.word_css')
 <table class="head">
     <tr>
         <td class="center" style="width: 250px" valign="top" >

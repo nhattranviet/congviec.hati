@@ -44,13 +44,15 @@ $(document).ready(function () {
         $(this).datepicker({
             format: "dd-mm-yyyy",
             // autoclose: true,
-            todayHighlight: true
+            todayHighlight: true,
+            minDate: 1
         });
     });
     jQuery('.datepicker-autoclose').datepicker({
         format: "dd-mm-yyyy",
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true,
+        minDate: 1
     });
     jQuery('#datepicker-inline').datepicker();
     jQuery('#datepicker-multiple-date').datepicker({

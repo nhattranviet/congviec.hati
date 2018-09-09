@@ -27,7 +27,7 @@
             <li class="nav-item dropdown notification-list">
                 <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
                 aria-haspopup="false" aria-expanded="false">
-                Chào <b class="text-warning"> {{ (Auth::check()) ? Auth::user()->username : NULL }}!</b>
+                Chào  <b class="text-warning">đ/c {{ (Auth::check()) ? Auth::user()->username : NULL }}!</b>
                 </a>
             </li>
             <li class="nav-item dropdown notification-list">

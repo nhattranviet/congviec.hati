@@ -328,6 +328,8 @@ Route::get('/lich-cong-tac/lanh-dao-truc-tuan/{idtructuan}/delete_lanhdaotructua
 Route::get('/lich-cong-tac/{idcongviec}/edit', 'LichcongtacController@edit')->name('lich-cong-tac.edit');
 Route::post('/lich-cong-tac/{idcongviec}/update', 'LichcongtacController@update')->name('lich-cong-tac.update');
 Route::get('/lich-cong-tac/{idcongviec}/delete', 'LichcongtacController@delete')->name('lich-cong-tac.delete');
+
+Route::get('/lich-cong-tac/export/{iddonvi}/{tungay}/{denngay}', 'LichcongtacController@export')->name('lich-cong-tac.export');
 //-------------------END LỊCH CÔNG TÁC-------------
 
 //-------------------PERMISSION-----------------------

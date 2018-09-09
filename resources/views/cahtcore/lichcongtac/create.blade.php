@@ -57,7 +57,7 @@
                                                     <div class="input-group">
                                                         <select multiple="multiple" name="lanhdaothamdu[]" class="form-control select2" style="width: 100%;">
                                                             @foreach ($list_lanhdao as $lanhdao)
-                                                                <option value="{{ $lanhdao->id }}"> {{ $lanhdao->hoten.' ('.$lanhdao->tenchucvu.')' }} </option>
+                                                                <option value="{{ $lanhdao->id }}"> {{ 'Đ/c '.$lanhdao->hoten.' ('.$lanhdao->tenchucvu.')' }} </option>
                                                             @endforeach
                                                         </select>
                                                     </div><!-- input-group -->

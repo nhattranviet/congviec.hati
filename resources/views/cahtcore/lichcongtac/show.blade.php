@@ -114,7 +114,8 @@
 			font-size: 120%;
 			font-weight: bold;
 			text-transform: uppercase;
-			padding-right: 0px !important;
+			padding: 5px 0px 0px 0px !important;
+			width: 50px;
 		}
 
 		.footerRight{
@@ -251,7 +252,8 @@
 
 		<div class="row footer">
 			<div class="col-md-1 footerLeft">
-				
+				{{-- style="background-image:url({{ asset('/assets/images/logo_cand.png') }}); background-repeat:no-repeat; background-position: center; background-size: 23% 100%;" class="align-middle leftHead"> --}}
+				<img height="80%" src="{{ asset('/assets/images/logo_cand2.png') }}" alt="">
 			</div>
 
 			<div class="col-md-11 footerRight">
