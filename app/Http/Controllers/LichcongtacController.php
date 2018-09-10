@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Redirect;
 class LichcongtacController extends Controller
 {
 
-    public function index(Request $request, $iddonvi = NULL)
+    public function index(Request $request)
     {
-        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $iddonvi = Session::get('userinfo')->iddonvi;
         $data['iddonvi'] = $iddonvi;
         if( $request->ajax() )
         {
@@ -53,17 +53,17 @@ class LichcongtacController extends Controller
         return view('cahtcore.lichcongtac.index', $data);
     }
 
-    public function create($iddonvi = NULL)
+    public function create()
     {
-        $current_donvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
-        $tendonvi = DB::table('tbl_donvi')->where('id',$current_donvi)->value('name');
-        $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $current_donvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) );
+        $iddonvi = Session::get('userinfo')->iddonvi;
+        $tendonvi = DB::table('tbl_donvi')->where('id',$iddonvi)->value('name');
+        $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $iddonvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) );
         $data['page_name'] = 'Thêm lịch công tác của lãnh đạo '.$tendonvi;
-        $data['iddonvi'] = $current_donvi;
+        $data['iddonvi'] = $iddonvi;
         return view('cahtcore.lichcongtac.create', $data);
     }
 
-    public function store(Request $request, $iddonvi)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'ngay' => 'required|date_format:d-m-Y',
@@ -76,6 +76,8 @@ class LichcongtacController extends Controller
         if ($validator->fails()) {
             return response()->json([ 'error' => $validator->errors()->all() ]);
         }
+
+        $iddonvi = Session::get('userinfo')->iddonvi;
 
         $data_insert = [
             'ngay' => date('Y-m-d', strtotime($request->ngay)).' ' .$request->gio.':00',
@@ -99,14 +101,14 @@ class LichcongtacController extends Controller
             ];
         }
         DB::table('tbl_lichcongtac_lanhdao')->insert($data_lanhdao_congviec);
-        $message = array('type' => 'success', 'content' => 'Thêm công việc thành công'); die;
+        $message = array('type' => 'success', 'content' => 'Thêm công việc thành công');
         if($request->submit == 'save')
         {
-            return redirect()->route('lich-cong-tac.index', $iddonvi)->with('alert_message', $message);
+            return redirect()->route('lich-cong-tac.index')->with('alert_message', $message);
         }
         elseif($request->submit == 'saveandnew')
         {
-            return redirect()->route('lich-cong-tac.create', $iddonvi)->with('alert_message', $message);
+            return redirect()->route('lich-cong-tac.create')->with('alert_message', $message);
         }
     }
 
@@ -186,9 +188,9 @@ class LichcongtacController extends Controller
         return redirect()->route('lich-cong-tac.index', $congviec_info[0]->iddonvi)->with('alert_message', $message);
     }
 
-    public function create_lanhdaotructuan($iddonvi = NULL)
+    public function create_lanhdaotructuan()
     {
-        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $iddonvi = Session::get('userinfo')->iddonvi;
         $tendonvi = DB::table('tbl_donvi')->where('id',$iddonvi)->value('name');
         $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $iddonvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) );
         $data['page_name'] = 'Thêm lịch công tác của lãnh đạo '.$tendonvi;
@@ -196,8 +198,9 @@ class LichcongtacController extends Controller
         return view('cahtcore.lichcongtac.create_lanhdaotructuan', $data);
     }
 
-    public function store_lanhdaotructuan (Request $request, $iddonvi)
+    public function store_lanhdaotructuan (Request $request)
     {
+        $iddonvi = Session::get('userinfo')->iddonvi;
         $validator = Validator::make($request->all(), [
             'tuan' => 'required',
             'idlanhdaotruc' => 'required',
@@ -271,9 +274,9 @@ class LichcongtacController extends Controller
         return redirect()->route('lich-cong-tac.index_lanhdaotructuan', $data['tructuan_info']->iddonvi)->with('alert_message', $message);
     }
 
-    public function index_lanhdaotructuan(Request $request, $iddonvi = NULL)
+    public function index_lanhdaotructuan(Request $request)
     {
-        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $iddonvi = Session::get('userinfo')->iddonvi;
         $data['list_lanhdao'] = CanboLibrary::getListCanboOfDonvi( $iddonvi, 'object', array(['tbl_donvi_doi.iddoi', '=', config('user_config.id_doi_lanhdaodonvi')]) ); //dd($data['list_lanhdao']);
         $data['iddonvi'] = $iddonvi;
         if( $request->ajax() )
@@ -298,9 +301,9 @@ class LichcongtacController extends Controller
         return redirect()->route('lich-cong-tac.index_lanhdaotructuan', $data['tructuan_info']->iddonvi)->with('alert_message', $message);
     }
 
-    public function show($iddonvi = NULL)
+    public function show()
     {
-        $iddonvi = ($iddonvi != NULL) ? $iddonvi : Session::get('userinfo')->iddonvi;
+        $iddonvi = Session::get('userinfo')->iddonvi;
         $data['tendonvi'] = 'PHÒNG '. DB::table('tbl_donvi')->where('id',$iddonvi)->value('kyhieu');
         $current_day = date('Y-m-d', time());
         $day_name = array( '1' => 'Thứ hai', '2' => 'Thứ ba', '3' => 'Thứ tư', '4' => 'Thứ năm', '5' => 'Thứ sáu', '6' => 'Thứ bảy', '0' => 'Chủ nhật');
@@ -325,9 +328,16 @@ class LichcongtacController extends Controller
         return view('cahtcore.lichcongtac.show', $data);
     }
 
-    public function export($iddonvi, $tungay, $denngay)
+    public function export($tungay, $denngay)
     {
-        $data['data_tuan'] = LichcongtacLibrary::getListLichcongtacInTuanToShow( $iddonvi, $tungay, $denngay);
+        $iddonvi = Session::get('userinfo')->iddonvi;
+        $data['list_ngay'] = UserLibrary::getListDayBettwenTwoDay_Y_m_d($tungay, $denngay);
+        $data['day_name'] = array( '1' => 'Thứ hai', '2' => 'Thứ ba', '3' => 'Thứ tư', '4' => 'Thứ năm', '5' => 'Thứ sáu', '6' => 'Thứ bảy', '0' => 'Chủ nhật');
+        $data['iddonvi'] = $iddonvi;
+        $data['infodonvi'] = DB::table('tbl_donvi')->where('id', $iddonvi)->first();
+        $data['data_tuan'] = LichcongtacLibrary::getListLichcongtacInTuanToShow( $iddonvi, $tungay, $denngay, 'ASC');
+        $data['tungay'] = date('d-m-Y', strtotime($tungay));
+        $data['denngay'] = date('d-m-Y', strtotime($denngay));
         $data['congviec_lanhdao'] = [];
         if( count($data['data_tuan']) > 0 )
         {
@@ -336,6 +346,51 @@ class LichcongtacController extends Controller
                 $data['congviec_lanhdao'][$congviec->id] = LichcongtacLibrary::getLanhdaoCongviec($congviec->id);
             }
         }
-        dd($data['data_tuan']);
+        
+        $data['list_congviec_chuanhoa_theo_buoi'] = [];
+        foreach ($data['data_tuan'] as $ngay)
+        {
+            $int_time = strtotime($ngay->ngay);
+            $buoi = (date('H', $int_time) > 12) ? 'Chiều' : 'Sáng';
+            $ngay_Y_m_d = date('Y-m-d', $int_time);
+            $data['list_congviec_chuanhoa_theo_buoi'][$ngay_Y_m_d][$buoi][] = $ngay; 
+        }
+        $lanhdaotruc_info = LichcongtacLibrary::getLanhdaotructuan($iddonvi, $tungay);
+        $data['lanhdaotruc'] = ($lanhdaotruc_info) ? 'Đồng chí '.$lanhdaotruc_info->hoten.' - '. $lanhdaotruc_info->tenchucvu : '..........'; //dd($data['lanhdaotruc']);
+        $html = view('cahtcore.lichcongtac.view_report_lichcongtac', $data)->render(); //echo $html; die;
+        $str_for_doc = UserLibrary::create_docfile_landscape_nomal($html);
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=lich-cong-ta-tu-".$data['tungay']." den ".$data['denngay'].".doc");
+        echo $str_for_doc;
+        // echo $html;
+
+    }
+
+    public function gate_check(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tungay' => 'required|date_format:d-m-Y',
+            'denngay' => 'required|date_format:d-m-Y',
+        ], LichcongtacLibrary::getLichcongtacMessage() );
+
+        if ($validator->fails()) {
+            return response()->json([ 'error' => $validator->errors()->all() ]);
+        }
+        $int_ngaydautuan = strtotime( $request->tungay );
+        $int_ngaycuoituan = strtotime( $request->denngay );
+        $Y_m_d_ngaydautuan = date( 'Y-m-d', $int_ngaydautuan );
+        $Y_m_d_ngaycuoituan = date( 'Y-m-d', $int_ngaycuoituan );
+
+        if ( date('w', $int_ngaydautuan) != 1 || ( $int_ngaycuoituan - $int_ngaydautuan ) != 518400)    //  Từ thứ 2 đến CN có 6 bước nhảy 518400 = 6*86400
+        {
+            return response()->json(['error' => array('Trích xuất Lịch công tác phải chọn ngày đầu tuần (Thứ 2), ngày cuối tuần (Chủ nhật) và mỗi lần được chọn 01 tuần')]);
+        }
+        $iddonvi = Session::get('userinfo')->iddonvi;
+        
+        if($request->redirect_type == 'report_lichcongtactuan')
+        {
+            return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/lich-cong-tac/export/'.$iddonvi.'/'.$Y_m_d_ngaydautuan.'/'.$Y_m_d_ngaycuoituan, 'type' => 'info', 'show_alert' => TRUE]);
+        }
+        
     }
 }

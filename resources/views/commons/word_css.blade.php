@@ -1,7 +1,9 @@
 <style>
+    body{
+        font-size: 13pt;
+    }
     table tr td{
         padding: 0px 2px;
-        text-align: center;
         font-size: 12pt;
     }
     .daumuc{
@@ -10,7 +12,7 @@
     }
     table{
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: collapse !important;
     }
     .center{
         text-align: center;
@@ -30,6 +32,18 @@
     }
     .italic{
         font-style: italic;
+    }
+    .daumuc-12{
+        font-size: 12pt;
+        font-weight: bold;
+    }
+    .daumuc-13{
+        font-size: 13pt;
+        font-weight: bold;
+    }
+    .daumuc-14{
+        font-size: 14pt;
+        font-weight: bold;
     }
     .daumuc{
         font-size: 11pt;
@@ -56,5 +70,8 @@
         font-size: 11pt;
         font-weight: bold;
         padding: 2px 2px 2px 2px;
+    }
+    .border-bottom-dotted{
+        border-bottom: 1px dotted black !important;
     }
 </style>

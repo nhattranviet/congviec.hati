@@ -333,6 +333,11 @@ class UserLibrary
         return $listDay;
     }
 
+    public static function getExactlyname($iddonvi)
+    {
+
+    }
+
 
     public static function create_docfile_portrait($html)
     {
@@ -366,6 +371,29 @@ class UserLibrary
             {
                 size: 29.7cm 21cm;  /* A4 */
                 margin: 0.5cm 1.2cm 0.5cm 2.5cm; /* Margins: 2 cm on each side */
+                mso-page-orientation: landscape;
+            }
+        @page Section1 { }
+        div.Section1 { page:Section1; }
+        --></style>
+        </head>
+        <body>
+        <div class=Section1>
+        ".$html."
+        </div>
+        </body>
+        </html>";
+    }
+
+    public static function create_docfile_landscape_nomal($html)
+    {
+        return "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><title>Microsoft Office HTML Example</title>
+        <style> <!-- 
+            @page
+            {
+                size: 29.7cm 21cm;  /* A4 */
+                margin: 2cm 2cm 2cm 3cm; /* Margins: 2 cm on each side */
                 mso-page-orientation: landscape;
             }
         @page Section1 { }

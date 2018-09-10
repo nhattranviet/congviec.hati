@@ -1,7 +1,14 @@
 @extends('layouts.masterPage')
 
 @section('js')
-    <script src="{{ asset('/assets/pages/nhatkycongtac.js') }}"></script>
+    {{-- <script src="{{ asset('/assets/pages/nhatkycongtac.js') }}"></script> --}}
+    <script>
+        $(document).ready(function () {
+            
+            
+            
+        });
+    </script>
 @endsection
 
 @section('css')
@@ -38,11 +45,9 @@
             <div class="col-xs-12">
                 <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
                 <a href="{{ route('lich-cong-tac.create', $iddonvi) }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
-                <a href="{{ route('lich-cong-tac.create_lanhdaotructuan', $iddonvi) }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-user-plus"> </i> Thêm lãnh đạo trực tuần</a>
                 <a href="{{ route('nhat-ky-cong-tac-doi.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-user-secret"> </i> Lãnh đạo trực</a>
-                <a href="{{ route('nhat-ky-cong-tac-doi.theodoinhatky') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-calendar"> </i> Theo dõi nhật ký</a>
                 <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
-                        <form id="tim-kiem-hoso" action="{{ route('lich-cong-tac.index', $iddonvi) }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
+                        <form id="lich-cong-tac" action="{{ route('lich-cong-tac.index', $iddonvi) }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
                             <div class="row">
                                 @csrf
 
@@ -69,7 +74,7 @@
                                 
                                 <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2" style="margin-top: 2em;">
                                     <button id="submitBtn" class="btn btn-danger" type="submit" data-toggle="tooltip" data-placement="top" title="Lọc, tìm kiếm"> <i style="font-size: 1.2em;" class="fa fa-filter"></i></button>
-                                    <button class="btn btn-info waves-effect exportNhatkyBtn" redirect_type="report_nhatkycanbo" ajax_action="{{ route('nhat-ky-cong-tac.report-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích lịch làm việc"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
+                                    <button class="btn btn-info waves-effect exportData" redirect_type="report_lichcongtactuan" ajax_action="{{ route('lich-cong-tac.export-gate-check') }}" href="#" data-toggle="tooltip" data-placement="top" title="Trích xuất nhật ký"> <i style="font-size: 1.2em;" class="fa fa-file-word-o"></i> </button>
                                 </div>
                             </div>
                         </form>

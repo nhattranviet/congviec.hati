@@ -101,14 +101,14 @@ class LichcongtacLibrary
         return $data;
     }
 
-    public static function getListLichcongtacInTuanToShow( $iddonvi, $tungay = NULL, $denngay = NULL)
+    public static function getListLichcongtacInTuanToShow( $iddonvi, $tungay = NULL, $denngay = NULL, $sort = 'ASC')
     {
         $data = DB::table('tbl_lichcongtac')
         ->join('tbl_donvi_doi', 'tbl_lichcongtac.id_iddonvi_iddoi', '=', 'tbl_donvi_doi.id')
         ->where('iddonvi', $iddonvi);
         if($tungay != NULL) $data = $data->whereDate('ngay', '>=', $tungay);
         if($denngay != NULL) $data = $data->whereDate('ngay', '<=', $denngay);
-        $data = $data->orderBy('ngay', 'ASC')
+        $data = $data->orderBy('ngay', $sort)
         ->select('tbl_lichcongtac.*')->get()->toArray();
         return $data;
     }
