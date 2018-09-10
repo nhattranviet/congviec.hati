@@ -322,14 +322,14 @@ Route::get('/lich-cong-tac/lanh-dao-truc-tuan/', 'LichcongtacController@index_la
 Route::get('/lich-cong-tac/create_lanhdaotructuan/', 'LichcongtacController@create_lanhdaotructuan')->name('lich-cong-tac.create_lanhdaotructuan');
 Route::post('/lich-cong-tac/store_lanhdaotructuan/', 'LichcongtacController@store_lanhdaotructuan')->name('lich-cong-tac.store_lanhdaotructuan');
 Route::get('/lich-cong-tac/edit_lanhdaotructuan/{id}', 'LichcongtacController@edit_lanhdaotructuan')->name('lich-cong-tac.edit_lanhdaotructuan');
-Route::post('/lich-cong-tac/update_lanhdaotructuan/', 'LichcongtacController@update_lanhdaotructuan')->name('lich-cong-tac.update_lanhdaotructuan');
+Route::post('/lich-cong-tac/update_lanhdaotructuan/{id}', 'LichcongtacController@update_lanhdaotructuan')->name('lich-cong-tac.update_lanhdaotructuan');
 Route::get('/lich-cong-tac/lanh-dao-truc-tuan/{idtructuan}/delete_lanhdaotructuan', 'LichcongtacController@delete_lanhdaotructuan')->name('lich-cong-tac.delete_lanhdaotructuan');
 
 Route::get('/lich-cong-tac/{idcongviec}/edit', 'LichcongtacController@edit')->name('lich-cong-tac.edit');
 Route::post('/lich-cong-tac/{idcongviec}/update', 'LichcongtacController@update')->name('lich-cong-tac.update');
 Route::get('/lich-cong-tac/{idcongviec}/delete', 'LichcongtacController@delete')->name('lich-cong-tac.delete');
 
-Route::get('/lich-cong-tac/export//{tungay}/{denngay}', 'LichcongtacController@export')->name('lich-cong-tac.export');
+Route::get('/lich-cong-tac/export/{tungay}/{denngay}', 'LichcongtacController@export')->name('lich-cong-tac.export');
 Route::get('/lich-cong-tac-export-gate-check/', 'LichcongtacController@gate_check')->name('lich-cong-tac.export-gate-check');
 //-------------------END LỊCH CÔNG TÁC-------------
 

@@ -27,7 +27,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhaus" action="{{ route('lich-cong-tac.update',$idcongviec) }}" method="POST" role="form" autocomplete="off">
+                        <form id="form-nhankhaus" action="{{ route('lich-cong-tac.update', $idcongviec) }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 
                                 <div class="col-md-12">
@@ -114,7 +114,7 @@
                             <div class="row m-t-10">
                                 <div class="col-md-12">
                                     <button type="submit" name="submit" class="btn btn-primary" value="save"> <i class="fa fa-save"></i> Lưu</button>
-                                    <a href="{{ route('lich-cong-tac.index', $iddonvi) }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
+                                    <a href="{{ route('lich-cong-tac.index') }}" class="btn btn-danger waves-effect waves-light pull-right"><span class="btn-label"><i class="fa fa-backward"></i></span>Quay lại</a>
                                 </div>
                             </div>
                             {{ csrf_field() }}

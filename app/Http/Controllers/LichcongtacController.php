@@ -389,7 +389,7 @@ class LichcongtacController extends Controller
         
         if($request->redirect_type == 'report_lichcongtactuan')
         {
-            return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/lich-cong-tac/export/'.$iddonvi.'/'.$Y_m_d_ngaydautuan.'/'.$Y_m_d_ngaycuoituan, 'type' => 'info', 'show_alert' => TRUE]);
+            return response()->json([ 'message' => 'Đang trích xuất dữ liệu', 'url' => '/lich-cong-tac/export/'.$Y_m_d_ngaydautuan.'/'.$Y_m_d_ngaycuoituan, 'type' => 'info', 'show_alert' => TRUE]);
         }
         
     }

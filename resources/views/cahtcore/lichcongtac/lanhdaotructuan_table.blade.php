@@ -8,12 +8,11 @@
         </tr>
     </thead>
 
-
     <tbody>
         @foreach($list_lanhdaotructuan as $lanhdaotructuan)
         <tr>
             <td>{{ date('d-m-Y', strtotime($lanhdaotructuan->ngaydautuan)).' -> '.date('d-m-Y', strtotime($lanhdaotructuan->ngaycuoituan)) }}</td>
-            <td>{{ $lanhdaotructuan->hoten }}</td>
+            <td>{{ 'Đ/c '.$lanhdaotructuan->hoten.' - '.$lanhdaotructuan->tenchucvu }}</td>
             <td>
                 <div class="button-list" style="max-width: 50px; margin: auto;">
                     <a href="{{ route('lich-cong-tac.edit_lanhdaotructuan', $lanhdaotructuan->id) }}" class="btn btn-link"  modal_use="congvieccanbo-modal"  data-toggle="tooltip" data-placement="top" title="Sửa"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>

@@ -40,7 +40,6 @@
                     <input type="hidden" name="idnhatky" id="idnhatky_hidden" value="">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                     <button type="submit" id="submitBtnUpdateCB" class="btn btn-primary">Lưu lại</button>
-                    {{-- <button type="button" id="saveChange" class="btn btn-primary" data-dismiss="modal">Lưu lại</button> --}}
                 </div>
             </div>
         </div>

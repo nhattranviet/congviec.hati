@@ -12,7 +12,7 @@
 	<link href="{{asset('/assets/css/lich_show.css')}}" rel="stylesheet" />
 	<style>
 		body{
-			background-color: #FF5733;
+			background-color: #ca043a;
 		}
 		.trip_viectrongngay, .trip_viectrongtuan{
 			display: none;
@@ -71,7 +71,7 @@
 		.footer{
 			position:fixed;
 			height:50px;
-			background-color:#FF5733;
+			background-color:#ca043a;
 			bottom:0px;
 			left:0px;
 			right:0px;
@@ -137,6 +137,9 @@
 		.leftHead_tendonvi{
 			text-transform: uppercase;
 		}
+		.show_title{
+			color: #f5f5f5 !important;
+		}
 
 	</style>
 	
@@ -197,7 +200,7 @@
 						{
 							foreach ($data_tuan as $data)
 							{
-								$arrCVTuan[] = "<strong>Ngày ".date("d/m", strtotime($data->ngay)).":</strong> ".$data->noidungcongviec;
+								$arrCVTuan[] = "<strong class='show_title'>Ngày ".date("d/m", strtotime($data->ngay)).":</strong> ".$data->noidungcongviec;
 							}
 							$num_arrCVTuan = count($arrCVTuan);
 							$i = 0;

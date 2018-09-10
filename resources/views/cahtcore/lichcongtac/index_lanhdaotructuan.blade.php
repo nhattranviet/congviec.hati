@@ -37,12 +37,10 @@
         <div class="row">
             <div class="col-xs-12">
                 <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
-                <a href="{{ route('lich-cong-tac.create', $iddonvi) }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
-                <a href="{{ route('lich-cong-tac.create_lanhdaotructuan', $iddonvi) }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-user-plus"> </i> Thêm lãnh đạo trực tuần</a>
-                <a href="{{ route('nhat-ky-cong-tac-doi.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-user-secret"> </i> Lãnh đạo trực</a>
-                <a href="{{ route('nhat-ky-cong-tac-doi.theodoinhatky') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-calendar"> </i> Theo dõi nhật ký</a>
+                <a href="{{ route('lich-cong-tac.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="fa fa-calendar"> </i> Lịch công tác</a>
+                <a href="{{ route('lich-cong-tac.create_lanhdaotructuan') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-user-plus"> </i> Thêm lãnh đạo trực</a>
                 <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
-                        <form id="tim-kiem-hoso" action="{{ route('lich-cong-tac.index_lanhdaotructuan', $iddonvi) }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
+                        <form id="tim-kiem-hoso" action="{{ route('lich-cong-tac.index_lanhdaotructuan') }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
                             <div class="row">
                                 @csrf
 

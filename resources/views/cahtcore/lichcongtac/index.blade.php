@@ -44,10 +44,11 @@
         <div class="row">
             <div class="col-xs-12">
                 <a style="margin-bottom: 5px;" href="#demo" class="btn btn-link" data-toggle="collapse"><i style="font-size: 30px;" class="ion-gear-b"></i></a>
-                <a href="{{ route('lich-cong-tac.create', $iddonvi) }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc"> <i class="ion-plus"> </i> Thêm công việc</a>
-                <a href="{{ route('nhat-ky-cong-tac-doi.index') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý nhật ký đội" style="margin: 0 5px;"> <i class="fa fa-user-secret"> </i> Lãnh đạo trực</a>
+                <a href="{{ route('lich-cong-tac.create') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Thêm công việc trong lịch"> <i class="ion-plus"> </i> Thêm công việc</a>
+                <a href="{{ route('lich-cong-tac.index_lanhdaotructuan') }}" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Quản lý lãnh đạo trực tuần" style="margin: 0 5px;"> <i class="fa fa-user-secret"> </i> Lãnh đạo trực</a>
+                <a href="{{ route('lich-cong-tac.show') }}" target="_blank" class="btn btn-success pull-right" data-toggle="tooltip" data-placement="top" title="Xem lịch trên màn hình" style="margin: 0 5px;"> <i class="fa fa-tv"> </i> Xem</a>
                 <div id="demo" class="collapse" style="background-color:#ffffff; margin-bottom: 10px; padding: 1.5em;">
-                        <form id="lich-cong-tac" action="{{ route('lich-cong-tac.index', $iddonvi) }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
+                        <form id="lich-cong-tac" action="{{ route('lich-cong-tac.index') }}" method="GET" role="form" idresult="ajax_table" autocomplete="off">
                             <div class="row">
                                 @csrf
 
