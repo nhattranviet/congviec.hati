@@ -36,9 +36,6 @@
 			text-align: center;
 		}
 
-		select{
-			padding: 0.5em !important;
-		}
 	</style>
 	<!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -104,6 +101,7 @@
 
 	<script src="{{ asset('/assets/plugins/multiselect/js/jquery.multi-select.js') }}"></script>
 	<script src="{{ asset('/assets/plugins/select2/js/select2.full.min.js') }}"></script>
+	{{-- <script src="{{ asset('/assets/plugins/select2/js/select2-tab-fix.min.js') }}"></script> --}}
 	<script src="{{ asset('/assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
 	<script src="{{ asset('/assets/plugins/moment/moment.js') }}"></script>
 	<script src="{{ asset('/assets/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>

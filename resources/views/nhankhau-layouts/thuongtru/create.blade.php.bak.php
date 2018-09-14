@@ -1,24 +1,6 @@
 @extends('layouts.masterPage')
 @section('js')
     <script src="{{ asset('/assets/pages/jquery.addr-pickers.init.js') }}?v=1.0.2"></script>
-    <script>
-        $(document).ready(function(){
-            
-            $('.select2-nosearch').select2({
-                minimumResultsForSearch: 20
-            });
-
-            $(document).on('focus', '.select2', function (e) {
-                if (e.originalEvent) {
-                    $(this).siblings('select').select2('open');    
-                } 
-            });
-
-            $('#address-modal').on('shown.bs.modal', function () {
-                $('select.test').focus();
-            })
-        });
-    </script>
 @endsection
 
 @section('css')
@@ -130,7 +112,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group" >
                                                                     <label>Quan hệ với chủ hộ <span class="text-danger">*</span></label>
-                                                                    <select name="idquanhechuho[]" class="form-control select2 {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}"  tabindex="7">
+                                                                    <select name="idquanhechuho[]" class="form-control  {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}"  tabindex="7">
                                                                         <option value="">Chọn quan hệ</option>
                                                                         @foreach($list_quanhechuho as $quanhechuho)
                                                                         <option value="{{ $quanhechuho->id }}"  {{ old('idquanhechuho') == $quanhechuho->id ? 'selected' : '' }}>{{ $quanhechuho->name }}</option>
@@ -194,7 +176,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Học vấn</label>
-                                                                    <select name="idtrinhdohocvan[]" class="form-control select2" tabindex="13">
+                                                                    <select name="idtrinhdohocvan[]" class="form-control" tabindex="13">
                                                                         <option value="">Chọn Học vấn</option>
                                                                         @foreach($educations as $education)
                                                                         <option value="{{ $education->id }}">{{ $education->name }}</option>
@@ -221,7 +203,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Nghề nghiệp</label>
-                                                                    <select name="idnghenghiep[]" class="form-control select2" tabindex="15">
+                                                                    <select name="idnghenghiep[]" class="form-control" tabindex="15">
                                                                         <option value="">Chọn Nghề nghiệp</option>
                                                                         @foreach($careers as $career)
                                                                         <option value="{{ $career->id }}">{{ $career->name }}</option>
@@ -232,7 +214,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Dân tộc</label>
-                                                                    <select name="iddantoc[]" class="form-control select2" tabindex="16">
+                                                                    <select name="iddantoc[]" class="form-control" tabindex="16">
                                                                         <option value="">Chọn Dân tộc</option>
                                                                         @foreach($nations as $nation)
                                                                         <option value="{{ $nation->id }}">{{ $nation->name }}</option>
@@ -277,7 +259,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Tôn giáo <span class="text-danger">*</span></label>
-                                                                    <select name="idtongiao[]" class="form-control select2" tabindex="21">
+                                                                    <select name="idtongiao[]" class="form-control" tabindex="21">
                                                                         <option value="">Chọn Tôn giáo</option>
                                                                         @foreach($religions as $religion)
                                                                         <option value="{{ $religion->id }}">{{ $religion->name }}</option>
@@ -303,7 +285,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Quốc tịch <span class="text-danger">*</span></label>
-                                                                    <select name="idquoctich[]" class="form-control select2" tabindex="23">
+                                                                    <select name="idquoctich[]" class="form-control" tabindex="23">
                                                                         <option  value="">Chọn Quốc tịch</option>
                                                                         @foreach($countries as $country)
                                                                         <option value="{{ $country->id }}">{{ $country->name }}</option>

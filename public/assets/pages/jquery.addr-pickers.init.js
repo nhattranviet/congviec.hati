@@ -5,8 +5,6 @@ var isBusy = false;
 var modal = $('#address-modal');
 $(document).on('focus', '#addressPicker', function (event) {
   event.preventDefault();
-  // alert($(this).attr('tabindex'));
-  // var current_tabindex = $(this).attr('tabindex');
   el = $(this).parent();
   current_address_input = $(this);
   modal.find('.modal-title').text($(this).attr('placeholder'));

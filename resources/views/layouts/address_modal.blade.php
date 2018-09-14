@@ -1,8 +1,7 @@
-<div class="modal fade" id="address-modal">
+<div class="modal fade"  data-backdrop="static" id="address-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Modal title</h4>
             </div>
             <div class="modal-body p-20">
@@ -10,7 +9,7 @@
                     <div class="col-md-6">
                         <fieldset class="form-group">
                             <label class="control-label">Quốc gia</label>
-                            <select id="country" class="form-control select2">
+                            <select id="country" class="form-control select2 test">
                                 <option  value="">Chọn Quốc gia</option>
                                 @foreach($countries as $country)
                                 <option {{ (config('user_config.default_hanhchinh.country') == $country->id) ? 'selected' : NULL }} value="{{ $country->id }}">{{ $country->name }}</option>
