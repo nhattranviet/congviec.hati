@@ -68,7 +68,8 @@
         font-weight: bold;
     }
     p{
-        margin-top: 0.6pt;
+        margin: 0.3pt 0pt;
+        padding: 0.3pt 0pt;
     }
     .daumuc-center{
         text-align: center;

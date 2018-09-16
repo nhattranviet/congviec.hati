@@ -199,6 +199,8 @@ Route::get('/get-bao-cao-nhan-khau-ToResult', 'Nhanhokhau\BaocaoThongkeControlle
 Route::get('/thong-ke', 'Nhanhokhau\BaocaoThongkeController@getThongke')->name('thong-ke');
 Route::get('/get-thong-ke-nhan-khau', 'Nhanhokhau\BaocaoThongkeController@getThongkeToResult')->name('get-thong-ke-nhan-khau');
 Route::get('/nhan-khau/{id}/get-hk-01', 'Nhanhokhau\BaocaoThongkeController@getHK01')->name('get-hk-01');
+Route::get('/nhan-khau/{id}/get-hk-03', 'Nhanhokhau\BaocaoThongkeController@getHK03')->name('get-hk-03');
+Route::get('/nhan-khau/{id}/get-hk-04', 'Nhanhokhau\BaocaoThongkeController@getHK04')->name('get-hk-04');
 Route::get('/nhan-khau/{data}/get-hk-07', 'Nhanhokhau\BaocaoThongkeController@getHK07')->name('get-hk-07');
 
 Route::get('/test-thong-ke', 'Nhanhokhau\BaocaoThongkeController@testThongke')->name('test-thong-ke');

@@ -552,4 +552,28 @@ class BaocaoThongkeController extends Controller
         echo $str;
     }
 
+    public function getHK03(Request $request, $id_in_sohokhau)
+    {
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau); dd($data['nhankhau']);
+        $data['tenquanhechuho'] = DB::table('tbl_moiquanhe')->where('id', $data['nhankhau']->idquanhechuho)->value('name');
+        $data['chuhoinfo'] = NhanhokhauLibrary::getChuho($data['nhankhau']->idhoso);
+        $html_table = view('nhankhau-layouts.ajax_component.view_report_hk03', $data)->render();
+        $str = UserLibrary::create_docfile_portrait($html_table);
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=mau-hk-07_".$data['nhankhau']->hoten.".doc");
+        echo $str;
+    }
+
+    public function getHK04(Request $request, $id_in_sohokhau)
+    {
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
+        $data['tenquanhechuho'] = DB::table('tbl_moiquanhe')->where('id', $data['nhankhau']->idquanhechuho)->value('name');
+        $data['chuhoinfo'] = NhanhokhauLibrary::getChuho($data['nhankhau']->idhoso);
+        $html_table = view('nhankhau-layouts.ajax_component.view_report_hk04', $data)->render();
+        $str = UserLibrary::create_docfile_portrait($html_table);
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=mau-hk-07_".$data['nhankhau']->hoten.".doc");
+        echo $str;
+    }
+
 }
