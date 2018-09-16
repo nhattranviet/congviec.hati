@@ -130,7 +130,6 @@
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
                                     <button id="submitBtns" type="submit" class="btn btn-primary">Báo cáo</button>
-                                    <button id="exportToWord" class="btn btn-primary"> <i class="fa fa-file-word-o"></i> Export</button>
                                 </div>
                             </div>
                             {{ csrf_field() }}

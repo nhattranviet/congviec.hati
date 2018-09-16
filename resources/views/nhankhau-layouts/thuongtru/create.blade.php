@@ -4,25 +4,13 @@
     <script>
         $(document).ready(function(){
             
-            $('.select2-nosearch').select2({
-                minimumResultsForSearch: 20
-            });
-
-            $(document).on('focus', '.select2', function (e) {
-                if (e.originalEvent) {
-                    $(this).siblings('select').select2('open');    
-                } 
-            });
-
-            $('#address-modal').on('shown.bs.modal', function () {
-                $('select.test').focus();
-            })
+            
         });
     </script>
 @endsection
 
 @section('css')
-    <style type="text/css">
+    <style>
         input[type="radio"]:focus{
             outline: 2px auto rgb(229, 151, 0) !important;
             outline-offset: -2px !important;

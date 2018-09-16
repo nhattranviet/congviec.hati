@@ -108,6 +108,7 @@ class NhanKhauController extends Controller
                 $data_log = array(
                     'idthutuccutru' => $this->thutuc_capmoi, 'type' => 'hogiadinh', 'idhoso' => $idBrief, 'date_action' => date('Y-m-d', strtotime($request->ngaydangky[$i])),
                     'idquocgia_thuongtrutruoc' => $request->idquocgia_thuongtrutruoc[$i], 'idtinh_thuongtrutruoc' => $request->idtinh_thuongtrutruoc[$i], 'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc[$i], 'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i], 'chitiet_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i],
+                    'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
                 );
                 NhanhokhauLibrary::logCutru($data_log);
             }
@@ -122,6 +123,7 @@ class NhanKhauController extends Controller
                 'idthutuccutru' => $this->thutuc_dangkynhankhau,
                 'type' => 'nhankhau', 'idnhankhau' => $nhankhau_id_inserted, 'idhoso' => $idBrief, 'date_action' => date('Y-m-d', strtotime($request->ngaydangky[$i])),
                 'idquocgia_thuongtrutruoc' => $request->idquocgia_thuongtrutruoc[$i], 'idtinh_thuongtrutruoc' => $request->idtinh_thuongtrutruoc[$i], 'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc[$i], 'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i], 'chitiet_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$i],
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
             );
             NhanhokhauLibrary::logCutru($data_log_nhankhau);
             NhanhokhauLibrary::insertArrNhankhauToSohokhau($request, $i, $idBrief, $nhankhau_id_inserted, 'FALSE');
@@ -144,7 +146,7 @@ class NhanKhauController extends Controller
 
         NhanhokhauLibrary::updateHoso($request, $idhoso);
         $data_log = array(
-            'idthutuccutru' => $this->thutuc_dieuchinhthaydoi, 'type' => 'hogiadinh', 'idhoso' => $idhoso, 'ghichu' => $request->ghichu, 'date_action' => date('Y-m-d', strtotime($request->date_action)),
+            'idthutuccutru' => $this->thutuc_dieuchinhthaydoi, 'type' => 'hogiadinh', 'idhoso' => $idhoso, 'ghichu' => $request->ghichu, 'date_action' => date('Y-m-d', strtotime($request->date_action)), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
         );
         NhanhokhauLibrary::logCutru($data_log);
         return response()->json(['success' => 'Cập nhật hồ sơ thành công ', 'url' => route('chi-tiet-ho-khau', $idhoso)]);
@@ -198,6 +200,7 @@ class NhanKhauController extends Controller
             'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc,
             'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc,
             'chitiet_thuongtrutruoc' => $request->chitiet_thuongtrutruoc,
+            'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
         );
         NhanhokhauLibrary::logCutru($data_log_nhankhau);
         return response()->json(['success' => 'Đăng ký thường trú thành công ', 'url' => route('chi-tiet-ho-khau', $idhoso)]);
@@ -275,6 +278,7 @@ class NhanKhauController extends Controller
     public function getCheckxoathuongtru($id_in_sohokhau)
     {
         $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
+        $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($data['nhankhau']->idhoso, array(['tbl_sohokhau.id', '!=', $id_in_sohokhau], ['idquanhechuho', '!=', 1]));
         if($data['nhankhau']->idquanhechuho == 1)
         {
             $message = array('type' => 'warning', 'content' => 'Người này là chủ hộ, bạn phải thay chủ hộ trước khi xóa thường trú');
@@ -310,7 +314,10 @@ class NhanKhauController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
-        NhanhokhauLibrary::deleteNhankhauSohokhau( $id_in_sohokhau );
+        $arrXoa = ($request->idnguoixoacung != NULL) ? $request->idnguoixoacung : array();
+        $arrXoa[] = $id_in_sohokhau;
+        $list_nhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')->whereIn('id', $arrXoa)->pluck('idnhankhau')->toArray();
+        NhanhokhauLibrary::deleteNhankhauSohokhau( $arrXoa );
         if($request->idtruonghopxoa == $this->thutuc_dangkynoimoi)
         {
             $data_update = array(
@@ -320,23 +327,31 @@ class NhanKhauController extends Controller
                 'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
                 'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
             );
-            DB::connection('nhanhokhau')->table('tbl_nhankhau')->where('id', $request->idnhankhau)->update($data_update);
+            DB::connection('nhanhokhau')->table('tbl_nhankhau')->whereIn('id', $list_nhankhau)->update($data_update);
         }
-        $data_log = array(
-            'idthutuccutru' => $request->idtruonghopxoa, 'type' => 'nhankhau', 'idhoso' => $request->idhoso, 'idnhankhau' => $request->idnhankhau, 'ghichu' => $request->lydoxoa, 'date_action' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
-            'idquocgia_thuongtrumoi' => $request->idquocgia_thuongtrumoi,
-            'idtinh_thuongtrumoi' => $request->idtinh_thuongtrumoi,
-            'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
-            'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
-            'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
-        );
-        NhanhokhauLibrary::logCutru($data_log);
+
+        $data_log = array();
+        $ngayxoa = date('Y-m-d', strtotime($request->ngayxoathuongtru));
+        foreach ($list_nhankhau as $idnhankhau)
+        {
+            $data_log[] = array(
+                'idthutuccutru' => $request->idtruonghopxoa, 'type' => 'nhankhau', 'idhoso' => $request->idhoso, 'idnhankhau' => $idnhankhau, 'ghichu' => $request->lydoxoa, 'date_action' => $ngayxoa,
+                'idquocgia_thuongtrumoi' => $request->idquocgia_thuongtrumoi,
+                'idtinh_thuongtrumoi' => $request->idtinh_thuongtrumoi,
+                'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
+                'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
+                'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
+            );
+        }
+        
+        NhanhokhauLibrary::logArrCutru($data_log);
         return response()->json(['success' => 'Xóa đăng ký thường trú thành công ', 'url' => route('chi-tiet-ho-khau', $request->idhoso)]);
     }
 
     public function getCheckxoathuongtruHGD($idhoso)
     {
-        $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso);
+        $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($idhoso, array(['tbl_sohokhau.deleted_at', '=', NULL]));
         $data['idhoso'] = $idhoso;
 
         $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
@@ -366,15 +381,16 @@ class NhanKhauController extends Controller
             return response()->json(['error' => $validator->errors()->all()]);
         }
 
-        $list_nhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('idhoso',$idhoso)->pluck('idnhankhau');
-        
+        $list_nhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where(array(['idhoso', '=', $idhoso], ['deleted_at', '!=', 'NULL']))->pluck('idnhankhau');
+        if(count($list_nhankhau) < 1)
+        {
+            echo 'Không có nhân khẩu trong hộ'; die;
+        }
         $data_hoso = array(
             'deleted_at' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
         );
-
         DB::connection('nhanhokhau')->table('tbl_hoso')->where('id',$idhoso)->update($data_hoso);
-
-        DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('idhoso',$idhoso)->delete();
+        DB::connection('nhanhokhau')->table('tbl_sohokhau')->where( array( ['idhoso', '=', $idhoso], ['tbl_sohokhau.deleted_at', '!=', NULL] ) )->update($data_hoso);
 
         $data_log_hogiadinh = array(
             'idthutuccutru' => $request->idtruonghopxoa, 'type' => 'hogiadinh', 'idhoso' => $idhoso, 'date_action' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
@@ -383,6 +399,7 @@ class NhanKhauController extends Controller
             'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
             'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
             'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
+            'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
         );
         NhanhokhauLibrary::logCutru($data_log_hogiadinh);
 
@@ -440,6 +457,7 @@ class NhanKhauController extends Controller
             'idhoso' => $idhoso,
             'ghichu' => $request->ghichu,
             'date_action' => date('Y-m-d', strtotime($request->ngaycaplai)),
+            'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
         );
         NhanhokhauLibrary::logCutru($data_log_hogiadinh);
 
@@ -493,6 +511,7 @@ class NhanKhauController extends Controller
             'idhoso' => $idhoso,
             'ghichu' => $request->ghichu,
             'date_action' => date('Y-m-d', strtotime($request->ngaycapdoi)),
+            'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
         );
         NhanhokhauLibrary::logCutru($data_log_hogiadinh);
 
@@ -645,6 +664,7 @@ class NhanKhauController extends Controller
             'type' => 'hogiadinh',
             'idhoso' => $idhoso_inserted,
             'date_action' => date('Y-m-d', strtotime($request->date_action)),
+            'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
         );
         NhanhokhauLibrary::logCutru( $data_log );
 
@@ -669,6 +689,7 @@ class NhanKhauController extends Controller
                 'idthutuccutru' => $this->thutuc_tach, 'type' => 'nhankhau', 'idhoso' => $idhoso_inserted,
                 'idnhankhau' => $request->idnhankhau[$i],
                 'date_action' => date('Y-m-d', strtotime($request->date_action)),
+                'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
             );
             NhanhokhauLibrary::logCutru( $data_log );
         }
@@ -684,6 +705,7 @@ class NhanKhauController extends Controller
                     'idthutuccutru' => $this->thutuc_dangkynhankhau,
                     'type' => 'nhankhau', 'idnhankhau' => $nhankhau_id_inserted, 'idhoso' => $idhoso_inserted, 'date_action' => date('Y-m-d', strtotime($request->ngaydangky[$j])),
                     'idquocgia_thuongtrutruoc' => $request->idquocgia_thuongtrutruoc[$j], 'idtinh_thuongtrutruoc' => $request->idtinh_thuongtrutruoc[$j], 'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc[$j], 'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$j], 'chitiet_thuongtrutruoc' => $request->idxa_thuongtrutruoc[$j],
+                    'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
                 );
                 NhanhokhauLibrary::logCutru($data_log_nhankhau);
                 NhanhokhauLibrary::insertArrNhankhauToSohokhau($request, $j, $idhoso_inserted, $nhankhau_id_inserted, 'FALSE');

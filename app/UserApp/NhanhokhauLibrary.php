@@ -505,14 +505,16 @@ class NhanhokhauLibrary
         }
     }
 
-    public static function getChitiethokhau($idhoso)
+    public static function getChitiethokhau($idhoso, $arrWhere = NULL)
     {
-        return DB::connection('nhanhokhau')->table('tbl_sohokhau')
+        $data = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_sohokhau.idnhankhau')
         ->join('tbl_hoso', 'tbl_hoso.id', '=', 'tbl_sohokhau.idhoso')
-        ->where('idhoso', $idhoso)
-        ->select('tbl_nhankhau.*', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.hokhau_so', 'tbl_sohokhau.idquanhechuho', 'tbl_sohokhau.ngaydangky', 'tbl_sohokhau.id as id_in_sohokhau', 'tbl_sohokhau.deleted_at')
+        ->where(array( ['idhoso', '=', $idhoso] ));
+        if($arrWhere) $data = $data->where($arrWhere);
+        $data = $data->select('tbl_nhankhau.*', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.hokhau_so', 'tbl_sohokhau.idquanhechuho', 'tbl_sohokhau.ngaydangky', 'tbl_sohokhau.id as id_in_sohokhau', 'tbl_sohokhau.deleted_at')
         ->get();
+        return $data;
     }
 
     public static function getChitietNhankhau($idnhankhau)
@@ -593,9 +595,14 @@ class NhanhokhauLibrary
         DB::connection('nhanhokhau')->table('tbl_history_cutru')->insert( $data_log );
     }
 
-    public static function deleteNhankhauSohokhau($id_in_sohokhau)
+    public static function logArrCutru($data_log)
     {
-        return DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id', $id_in_sohokhau)->update([ 'deleted_at' => Carbon::now() ]);
+        DB::connection('nhanhokhau')->table('tbl_history_cutru')->insert( $data_log );
+    }
+
+    public static function deleteNhankhauSohokhau($arr_id_in_sohokhau)
+    {
+        return DB::connection('nhanhokhau')->table('tbl_sohokhau')->whereIn('id', $arr_id_in_sohokhau)->update([ 'deleted_at' => Carbon::now() ]);
     }
 
     public static function getIdhosoOfNhankhau($idnhankhau)
@@ -633,6 +640,14 @@ class NhanhokhauLibrary
         ))
         ->select('tbl_nhankhau.*', 'tbl_hoso.hokhau_so', 'tbl_hoso.hosohokhau_so', 'tbl_hoso.id as idhoso')
         ->paginate(10);
+    }
+
+    public static function getChuho($idhoho)
+    {
+        return DB::connection('nhanhokhau')->table('tbl_sohokhau')
+        ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
+        ->where(array( ['idhoso', '=', $idhoho], ['idquanhechuho', '=', 1] ))
+        ->select('hoten')->first();
     }
 
     public static function getListQuocgia($array_pluck = FALSE)

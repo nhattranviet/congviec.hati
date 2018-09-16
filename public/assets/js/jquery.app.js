@@ -305,6 +305,9 @@
                             printMsg("#success-msg", data.success);
                         }
                         if (data.url) {
+                            window.open(
+                                'https://google.com', '_blank'
+                            );
                             window.location.href = data.url;
                         }
                     } else {
@@ -553,6 +556,20 @@
                 }
             });
         });
+
+        $('.select2-nosearch').select2({
+            minimumResultsForSearch: 20
+        });
+
+        $(document).on('focus', '.select2', function (e) {
+            if (e.originalEvent) {
+                $(this).siblings('select').select2('open');
+            }
+        });
+
+        $('#address-modal').on('shown.bs.modal', function () {
+            $('select.test').focus();
+        })
 
         $("#donvi").on('change', function () {
             var donvi = $('#donvi').val();

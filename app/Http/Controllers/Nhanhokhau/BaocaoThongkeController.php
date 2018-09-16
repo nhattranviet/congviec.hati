@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
 use App\UserApp\NhanhokhauLibrary;
-
+use App\UserApp\UserLibrary;
 
 use App\NhanKhau;
 use App\QuocGia;
@@ -23,8 +23,7 @@ use App\District;
 use App\Ward;
 use App\Brief;
 use App\Hokhau;
-// use PhpOffice\PhpWord\Shared\Converter;
-// use PhpOffice\PhpWord\Style\TablePosition;
+use Session;
 
 
 class BaocaoThongkeController extends Controller
@@ -521,26 +520,7 @@ class BaocaoThongkeController extends Controller
         });
         
         $html_table = view('nhankhau-layouts.ajax_component.view_report_hk15', $this->data)->render();
-        $str = "
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head><title>Microsoft Office HTML Example</title>
-        <style> <!-- 
-            @page
-            {
-                size: 29.7cm 21cm;  /* A4 */
-                margin: 0.5cm 1.2cm 0.5cm 2.5cm; /* Margins: 2 cm on each side */
-                mso-page-orientation: landscape;
-            }
-        @page Section1 { }
-        div.Section1 { page:Section1; }
-        --></style>
-        </head>
-        <body>
-        <div class=Section1>
-        ".$html_table."
-        </div>
-        </body>
-        </html>";
+        $str = UserLibrary::create_docfile_landscape_hk15($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=thong-ke-".$request->tungay." den ".$request->denngay.".doc");
         echo $str;
@@ -550,30 +530,25 @@ class BaocaoThongkeController extends Controller
     {
         $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
         $html_table = view('nhankhau-layouts.ajax_component.view_report_hk01', $data)->render();
-        $str = "
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-        <head><title>Microsoft Office HTML Example</title>
-        <style> <!-- 
-            @page
-            {
-                size: 21cm 29.7cm;  /* A4 */
-                margin: 1.5cm 1.5cm 1.5cm 2.5cm; /* Margins: 2 cm on each side */
-                mso-page-orientation: portrait;
-            }
-        @page Section1 { }
-        div.Section1 { page:Section1; }
-        --></style>
-        </head>
-        <body>
-        <div class=Section1>
-        ".$html_table."
-        </div>
-        </body>
-        </html>";
+        $str = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=mau-hk-01.doc");
         echo $str;
     }
 
-   
+    public function getHK07(Request $request, $idnguoichuyen, $arrNguoichuyencung = NULL)
+    {
+        $data['lydo'] = ( Session::has('hk07_data') ) ? Session::get('hk07_data')['lydo'] : '....................................................................................................................<br>................................................................................................................................................................';
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($idnguoichuyen); //dd($data['nhankhau']);
+        $data['tenquanhechuho'] = DB::table('tbl_moiquanhe')->where('id', $data['nhankhau']->idquanhechuho)->value('name');
+        $data['chuhoinfo'] = NhanhokhauLibrary::getChuho($data['nhankhau']->idhoso);
+        $html_table = view('nhankhau-layouts.ajax_component.view_report_hk07', $data)->render();
+        $str = UserLibrary::create_docfile_portrait($html_table);
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=mau-hk-07_".$data['nhankhau']->hoten.".doc");
+        echo $str;
+        // $listnguoichuyencung = explode('-',$arrNguoichuyencung); //dd($listnguoichuyencung);
+        // echo empty($listnguoichuyencung);
+    }
+
 }

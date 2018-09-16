@@ -31,8 +31,8 @@ return [
         '1' => 'lich-cong-tac.index',  //BGĐ
         '2' => 'nhat-ky-cong-tac-cb.index',  //PC44
         '19' => 'cong-viec.index',  //PC44
-        '33' => 'cong-viec.index',  //TP
-        '35' => 'nhan-ho-khau-home',    //H KA
+        '31' => 'cong-viec.index',  //TP
+        '33' => 'nhan-ho-khau-home',    //H KA
     ],
 
     'idmoiquanhechuho' => 1,

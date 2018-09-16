@@ -33,7 +33,7 @@
             <div class="col-xs-12">
                 <div style="max-width: 1000px; margin: auto;" class="text-xs-center">
                    <a style="margin: 0 5px 0 5px;" href="/nhan-khau/{{ $idhoso }}/edit" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-edit m-r-5"></i> <span>Sửa hồ sơ</span> </a>
-                   <a style="margin: 0 5px 0 5px;" href="/nhan-khau/{{ $idhoso }}/dang-ky-thuong-tru" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-account-add m-r-5"></i> <span>Đăng ký</span> </a>
+                   <a style="margin: 0 5px 0 5px;" href="/nhan-khau/{{ $idhoso }}/dang-ky-thuong-tru" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-account-add m-r-5"></i> <span>Đăng ký thường trú</span> </a>
                    <a style="margin: 0 5px 0 5px;" href="/nhan-khau/{{ $idhoso }}/tach-ho-khau" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-collection-item-2 m-r-5"></i> <span>Tách hộ</span> </a>
                    <a style="margin: 0 5px 0 5px;" href="/nhan-khau/{{ $idhoso }}/check-cap-doi-SHK" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-swap m-r-5"></i> <span>Cấp đổi</span> </a>
                    <a style="margin: 0 5px 0 5px;" href="/nhan-khau/{{ $idhoso }}/check-cap-lai-SHK" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-swap-vertical m-r-5"></i> <span>Cấp lại</span> </a>

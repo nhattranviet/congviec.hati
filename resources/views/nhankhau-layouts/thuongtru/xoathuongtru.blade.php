@@ -113,7 +113,7 @@
                             </div>
                         </p>
                         @endif
-                        <form id="form-nhankhau" action="{{ route('xoa-thuong-tru', $nhankhau->id_in_sohokhau) }}" method="POST" role="form">
+                        <form id="form-nhankhaus" action="{{ route('xoa-thuong-tru', $nhankhau->id_in_sohokhau) }}" method="POST" role="form" autocomplete="off">
                             @csrf
                             <input type="hidden" name="idhoso" value="{{ $nhankhau->idhoso }}">
                             <input type="hidden" name="idnhankhau" value="{{ $nhankhau->id }}">
@@ -123,7 +123,18 @@
                                         <div class="col-xs-12 col-sm-12 tab-header">
                                             <h4 class="header-title m-t-0 m-b-10">THÔNG TIN HỒ SƠ</h4>
                                         </div>
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
+                                            <fieldset class="form-group">
+                                                <label for="datepicker">Ngày xóa <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <div class="input-group">
+                                                        <input value="{{ old('ngayxoathuongtru') }}" type="text" name="ngayxoathuongtru" class="form-control" placeholder="dd-mm-yyyy" id="datepicker">
+                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                                    </div><!-- input-group -->
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-10">
                                             <fieldset class="form-group">
                                                 <label>Trường hợp xóa <span class="text-danger">*</span></label>
                                                 <div>
@@ -138,19 +149,7 @@
                                             </fieldset>
                                         </div>
 
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                            <fieldset class="form-group">
-                                                <label for="datepicker">Ngày xóa <span class="text-danger">*</span></label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input value="{{ old('ngayxoathuongtru') }}" type="text" name="ngayxoathuongtru" class="form-control" placeholder="dd-mm-yyyy" id="datepicker">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-10">
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
                                             <fieldset class="form-group" id="addressPickerGroup">
                                                 <label for="thuongtrumoi_view">Nơi chuyển đến<span class="text-danger">*</span></label>
                                                 <input type="text" name="thuongtrumoi_view" id="addressPicker" parsley-trigger="change" placeholder="Chọn địa chỉ thường trú" class="form-control" id="thuongtrumoi_view">
@@ -162,12 +161,29 @@
                                                 <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtrumoi" class="form-control" id="chitiet_thuongtrumoi" value="">
                                             </fieldset>
                                         </div>
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-5">
+                                            <fieldset class="form-group" >
+                                                <label>Người xóa cùng <span class="text-danger">*</span> </label>
+                                                <select name="idnguoixoacung[]" class="select2 form-control select2-multiple" multiple="multiple" multiple data-placeholder="Chọn người xóa cùng..."> 
+                                                    @foreach ($list_thongtinhokhau as $thongtinhokhau)
+                                                        <option value="{{ $thongtinhokhau->id_in_sohokhau }}">{{ $thongtinhokhau->hoten }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                                            <fieldset class="form-group">
+                                                <label for="">Ghi chú/Lý do<span class="text-danger">*</span></label>
+                                                <input type="text" name="lydoxoa" parsley-trigger="change" placeholder="Ghi chú/Lý do" class="form-control">
+                                                </fieldset>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
-                                    <button onclick="return confirm('Bạn có muốn xóa không?');" class="pull-left btn btn-danger"><i class="fa fa-trash"></i> Xóa thường trú</button>
+                                    <button type="submit" name="loai" value="xoa" onclick="return confirm('Bạn có muốn xóa không?');" class="pull-left btn btn-danger"><i class="fa fa-trash"></i> Xóa thường trú</button>
+                                    <button type="submit" name="loai" value="export" onclick="return confirm('Bạn có muốn xóa không?');" class="pull-left btn btn-info" style="margin: 0 5px;"><i class="fa fa-file-word-o"></i> Xuất mẫu HK07</button>
                                     <a class="pull-right btn btn-primary" href="{{ URL::to('nhan-khau') }}">Quay lại</a>
                                 </div>
                             </div>
@@ -185,71 +201,7 @@
     <!-- content -->
 </div>
 
-<div class="modal fade" id="address-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Modal title</h4>
-            </div>
-            <div class="modal-body p-20">
-                <div class="row">
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Quốc gia</label>
-                            <select id="country" class="form-control select2">
-                                <option  value="">Chọn Quốc gia</option>
-                                @foreach($countries as $country)
-                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                @endforeach
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Tỉnh TP</label>
-                            <select id="province" class="form-control select2">
-                                <option value="">Chọn Tỉnh hoặc Thành Phố</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Huyện</label>
-                            <select id="district" class="form-control select2">
-                                <option  value="">Chọn Huyện</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                    <div class="col-md-6">
-                        <fieldset class="form-group">
-                            <label class="control-label">Xã</label>
-                            <select id="ward" class="form-control select2">
-                                <option value="">Chọn Xã</option>
-                            </select>
-                        </fieldset>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <fieldset class="form-group">
-                            <label class="control-label">Chi tiết địa chỉ</label>
-                            <textarea class="form-control" id="addressDetail" placeholder="Nhập chi tiét địa " rows="3"></textarea>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                <button type="button" id="saveChange" class="btn btn-primary" data-dismiss="modal">Chọn</button>
-            </div>
-        </div>
-    </div>
-</div>
+@include('layouts.address_modal')
 
 @endsection
 

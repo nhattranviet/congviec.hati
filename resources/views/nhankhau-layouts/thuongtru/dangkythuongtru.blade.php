@@ -67,7 +67,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group" >
                                                                     <label>Quan hệ với chủ hộ <span class="text-danger">*</span></label>
-                                                                    <select name="idquanhechuho" class="form-control {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}" tabindex="1">
+                                                                    <select name="idquanhechuho" class="form-control select2 {{ ($errors->has('idquanhechuho')) ? 'has-danger' : '' }}" tabindex="1">
                                                                         <option value="">Chọn quan hệ</option>
                                                                         @foreach($list_quanhechuho as $quanhechuho)
                                                                         <option value="{{ $quanhechuho->id }}"  {{ old('idquanhechuho') == $quanhechuho->id ? 'selected' : '' }}>{{ $quanhechuho->name }}</option>
@@ -157,7 +157,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Học vấn</label>
-                                                                    <select name="idtrinhdohocvan" class="form-control {{ ($errors->has('idtrinhdohocvan')) ? 'has-danger' : '' }}" tabindex="9">
+                                                                    <select name="idtrinhdohocvan" class="form-control select2 {{ ($errors->has('idtrinhdohocvan')) ? 'has-danger' : '' }}" tabindex="9">
                                                                         <option value="">Chọn học vấn</option>
                                                                         @foreach($educations as $education)
                                                                             <option value="{{ $education->id }}"  {{ old('idtrinhdohocvan') == $education->id ? 'selected' : '' }}>{{ $education->name }}</option>
@@ -169,7 +169,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Nghề nghiệp</label>
-                                                                    <select name="idnghenghiep" class="form-control {{ ($errors->has('idnghenghiep')) ? 'has-danger' : '' }}" tabindex="10">
+                                                                    <select name="idnghenghiep" class="form-control select2 {{ ($errors->has('idnghenghiep')) ? 'has-danger' : '' }}" tabindex="10">
                                                                         <option value="">Chọn Nghề nghiệp</option>
                                                                         @foreach($careers as $career)
                                                                         <option value="{{ $career->id }}"  {{ old('idnghenghiep') == $career->id ? 'selected' : '' }}>{{ $career->name }}</option>
@@ -181,7 +181,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Dân tộc</label>
-                                                                    <select name="iddantoc" class="form-control {{ ($errors->has('iddantoc')) ? 'has-danger' : '' }}" tabindex="11">
+                                                                    <select name="iddantoc" class="form-control select2 {{ ($errors->has('iddantoc')) ? 'has-danger' : '' }}" tabindex="11">
                                                                         <option value="">Chọn Dân tộc</option>
                                                                         @foreach($nations as $nation)
                                                                         <option value="{{ $nation->id }}"  {{ old('iddantoc') == $nation->id ? 'selected' : '' }}>{{ $nation->name }}</option>
@@ -240,7 +240,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Quốc tịch <span class="text-danger">*</span></label>
-                                                                    <select name="idquoctich" class="form-control {{ ($errors->has('idquoctich')) ? 'has-danger' : '' }}" tabindex="17">
+                                                                    <select name="idquoctich" class="form-control select2 {{ ($errors->has('idquoctich')) ? 'has-danger' : '' }}" tabindex="17">
                                                                         <option  value="">Chọn Quốc tịch</option>
                                                                         @foreach($countries as $country)
                                                                         <option value="{{ $country->id }}"  {{ old('idquoctich') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
@@ -252,7 +252,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Tôn giáo <span class="text-danger">*</span></label>
-                                                                    <select name="idtongiao" class="form-control {{ ($errors->has('idtongiao')) ? 'has-danger' : '' }}" tabindex="18">
+                                                                    <select name="idtongiao" class="form-control select2 {{ ($errors->has('idtongiao')) ? 'has-danger' : '' }}" tabindex="18">
                                                                         <option value="">Chọn Tôn giáo</option>
                                                                         @foreach($religions as $religion)
                                                                         <option value="{{ $religion->id }}"  {{ old('idtongiao') == $religion->id ? 'selected' : '' }}>{{ $religion->name }}</option>

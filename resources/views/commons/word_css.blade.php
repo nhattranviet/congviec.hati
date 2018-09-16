@@ -1,4 +1,9 @@
 <style>
+
+    .uppercase{
+        text-transform: uppercase;
+    }
+
     body{
         font-size: 13pt;
     }

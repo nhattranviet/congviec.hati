@@ -6,30 +6,14 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/test', function(){
-    $period = new DatePeriod(
-        new DateTime('2018-8-01'),
-        new DateInterval('P1D'),
-        new DateTime('2019-10-15')
-    );
-    $list_day = [];
-    foreach ($period as $dt) {
-        $list_day[] = $dt->format("d-m-Y");
-    }
-    dd($list_day);
-    // $a = '2018-09-11';
-    
-    // echo date('Y-m-d', strtotime($a .' + 1 months'));
-    // echo date('w', strtotime('02-9-2018')); die;
-    // $current_day_in_week = date('w');
-    // $week_start_day = date('m-d-Y', strtotime('-'.$current_day_in_week.' days + 1 days' )); //type m-d-Y
-    // $week_end_day = date('m-d-Y', strtotime('+'.(6-$current_day_in_week).' days + 1 days')); //type m-d-Y
-    // $ngaydau = strtotime(str_replace('-', '/', $week_start_day));
-    // $ngaycuoi = strtotime(str_replace('-', '/', $week_end_day));
-    // echo date('Y-m-d', $ngaydau).'---'.date('Y-m-d', $ngaycuoi);
-    die;
-    $a = DB::connection('test')->table('tbl_congviec')->get();
-    // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();
-    $canbo_list_id = [
+    $id = 1;
+    $arr = [3,4,5,6];
+//    return redirect()->route('get-hk-07', ['idnguoichuyen' => $id, 'list_nguoichuyencung' => implode( '-', $arr )]  );
+   return redirect()->route('get-hk-07', ['idnguoichuyen' => $id, 'list_nguoichuyencung' => json_encode( $arr )]  );
+   die;
+   $a = DB::connection('test')->table('tbl_congviec')->get();
+   // $a = DB::connection('catp')->table('tbl_congviec')->join('tbl_congviec_chuyentiep', 'tbl_congviec_chuyentiep.idcongviec', '=', 'tbl_congviec.idcongviec')->get();
+   $canbo_list_id = [
         '279' => '1',
         '280' => '1',
         '281' => '2',
@@ -206,6 +190,7 @@ Route::get('/get-bao-cao-nhan-khau-ToResult', 'Nhanhokhau\BaocaoThongkeControlle
 Route::get('/thong-ke', 'Nhanhokhau\BaocaoThongkeController@getThongke')->name('thong-ke');
 Route::get('/get-thong-ke-nhan-khau', 'Nhanhokhau\BaocaoThongkeController@getThongkeToResult')->name('get-thong-ke-nhan-khau');
 Route::get('/nhan-khau/{id}/get-hk-01', 'Nhanhokhau\BaocaoThongkeController@getHK01')->name('get-hk-01');
+Route::get('/nhan-khau/get-hk-07/{idnguoichuyen}/{list_nguoichuyencung?}', 'Nhanhokhau\BaocaoThongkeController@getHK07')->name('get-hk-07');
 
 Route::get('/test-thong-ke', 'Nhanhokhau\BaocaoThongkeController@testThongke')->name('test-thong-ke');
 

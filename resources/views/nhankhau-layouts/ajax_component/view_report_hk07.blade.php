@@ -1,7 +1,12 @@
 @include('commons.word_css')
 <table class="head">
     <tr>
-        <td class="center">
+        <td valign="top" class="center">
+            <span>CAH KỲ ANH</span><br>
+            <span>CA...................</span><br><br>
+            <span>Số:....../GCHK</span>
+        </td>
+        <td valign="top" class="center">
             <span class="daumuc">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</span><br>
             <span class="italic">Độc lập - Tự do - Hạnh phúc</span>
         </td>
@@ -12,8 +17,8 @@
 </table>
 <br>
 
-<p class="center"><span class="daumuc">BẢN KHAI NHÂN KHẨU</span><br>
-(Dùng cho người từ 14 tuổi trở lên)</p>
+<p class="center"><span class="daumuc">GIẤY CHUYỂN HỘ KHẨU</span><br>
+(Phần cấp cho người chuyển khẩu)</p>
 <p>
     <span class="bold">1.</span></span> Họ và tên: <span class="uppercase bold" style="font-weight: bold;"> {{ $nhankhau->hoten }} </span> <br>
     <span class="bold">2.</span> Họ và tên gọi khác (nếu có): <span> {{ $nhankhau->tenkhac }} </span> <br>
@@ -21,8 +26,10 @@
     <span class="bold">5.</span> Nơi sinh: <span>  {{ $nhankhau->chitiet_noisinh }} - {{ ($nhankhau->idxa_noisinh) ? DB::table('tbl_xa_phuong_tt')->where('id', $nhankhau->idxa_noisinh)->value('name') : '' }} - {{ ($nhankhau->idhuyen_noisinh) ? DB::table('tbl_huyen_tx')->where('id', $nhankhau->idhuyen_noisinh)->value('name') : '' }} - {{ ($nhankhau->idtinh_noisinh) ? DB::table('tbl_tinh_tp')->where('id', $nhankhau->idtinh_noisinh)->value('name') : '' }} </span> <br>
     <span class="bold">6.</span> Nguyên quán: <span>  {{ $nhankhau->chitiet_nguyenquan }} - {{ ($nhankhau->idxa_nguyenquan) ? DB::table('tbl_xa_phuong_tt')->where('id', $nhankhau->idxa_nguyenquan)->value('name') : '' }} - {{ ($nhankhau->idhuyen_nguyenquan) ? DB::table('tbl_huyen_tx')->where('id', $nhankhau->idhuyen_nguyenquan)->value('name') : '' }} - {{ ($nhankhau->idtinh_nguyenquan) ? DB::table('tbl_tinh_tp')->where('id', $nhankhau->idtinh_nguyenquan)->value('name') : '' }} </span> <br>
     <span class="bold">7.</span> Dân tộc: {{ DB::table('tbl_dantoc')->where('id', $nhankhau->iddantoc)->value('name') }} &nbsp; &nbsp; &nbsp; &nbsp;  <span class="bold">8.</span> Tôn giáo: {{ DB::table('tbl_tongiao')->where('id', $nhankhau->idtongiao)->value('name') }} &nbsp; &nbsp; &nbsp; &nbsp;  <span class="bold">9.</span> Quốc tịch: {{ DB::table('tbl_quocgia')->where('id', $nhankhau->idquoctich)->value('name') }} <br>
-    <span class="bold">10.</span> CMND số: {{ $nhankhau->cmnd_so }} &nbsp; &nbsp; &nbsp; &nbsp;   <span class="bold">11.</span> Hộ chiếu số: {{ $nhankhau->hochieu_so }} <br>
-    <span class="bold">12.</span> Nơi thường trú: <span>  {{ $nhankhau->chitiet_thuongtru }} - {{ ($nhankhau->idxa_thuongtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $nhankhau->idxa_thuongtru)->value('name') : '' }} - {{ ($nhankhau->idhuyen_thuongtru) ? DB::table('tbl_huyen_tx')->where('id', $nhankhau->idhuyen_thuongtru)->value('name') : '' }} - {{ ($nhankhau->idtinh_thuongtru) ? DB::table('tbl_tinh_tp')->where('id', $nhankhau->idtinh_thuongtru)->value('name') : '' }} </span> <br>
+    <span class="bold">10.</span> Nơi thường trú: <span>  {{ $nhankhau->chitiet_thuongtru }} - {{ ($nhankhau->idxa_thuongtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $nhankhau->idxa_thuongtru)->value('name') : '' }} - {{ ($nhankhau->idhuyen_thuongtru) ? DB::table('tbl_huyen_tx')->where('id', $nhankhau->idhuyen_thuongtru)->value('name') : '' }} - {{ ($nhankhau->idtinh_thuongtru) ? DB::table('tbl_tinh_tp')->where('id', $nhankhau->idtinh_thuongtru)->value('name') : '' }} </span> <br>
+    <span class="bold">11.</span> Họ và tên chủ hộ nơi đi: <span class="uppercase"> {{ $chuhoinfo->hoten }}</span> &nbsp; &nbsp; &nbsp; &nbsp;   <span class="bold">12.</span> Quan hệ với chủ hộ: {{ $tenquanhechuho }} <br>
+    <span class="bold">13.</span> Lý do chuyển hộ khẩu: <span> {!! $lydo !!} </span> <br>
+
     <span class="bold">13.</span> Địa chỉ chỗ ở hiện nay: <span>  {{ $nhankhau->chitiet_noiohiennay }} - {{ ($nhankhau->idxa_noiohiennay) ? DB::table('tbl_xa_phuong_tt')->where('id', $nhankhau->idxa_noiohiennay)->value('name') : '' }} - {{ ($nhankhau->idhuyen_noiohiennay) ? DB::table('tbl_huyen_tx')->where('id', $nhankhau->idhuyen_noiohiennay)->value('name') : '' }} - {{ ($nhankhau->idtinh_noiohiennay) ? DB::table('tbl_tinh_tp')->where('id', $nhankhau->idtinh_noiohiennay)->value('name') : '' }} </span> <br>
     <span class="bold">14.</span> Trình độ học vấn: {{ DB::table('tbl_trinhdohocvan')->where('id', $nhankhau->idtrinhdohocvan)->value('name') }} &nbsp; &nbsp; &nbsp; &nbsp;  <span class="bold">15.</span> Trình độ ngoại ngữ: {{ $nhankhau->trinhdochuyenmon }} <br>
     <span class="bold">16.</span> Biết tiếng dân tộc: {{ $nhankhau->biettiengdantoc }}  &nbsp; &nbsp; &nbsp; &nbsp;   <span class="bold">17.</span> Trình độ ngoại ngữ: {{ $nhankhau->trinhdongoaingu }} <br>
