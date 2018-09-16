@@ -113,7 +113,7 @@
                             </div>
                         </p>
                         @endif
-                        <form id="form-nhankhaus" action="{{ route('xoa-thuong-tru', $nhankhau->id_in_sohokhau) }}" method="POST" role="form" autocomplete="off">
+                        <form id="form-nhankhau" action="{{ route('xoa-thuong-tru', $nhankhau->id_in_sohokhau) }}" method="POST" role="form" autocomplete="off">
                             @csrf
                             <input type="hidden" name="idhoso" value="{{ $nhankhau->idhoso }}">
                             <input type="hidden" name="idnhankhau" value="{{ $nhankhau->id }}">
@@ -123,18 +123,8 @@
                                         <div class="col-xs-12 col-sm-12 tab-header">
                                             <h4 class="header-title m-t-0 m-b-10">THÔNG TIN HỒ SƠ</h4>
                                         </div>
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
-                                            <fieldset class="form-group">
-                                                <label for="datepicker">Ngày xóa <span class="text-danger">*</span></label>
-                                                <div>
-                                                    <div class="input-group">
-                                                        <input value="{{ old('ngayxoathuongtru') }}" type="text" name="ngayxoathuongtru" class="form-control" placeholder="dd-mm-yyyy" id="datepicker">
-                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
-                                                    </div><!-- input-group -->
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-10">
+                                        
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                             <fieldset class="form-group">
                                                 <label>Trường hợp xóa <span class="text-danger">*</span></label>
                                                 <div>
@@ -161,7 +151,18 @@
                                                 <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtrumoi" class="form-control" id="chitiet_thuongtrumoi" value="">
                                             </fieldset>
                                         </div>
-                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-5">
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-6">
+                                            <fieldset class="form-group">
+                                                <label for="datepicker">Ngày xóa <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <div class="input-group">
+                                                        <input value="{{ old('ngayxoathuongtru') }}" type="text" name="ngayxoathuongtru" class="form-control" placeholder="dd-mm-yyyy" id="datepicker">
+                                                        <span class="input-group-addon bg-custom b-0"><i class="icon-calender"></i></span>
+                                                    </div><!-- input-group -->
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
                                             <fieldset class="form-group" >
                                                 <label>Người xóa cùng <span class="text-danger">*</span> </label>
                                                 <select name="idnguoixoacung[]" class="select2 form-control select2-multiple" multiple="multiple" multiple data-placeholder="Chọn người xóa cùng..."> 
@@ -183,7 +184,6 @@
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
                                     <button type="submit" name="loai" value="xoa" onclick="return confirm('Bạn có muốn xóa không?');" class="pull-left btn btn-danger"><i class="fa fa-trash"></i> Xóa thường trú</button>
-                                    <button type="submit" name="loai" value="export" onclick="return confirm('Bạn có muốn xóa không?');" class="pull-left btn btn-info" style="margin: 0 5px;"><i class="fa fa-file-word-o"></i> Xuất mẫu HK07</button>
                                     <a class="pull-right btn btn-primary" href="{{ URL::to('nhan-khau') }}">Quay lại</a>
                                 </div>
                             </div>

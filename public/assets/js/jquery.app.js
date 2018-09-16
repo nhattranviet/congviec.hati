@@ -304,10 +304,12 @@
                         else {
                             printMsg("#success-msg", data.success);
                         }
+                        
+                        if (data.url_second) {
+                            window.open(data.url_second, '_blank');
+                        }
+
                         if (data.url) {
-                            window.open(
-                                'https://google.com', '_blank'
-                            );
                             window.location.href = data.url;
                         }
                     } else {

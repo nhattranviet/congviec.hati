@@ -536,19 +536,20 @@ class BaocaoThongkeController extends Controller
         echo $str;
     }
 
-    public function getHK07(Request $request, $idnguoichuyen, $arrNguoichuyencung = NULL)
+    public function getHK07(Request $request, $data_give)
     {
-        $data['lydo'] = ( Session::has('hk07_data') ) ? Session::get('hk07_data')['lydo'] : '....................................................................................................................<br>................................................................................................................................................................';
-        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($idnguoichuyen); //dd($data['nhankhau']);
+        $data_info = json_decode( base64_decode( $data_give ), TRUE); //dd($data_info); //getChitietNhankhauFromListIdInSohokhau
+        $data['lydo'] = ($data_info['lydo'] != null) ? $data_info['lydo'] : '....................................................................................................................<br>................................................................................................................................................................' ;
+        $data['noichuyenden'] = ($data_info['noichuyenden'] != null) ? $data_info['noichuyenden'] : '..............................................................................................................................<br>................................................................................................................................................................' ;
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($data_info['nguoichuyen']);
         $data['tenquanhechuho'] = DB::table('tbl_moiquanhe')->where('id', $data['nhankhau']->idquanhechuho)->value('name');
         $data['chuhoinfo'] = NhanhokhauLibrary::getChuho($data['nhankhau']->idhoso);
+        $data['nhankhauchuyencung'] = ($data_info['nguoichuyencung'] != null) ?  NhanhokhauLibrary::getChitietNhankhauFromListIdInSohokhau($data_info['nguoichuyencung']) : NULL ; //dd($data['nhankhauchuyencung']);
         $html_table = view('nhankhau-layouts.ajax_component.view_report_hk07', $data)->render();
         $str = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");
         header("Content-Disposition: attachment;Filename=mau-hk-07_".$data['nhankhau']->hoten.".doc");
         echo $str;
-        // $listnguoichuyencung = explode('-',$arrNguoichuyencung); //dd($listnguoichuyencung);
-        // echo empty($listnguoichuyencung);
     }
 
 }

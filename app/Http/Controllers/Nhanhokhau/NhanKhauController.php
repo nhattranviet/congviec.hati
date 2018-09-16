@@ -318,6 +318,7 @@ class NhanKhauController extends Controller
         $arrXoa[] = $id_in_sohokhau;
         $list_nhankhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')->whereIn('id', $arrXoa)->pluck('idnhankhau')->toArray();
         NhanhokhauLibrary::deleteNhankhauSohokhau( $arrXoa );
+        $noiden = NULL;
         if($request->idtruonghopxoa == $this->thutuc_dangkynoimoi)
         {
             $data_update = array(
@@ -328,10 +329,12 @@ class NhanKhauController extends Controller
                 'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
             );
             DB::connection('nhanhokhau')->table('tbl_nhankhau')->whereIn('id', $list_nhankhau)->update($data_update);
+            $noiden = $request->chitiet_thuongtrumoi.' - '.(($request->idxa_thuongtrumoi) ? DB::table('tbl_xa_phuong_tt')->where('id', $request->idxa_thuongtrumoi)->value('name') : '' ).' - '.(($request->idhuyen_thuongtrumoi) ? DB::table('tbl_huyen_tx')->where('id', $request->idhuyen_thuongtrumoi)->value('name') : '').' - '.(($request->idtinh_thuongtrumoi) ? DB::table('tbl_tinh_tp')->where('id', $request->idtinh_thuongtrumoi)->value('name') : '');
         }
 
         $data_log = array();
         $ngayxoa = date('Y-m-d', strtotime($request->ngayxoathuongtru));
+        
         foreach ($list_nhankhau as $idnhankhau)
         {
             $data_log[] = array(
@@ -344,9 +347,14 @@ class NhanKhauController extends Controller
                 'created_at' => Carbon::now(), 'updated_at' => Carbon::now(),
             );
         }
-        
         NhanhokhauLibrary::logArrCutru($data_log);
-        return response()->json(['success' => 'Xóa đăng ký thường trú thành công ', 'url' => route('chi-tiet-ho-khau', $request->idhoso)]);
+        $arr_ret = ['success' => 'Xóa đăng ký thường trú thành công', 'url' => route('chi-tiet-ho-khau', $request->idhoso)];
+        $data_to_get_hk07 = base64_encode( json_encode( ['lydo' => $request->lydoxoa, 'noichuyenden' => $noiden, 'nguoichuyen' => $id_in_sohokhau, 'nguoichuyencung' => $request->idnguoixoacung ] ) );
+        if($request->idtruonghopxoa == $this->thutuc_dangkynoimoi)
+        {
+            $arr_ret['url_second'] =  route('get-hk-07', ['data' => $data_to_get_hk07]);
+        }
+        return response()->json($arr_ret);
     }
 
     public function getCheckxoathuongtruHGD($idhoso)

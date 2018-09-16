@@ -537,6 +537,16 @@ class NhanhokhauLibrary
         ->first();
     }
 
+    public static function getChitietNhankhauFromListIdInSohokhau($list_id_in_sohokhau)
+    {
+        return DB::connection('nhanhokhau')->table('tbl_sohokhau')
+        ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')
+        ->join('tbl_hoso', 'tbl_hoso.id' , '=', 'tbl_sohokhau.idhoso')
+        ->whereIn('tbl_sohokhau.id', $list_id_in_sohokhau)
+        ->select('tbl_nhankhau.*', 'tbl_hoso.hokhau_so', 'tbl_hoso.id as idhoso', 'tbl_hoso.hosohokhau_so', 'tbl_sohokhau.idquanhechuho', 'tbl_sohokhau.id as id_in_sohokhau', 'tbl_sohokhau.moisinh', 'tbl_sohokhau.ngaydangky', 'tbl_sohokhau.deleted_at')
+        ->get();
+    }
+
     public static function insertArrNhankhauToSohokhau($request, $i, $idhoso, $idnhankhau, $get_id = 'TRUE')
     {
         $data_sohokhau_insert = array(
