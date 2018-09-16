@@ -278,7 +278,7 @@ class NhanKhauController extends Controller
     public function getCheckxoathuongtru($id_in_sohokhau)
     {
         $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
-        $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($data['nhankhau']->idhoso, array(['tbl_sohokhau.id', '!=', $id_in_sohokhau], ['idquanhechuho', '!=', 1]));
+        $data['list_thongtinhokhau'] = NhanhokhauLibrary::getChitiethokhau($data['nhankhau']->idhoso, array(['tbl_sohokhau.id', '!=', $id_in_sohokhau], ['idquanhechuho', '!=', 1], ['tbl_sohokhau.deleted_at', '=', NULL]));
         if($data['nhankhau']->idquanhechuho == 1)
         {
             $message = array('type' => 'warning', 'content' => 'Người này là chủ hộ, bạn phải thay chủ hộ trước khi xóa thường trú');
