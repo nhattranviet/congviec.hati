@@ -552,8 +552,9 @@ class BaocaoThongkeController extends Controller
         echo $str;
     }
 
-    public function getHK07FromIdinSohokhau(Request $request, $data_give)
+    public function getHK07FromIdinSohokhau(Request $request, $id_in_sohokhau)
     {
+        // $idnhankhau = DB::connection('nhanhokhau')
         $data_info = json_decode( base64_decode( $data_give ), TRUE); //dd($data_info); //getChitietNhankhauFromListIdInSohokhau
         $data['lydo'] = ($data_info['lydo'] != null) ? $data_info['lydo'] : '....................................................................................................................<br>................................................................................................................................................................' ;
         $data['noichuyenden'] = ($data_info['noichuyenden'] != null) ? $data_info['noichuyenden'] : '..............................................................................................................................<br>................................................................................................................................................................' ;

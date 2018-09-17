@@ -601,7 +601,6 @@ class NhanhokhauLibrary
 
     public static function logCutru($data_log)
     {
-        $data['updated_at'] = Carbon::now();
         DB::connection('nhanhokhau')->table('tbl_history_cutru')->insert( $data_log );
     }
 
