@@ -552,9 +552,25 @@ class BaocaoThongkeController extends Controller
         echo $str;
     }
 
+    public function getHK07FromIdinSohokhau(Request $request, $data_give)
+    {
+        $data_info = json_decode( base64_decode( $data_give ), TRUE); //dd($data_info); //getChitietNhankhauFromListIdInSohokhau
+        $data['lydo'] = ($data_info['lydo'] != null) ? $data_info['lydo'] : '....................................................................................................................<br>................................................................................................................................................................' ;
+        $data['noichuyenden'] = ($data_info['noichuyenden'] != null) ? $data_info['noichuyenden'] : '..............................................................................................................................<br>................................................................................................................................................................' ;
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($data_info['nguoichuyen']);
+        $data['tenquanhechuho'] = DB::table('tbl_moiquanhe')->where('id', $data['nhankhau']->idquanhechuho)->value('name');
+        $data['chuhoinfo'] = NhanhokhauLibrary::getChuho($data['nhankhau']->idhoso);
+        $data['nhankhauchuyencung'] = ($data_info['nguoichuyencung'] != null) ?  NhanhokhauLibrary::getChitietNhankhauFromListIdInSohokhau($data_info['nguoichuyencung']) : NULL ; //dd($data['nhankhauchuyencung']);
+        $html_table = view('nhankhau-layouts.ajax_component.view_report_hk07', $data)->render();
+        $str = UserLibrary::create_docfile_portrait($html_table);
+        header("Content-type: application/vnd.ms-word");
+        header("Content-Disposition: attachment;Filename=mau-hk-07_".$data['nhankhau']->hoten.".doc");
+        echo $str;
+    }
+
     public function getHK03(Request $request, $id_in_sohokhau)
     {
-        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau); dd($data['nhankhau']);
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
         $data['tenquanhechuho'] = DB::table('tbl_moiquanhe')->where('id', $data['nhankhau']->idquanhechuho)->value('name');
         $data['chuhoinfo'] = NhanhokhauLibrary::getChuho($data['nhankhau']->idhoso);
         $html_table = view('nhankhau-layouts.ajax_component.view_report_hk03', $data)->render();

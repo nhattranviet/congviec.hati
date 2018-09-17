@@ -14,6 +14,7 @@
 
 <p class="center"><span class="daumuc">BẢN KHAI NHÂN KHẨU</span><br>
 (Dùng cho người từ 14 tuổi trở lên)</p>
+<br>
 <p>
     <span class="bold">1.</span></span> Họ và tên: <span class="uppercase bold" style="font-weight: bold;"> {{ $nhankhau->hoten }} </span> <br>
     <span class="bold">2.</span> Họ và tên gọi khác (nếu có): <span> {{ $nhankhau->tenkhac }} </span> <br>

@@ -159,19 +159,19 @@ Route::get('/nhan-khau/provinces/{id}', 'Nhanhokhau\NhanKhauController@getProvin
 Route::get('/nhan-khau/districts/{id}', 'Nhanhokhau\NhanKhauController@getDistricts');
 Route::get('/nhan-khau/wards/{id}', 'Nhanhokhau\NhanKhauController@getWards');
 
-Route::get('/nhan-khau/{id}/dang-ky-thuong-tru', 'Nhanhokhau\NhanKhauController@getDangkythuongtru');
+Route::get('/nhan-khau/{id}/dang-ky-thuong-tru', 'Nhanhokhau\NhanKhauController@getDangkythuongtru')->name('get-dang-ky-thuong-tru');
 Route::post('/nhan-khau/{id}/dang-ky-thuong-tru', 'Nhanhokhau\NhanKhauController@postDangkythuongtru')->name('dang-ky-thuong-tru');
 
 Route::get('/nhan-khau/{idhoso}/chi-tiet-ho-khau', 'Nhanhokhau\NhanKhauController@getChitiethokhau')->name('chi-tiet-ho-khau');
-Route::get('/nhan-khau/{idnhankhau}/chi-tiet-nhan-khau', 'Nhanhokhau\NhanKhauController@getChitietnhankhau');
+Route::get('/nhan-khau/{idnhankhau}/chi-tiet-nhan-khau', 'Nhanhokhau\NhanKhauController@getChitietnhankhau')->name('chi-tiet-nhan-khau-thuong-tru');
 
-Route::get('/nhan-khau/{id}/sua-nhan-khau', 'Nhanhokhau\NhanKhauController@getSuanhankhau');
+Route::get('/nhan-khau/{id}/sua-nhan-khau', 'Nhanhokhau\NhanKhauController@getSuanhankhau')->name('get-sua-nhan-khau-thuong-tru');
 Route::post('/nhan-khau/{id}/sua-nhan-khau', 'Nhanhokhau\NhanKhauController@postSuanhankhau')->name('sua-nhan-khau');
 
-Route::get('/nhan-khau/{id}/check-xoa-thuong-tru', 'Nhanhokhau\NhanKhauController@getCheckxoathuongtru');
+Route::get('/nhan-khau/{id}/check-xoa-thuong-tru', 'Nhanhokhau\NhanKhauController@getCheckxoathuongtru')->name('check-xoa-thuong-tru-NK');
 Route::post('/nhan-khau/{id}/xoa-thuong-tru', 'Nhanhokhau\NhanKhauController@xoaThuongtru')->name('xoa-thuong-tru');
 
-Route::get('/nhan-khau/{idhoso}/check-xoa-thuong-tru-HDG', 'Nhanhokhau\NhanKhauController@getCheckxoathuongtruHGD');
+Route::get('/nhan-khau/{idhoso}/check-xoa-thuong-tru-HDG', 'Nhanhokhau\NhanKhauController@getCheckxoathuongtruHGD')->name('get-xoa-thuong-tru-HDG');
 Route::post('/nhan-khau/{idhoso}/xoa-thuong-tru-HGD', 'Nhanhokhau\NhanKhauController@xoaThuongtruHGD')->name('xoa-thuong-tru-HDG');
 
 Route::get('/nhan-khau/{idhoso}/check-cap-lai-SHK', 'Nhanhokhau\NhanKhauController@getCheckcaplaiSHK')->name('get-check-cap-lai-SHK');

@@ -64,7 +64,7 @@
                   </table>
                   </div>
 
-                  <form id="form-nhankhau" action="{{ route('xoa-thuong-tru-HDG', $idhoso) }}" method="POST" role="form">
+                  <form id="form-nhankhau" action="{{ route('xoa-thuong-tru-HDG', $idhoso) }}" method="POST" role="form" autocomplete="off">
                     @csrf
                     <input type="hidden" name="idhoso" value="{{ $idhoso }}">
                     <div style="padding: 0.7rem;" class="row">
@@ -111,6 +111,12 @@
                                         <input type="hidden" data-addr="" hidden="hidden" name="idxa_thuongtrumoi" class="form-control" id="idxa_thuongtrumoi" value="">
                                         <input type="hidden" data-addr="" hidden="hidden" name="chitiet_thuongtrumoi" class="form-control" id="chitiet_thuongtrumoi" value="">
                                     </fieldset>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-12">
+                                    <fieldset class="form-group">
+                                        <label for="">Ghi chú/Lý do<span class="text-danger">*</span></label>
+                                        <input type="text" name="lydoxoa" parsley-trigger="change" placeholder="Ghi chú/Lý do" class="form-control">
+                                        </fieldset>
                                 </div>
                             </div>
                         </div>

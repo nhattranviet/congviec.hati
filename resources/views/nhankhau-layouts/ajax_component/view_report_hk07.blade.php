@@ -18,6 +18,7 @@
 <br>
 
 <p class="center"><span class="daumuc-12">GIẤY CHUYỂN HỘ KHẨU</span></p>
+<br>
 <p>
     <span class="bold">1.</span></span> Họ và tên: <span class="uppercase bold" style="font-weight: bold;"> {{ $nhankhau->hoten }} </span> <br>
     <span class="bold">2.</span> Họ và tên gọi khác (nếu có): <span> {{ $nhankhau->tenkhac }} </span> <br>

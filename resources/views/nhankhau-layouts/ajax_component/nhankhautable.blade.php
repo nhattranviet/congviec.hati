@@ -6,7 +6,7 @@
             <th>Hộ khẩu số</th>
             <th>Họ tên chủ hộ</th>
             <th>Nơi thường trú</th>
-            <th style="width: 220px;">Tác vụ</th>
+            <th style="width: 200px;">Tác vụ</th>
         </tr>
     </thead>
 
@@ -18,17 +18,18 @@
             <td>{{ $brief->hokhau_so }}</td>
             <td>{{ $brief->hoten }}</td>
             <td> {{ $brief->chitiet_thuongtru }} {{ ($brief->idxa_thuongtru) ? '-'.DB::table('tbl_xa_phuong_tt')->where('id', $brief->idxa_thuongtru)->value('name') : '' }} {{ ($brief->idhuyen_thuongtru) ? '-'.DB::table('tbl_huyen_tx')->where('id', $brief->idhuyen_thuongtru)->value('name') : '' }} {{ ($brief->idtinh_thuongtru) ? '-'.DB::table('tbl_tinh_tp')->where('id', $brief->idtinh_thuongtru)->value('name') : '' }}</td>
-            <td>
-                <div class="button-list" style="max-width: 200px; margin: auto;">
-                    <a href="/nhan-khau/{{$brief->idhoso}}/chi-tiet-ho-khau" alt="Text" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết hồ sơ"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
-                    <a href="/nhan-khau/{{$brief->idhoso}}/edit" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa hồ sơ"> <i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> </a>
-                    <a href="/nhan-khau/{{$brief->idhoso}}/dang-ky-thuong-tru" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Đăng ký thường trú nhân khẩu mới"> <i style="color: #0BABE7;" class="zmdi zmdi-account-add"></i> </a>
-                    <a href="/nhan-khau/{{$brief->idhoso}}/tach-ho-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Tách hộ khẩu"> <i style="color: #6C6A4B;" class="zmdi zmdi-collection-item-2"></i> </a>
-                    <a href="/nhan-khau/{{$brief->idhoso}}/check-cap-lai-SHK" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Cấp lại hộ khẩu"> <i style="color: green;" class="zmdi zmdi-swap"></i> </a>
-                    <a href="/nhan-khau/{{$brief->idhoso}}/check-cap-doi-SHK" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Cấp đổi hộ khẩu"> <i style="color: blue;" class="zmdi zmdi-swap-vertical"></i> </a>
-                    <a href="/nhan-khau/{{$brief->idhoso}}/check-xoa-thuong-tru-HDG" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Xóa thường trú hộ gia đình"> <i style="color: red;" class="zmdi zmdi-delete"></i> </a>
-
-
+            <td class="center">
+                <div class="btn-group" style="max-width: 200px; margin: auto;">
+                    <button type="button" class="btn btn-warning dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Lựa chọn <span class="caret"></span></button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ route('chi-tiet-ho-khau', $brief->idhoso) }}"><i style="color: #387576;" class="zmdi zmdi-eye"></i> Xem hồ sơ</a>
+                        <a class="dropdown-item" href="{{ route('get-dang-ky-thuong-tru', $brief->idhoso) }}"><i style="color: #0BABE7;" class="zmdi zmdi-account-add"></i> Đăng ký thường trú</a>
+                        <a class="dropdown-item" href="{{ route('nhan-khau.edit', $brief->idhoso) }}"><i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> Sửa hồ sơ</a>
+                        <a class="dropdown-item" href="{{ route('get-tach-ho-khau', $brief->idhoso) }}"><i style="color: #6C6A4B;" class="zmdi zmdi-collection-item-2"></i> Tách hộ</a>
+                        <a class="dropdown-item" href="{{ route('get-check-cap-lai-SHK', $brief->idhoso) }}"> <i style="color: green;" class="zmdi zmdi-swap"></i> Cấp lại SHK</a>
+                        <a class="dropdown-item" href="{{ route('get-check-cap-doi-SHK', $brief->idhoso) }}"> <i style="color: blue;" class="zmdi zmdi-swap-vertical"></i> Cấp đổi SHK</a>
+                        <a class="dropdown-item" href="{{ route('get-xoa-thuong-tru-HDG', $brief->idhoso) }}"><i style="color: red;" class="zmdi zmdi-delete"></i> Xóa thường trú Hộ</a>
+                    </div>
                 </div>
             </td>
         </tr>

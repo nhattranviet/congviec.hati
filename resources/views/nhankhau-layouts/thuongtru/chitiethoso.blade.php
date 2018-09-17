@@ -65,7 +65,7 @@
                             <th>Quan hệ với chủ hộ</th>
                            <th>Thường trú</th>
                            <th>Trạng thái</th>
-                           <th style="width: 120px; text-align: center;">Hành động</th>
+                           <th style="width: 200px; text-align: center;">Hành động</th>
                         </tr>
                      </thead>
 
@@ -81,16 +81,19 @@
                               <td>{{ ($thongtinhokhau->idquanhechuho) ? DB::table('tbl_moiquanhe')->where('id', $thongtinhokhau->idquanhechuho)->value('name') : '' }}</td>
                               <td> {{ $thongtinhokhau->chitiet_thuongtru }} - {{ ($thongtinhokhau->idxa_thuongtru) ? DB::table('tbl_xa_phuong_tt')->where('id', $thongtinhokhau->idxa_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idhuyen_thuongtru) ? DB::table('tbl_huyen_tx')->where('id', $thongtinhokhau->idhuyen_thuongtru)->value('name') : '' }} - {{ ($thongtinhokhau->idtinh_thuongtru) ? DB::table('tbl_tinh_tp')->where('id', $thongtinhokhau->idtinh_thuongtru)->value('name') : '' }}</td>
                               <td style="text-align: center;">{!! ($thongtinhokhau->deleted_at != NULL) ? '<span class="label label-danger">Đã xóa</span>'  : '<span class="label label-info">Đang cư trú</span>' !!}</td>
-                              <td>
-                                <div class="button-list">
-                                    @if ($thongtinhokhau->deleted_at == NULL)
-                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/chi-tiet-nhan-khau" alt="Text" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết nhân khẩu"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
-                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/sua-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhân khẩu"> <i class="zmdi zmdi-edit"></i> </a>
-                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/check-xoa-thuong-tru" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xóa thường trú nhân khẩu"> <i style="color: red;" class="fa fa-remove"></i> </a>
-                                        <a href="/nhan-khau/{{$thongtinhokhau->id_in_sohokhau}}/get-hk-01" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xuất thông tin mẫu HK01"> <i style="color: blue;" class="fa fa-file-word-o"></i> </a>
-                                    @endif
+                              <td class="center">
+                                <div class="btn-group" style="max-width: 200px; margin: auto;">
+                                    <button type="button" class="btn btn-warning dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Lựa chọn <span class="caret"></span></button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{ route('chi-tiet-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #387576;" class="zmdi zmdi-eye"></i> Xem chi tiết</a>
+                                        <a class="dropdown-item" href="{{ route('get-sua-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> Sửa nhân khẩu</a>
+                                        <a class="dropdown-item" href="{{ route('check-xoa-thuong-tru-NK', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: red;" class="zmdi zmdi-delete"></i> Xóa thường trú NK</a>
+                                        <a class="dropdown-item" href="{{ route('get-hk-01', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK01</a>
+                                        <a class="dropdown-item" href="{{ route('get-hk-03', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK03</a>
+                                        <a class="dropdown-item" href="{{ route('get-hk-04', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK04</a>
+                                    </div>
                                 </div>
-                              </td>
+                            </td>
                            </tr>
                            <?php $i++; ?>
                         @endforeach
