@@ -552,10 +552,12 @@ class BaocaoThongkeController extends Controller
         echo $str;
     }
 
-    public function getHK07inHistory(Request $request, $id_in_sohokhau)
+    public function getHK07FromHistory(Request $request, $id_in_sohokhau)
     {
-        // $idnhankhau = DB::connection('nhanhokhau')
-        $data_info = json_decode( base64_decode( $data_give ), TRUE); //dd($data_info); //getChitietNhankhauFromListIdInSohokhau
+        $nguoixoa_info = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id', $id_in_sohokhau)->first();
+        $history_nguoixoa = DB::connection('nhanhokhau')->tabe('tbl_history_cutru')->where(array( ['idnhankhau', '=', $nguoixoa_info->idnhankhau], ['idhoso', '=', $nguoixoa_info->idhoso] ))->first();
+        // $list_nhankhauxoacung = DB::connection('nhanhokhau')->tabe('tbl_history_cutru')->where
+        $data_info = json_decode( base64_decode( $data_give ), TRUE);
         $data['lydo'] = ($data_info['lydo'] != null) ? $data_info['lydo'] : '....................................................................................................................<br>................................................................................................................................................................' ;
         $data['noichuyenden'] = ($data_info['noichuyenden'] != null) ? $data_info['noichuyenden'] : '..............................................................................................................................<br>................................................................................................................................................................' ;
         $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($data_info['nguoichuyen']);
