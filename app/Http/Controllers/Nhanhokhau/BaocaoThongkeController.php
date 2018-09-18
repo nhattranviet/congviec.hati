@@ -538,7 +538,7 @@ class BaocaoThongkeController extends Controller
 
     public function getHK07(Request $request, $data_give)
     {
-        $data_info = json_decode( base64_decode( $data_give ), TRUE); //dd($data_info); //getChitietNhankhauFromListIdInSohokhau
+        $data_info = json_decode( base64_decode( $data_give ), TRUE);
         $data['lydo'] = ($data_info['lydo'] != null) ? $data_info['lydo'] : '....................................................................................................................<br>................................................................................................................................................................' ;
         $data['noichuyenden'] = ($data_info['noichuyenden'] != null) ? $data_info['noichuyenden'] : '..............................................................................................................................<br>................................................................................................................................................................' ;
         $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($data_info['nguoichuyen']);
@@ -554,16 +554,58 @@ class BaocaoThongkeController extends Controller
 
     public function getHK07FromHistory(Request $request, $id_in_sohokhau)
     {
-        $nguoixoa_info = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('id', $id_in_sohokhau)->first();
-        $history_nguoixoa = DB::connection('nhanhokhau')->tabe('tbl_history_cutru')->where(array( ['idnhankhau', '=', $nguoixoa_info->idnhankhau], ['idhoso', '=', $nguoixoa_info->idhoso] ))->first();
-        // $list_nhankhauxoacung = DB::connection('nhanhokhau')->tabe('tbl_history_cutru')->where
-        $data_info = json_decode( base64_decode( $data_give ), TRUE);
-        $data['lydo'] = ($data_info['lydo'] != null) ? $data_info['lydo'] : '....................................................................................................................<br>................................................................................................................................................................' ;
-        $data['noichuyenden'] = ($data_info['noichuyenden'] != null) ? $data_info['noichuyenden'] : '..............................................................................................................................<br>................................................................................................................................................................' ;
-        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($data_info['nguoichuyen']);
+        $nguoixoa_info = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where(array( ['id', '=' , $id_in_sohokhau] ))->first();
+        if($nguoixoa_info->deleted_at == NULL)
+        {
+            $message = array('type' => 'warning', 'content' => 'Người này chưa xóa thường trú');
+            return redirect()->route('chi-tiet-ho-khau', $nguoixoa_info->idhoso)->with('alert_message', $message);
+        }
+        $history_nguoixoa_hoso = DB::connection('nhanhokhau')->table('tbl_history_cutru')->where(array( ['idthutuccutru', '=', $this->thutucxoa_dangkymoi], ['idhoso', '=', $nguoixoa_info->idhoso] ))->get()->toArray(); 
+        
+        $list_id_in_sohokhau_xoacung = NULL;
+        $time_xoa_of_nguoixoa = NULL;
+        $nguoixoa = NULL;
+        foreach ($history_nguoixoa_hoso as $nguoi)
+        {
+            if($nguoi->idnhankhau == $nguoixoa_info->idnhankhau )
+            {
+                $time_xoa_of_nguoixoa = $nguoi->created_at;
+                $nguoixoa = $nguoi;
+                break;
+            }
+        }
+
+        if($nguoixoa == NULL)
+        {
+            $message = array('type' => 'warning', 'content' => 'Người này xóa nhưng không đăng ký nơi thường trú mới');
+            return redirect()->route('chi-tiet-ho-khau', $nguoixoa_info->idhoso)->with('alert_message', $message);
+        }
+
+        if( count($history_nguoixoa_hoso) > 1 )
+        {
+            $list_idnhankhau_xoacung = array();
+            foreach ($history_nguoixoa_hoso as $nguoi)
+            {
+                if($nguoi->created_at == $time_xoa_of_nguoixoa && $nguoi->idnhankhau != $nguoixoa_info->idnhankhau )
+                {
+                    $list_idnhankhau_xoacung[] = $nguoi->idnhankhau;
+                }
+            }
+            if( count( $list_idnhankhau_xoacung ) > 0 )
+            {
+                $list_id_in_sohokhau_xoacung = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where(array( ['idhoso', '=', $nguoixoa_info->idhoso] ))->whereIn('idnhankhau', $list_idnhankhau_xoacung)->pluck('id')->toArray();
+            }
+        }
+
+        
+
+        $noiden = $nguoixoa->chitiet_thuongtrumoi.' - '.(($nguoixoa->idxa_thuongtrumoi) ? DB::table('tbl_xa_phuong_tt')->where('id', $nguoixoa->idxa_thuongtrumoi)->value('name') : '' ).' - '.(($nguoixoa->idhuyen_thuongtrumoi) ? DB::table('tbl_huyen_tx')->where('id', $nguoixoa->idhuyen_thuongtrumoi)->value('name') : '').' - '.(($nguoixoa->idtinh_thuongtrumoi) ? DB::table('tbl_tinh_tp')->where('id', $nguoixoa->idtinh_thuongtrumoi)->value('name') : '');
+        $data['lydo'] = ($nguoixoa->ghichu != NULL) ? $nguoixoa->ghichu : '....................................................................................................................<br>................................................................................................................................................................' ;
+        $data['noichuyenden'] = ($nguoixoa->idtinh_thuongtrumoi != NULL) ? $noiden : '..............................................................................................................................<br>................................................................................................................................................................' ;
+        $data['nhankhau'] = NhanhokhauLibrary::getChitietNhankhauFromIdInSohokhau($id_in_sohokhau);
         $data['tenquanhechuho'] = DB::table('tbl_moiquanhe')->where('id', $data['nhankhau']->idquanhechuho)->value('name');
         $data['chuhoinfo'] = NhanhokhauLibrary::getChuho($data['nhankhau']->idhoso);
-        $data['nhankhauchuyencung'] = ($data_info['nguoichuyencung'] != null) ?  NhanhokhauLibrary::getChitietNhankhauFromListIdInSohokhau($data_info['nguoichuyencung']) : NULL ; //dd($data['nhankhauchuyencung']);
+        $data['nhankhauchuyencung'] = ($list_id_in_sohokhau_xoacung != NULL) ?  NhanhokhauLibrary::getChitietNhankhauFromListIdInSohokhau($list_id_in_sohokhau_xoacung) : NULL ; //dd($data['nhankhauchuyencung']);
         $html_table = view('nhankhau-layouts.ajax_component.view_report_hk07', $data)->render();
         $str = UserLibrary::create_docfile_portrait($html_table);
         header("Content-type: application/vnd.ms-word");

@@ -33,24 +33,21 @@
                 <div class="col-xs-12">
                     <div class="page-title-box">
                         <h4 class="page-title">Quản lý hộ khẩu</h4>
+                        <div class="col-xs-12" style="max-width: 600px; margin: auto;">
+                            <a href="{{ route('nhan-khau.create') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-accounts-add m-r-5"></i> <span>Thêm mới hồ sơ</span> </a>
+                            <a href="{{ URL::to('bao-cao-nhan-khau') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="fa fa-file-word-o m-r-5"></i> <span>Lọc hồ sơ</span> </a>
+                            <a href="{{ route('thong-ke') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-window-restore m-r-5"></i> <span>Báo cáo nhân khẩu</span> </a>
+                        </div>
                         <div class="clearfix"></div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12" style="max-width: 600px; margin: auto;">
-                    <a href="{{ route('nhan-khau.create') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-accounts-add m-r-5"></i> <span>Thêm mới hồ sơ</span> </a>
-                    <a href="{{ URL::to('bao-cao-nhan-khau') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="fa fa-file-word-o m-r-5"></i> <span>Lọc hồ sơ</span> </a>
-                    <a href="{{ route('thong-ke') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-window-restore m-r-5"></i> <span>Báo cáo nhân khẩu</span> </a>
+                    
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-xs-12">
-                <div class="alert alert-danger" id="error-msg" style="display: none">
-                </div>
-                <div class="alert alert-success" id="success-msg" style="display: none">
-                </div>
+                    <div class="alert alert-danger" id="error-msg" style="display: none"></div>
+                    <div class="alert alert-success" id="success-msg" style="display: none"></div>
                 </div>
             </div>
 
