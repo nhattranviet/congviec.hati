@@ -35,7 +35,7 @@
             <div class="col-xs-12">
                <div class="card-box table-responsive">
 
-                  <div class="col-xs-12 col-sm-12">
+                <div class="col-xs-12 col-sm-12">
                      <table style="margin-bottom: 20px;" class="table table-striped table-bordered">
                       <thead>
                         <tr>
@@ -62,7 +62,7 @@
                         @endforeach
                       </tbody>
                   </table>
-                  </div>
+                </div>
 
                   <form id="form-nhankhau" action="{{ route('xoa-thuong-tru-HDG', $idhoso) }}" method="POST" role="form" autocomplete="off">
                     @csrf
