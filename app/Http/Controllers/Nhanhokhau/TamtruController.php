@@ -403,6 +403,107 @@ class TamtruController extends Controller
         return response()->json(['success' => 'Thành công ', 'url' => route('chi-tiet-so-tam-tru',$idsotamtru)]);
     }
 
+    public function getXoaTamTruSo($idsotamtru)
+    {
+        $data['list_thongtinhokhau'] = DB::connection('nhanhokhau')->table('tbl_tamtru')
+        ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
+        ->join('tbl_nhankhau', 'tbl_tamtru.idnhankhau', '=', 'tbl_nhankhau.id')
+        ->where( array(['idsotamtru', '=', $idsotamtru], ['tbl_tamtru.deleted_at', '=', NULL]) )
+        ->select('hoten', 'sotamtru_so', 'idquanhechuho', 'idtinh_tamtru', 'idhuyen_tamtru', 'idxa_tamtru', 'chitiet_tamtru')
+        ->get(); dd($data['list_thongtinhokhau']);
+        $data['idsotamtru'] = $idsotamtru;
+        // $data['relations'] = NhanhokhauLibrary::getListMoiQuanHe();
+        // $data['religions'] = NhanhokhauLibrary::getListTonGiao();
+        // $data['nations'] = NhanhokhauLibrary::getListDanToc();
+        
+        return view('nhankhau-layouts.tamtru.check_xoatamtruSo', $data);
+    }
+
+    public function xoaThuongtruHGD(Request $request, $idhoso)
+    {
+        $validator = Validator::make($request->all(), [
+            'idtruonghopxoa' => 'required',
+            'ngayxoathuongtru' => 'required',
+            'idquocgia_thuongtrumoi' => 'required_if:idtruonghopxoa,'.$this->thutuc_xoa_dangkynoimoi,
+            'idtinh_thuongtrumoi' => 'required_if:idquocgia_thuongtrumoi,1',
+            'idhuyen_thuongtrumoi' => 'required_if:idquocgia_thuongtrumoi,1',
+            'idxa_thuongtrumoi' => 'required_if:idquocgia_thuongtrumoi,1',
+        ], NhanhokhauLibrary::getMessageRule());
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()->all()]);
+        }
+
+        $list_nhankhau_info = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where(array(['idhoso', '=', $idhoso], ['deleted_at', '=', NULL]))->orderBy('idquanhechuho', 'ASC')->pluck('idnhankhau', 'id')->toArray();
+        if(count($list_nhankhau_info) < 1)
+        {
+            return response()->json(['error' => array('Hộ xóa không có nhân khẩu!')]);
+        }
+        $list_nhankhau_id = array_values($list_nhankhau_info);
+        $list_id_in_sohokhau = array_keys($list_nhankhau_info);
+        $idnguoixoa = $list_id_in_sohokhau[0];
+        $arr_nguoixoacung = array_diff($list_id_in_sohokhau, array($idnguoixoa));
+        $arr_nguoixoacung = (count($arr_nguoixoacung) > 0 && !empty( $arr_nguoixoacung )) ? $arr_nguoixoacung : NULL;
+        $data_hoso = array(
+            'deleted_at' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
+        );
+        DB::connection('nhanhokhau')->table('tbl_hoso')->where('id',$idhoso)->update($data_hoso);
+        DB::connection('nhanhokhau')->table('tbl_sohokhau')->where( array( ['idhoso', '=', $idhoso], ['tbl_sohokhau.deleted_at', '=', NULL] ) )->update($data_hoso);
+
+        $noiden = NULL;
+        if($request->idtruonghopxoa == $this->thutuc_xoa_dangkynoimoi)
+        {
+            $data_update = array(
+                'idquocgia_thuongtrumoi' => $request->idquocgia_thuongtrumoi,
+                'idtinh_thuongtrumoi' => $request->idtinh_thuongtrumoi,
+                'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
+                'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
+                'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
+            );
+            DB::connection('nhanhokhau')->table('tbl_nhankhau')->whereIn('id', $list_nhankhau_id)->update($data_update);
+            $noiden = $request->chitiet_thuongtrumoi.' - '.(($request->idxa_thuongtrumoi) ? DB::table('tbl_xa_phuong_tt')->where('id', $request->idxa_thuongtrumoi)->value('name') : '' ).' - '.(($request->idhuyen_thuongtrumoi) ? DB::table('tbl_huyen_tx')->where('id', $request->idhuyen_thuongtrumoi)->value('name') : '').' - '.(($request->idtinh_thuongtrumoi) ? DB::table('tbl_tinh_tp')->where('id', $request->idtinh_thuongtrumoi)->value('name') : '');
+        }
+        $created_at = Carbon::now();
+        $updated_at = Carbon::now();
+        $data_log_hogiadinh = array(
+            'idthutuccutru' => $request->idtruonghopxoa, 'type' => 'hogiadinh', 'idhoso' => $idhoso, 'date_action' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
+            'idquocgia_thuongtrumoi' => $request->idquocgia_thuongtrumoi,
+            'idtinh_thuongtrumoi' => $request->idtinh_thuongtrumoi,
+            'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
+            'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
+            'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
+            'ghichu' => $request->lydoxoa,
+            'created_at' => $created_at, 'updated_at' => $updated_at,
+        );
+        NhanhokhauLibrary::logCutru($data_log_hogiadinh);
+
+        $data_log_nhankhau = array();
+        foreach ($list_nhankhau_id as $value)
+        {
+            $data_log = array(
+                'idthutuccutru' => $request->idtruonghopxoa,
+                'type' => 'nhankhau', 'idnhankhau' => $value, 'idhoso' => $idhoso,
+                'date_action' => date('Y-m-d', strtotime($request->ngayxoathuongtru)),
+                'created_at' => $created_at, 'updated_at' => $updated_at,
+                'idquocgia_thuongtrumoi' => $request->idquocgia_thuongtrumoi,
+                'idtinh_thuongtrumoi' => $request->idtinh_thuongtrumoi,
+                'idhuyen_thuongtrumoi' => $request->idhuyen_thuongtrumoi,
+                'idxa_thuongtrumoi' => $request->idxa_thuongtrumoi,
+                'chitiet_thuongtrumoi' => $request->chitiet_thuongtrumoi,
+                'ghichu' => $request->lydoxoa
+            );
+            $data_log_nhankhau[] = $data_log;
+        }
+        DB::connection('nhanhokhau')->table('tbl_history_cutru')->insert( $data_log_nhankhau );
+        $arr_ret = ['success' => 'Xóa đăng ký thường trú thành công', 'url' => route('nhan-khau.index')];
+        if($request->idtruonghopxoa == $this->thutuc_xoa_dangkynoimoi)
+        {
+            $data_to_get_hk07 = base64_encode( json_encode( ['lydo' => $request->lydoxoa, 'noichuyenden' => $noiden, 'nguoichuyen' => $idnguoixoa, 'nguoichuyencung' => $arr_nguoixoacung ] ) );
+            $arr_ret['url_second'] =  route('get-hk-07', ['data' => $data_to_get_hk07]);
+        }
+        return response()->json($arr_ret);
+    }
+
     public function getThaydoichuho( $idsotamtru )
     {
         $data['list_nhankhau'] = TamtruLibrary::getChitietSotamtru($idsotamtru);
@@ -491,16 +592,7 @@ class TamtruController extends Controller
         return response()->json(['success' => 'Thành công ', 'url' => route('tam-tru.index')]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    
 
     /**
      * Show the form for editing the specified resource.

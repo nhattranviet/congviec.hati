@@ -226,6 +226,9 @@ Route::post('/post-add-so-tam-tru-ca-nhan', 'Nhanhokhau\TamtruController@postAdd
 Route::get('/tam-tru/{idnhankhau}/{idsotamtru}/get-xoa-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@getXoaTamTruNhanKhau')->name('get-xoa-tam-tru-nhan-khau');
 Route::post('/tam-tru/{idnhankhau}/{idsotamtru}/post-xoa-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@postXoaTamTruNhanKhau')->name('post-xoa-tam-tru-nhan-khau');
 
+Route::get('/tam-tru/{idsotamtru}/get-xoa-tam-tru-So', 'Nhanhokhau\TamtruController@getXoaTamTruSo')->name('get-xoa-tam-tru-So');
+Route::post('/tam-tru/{idsotamtru}/post-xoa-tam-tru-So', 'Nhanhokhau\TamtruController@postXoaTamTruSo')->name('post-xoa-tam-tru-So');
+
 Route::get('/tam-tru/{idnhankhau}/{idsotamtru}/get-gia-han-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@getGiaHanTamTruNhanKhau')->name('get-gia-han-tam-tru-nhan-khau');
 Route::post('/tam-tru/{idnhankhau}/{idsotamtru}/post-gia-han-tam-tru-nhan-khau', 'Nhanhokhau\TamtruController@postGiaHanTamTruNhanKhau')->name('post-gia-han-tam-tru-nhan-khau');
 

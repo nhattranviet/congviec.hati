@@ -31,21 +31,13 @@ class HomeNhanhokhauController extends Controller
      */
     public function index()
     {
-        $this->data['thuongtru_tongsoho'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
-        ->where('tbl_sohokhau.deleted_at', NULL)->distinct()
-        ->count('idhoso');
+        $this->data['thuongtru_tongsoho'] = DB::connection('nhanhokhau')->table('tbl_hoso')->where('deleted_at', NULL)->distinct()->count();
 
-        $this->data['thuongtru_tongnhankhau'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
-        ->where('tbl_sohokhau.deleted_at', NULL)
-        ->count();
+        $this->data['thuongtru_tongnhankhau'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('tbl_sohokhau.deleted_at', NULL)->count();
 
-        $this->data['tamtru_tongso_so'] = DB::connection('nhanhokhau')->table('tbl_sotamtru')
-        ->where('tbl_sotamtru.deleted_at', NULL)
-        ->count();
+        $this->data['tamtru_tongso_so'] = DB::connection('nhanhokhau')->table('tbl_sotamtru')->where('tbl_sotamtru.deleted_at', NULL)->count();
 
-        $this->data['tamtru_sonhankhau'] = DB::connection('nhanhokhau')->table('tbl_tamtru')
-        ->where('tbl_tamtru.deleted_at', NULL)->distinct()
-        ->count();
+        $this->data['tamtru_sonhankhau'] = DB::connection('nhanhokhau')->table('tbl_tamtru')->where('tbl_tamtru.deleted_at', NULL)->distinct()->count();
 
         $this->data['thuongtru_hosohokhau'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
             ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')

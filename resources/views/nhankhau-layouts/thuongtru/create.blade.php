@@ -43,7 +43,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhau" action="{{ route('nhankhau.store') }}" method="POST" role="form" autocomplete="on">
+                        <form id="form-nhankhau" action="{{ route('nhankhau.store') }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 <div class="col-md-12 col-xs-12 m-b-40">
                                     <ul class="m-b-30 nav nav-tabs m-b-10" id="myTabalt" role="tablist">

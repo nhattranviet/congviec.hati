@@ -70,9 +70,11 @@
                                 <td>
                                     <div class="button-list">
                                         <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/chi-tiet-nhan-khau" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Chi tiết nhân khẩu"> <i style="color: #387576;" class="zmdi zmdi-eye"></i> </a>
-                                        <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/sua-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhân khẩu"> <i class="zmdi zmdi-edit"></i> </a>
-                                        <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/get-gia-han-tam-tru-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Gia hạn tạm trú"> <i class="zmdi zmdi-time-restore"></i> </a>
-                                        <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/get-xoa-tam-tru-nhan-khau" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xóa tạm trú nhân khẩu"> <i style="color: red;" class="fa fa-remove"></i> </a>
+                                        @if ($thongtinsotamtru->deleted_at == NULL)
+                                            <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/get-xoa-tam-tru-nhan-khau" class="btn btn-primary btn-link" data-toggle="tooltip" data-placement="top" title="Xóa tạm trú nhân khẩu"> <i style="color: red;" class="fa fa-remove"></i> </a>
+                                            <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/sua-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Sửa nhân khẩu"> <i class="zmdi zmdi-edit"></i> </a>
+                                            <a href="/tam-tru/{{ $thongtinsotamtru->idnhankhau }}/{{ $thongtinsotamtru->idsotamtru }}/get-gia-han-tam-tru-nhan-khau" class="btn btn-danger btn-link" data-toggle="tooltip" data-placement="top" title="Gia hạn tạm trú"> <i class="zmdi zmdi-time-restore"></i> </a>
+                                        @endif
                                     </div>
                                 </td>
                            </tr>

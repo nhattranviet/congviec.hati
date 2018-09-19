@@ -81,9 +81,7 @@
                                 <div class="btn-group" style="max-width: 200px; margin: auto;">
                                     <button type="button" class="btn btn-warning dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Lựa chọn <span class="caret"></span></button>
                                     <div class="dropdown-menu">
-                                        
                                         @if ($thongtinhokhau->deleted_at == NULL)
-                                            
                                             <a class="dropdown-item" href="{{ route('chi-tiet-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #387576;" class="zmdi zmdi-eye"></i> Xem chi tiết</a>
                                             <a class="dropdown-item" href="{{ route('get-sua-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> Sửa nhân khẩu</a>
                                             <a class="dropdown-item" href="{{ route('check-xoa-thuong-tru-NK', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: red;" class="zmdi zmdi-delete"></i> Xóa thường trú NK</a>

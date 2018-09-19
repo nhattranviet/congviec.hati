@@ -253,24 +253,21 @@ class BaocaoThongkeController extends Controller
         $this->data['khongcutru_nhankhaunu'] = $request->khongcutru_nhankhaunu;
         $this->data['khongcutru_nhankhautu14'] = $request->khongcutru_nhankhautu14;
         //End Khong cu tru
-
-        $data_nhanhokhau = DB::connection('nhanhokhau')->table('tbl_sohokhau')
-        ->where('tbl_sohokhau.deleted_at', NULL);
-        $this->data['thuongtru_tongsoho'] = $data_nhanhokhau->distinct()->count('idhoso');
-        $this->data['thuongtru_tongnhankhau'] = $data_nhanhokhau->count();
-        $list_nhankhau_hokhau = $data_nhanhokhau->pluck('idnhankhau');
-
+        
+        $this->data['thuongtru_tongsoho'] = DB::connection('nhanhokhau')->table('tbl_hoso')->where(array(['deleted_at', '=', NULL]))->distinct()->count();
+        $list_nhankhau_thuongtru = DB::connection('nhanhokhau')->table('tbl_sohokhau')->where('tbl_sohokhau.deleted_at', NULL)->distinct()->pluck('idnhankhau');
+        $this->data['thuongtru_tongnhankhau'] = $list_nhankhau_thuongtru->count();
+        
+        
         $list_nhankhau_nu =  DB::connection('nhanhokhau')->table('tbl_nhankhau')->where('gioitinh', 0)->pluck('id');
         $list_nhankhau_tren14 =  DB::connection('nhanhokhau')->table('tbl_nhankhau')->whereDate('ngaysinh', '<=', $this->ago_14_year)->pluck('id');
         $list_nhankhau_thanhthi =  DB::connection('nhanhokhau')->table('tbl_nhankhau')->whereIn('idxa_thuongtru', $this->current_thanhthi)->pluck('id');
-        $this->data['thuongtru_gioitinh_nu'] = $list_nhankhau_nu->intersect($list_nhankhau_hokhau)->count(); 
-        $this->data['thuongtru_nk_better_14'] = $list_nhankhau_tren14->intersect($list_nhankhau_hokhau)->count();
-        $this->data['thuongtru_count_thanhthi'] = $list_nhankhau_thanhthi->intersect($list_nhankhau_hokhau)->count();
-
+        $this->data['thuongtru_gioitinh_nu'] = $list_nhankhau_nu->intersect($list_nhankhau_thuongtru)->count(); 
+        $this->data['thuongtru_nk_better_14'] = $list_nhankhau_tren14->intersect($list_nhankhau_thuongtru)->count();
+        $this->data['thuongtru_count_thanhthi'] = $list_nhankhau_thanhthi->intersect($list_nhankhau_thuongtru)->count();
         //-----------------------------TAM TRU-------------------------
         $this->data['tamtru_tongso_nhankhau'] = 0;
-        $this->data['tamtru_tongso_ho'] = 0;
-        $this->data['arr_id_ho_tamtru'] = array();
+        
         $this->data['tamtru_nk_better_14_total'] = 0;
         $this->data['tamtru_count_thanhthi'] = 0;
         $this->data['tamtru_gioitinh_nu'] = 0;
@@ -293,8 +290,14 @@ class BaocaoThongkeController extends Controller
         $this->data['tamtru_ngoaixa_trongtinh_den_nk_nu'] = 0;
         $this->data['tamtru_ngoaixa_trongtinh_den_nk_tren_14'] = 0;
 
+        
+        $this->data['tamtru_tongso_ho'] = DB::connection('nhanhokhau')->table('tbl_sotamtru')->where(array(['type', '=', 'hogiadinh'], ['deleted_at', '=', NULL]))->count();
+        
+        $list_nhankhau_tamtru = DB::connection('nhanhokhau')->table('tbl_tamtru')->where(array(['deleted_at', '=', NULL]))->pluck('idnhankhau');
+        $this->data['tamtru_tongso_nhankhau'] = $list_nhankhau_tamtru->count();
+        
 
-        $denngay_Y_m_d = date('Y-m-d', strtotime($request->denngay));
+        $denngay_Y_m_d = date( 'Y-m-d', strtotime( $request->denngay ) );
         // $data_tamtru_chunk = DB::connection('nhanhokhau')->table('tbl_tamtru')
         // ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
         // ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
@@ -309,8 +312,6 @@ class BaocaoThongkeController extends Controller
         // ->chunk(1000, function($list_nhankhau){
         //     foreach($list_nhankhau as $nhankhau)
         //     {
-        //         $this->data['tamtru_tongso_nhankhau']++;
-        //         if( $nhankhau->type == 'hogiadinh' && $nhankhau->idquanhechuho == 1 ) $this->data['tamtru_tongso_ho']++;
         //         if($nhankhau->ngaysinh <= $this->ago_14_year)   $this->data['tamtru_nk_better_14_total']++;
         //         if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_count_thanhthi']++;
         //         if($nhankhau->gioitinh == 0) $this->data['tamtru_gioitinh_nu']++;
