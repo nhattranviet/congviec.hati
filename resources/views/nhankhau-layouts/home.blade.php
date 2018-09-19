@@ -99,50 +99,29 @@
                             
                             <div class="row nhat_box_wrap m-t-10 m-b-10">
                                 <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12 nhat_box_head m-b-10">
-                                    <h4 class="header-title m-t-0 pull-left"> <i class="zmdi zmdi-local-printshop"></i> <span>THỐNG KÊ THƯỜNG TRÚ</span></h4>
+                                    <h4 class="header-title m-t-0 pull-left"> <i class="zmdi zmdi-local-printshop"></i> <span>THỐNG KÊ</span></h4>
                                 </div>
                                 <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 nhat_box_content">
                                     <div class="card-box tilebox-two">
                                         <i style="color:red;" class="zmdi zmdi-collection-text pull-xs-right"></i>
-                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">HỒ SƠ</h6>
-                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $thuongtru_tongsoho }}</span></h2>
+                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">HỒ SƠ HỘ KHẨU</h6>
+                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ (isset($thuongtru_tongsoho)) ? number_format($thuongtru_tongsoho) : NULL }}</span></h2>
                                     </div>
                                 </div>
 
                                 <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
                                     <div class="card-box tilebox-two">
                                         <i style="color: seagreen;" class="fa fa-users pull-xs-right text-muted"></i>
-                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">NHÂN KHẨU</h6>
-                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $thuongtru_tongnhankhau }}</span></h2>
+                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">NHÂN KHẨU THƯỜNG TRÚ</h6>
+                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ (isset($thuongtru_tongnhankhau)) ? number_format($thuongtru_tongnhankhau) : NULL }}</span></h2>
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
-                                    <div class="card-box tilebox-two">
-                                        <i style="color: red;" class="icon-user-female pull-xs-right text-muted"></i>
-                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">NHÂN KHẨU NỮ</h6>
-                                        <h2 class="m-b-10" data-plugin="counterup">{{ $thuongtru_gioitinh_nu }}</h2>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
-                                    <div class="card-box tilebox-two">
-                                        <i style="color:seagreen;" class="fa fa-user-plus pull-xs-right text-muted"></i>
-                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">NHÂN KHẨU TỪ 14 TUỔI</h6>
-                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $thuongtru_nhankhau_better_14 }}</span></h2>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row nhat_box_wrap m-t-10 m-b-10">
-                                <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12 nhat_box_head m-b-10">
-                                    <h4 class="header-title m-t-0 pull-left"> <i class="zmdi zmdi-collection-text"></i> <span>THỐNG KÊ TẠM TRÚ</span></h4>
-                                </div>
                                 <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3 nhat_box_content">
                                     <div class="card-box tilebox-two">
                                         <i style="color:violet;" class="ion-android-book pull-xs-right text-muted"></i>
                                         <h6 class="text-primary text-uppercase m-b-15 m-t-10">SỔ TẠM TRÚ</h6>
-                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $tamtru_tongso_ho }}</span></h2>
+                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ (isset($tamtru_tongso_so)) ? number_format($tamtru_tongso_so) : NULL }}</span></h2>
                                     </div>
                                 </div>
 
@@ -150,25 +129,10 @@
                                     <div class="card-box tilebox-two">
                                         <i style="color:violet;" class="zmdi zmdi-nature-people pull-xs-right text-muted"></i>
                                         <h6 class="text-primary text-uppercase m-b-15 m-t-10">SỐ NHÂN KHẨU</h6>
-                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $tamtru_sonhankhau }}</span></h2>
+                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ (isset($tamtru_sonhankhau)) ? number_format($tamtru_sonhankhau) : NULL }}</span></h2>
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
-                                    <div class="card-box tilebox-two">
-                                        <i style="color: violet;" class="zmdi zmdi-female pull-xs-right text-muted"></i>
-                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">SỐ NHÂN KHẨU NỮ</h6>
-                                        <h2 class="m-b-10" data-plugin="counterup">{{ $tamtru_gioitinhnu }}</h2>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
-                                    <div class="card-box tilebox-two">
-                                        <i style="color:violet;" class="fa fa-user-plus pull-xs-right text-muted"></i>
-                                        <h6 class="text-primary text-uppercase m-b-15 m-t-10">NHÂN KHẨU TỪ 14 TUỔI</h6>
-                                        <h2 class="m-b-10"><span data-plugin="counterup">{{ $tamtru_nhankhau_better_14 }}</span></h2>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="row nhat_box_wrap m-t-10">

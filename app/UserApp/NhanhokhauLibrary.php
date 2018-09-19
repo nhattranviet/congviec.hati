@@ -222,7 +222,91 @@ class NhanhokhauLibrary
         ];
     }
 
+    public static function getDangkylaiRule()
+    {
+        return [
+            'hoten' => 'required',
+            'birthday' => 'required|date_format:d-m-Y',
+            'ngaydangky' => 'required|date_format:d-m-Y',
+            'idquoctich' => 'required',
+            'idtongiao' => 'required',
+            'idquanhechuho' => 'required',
+            'gender' => 'required',
+            'idnhankhau' => 'required|integer',
+
+            'idquocgia_noisinh' => 'required',
+            'idtinh_noisinh' => 'required_if:idquocgia_noisinh,1',
+            'idhuyen_noisinh' => 'required_if:idquocgia_noisinh,1',
+            'idxa_noisinh' => 'required_if:idquocgia_noisinh,1',
+
+            'idquocgia_nguyenquan' => 'required',
+            'idtinh_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
+            'idhuyen_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
+            'idxa_nguyenquan' => 'required_if:idquocgia_nguyenquan,1',
+
+            'idquocgia_noiohiennay' => 'required',
+            'idtinh_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
+            'idhuyen_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
+            'idxa_noiohiennay' => 'required_if:idquocgia_noiohiennay,1',
+        ];
+    }
+
     public static function updatePostSuaNhankhau( $request, $idnhankhau )
+    {
+        $data_nhankhau = array(
+            'hoten' => $request->hoten,
+            'tenkhac' => $request->tenkhac,
+            'ngaysinh' => date('Y-m-d', strtotime($request->birthday)),
+            'idquoctich' => $request->idquoctich,
+            'cmnd_so' => $request->cmnd_so,
+            'idtongiao' => $request->idtongiao,
+            'iddantoc' => $request->iddantoc,
+            'idtrinhdohocvan' => $request->idtrinhdohocvan,
+            'idnghenghiep' => $request->idnghenghiep,
+            'trinhdochuyenmon' => $request->trinhdochuyenmon,
+            'trinhdongoaingu' => $request->trinhdongoaingu,
+            'biettiengdantoc' => $request->biettiengdantoc,
+            'tomtatbanthan' => $request->description,
+            'tomtatgiadinh' => $request->descriptionFamily,
+            'tienan_tiensu' => $request->criminalRecord,
+            'gioitinh' => $request->gender,
+
+            'idquocgia_nguyenquan' => $request->idquocgia_nguyenquan,
+            'idtinh_nguyenquan' => $request->idtinh_nguyenquan,
+            'idhuyen_nguyenquan' => $request->idhuyen_nguyenquan,
+            'idxa_nguyenquan' => $request->idxa_nguyenquan,
+            'chitiet_nguyenquan' => $request->chitiet_nguyenquan,
+
+            'idquocgia_noiohiennay' => $request->idquocgia_noiohiennay,
+            'idtinh_noiohiennay' => $request->idtinh_noiohiennay,
+            'idhuyen_noiohiennay' => $request->idhuyen_noiohiennay,
+            'idxa_noiohiennay' => $request->idxa_noiohiennay,
+            'chitiet_noiohiennay' => $request->chitiet_noiohiennay,
+
+            'idquocgia_noisinh' => $request->idquocgia_noisinh,
+            'idtinh_noisinh' => $request->idtinh_noisinh,
+            'idhuyen_noisinh' => $request->idhuyen_noisinh,
+            'idxa_noisinh' => $request->idxa_noisinh,
+            'chitiet_noisinh' => $request->chitiet_noisinh,
+
+            'idquocgia_noilamviec' => $request->idquocgia_noilamviec,
+            'idtinh_noilamviec' => $request->idtinh_noilamviec,
+            'idhuyen_noilamviec' => $request->idhuyen_noilamviec,
+            'idxa_noilamviec' => $request->idxa_noilamviec,
+            'chitiet_noilamviec' => $request->chitiet_noilamviec,
+
+            'idquocgia_thuongtrutruoc' => $request->idquocgia_thuongtrutruoc,
+            'idtinh_thuongtrutruoc' => $request->idtinh_thuongtrutruoc,
+            'idhuyen_thuongtrutruoc' => $request->idhuyen_thuongtrutruoc,
+            'idxa_thuongtrutruoc' => $request->idxa_thuongtrutruoc,
+            'chitiet_thuongtrutruoc' => $request->chitiet_thuongtrutruoc,
+
+            'updated_at' => Carbon::now(),
+        );
+        return DB::connection('nhanhokhau')->table('tbl_nhankhau')->where('id',$idnhankhau)->update($data_nhankhau);
+    }
+
+    public static function updateDangkyLaiNhankhau( $request, $idnhankhau )
     {
         $data_nhankhau = array(
             'hoten' => $request->hoten,

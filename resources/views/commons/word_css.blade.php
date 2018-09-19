@@ -67,7 +67,11 @@
         font-size: 8pt;
         font-weight: bold;
     }
-    p{
+    p {
+        margin: 0.3pt 0pt;
+        padding: 0.3pt 0pt;
+    }
+    div {
         margin: 0.3pt 0pt;
         padding: 0.3pt 0pt;
     }

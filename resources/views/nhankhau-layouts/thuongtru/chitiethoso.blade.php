@@ -81,14 +81,20 @@
                                 <div class="btn-group" style="max-width: 200px; margin: auto;">
                                     <button type="button" class="btn btn-warning dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Lựa chọn <span class="caret"></span></button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ route('chi-tiet-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #387576;" class="zmdi zmdi-eye"></i> Xem chi tiết</a>
-                                        <a class="dropdown-item" href="{{ route('get-sua-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> Sửa nhân khẩu</a>
-                                        <a class="dropdown-item" href="{{ route('check-xoa-thuong-tru-NK', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: red;" class="zmdi zmdi-delete"></i> Xóa thường trú NK</a>
-                                        <a class="dropdown-item" href="{{ route('get-hk-01', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK01</a>
-                                        <a class="dropdown-item" href="{{ route('get-hk-03', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK03</a>
-                                        <a class="dropdown-item" href="{{ route('get-hk-04', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK04</a>
-                                        @if ($thongtinhokhau->deleted_at != NULL)
-                                           <a class="dropdown-item" href="{{ route('get-hk-07-from-history', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK07</a> 
+                                        
+                                        @if ($thongtinhokhau->deleted_at == NULL)
+                                            
+                                            <a class="dropdown-item" href="{{ route('chi-tiet-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #387576;" class="zmdi zmdi-eye"></i> Xem chi tiết</a>
+                                            <a class="dropdown-item" href="{{ route('get-sua-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #D85C0C;" class="zmdi zmdi-edit"></i> Sửa nhân khẩu</a>
+                                            <a class="dropdown-item" href="{{ route('check-xoa-thuong-tru-NK', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: red;" class="zmdi zmdi-delete"></i> Xóa thường trú NK</a>
+                                            <a class="dropdown-item" href="{{ route('get-hk-01', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK01</a>
+                                            <a class="dropdown-item" href="{{ route('get-hk-03', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK03</a>
+                                            <a class="dropdown-item" href="{{ route('get-hk-04', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK04</a>
+                                        @else 
+                                            <a class="dropdown-item" href="{{ route('chi-tiet-nhan-khau-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"><i style="color: #387576;" class="zmdi zmdi-eye"></i> Xem chi tiết</a>
+                                            <a class="dropdown-item" href="{{ route('get-hk-01', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK01</a>
+                                            <a class="dropdown-item" href="{{ route('get-hk-07-from-history', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-file-word-o"></i>  Trích xuất HK07</a> 
+                                            <a class="dropdown-item" href="{{ route('get-dang-ky-lai-thuong-tru', $thongtinhokhau->id_in_sohokhau) }}"> <i style="color: blue;" class="fa fa-refresh"></i>  Đăng ký về lại</a> 
                                         @endif
                                     </div>
                                 </div>

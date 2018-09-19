@@ -86,6 +86,7 @@ class CreateTblNhankhauTable extends Migration
             $table->softDeletes();
 
             $table->index('hoten');
+            $table->index('tenkhac');
             $table->index('ngaysinh');
             $table->index('idquocgia_thuongtru');
             $table->index('idtinh_thuongtru');

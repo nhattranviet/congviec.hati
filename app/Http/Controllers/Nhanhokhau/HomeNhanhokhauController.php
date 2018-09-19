@@ -31,52 +31,21 @@ class HomeNhanhokhauController extends Controller
      */
     public function index()
     {
-        $this->ago_14_year = date('Y-m-d', strtotime(date('Y-m-d', time()). ' - 14 years'));
-        $this->data['thuongtru_tongsoho'] = 0;
-        $this->data['thuongtru_tongnhankhau'] = 0;
-        $this->data['thuongtru_gioitinh_nu'] = 0;
-        $this->data['thuongtru_nhankhau_better_14'] = 0;
-        DB::connection('nhanhokhau')->table('tbl_sohokhau')
-        ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_sohokhau.idnhankhau')
-        ->join('tbl_hoso', 'tbl_hoso.id', '=', 'tbl_sohokhau.idhoso')
-        ->where('tbl_hoso.deleted_at', NULL)
+        $this->data['thuongtru_tongsoho'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
+        ->where('tbl_sohokhau.deleted_at', NULL)->distinct()
+        ->count('idhoso');
+
+        $this->data['thuongtru_tongnhankhau'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
         ->where('tbl_sohokhau.deleted_at', NULL)
-        ->orderBy('tbl_hoso.id')
-        ->select('tbl_hoso.id as idhoso', 'idxa_thuongtru', 'gioitinh', 'ngaysinh', 'idquanhechuho')
-        ->chunk( 1000, function($data_nhankhau) {
-            foreach ($data_nhankhau as $nhankhau) {
-                $this->data['thuongtru_tongnhankhau']++;
+        ->count();
 
-                if( $nhankhau->idquanhechuho == 1 ) $this->data['thuongtru_tongsoho']++;
+        $this->data['tamtru_tongso_so'] = DB::connection('nhanhokhau')->table('tbl_sotamtru')
+        ->where('tbl_sotamtru.deleted_at', NULL)
+        ->count();
 
-                if($nhankhau->gioitinh == 0) $this->data['thuongtru_gioitinh_nu']++;
-
-                if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['thuongtru_nhankhau_better_14']++;
-            }
-        } );
-
-        $this->data['tamtru_gioitinhnu'] = 0;
-        $this->data['tamtru_nhankhau_better_14'] = 0;
-        $this->data['tamtru_sonhankhau'] = 0;
-        $this->data['tamtru_tongso_ho'] = 0;
-        $data_tamtru_chunk = DB::connection('nhanhokhau')->table('tbl_tamtru')
-        ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
-        ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
-        ->where(array(
-            ['tbl_sotamtru.deleted_at', '=', NULL],
-            ['tbl_tamtru.deleted_at', '=', NULL],
-        ))
-        ->orderBy('tbl_tamtru.id')
-        ->select( 'sotamtru_so', 'tbl_sotamtru.type', 'idsotamtru', 'idquanhechuho', 'idxa_tamtru', 'idhuyen_tamtru', 'idtinh_tamtru', 'idxa_thuongtru', 'idhuyen_thuongtru', 'idtinh_thuongtru', 'gioitinh', 'ngaysinh', 'tamtru_tungay', 'tamtru_denngay')
-        ->chunk(1000, function($list_nhankhau){
-            foreach($list_nhankhau as $nhankhau)
-                {
-                    $this->data['tamtru_sonhankhau']++;
-                    if( $nhankhau->idquanhechuho == 1 ) $this->data['tamtru_tongso_ho']++;
-                    if($nhankhau->ngaysinh <= $this->ago_14_year)   $this->data['tamtru_nhankhau_better_14']++;
-                    if($nhankhau->gioitinh == 0) $this->data['tamtru_gioitinhnu']++;
-                }
-            });
+        $this->data['tamtru_sonhankhau'] = DB::connection('nhanhokhau')->table('tbl_tamtru')
+        ->where('tbl_tamtru.deleted_at', NULL)->distinct()
+        ->count();
 
         $this->data['thuongtru_hosohokhau'] = DB::connection('nhanhokhau')->table('tbl_sohokhau')
             ->join('tbl_nhankhau', 'tbl_nhankhau.id' , '=', 'tbl_sohokhau.idnhankhau')

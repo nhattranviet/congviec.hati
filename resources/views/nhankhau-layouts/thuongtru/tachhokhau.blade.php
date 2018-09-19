@@ -74,7 +74,7 @@
                                                     <div class="col-md-12 col-xs-12 m-t-sm-40">
                                                         <fieldset id="nhankhaugoc" class="form-group {{ ($errors->has('hoten')) ? 'has-danger' : '' }}">
                                                             <label for="hoten">Họ và tên </label>
-                                                            <select multiple="multiple" class="multi-select nhankhaugoc" id="my_multi_select1" name="nhankhautach[]" data-plugin="multiselect">
+                                                            <select multiple="multiple" class="multi-select nhankhaugoc select2" id="my_multi_select1" name="nhankhautach[]" data-plugin="multiselect">
                                                                 @foreach($list_nhankhau as $nhankhau)
                                                                     <option idnhankhau="{{ $nhankhau->idnhankhau }}" {{ ($nhankhau->idquanhechuho == 1) ? 'disabled="disabled"' : '' }} value="{{ $nhankhau->id }}" >{{ $nhankhau->hoten }}</option>
                                                                 @endforeach
@@ -163,7 +163,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group" >
                                                                     <label>Quan hệ với chủ hộ <span class="text-danger">*</span></label>
-                                                                    <select name="idquanhechuho[]" class="form-control" tabindex="7">
+                                                                    <select name="idquanhechuho[]" class="form-control select2" tabindex="7">
                                                                         <option value="">Chọn quan hệ</option>
                                                                         @foreach($list_quanhechuho as $quanhechuho)
                                                                         <option value="{{ $quanhechuho->id }}">{{ $quanhechuho->name }}</option>
@@ -214,7 +214,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Học vấn</label>
-                                                                    <select name="idtrinhdohocvan[]" class="form-control" tabindex="13">
+                                                                    <select name="idtrinhdohocvan[]" class="form-control select2" tabindex="13">
                                                                         <option value="">Chọn Học vấn</option>
                                                                         @foreach($educations as $education)
                                                                         <option value="{{ $education->id }}">{{ $education->name }}</option>
@@ -225,7 +225,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Nghề nghiệp</label>
-                                                                    <select name="idnghenghiep[]" class="form-control" tabindex="14">
+                                                                    <select name="idnghenghiep[]" class="form-control select2" tabindex="14">
                                                                         <option value="">Chọn Nghề nghiệp</option>
                                                                         @foreach($careers as $career)
                                                                         <option value="{{ $career->id }}">{{ $career->name }}</option>
@@ -236,7 +236,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Dân tộc</label>
-                                                                    <select name="iddantoc[]" class="form-control" tabindex="15">
+                                                                    <select name="iddantoc[]" class="form-control select2" tabindex="15">
                                                                         <option value="">Chọn Dân tộc</option>
                                                                         @foreach($nations as $nation)
                                                                         <option value="{{ $nation->id }}">{{ $nation->name }}</option>
@@ -277,7 +277,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-4">
                                                                 <fieldset class="form-group">
                                                                     <label>Quốc tịch <span class="text-danger">*</span></label>
-                                                                    <select name="idquoctich[]" class="form-control"  tabindex="21">
+                                                                    <select name="idquoctich[]" class="form-control select2"  tabindex="21">
                                                                         <option  value="">Chọn Quốc tịch</option>
                                                                         @foreach($countries as $country)
                                                                         <option value="{{ $country->id }}">{{ $country->name }}</option>

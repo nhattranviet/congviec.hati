@@ -168,6 +168,9 @@ Route::get('/nhan-khau/{idnhankhau}/chi-tiet-nhan-khau', 'Nhanhokhau\NhanKhauCon
 Route::get('/nhan-khau/{id}/sua-nhan-khau', 'Nhanhokhau\NhanKhauController@getSuanhankhau')->name('get-sua-nhan-khau-thuong-tru');
 Route::post('/nhan-khau/{id}/sua-nhan-khau', 'Nhanhokhau\NhanKhauController@postSuanhankhau')->name('sua-nhan-khau');
 
+Route::get('/nhan-khau/{id}/dang-ky-lai', 'Nhanhokhau\NhanKhauController@getDangkylai')->name('get-dang-ky-lai-thuong-tru');
+Route::post('/nhan-khau/{id}/dang-ky-lai', 'Nhanhokhau\NhanKhauController@postDangkylai')->name('post-dang-ky-lai');
+
 Route::get('/nhan-khau/{id}/check-xoa-thuong-tru', 'Nhanhokhau\NhanKhauController@getCheckxoathuongtru')->name('check-xoa-thuong-tru-NK');
 Route::post('/nhan-khau/{id}/xoa-thuong-tru', 'Nhanhokhau\NhanKhauController@xoaThuongtru')->name('xoa-thuong-tru');
 

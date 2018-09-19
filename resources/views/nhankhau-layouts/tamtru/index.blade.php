@@ -35,16 +35,14 @@
             <div class="col-xs-12">
                 <div class="page-title-box">
                     <h4 class="page-title">Quản lý tạm trú</h4>
+                    <div class="col-xs-12" style="max-width: 800px; float: right;">
+                        <a href="{{ route('tam-tru.create') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-accounts-add m-r-5"></i> <span>Thêm sổ (Hộ) </span> </a>
+                        <a href="{{ route('get-add-so-tam-tru-ca-nhan') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-account-add m-r-5"></i> <span>Thêm sổ (Cá nhân)</span> </a>
+                        <a href="{{ route('thong-ke') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-window-restore m-r-5"></i> <span>Báo cáo nhân khẩu</span> </a>
+                        <a href="{{ route('check-qua-han') }}" style="margin: 0 5px 0 5px;" class="btn btn-warning-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-calendar-close m-r-5"></i> <span>Quá hạn tạm trú</span> </a>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
-            </div>
-        </div>
-         <div class="row m-b-10">
-            <div class="col-xs-12" style="max-width: 800px; margin: auto;">
-                <a href="{{ route('tam-tru.create') }}" style="margin: 0 5px 0 5px;" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-accounts-add m-r-5"></i> <span>Thêm sổ (Hộ) </span> </a>
-                <a href="{{ route('get-add-so-tam-tru-ca-nhan') }}" style="margin: 0 5px 0 5px;" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-account-add m-r-5"></i> <span>Thêm sổ (Cá nhân)</span> </a>
-                <a href="{{ route('thong-ke') }}" style="margin: 0 5px 0 5px;" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-window-restore m-r-5"></i> <span>Báo cáo nhân khẩu</span> </a>
-                <a href="{{ route('check-qua-han') }}" style="margin: 0 5px 0 5px;" class="btn btn-purple-outline waves-effect waves-light"> <i style="font-size: 18px;" class="zmdi zmdi-calendar-close m-r-5"></i> <span>Quá hạn tạm trú</span> </a>
             </div>
         </div>
 

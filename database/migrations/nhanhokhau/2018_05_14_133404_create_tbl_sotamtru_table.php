@@ -26,6 +26,11 @@ class CreateTblSotamtruTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->index('sotamtru_so');
+            $table->index('idquocgia_tamtru');
+            $table->index('idtinh_tamtru');
+            $table->index('idhuyen_tamtru');
+            $table->index('idxa_tamtru');
+            $table->index('ngaydangky');
         });
     }
 
