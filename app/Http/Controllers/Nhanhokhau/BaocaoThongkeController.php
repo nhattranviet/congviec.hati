@@ -298,60 +298,61 @@ class BaocaoThongkeController extends Controller
         
 
         $denngay_Y_m_d = date( 'Y-m-d', strtotime( $request->denngay ) );
-        // $data_tamtru_chunk = DB::connection('nhanhokhau')->table('tbl_tamtru')
-        // ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
-        // ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
-        // ->where(array(
-        //     ['tbl_sotamtru.deleted_at', '=', NULL],
-        //     ['tbl_tamtru.deleted_at', '=', NULL],
-        // ))
-        // ->whereDate('tamtru_denngay', '>=', $denngay_Y_m_d)
-        // ->whereDate('tamtru_tungay', '<=', $denngay_Y_m_d)
-        // ->orderBy('tbl_tamtru.id')
-        // ->select( 'sotamtru_so', 'tbl_sotamtru.type', 'idsotamtru', 'idquanhechuho', 'idxa_tamtru', 'idhuyen_tamtru', 'idtinh_tamtru', 'idxa_thuongtru', 'idhuyen_thuongtru', 'idtinh_thuongtru', 'gioitinh', 'ngaysinh', 'tamtru_tungay', 'tamtru_denngay')
-        // ->chunk(1000, function($list_nhankhau){
-        //     foreach($list_nhankhau as $nhankhau)
-        //     {
-        //         if($nhankhau->ngaysinh <= $this->ago_14_year)   $this->data['tamtru_nk_better_14_total']++;
-        //         if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_count_thanhthi']++;
-        //         if($nhankhau->gioitinh == 0) $this->data['tamtru_gioitinh_nu']++;
-        //         if( $nhankhau->idtinh_thuongtru != $this->current_tinh )    //Ngoài tỉnh đến
-        //         {
-        //             $this->data['tamtru_ngoaitinhden_nk']++;
-        //             if( $nhankhau->idquanhechuho == 1)
-        //             {
-        //                 $this->data['tamtru_ngoaitinhden_ho']++;
-        //             }
-        //             if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaitinhden_nk_thanhthi']++;
-        //             if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaitinhden_nk_nu']++;
-        //             if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaitinhden_nk_tren_14']++;
-        //         }
-        //         elseif($nhankhau->idhuyen_thuongtru != $this->current_huyen)    //Ngoài huyện trong tỉnh đến
-        //         {
-        //             $this->data['tamtru_ngoaitinh_tronghuyen_den_nk']++;
-        //             if( $nhankhau->idquanhechuho == 1)
-        //             {
-        //                 $this->data['tamtru_ngoaitinh_tronghuyen_den_ho']++;
-        //             }
-        //             if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaitinh_tronghuyenden_nk_thanhthi']++;
-        //             if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaitinh_tronghuyen_nk_nu']++;
-        //             if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaitinh_tronghuyen_nk_tren_14']++;
-        //         }
 
-        //         if( $nhankhau->idtinh_thuongtru == $this->current_tinh && $nhankhau->idxa_thuongtru != $nhankhau->idxa_tamtru ) //Ngoài xã, trong tỉnh đến
-        //         {
-        //             $this->data['tamtru_ngoaixa_trongtinh_den_nk']++;
-        //             if( $nhankhau->idquanhechuho == 1)
-        //             {
-        //                 $this->data['tamtru_ngoaixa_trongtinh_den_ho']++;
-        //             }
-        //             if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaixa_trongtinh_den_nk_thanhthi']++;
-        //             if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaixa_trongtinh_den_nk_nu']++;
-        //             if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaixa_trongtinh_den_nk_tren_14']++;
-        //         }
+        $data_tamtru_chunk = DB::connection('nhanhokhau')->table('tbl_tamtru')
+        ->join('tbl_nhankhau', 'tbl_nhankhau.id', '=', 'tbl_tamtru.idnhankhau')
+        ->join('tbl_sotamtru', 'tbl_sotamtru.id', '=', 'tbl_tamtru.idsotamtru')
+        ->where(array(
+            ['tbl_sotamtru.deleted_at', '=', NULL],
+            ['tbl_tamtru.deleted_at', '=', NULL],
+        ))
+        ->whereDate('tamtru_denngay', '>=', $denngay_Y_m_d)
+        ->whereDate('tamtru_tungay', '<=', $denngay_Y_m_d)
+        ->orderBy('tbl_tamtru.id')
+        ->select( 'sotamtru_so', 'tbl_sotamtru.type', 'idsotamtru', 'idquanhechuho', 'idxa_tamtru', 'idhuyen_tamtru', 'idtinh_tamtru', 'idxa_thuongtru', 'idhuyen_thuongtru', 'idtinh_thuongtru', 'gioitinh', 'ngaysinh', 'tamtru_tungay', 'tamtru_denngay')
+        ->chunk(1000, function($list_nhankhau){
+            foreach($list_nhankhau as $nhankhau)
+            {
+                if($nhankhau->ngaysinh <= $this->ago_14_year)   $this->data['tamtru_nk_better_14_total']++;
+                if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_count_thanhthi']++;
+                if($nhankhau->gioitinh == 0) $this->data['tamtru_gioitinh_nu']++;
+                if( $nhankhau->idtinh_thuongtru != $this->current_tinh )    //Ngoài tỉnh đến
+                {
+                    $this->data['tamtru_ngoaitinhden_nk']++;
+                    if( $nhankhau->idquanhechuho == 1)
+                    {
+                        $this->data['tamtru_ngoaitinhden_ho']++;
+                    }
+                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaitinhden_nk_thanhthi']++;
+                    if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaitinhden_nk_nu']++;
+                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaitinhden_nk_tren_14']++;
+                }
+                elseif($nhankhau->idhuyen_thuongtru != $this->current_huyen)    //Ngoài huyện trong tỉnh đến
+                {
+                    $this->data['tamtru_ngoaitinh_tronghuyen_den_nk']++;
+                    if( $nhankhau->idquanhechuho == 1)
+                    {
+                        $this->data['tamtru_ngoaitinh_tronghuyen_den_ho']++;
+                    }
+                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaitinh_tronghuyenden_nk_thanhthi']++;
+                    if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaitinh_tronghuyen_nk_nu']++;
+                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaitinh_tronghuyen_nk_tren_14']++;
+                }
+
+                if( $nhankhau->idtinh_thuongtru == $this->current_tinh && $nhankhau->idxa_thuongtru != $nhankhau->idxa_tamtru ) //Ngoài xã, trong tỉnh đến
+                {
+                    $this->data['tamtru_ngoaixa_trongtinh_den_nk']++;
+                    if( $nhankhau->idquanhechuho == 1)
+                    {
+                        $this->data['tamtru_ngoaixa_trongtinh_den_ho']++;
+                    }
+                    if( in_array($nhankhau->idxa_tamtru, $this->current_thanhthi) ) $this->data['tamtru_ngoaixa_trongtinh_den_nk_thanhthi']++;
+                    if($nhankhau->gioitinh == 0) $this->data['tamtru_ngoaixa_trongtinh_den_nk_nu']++;
+                    if($nhankhau->ngaysinh <= $this->ago_14_year) $this->data['tamtru_ngoaixa_trongtinh_den_nk_tren_14']++;
+                }
                 
-        //     }
-        // });
+            }
+        });
         
         $this->list_truonghopxoa = DB::connection('nhanhokhau')->table('tbl_thutuccutru')->where('type', 'xoathuongtru')->pluck('id')->toArray();
         //History

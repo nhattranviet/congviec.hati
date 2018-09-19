@@ -1,4 +1,10 @@
 @include('commons.word_css')
+<style>
+    table.info tr td{
+        text-align: center !important;
+        padding: 0.5px 2px !important;
+    }
+</style>
 <table class="head">
     <tr>
         <td class="center" style="width: 250px" valign="top" >
@@ -14,7 +20,6 @@
         </td>
     </tr>
 </table>
-<br>
 <span class="daumuc">I. HỘ, NHÂN KHẨU ĐĂNG KÝ THƯỜNG TRÚ:</span> <br>
 Tổng số: {{ $thuongtru_tongsoho + $tamtru_tongso_ho - $khongcutru_ho }}  hộ; {{ $thuongtru_tongnhankhau + $tamtru_tongso_nhankhau - $khongcutru_nhankhau }} nhân khẩu <br>
 Trong đó: {{ $thuongtru_count_thanhthi + $tamtru_count_thanhthi - $khongcutru_nhankhauthanhthi }}  nhân khẩu thành thị; {{ $thuongtru_gioitinh_nu + $tamtru_gioitinh_nu - $khongcutru_nhankhaunu }} nhân khẩu nữ; {{ $thuongtru_nk_better_14 + $tamtru_nk_better_14_total - $khongcutru_nhankhautu14 }} nhân khẩu từ 14 tuổi trở lên.
@@ -448,7 +453,6 @@ Trong đó: {{ $thuongtru_count_thanhthi + $tamtru_count_thanhthi - $khongcutru_
             </tr>
         </tbody>
     </table>
-    <br>
     <table class="head" width="100%">
         <tr>
             <td class="center" style="width: 50%" valign="top"></td>
