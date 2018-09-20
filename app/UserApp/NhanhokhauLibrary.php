@@ -747,10 +747,10 @@ class NhanhokhauLibrary
     {
         if($array_pluck)
         {
-           return DB::table('tbl_quocgia')->pluck('name', 'id')->toArray();
+           return DB::connection('nhanhokhau')->table('tbl_quocgia')->pluck('name', 'id')->toArray();
         }
         else {
-            return DB::table('tbl_quocgia')->get();
+            return DB::connection('nhanhokhau')->table('tbl_quocgia')->get();
         }
         
     }
@@ -759,11 +759,11 @@ class NhanhokhauLibrary
     {
         if ($array_pluck)
         {
-            return DB::table('tbl_tinh_tp')->where('idquocgia', $idquocgia)->pluck('name', 'id')->toArray();
+            return DB::connection('nhanhokhau')->table('tbl_tinh_tp')->where('idquocgia', $idquocgia)->pluck('name', 'id')->toArray();
         }
         else
         {
-            return DB::table('tbl_tinh_tp')->where('idquocgia', $idquocgia)->get();
+            return DB::connection('nhanhokhau')->table('tbl_tinh_tp')->where('idquocgia', $idquocgia)->get();
         }
         
     }
@@ -772,10 +772,10 @@ class NhanhokhauLibrary
     {
         if($array_pluck)
         {
-           return DB::table('tbl_huyen_tx')->where('idtinhtp', $idtinhtp)->pluck('name', 'id')->toArray();
+           return DB::connection('nhanhokhau')->table('tbl_huyen_tx')->where('idtinhtp', $idtinhtp)->pluck('name', 'id')->toArray();
         }
         else {
-            return DB::table('tbl_huyen_tx')->where('idtinhtp', $idtinhtp)->get();
+            return DB::connection('nhanhokhau')->table('tbl_huyen_tx')->where('idtinhtp', $idtinhtp)->get();
         }
         
     }
@@ -784,10 +784,10 @@ class NhanhokhauLibrary
     {
         if( $array_pluck )
         {
-           return DB::table('tbl_xa_phuong_tt')->where('idhuyentx', $idhuyentx)->pluck('name', 'id')->toArray();
+           return DB::connection('nhanhokhau')->table('tbl_xa_phuong_tt')->where('idhuyentx', $idhuyentx)->pluck('name', 'id')->toArray();
         }
         else {
-            return DB::table('tbl_xa_phuong_tt')->where('idhuyentx', $idhuyentx)->get();
+            return DB::connection('nhanhokhau')->table('tbl_xa_phuong_tt')->where('idhuyentx', $idhuyentx)->get();
         }
         
     }

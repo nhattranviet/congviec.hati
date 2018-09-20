@@ -4110,7 +4110,6 @@ class Hanhchinh extends Command
 			["name" => "Xã Sơn Trà", "idhuyentx" => "201"],
 			["name" => "Xã Sơn Trung", "idhuyentx" => "201"],
 			["name" => "Xã Sơn Trường", "idhuyentx" => "201"],
-			["name" => "Thị trấn Voi", "idhuyentx" => "202"],
 			["name" => "Xã Kỳ Bắc", "idhuyentx" => "202"],
 			["name" => "Xã Kỳ Châu", "idhuyentx" => "202"],
 			["name" => "Xã Kỳ Đồng", "idhuyentx" => "202"],

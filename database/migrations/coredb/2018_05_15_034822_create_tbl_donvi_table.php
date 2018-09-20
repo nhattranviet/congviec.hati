@@ -18,6 +18,7 @@ class CreateTblDonviTable extends Migration
             $table->string('name');
             $table->string('kyhieu')->nullable();
             $table->string('loaidonvi')->nullable();
+            $table->string('show')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

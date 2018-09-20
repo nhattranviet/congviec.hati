@@ -115,7 +115,7 @@ Auth::routes();
 Route::get('/', function(){
     if( Session::has('userinfo') )
     {
-        $iddonvi = UserLibrary::getIdDonViOfCanBo ( Session::get('userinfo')->idcanbo );
+        $iddonvi = UserLibrary::getIdDonViOfCanBo ( Session::get('userinfo')->idcanbo ); //echo $iddonvi; die;
         $default_route = config('user_config.default_route.'.$iddonvi);
         if( $default_route )
         {

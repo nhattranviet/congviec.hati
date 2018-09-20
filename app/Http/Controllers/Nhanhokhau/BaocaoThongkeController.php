@@ -52,7 +52,7 @@ class BaocaoThongkeController extends Controller
     public $current_huyen = 202;
     public $current_tinh = 19;
     public $current_idquocgia = 1;
-    public $current_thanhthi = [3044];
+    public $current_thanhthi = [];
     public $ago_14_year;
 
     public $list_truonghopxoa;

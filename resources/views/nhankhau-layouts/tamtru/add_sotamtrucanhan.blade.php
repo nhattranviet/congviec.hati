@@ -36,7 +36,7 @@
                 <div class="col-xs-12">
                     <div class="card-box">
 
-                        <form id="form-nhankhau" action="{{ route('post-add-so-tam-tru-ca-nhan') }}" method="POST" role="form">
+                        <form id="form-nhankhau" action="{{ route('post-add-so-tam-tru-ca-nhan') }}" method="POST" role="form" autocomplete="off">
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <ul class="m-b-30 nav nav-tabs m-b-10" id="myTabalt" role="tablist">
@@ -146,7 +146,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Nghề nghiệp</label>
-                                                                    <select name="idnghenghiep" class="form-control" tabindex="9">
+                                                                    <select name="idnghenghiep" class="form-control select2" tabindex="9">
                                                                         <option value="">Chọn Nghề nghiệp</option>
                                                                         @foreach($careers as $career)
                                                                         <option value="{{ $career->id }}">{{ $career->name }}</option>
@@ -172,7 +172,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Dân tộc</label>
-                                                                    <select name="iddantoc" class="form-control" tabindex="11">
+                                                                    <select name="iddantoc" class="form-control select2" tabindex="11">
                                                                         <option value="">Chọn Dân tộc</option>
                                                                         @foreach($nations as $nation)
                                                                         <option value="{{ $nation->id }}">{{ $nation->name }}</option>
@@ -184,7 +184,7 @@
                                                             <div class="col-lg-12 col-sm-12 col-xs-12 col-md-12 col-xl-2">
                                                                 <fieldset class="form-group">
                                                                     <label>Quốc tịch <span class="text-danger">*</span></label>
-                                                                    <select name="idquoctich" class="form-control" tabindex="12">
+                                                                    <select name="idquoctich" class="form-control select2" tabindex="12">
                                                                         <option  value="">Chọn Quốc tịch</option>
                                                                         @foreach($countries as $country)
                                                                         <option value="{{ $country->id }}">{{ $country->name }}</option>

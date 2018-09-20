@@ -381,7 +381,7 @@ class CanboController extends Controller
         //Họ ten, cap bac, chuc vu, id_iddonvi_iddoi
         $data = [
             //PC44--------------------
-            "Trần Hải Trung,10,4,11",
+            /* "Trần Hải Trung,10,4,11",
             "Nguyễn Thị Kim Chung,9,3,11",
             "Nguyễn Hữu Chí,8,3,11",
             "Phan Thị Huyền Trang,7,2,12",
@@ -404,9 +404,9 @@ class CanboController extends Controller
             "Lưu Thị Hoài Phương,6,13,14",
             "Bùi Thị Trâm,4,13,14",
             "Nguyễn Bảo Trung,4,13,14",
-            "Trần Danh Thiết,7,13,14",
+            "Trần Danh Thiết,7,13,14", */
             //TP---------------------
-            "Nguyễn Quốc Hùng,7,4,15",
+            /* "Nguyễn Quốc Hùng,7,4,15",
             "Nguyễn Công Dũng,10,3,15",
             "Lê Khánh Hòa,9,3,15",
             "Bùi Thanh Tùng,8,3,15",
@@ -591,7 +591,7 @@ class CanboController extends Controller
             "Trần Tiến Dũng,6,13,26",
             "Trần Công Huy,6,13,26",
             "Nguyễn Tuấn Tú,5,13,26",
-            "Nguyễn Xuân Sử,6,13,26",
+            "Nguyễn Xuân Sử,6,13,26", */
             //PV11------------------
             "Phan Ngọc Tố,9,3,1",
             "Phan Quốc Khánh,9,3,1",

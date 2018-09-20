@@ -694,6 +694,7 @@ var addTab = function (tabIndexs) {
 
     // gender
     $("#profile" + tabIndexs).find("input[type=radio]").attr("name", "gender" + tabIndexs);
+    $("#profile" + tabIndexs).find("input[name='gender[]']").val('');
 
     // Select2
     $("#profile" + tabIndexs).find("select.select2").removeClass('select2-hidden-accessible').removeAttr('tabindex');

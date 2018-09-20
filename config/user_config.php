@@ -29,10 +29,10 @@ return [
 
     'default_route' => [
         '1' => 'lich-cong-tac.index',  //BGĐ
-        '2' => 'nhat-ky-cong-tac-cb.index',  //PC44
-        '19' => 'cong-viec.index',  //PC44
-        '31' => 'cong-viec.index',  //TP
-        '33' => 'nhan-ho-khau-home',    //H KA
+        '2' => 'nhat-ky-cong-tac-cb.index',  //PV01
+        '16' => 'cong-viec.index',  //PC44
+        '28' => 'cong-viec.index',  //TP
+        '30' => 'nhan-ho-khau-home',    //H KA
     ],
 
     'idmoiquanhechuho' => 1,

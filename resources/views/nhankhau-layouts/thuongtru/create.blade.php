@@ -168,14 +168,19 @@
                                                                     <label>Giới tính <span class="text-danger">*</span></label>
                                                                     <div>
                                                                         <input class="gender" type="hidden" tabindex="-1" name="gender[]" value="">
-                                                                        <div class="radio gender-radio">
+                                                                        <label class="c-input c-radio gender-radio">
                                                                             <input type="radio" name="gender0" value="1" id="radio1" tabindex="12">
+                                                                            <span class="c-indicator"></span>
                                                                             <label for="radio1">Nam</label>
-                                                                        </div>
-                                                                        <div class="radio gender-radio">
+                                                                        </label>
+                                                                        <label class="c-input c-radio gender-radio">
                                                                             <input type="radio" name="gender0" value="0" id="radio2" tabindex="12">
-                                                                            <label for="radio2">Nữ</label>
-                                                                        </div>
+                                                                            <span class="c-indicator"></span>
+                                                                            <label for="radio1">Nữ</label>
+                                                                        </label>
+                                                                        
+
+                                                                        
                                                                     </div>
                                                                 </fieldset>
                                                             </div>
@@ -417,7 +422,7 @@
                             </div>
                             <div class="row m-t-10">
                                 <div class="col-xs-12 col-sm-12">
-                                    <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Thêm hồ sơ</button>
+                                    <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Lưu</button>
                                     <button type="button" class="btn btn-danger pull-right" id="createTab"><i class="fa fa-user"></i> Thêm nhân khẩu</button>
                                 </div>
                             </div>

@@ -935,18 +935,20 @@ class NhanKhauController extends Controller
     }
 
     public function getProvinces($id = NULL) {
-        $provinces = $this->province->where('idquocgia', $id)->get();
+        // $provinces = $this->province->where('idquocgia', $id)->get();
+        $provinces = DB::connection('nhanhokhau')->table('tbl_tinh_tp')->where('idquocgia',$id)->get();
         return response()->json($provinces);
     }
 
     public function getDistricts($id) {
-        $districts = $this->district->where('idtinhtp', $id)->get();
+        // $districts = $this->district->where('idtinhtp', $id)->get();
+        $districts = DB::connection('nhanhokhau')->table('tbl_huyen_tx')->where('idtinhtp',$id)->get();
         return response()->json($districts);
     }
 
     public function getWards($id) {
         // $wards = $this->ward->where('idhuyentx', $id)->get();
-        $wards = DB::table('tbl_xa_phuong_tt')->where('idhuyentx',$id)->get();
+        $wards = DB::connection('nhanhokhau')->table('tbl_xa_phuong_tt')->where('idhuyentx',$id)->get();
         // print_r($wards->toArray()); die;
         return response()->json($wards);
     }
